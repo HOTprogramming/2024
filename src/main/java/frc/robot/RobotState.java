@@ -1,5 +1,14 @@
 package frc.robot;
 
 public class RobotState {
-    // sensor "get" methods go here (and controller inputs)
+    private boolean shooterOn;
+    
+
+    public void setShooterOn(boolean bool) {
+        shooterOn = bool;
+    }
+
+    public boolean getShooterOn() {
+        return shooterOn;
+    }
 }
