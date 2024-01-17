@@ -1,5 +1,5 @@
 package frc.robot;
 
 public abstract class RobotCommander {
-    // commands go here
+    public abstract boolean getRunShooter();
 }

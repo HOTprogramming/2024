@@ -2,14 +2,15 @@ package frc.robot.Subsystems;
 
 import static frc.robot.Constants.ShooterConstants.*;
 
+import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 
-
 public class Shooter implements SubsystemBase {
-    TalonFX flywheel;
     RobotState robotState;
+    TalonFX flywheel;
+    
 
     public Shooter(RobotState robotState) {
         this.robotState = robotState;
@@ -18,13 +19,29 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
-        if (robotState.getShooterOn()) {
+        if (flywheel.getVelocity().getValue() >= (FLYWHEEL_MAX_SPEED - FLYWHEEL_MAX_VELOCITY_ERROR)) {
+            robotState.setShooterOn(true);
+        } else {
+            robotState.setShooterOn(false);
+        }
+    }
+    
+    @Override
+    public void enabled(RobotCommander commander) {
+        if (commander.getRunShooter()) {
             flywheel.set(FLYWHEEL_MAX_SPEED);
+        } else {
+            flywheel.set(0);
         }
     }
 
     @Override
+    public void disabled() {
+        flywheel.stopMotor();
+    }
+
+    @Override
     public void reset() {
-        flywheel.setPosition(0);
+        flywheel.stopMotor();
     }
 }
