@@ -19,7 +19,7 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
-        if (flywheel.getVelocity().getValue() >= (FLYWHEEL_MAX_SPEED - FLYWHEEL_MAX_VELOCITY_ERROR)) {
+        if (flywheel.getVelocity().getValueAsDouble() >= (FLYWHEEL_MAX_SPEED - FLYWHEEL_MAX_VELOCITY_ERROR)) {
             robotState.setShooterOn(true);
         } else {
             robotState.setShooterOn(false);

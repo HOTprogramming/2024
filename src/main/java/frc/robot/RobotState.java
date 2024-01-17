@@ -1,24 +1,42 @@
 package frc.robot;
 
 public class RobotState {
-    private boolean currentShooterOn;
-
+    private boolean shooterOn;
+    private double driveSpeed;
 
     /**
-     * The current shooter state
+     * Set the current shooter state
      * 
-     * @param bool New shooter state
+     * @param state New shooter state
      */
-    public void setShooterOn(boolean bool) {
-        currentShooterOn = bool;
+    public void setShooterOn(boolean shooterOn) {
+        this.shooterOn = shooterOn;
     }
 
     /**
-     * The current shooter state
+     * Get the current shooter state
      * 
      * @return Whether the shooter speed is above minimums
      */
     public boolean getShooterOn() {
-        return currentShooterOn;
+        return shooterOn;
+    }
+
+    /**
+     * Set new drive speed
+     * 
+     * @param driveSpeed New drive speed
+     */
+    public void setDriveSpeed(double driveSpeed) {
+        this.driveSpeed = driveSpeed;
+    }
+
+    /**
+     * Get drive speed
+     * 
+     * @return Current drive speed
+     */
+    public double getDriveSpeed() {
+        return driveSpeed;
     }
 }
