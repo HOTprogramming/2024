@@ -24,7 +24,7 @@ public class Drivetrain implements SubsystemBase {
     
     @Override
     public void enabled(RobotCommander commander) {
-        
+        driveMotor.set(commander.getTargetDriveSpeed());
     }
 
     @Override
