@@ -1,17 +1,30 @@
 package frc.robot;
 
+import frc.robot.Autons.AutonBase;
+
 public class AutonCommander extends RobotCommander {
+    RobotState robotState;
+    AutonBase auto;
+    
+
+    public AutonCommander(RobotState robotState) {
+        this.robotState = robotState;
+        
+    }
+
+    public void setAuto(AutonBase selectedAuto) {
+        this.auto = selectedAuto;
+        this.auto.reset();
+    }
 
     @Override
     public boolean getRunShooter() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRunShooter'");
+        return auto.runShooter;
     }
 
     @Override
     public double getTargetDriveSpeed() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTargetDriveSpeed'");
+        return auto.driveSpeed;
     }
 
 }

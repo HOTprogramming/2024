@@ -19,7 +19,7 @@ public class Drivetrain implements SubsystemBase {
 
     @Override
     public void updateState() {
-        robotState.setDriveSpeed(driveMotor.getVelocity().getValueAsDouble());
+        robotState.setDrivePose(driveMotor.getPosition().getValueAsDouble());
     }
     
     @Override

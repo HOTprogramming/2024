@@ -2,7 +2,7 @@ package frc.robot;
 
 public class RobotState {
     private boolean shooterOn;
-    private double driveSpeed;
+    private double drivePose;
 
     /**
      * Set the current shooter state
@@ -23,20 +23,20 @@ public class RobotState {
     }
 
     /**
-     * Set new drive speed
+     * Set new drive pose
      * 
-     * @param driveSpeed New drive speed
+     * @param drivePose New drive pose
      */
-    public void setDriveSpeed(double driveSpeed) {
-        this.driveSpeed = driveSpeed;
+    public void setDrivePose(double drivePose) {
+        this.drivePose = drivePose;
     }
 
     /**
-     * Get drive speed
+     * Get drive pose
      * 
-     * @return Current drive speed
+     * @return Current drive pose
      */
-    public double getDriveSpeed() {
-        return driveSpeed;
+    public double getDrivePose() {
+        return drivePose;
     }
 }

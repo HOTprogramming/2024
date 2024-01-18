@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.Autons.driveShoot;
 import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Shooter;
 
@@ -8,19 +10,27 @@ import frc.robot.Subsystems.Shooter;
 public class Robot extends TimedRobot {
   private RobotState robotState;
   private TeleopCommander teleopCommander;
-  // private AutonCommander autonCommander;
+  private AutonCommander autonCommander;
 
   private Shooter shooter;
   private Drivetrain drivetrain;
+
+  private driveShoot driveShoot;
+
+  private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
   @Override
   public void robotInit() {
     robotState = new RobotState();
     teleopCommander = new TeleopCommander(robotState);
-    // autonCommander = new AutonCommander(robotState);
+    autonCommander = new AutonCommander(robotState);
 
     shooter = new Shooter(robotState);
     drivetrain = new Drivetrain(robotState);
+
+    driveShoot = new driveShoot(robotState);
+
+    autoSelector.setDefaultOption("Drive and Shoot", "driveShoot");
   }
 
   @Override
@@ -30,10 +40,18 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    String selectedAuto = autoSelector.getSelected();
+
+    if (selectedAuto == "driveShoot") {
+      autonCommander.setAuto(driveShoot);
+    }
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    autonCommander.auto.runAuto();
+  }
 
   @Override
   public void teleopInit() {
