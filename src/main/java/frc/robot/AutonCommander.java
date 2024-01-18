@@ -2,7 +2,7 @@ package frc.robot;
 
 import frc.robot.Autons.AutonBase;
 
-public class AutonCommander extends RobotCommander {
+public class AutonCommander implements RobotCommander {
     RobotState robotState;
     AutonBase auto;
     
