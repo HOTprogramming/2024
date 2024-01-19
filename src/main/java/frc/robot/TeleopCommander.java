@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 
-public class TeleopCommander extends RobotCommander {
+public class TeleopCommander implements RobotCommander {
     private static XboxController joysticks;
 
     RobotState robotState;

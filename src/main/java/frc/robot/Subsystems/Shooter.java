@@ -1,6 +1,6 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.ShooterConstants.*;
+import static frc.robot.Constants.Shooter.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;

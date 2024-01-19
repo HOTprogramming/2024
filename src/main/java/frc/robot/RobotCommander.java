@@ -1,6 +1,6 @@
 package frc.robot;
 
-public abstract class RobotCommander {
+public interface RobotCommander {
     public abstract boolean getRunShooter();
     public abstract double getTargetDriveSpeed();
 }
