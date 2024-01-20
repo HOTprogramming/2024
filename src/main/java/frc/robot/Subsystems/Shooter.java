@@ -1,6 +1,6 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.ShooterConstants.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
@@ -15,6 +15,10 @@ public class Shooter implements SubsystemBase {
     public Shooter(RobotState robotState) {
         this.robotState = robotState;
         flywheel = new TalonFX(FLYWHEEL_CAN);
+    }
+
+    public void shootAtSpeed(int speed) {
+        
     }
 
     @Override

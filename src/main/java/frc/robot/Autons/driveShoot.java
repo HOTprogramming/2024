@@ -13,6 +13,7 @@ public class driveShoot extends AutonBase {
     public Step step;
 
     private double firstPose = 5;
+    private double shootEndTime = 10;
 
     public driveShoot(RobotState robotState) {
         super(robotState);
@@ -31,7 +32,10 @@ public class driveShoot extends AutonBase {
                 break;
         
             case shoot:
-                
+                if (timer.get() > shootEndTime) {
+                    runShooter = false;
+                    step = Step.end;
+                }
                 runShooter = true;
                 break;
                 

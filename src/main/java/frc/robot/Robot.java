@@ -46,11 +46,15 @@ public class Robot extends TimedRobot {
     if (selectedAuto == "driveShoot") {
       autonCommander.setAuto(driveShoot);
     }
+    autonCommander.auto.reset();
   }
 
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
+    shooter.enabled(autonCommander);
+    drivetrain.enabled(autonCommander);
+
   }
 
   @Override

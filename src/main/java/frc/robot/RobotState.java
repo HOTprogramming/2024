@@ -7,7 +7,7 @@ public class RobotState {
     /**
      * Set the current shooter state
      * 
-     * @param state New shooter state
+     * @param shooterOn New shooter state
      */
     public void setShooterOn(boolean shooterOn) {
         this.shooterOn = shooterOn;

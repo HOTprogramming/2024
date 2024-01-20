@@ -1,36 +1,39 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.Drivetrain.*;
+import static frc.robot.Constants.DrivetrainConstants.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 
 
-public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
+public class Drivetrain implements SubsystemBase {
     RobotState robotState;
+    TalonFX driveMotor;
     
 
     public Drivetrain(RobotState robotState) {
-        super(DRIVETRAIN_CONSTANTS, 
-        FRONT_LEFT_MODULE_CONSTANTS, FRONT_RIGHT_MODULE_CONSTANTS, BACK_LEFT_MODULE_CONSTANTS, BACK_RIGHT_MODULE_CONSTANTS);
         this.robotState = robotState;
+        driveMotor = new TalonFX(DRIVE_CAN);
     }
 
     @Override
     public void updateState() {
+        robotState.setDrivePose(driveMotor.getPosition().getValueAsDouble());
     }
     
     @Override
     public void enabled(RobotCommander commander) {
+        driveMotor.set(commander.getTargetDriveSpeed());
     }
 
     @Override
     public void disabled() {
+       driveMotor.stopMotor();
     }
 
     @Override
     public void reset() {
+        driveMotor.stopMotor();
     }
 }
