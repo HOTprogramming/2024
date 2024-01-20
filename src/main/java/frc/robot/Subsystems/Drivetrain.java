@@ -68,7 +68,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         this.robotState = robotState;    
 
         configNeutralMode(NeutralModeValue.Brake);
-        
     }
 
     private void percentDrive(double[] drivePercents) {
@@ -141,8 +140,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
         }
 
-        // percentDrive(commander.getDrivePercentCommand());
-        
+
+        if (commander.getBrakeCommand()) {
+            setControl(brake);
+        }
     }
 
     @Override

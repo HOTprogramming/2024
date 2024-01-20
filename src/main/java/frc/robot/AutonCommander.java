@@ -9,8 +9,6 @@ public class AutonCommander implements RobotCommander {
     RobotState robotState;
     AutonBase auto;
     
-    private DriveMode driveMode = DriveMode.stateDrive;
-
 
     public AutonCommander(RobotState robotState) {
         this.robotState = robotState;
@@ -40,7 +38,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public DriveMode getDriveMode() {
-        return driveMode;
+        return DriveMode.stateDrive;
     }
 
     @Override
