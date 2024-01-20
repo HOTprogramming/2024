@@ -2,9 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Autons.driveShoot;
+import frc.robot.Autons.*;
 import frc.robot.Subsystems.Drivetrain;
-import frc.robot.Subsystems.Shooter;
 
 
 public class Robot extends TimedRobot {
@@ -12,10 +11,9 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
-  private Shooter shooter;
   private Drivetrain drivetrain;
 
-  private driveShoot driveShoot;
+  private TestAuton testAuton;
 
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
@@ -25,54 +23,53 @@ public class Robot extends TimedRobot {
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
 
-    shooter = new Shooter(robotState);
     drivetrain = new Drivetrain(robotState);
 
-    driveShoot = new driveShoot(robotState);
+    testAuton = new TestAuton(robotState);
 
-    autoSelector.setDefaultOption("Drive and Shoot", "driveShoot");
+    autoSelector.setDefaultOption("NOT Drive and Shoot", "DriveShoot");
   }
 
   @Override
   public void robotPeriodic() {
-    shooter.updateState();
     drivetrain.updateState();
+
   }
 
   @Override
   public void autonomousInit() {
     String selectedAuto = autoSelector.getSelected();
 
-    if (selectedAuto == "driveShoot") {
-      autonCommander.setAuto(driveShoot);
+    if (selectedAuto == "DriveShoot") {
+      autonCommander.setAuto(testAuton);
     }
-    autonCommander.auto.reset();
+
+    drivetrain.init(autonCommander);
   }
 
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
-    shooter.enabled(autonCommander);
-    drivetrain.enabled(autonCommander);
 
+    drivetrain.enabled(autonCommander);
   }
 
   @Override
   public void teleopInit() {
-    shooter.reset();
     drivetrain.reset();
+
   }
 
   @Override
   public void teleopPeriodic() {
-    shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
+
   }
 
   @Override
   public void disabledInit() {
-    shooter.disabled();
     drivetrain.disabled();
+
   }
 
   @Override
@@ -88,5 +85,7 @@ public class Robot extends TimedRobot {
   public void simulationInit() {}
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    drivetrain.updateSimState(kDefaultPeriod, 12);
+  }
 }
