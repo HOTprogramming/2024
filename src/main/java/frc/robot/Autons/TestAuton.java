@@ -25,6 +25,7 @@ public class TestAuton extends AutonBase {
 
     public TestAuton(RobotState robotState) {
         super(robotState);
+        
         startPose = new Pose2d(2, 1, Rotation2d.fromDegrees(0));
     }
 
@@ -35,15 +36,15 @@ public class TestAuton extends AutonBase {
         
         switch (step) {
             case firstRing:
-                step = (queuePath(List.of(robotState.getDrivePose(), firstRingPose), false)) ? Step.firstShoot : Step.firstRing;
+                step = (queuePath(List.of(robotState.getDrivePose(), firstShootPose), true)) ? Step.firstShoot : Step.firstRing;
                 break;
         
             case firstShoot:
-                step = (queuePath(List.of(robotState.getDrivePose(), firstShootPose), false)) ? Step.driveToEnd : Step.firstShoot;
+                step = (queuePath(List.of(robotState.getDrivePose(), endPose), true)) ? Step.driveToEnd : Step.firstShoot;
                 break;
                 
             case driveToEnd:
-                step = (queuePath(List.of(robotState.getDrivePose(), firstShootPose), false)) ? Step.end : Step.driveToEnd;
+                step = (queuePath(List.of(robotState.getDrivePose(), endPose), true)) ? Step.end : Step.driveToEnd;
                 break;
             
             case end:
@@ -62,9 +63,7 @@ public class TestAuton extends AutonBase {
     @Override
     public void reset() {
         super.reset();
-        driveSpeed = 0;
-        runShooter = false;
         step = Step.firstRing;
-
+        generateTrajectory(List.of(robotState.getDrivePose(), firstRingPose));
     }
 }

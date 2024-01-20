@@ -20,8 +20,6 @@ public abstract class AutonBase {
     RobotState robotState;
 
     public Pose2d startPose;
-    public Boolean runShooter;
-    public double driveSpeed;
     public State holoDriveState;
     public boolean swerveBrake;
     public Pose2d refrenceTolerances;
@@ -43,16 +41,18 @@ public abstract class AutonBase {
         for (Pose2d point:points) {
             waypoints.add(Waypoint.fromHolonomicPose(point));
         }
+        trajectoryGenerator.generate(trajectoryConfig, waypoints);
     }
 
     public void generateTrajectory(List<Pose2d> points) {
-        trajectoryConfig = new  TrajectoryConfig(AUTON_DEFAULT_MAX_VELOCITY_METERS, AUTON_DEFAULT_MAX_VELOCITY_METERS);
+        trajectoryConfig = new  TrajectoryConfig(AUTON_DEFAULT_MAX_VELOCITY_METERS, AUTON_DEFAULT_MAX_ACCEL_METERS);
         trajectoryGenerator = new CustomTrajectoryGenerator();
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {
             waypoints.add(Waypoint.fromHolonomicPose(point));
         }
+        trajectoryGenerator.generate(trajectoryConfig, waypoints);
     }
 
 
