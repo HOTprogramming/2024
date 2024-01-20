@@ -91,6 +91,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     @Override
     public void updateState() {
         currentState = getState();
+
         
         if (driveController.atReference()) {
             robotState.setAtTargetPose(true);
@@ -99,6 +100,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (currentState.Pose != null) {
+            robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
             double timeDifference = currentTime - lastTime;
             lastTime = currentTime;
@@ -133,13 +135,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     
     @Override
     public void enabled(RobotCommander commander) {
-        // if (commander.getDriveMode() == DriveMode.percent) {
-        //     percentDrive(commander.getDrivePercentCommand());
-        // } else if (commander.getDriveMode() == DriveMode.stateDrive) {
-        //     stateDrive(commander.getDriveState(), commander.getDriveRotationState());
-        // }
+        if (commander.getDriveMode() == DriveMode.percent) {
+            percentDrive(commander.getDrivePercentCommand());
+        } else if (commander.getDriveMode() == DriveMode.stateDrive) {
+            stateDrive(commander.getDriveState(), commander.getDriveRotationState());
+        }
 
-        percentDrive(commander.getDrivePercentCommand());
+        // percentDrive(commander.getDrivePercentCommand());
         
     }
 
