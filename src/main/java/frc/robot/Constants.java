@@ -25,8 +25,8 @@ public final class Constants {
         public static final double ROBOT_LENGTH_INCHES = 20.25;
         public static final double ROBOT_WITDTH_INCHES = 20.25;
         public static final double MAX_VELOCITY_METERS = 6.37032; // from SDS
-        public static final double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
-
+        // public static final double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
+        public static final double MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr
 
         // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
         // SWERVE BUILDER
@@ -38,9 +38,16 @@ public final class Constants {
         .withKP(3).withKI(0).withKD(0)
         .withKS(0).withKV(0).withKA(0);
         
-        private static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        // private static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
-        private static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        // private static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+
+        
+        private static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
+
+        private static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
+
+
 
         private static final double WHEEL_SLIP_CURRENT = 300.0; // *tune later
 
@@ -107,8 +114,7 @@ public final class Constants {
             private static final int kFrontLeftDriveMotorId = 8;
             private static final int kFrontLeftSteerMotorId = 7;
             private static final int kFrontLeftEncoderId = 43;
-            // private static final double kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
-            private static final double kFrontLeftEncoderOffset = 0;
+            private static final double kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
 
             private static final double kFrontLeftXPosInches = 10.125;
             private static final double kFrontLeftYPosInches = 10.125;
@@ -119,8 +125,7 @@ public final class Constants {
             private static final int kFrontRightDriveMotorId = 4;
             private static final int kFrontRightSteerMotorId = 3;
             private static final int kFrontRightEncoderId = 41;
-            // private static final double kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
-            private static final double kFrontRightEncoderOffset = 0;
+            private static final double kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
 
             private static final double kFrontRightXPosInches = 10.125;
             private static final double kFrontRightYPosInches = -10.125;
@@ -132,7 +137,6 @@ public final class Constants {
             private static final int kBackLeftSteerMotorId = 5;
             private static final int kBackLeftEncoderId = 42;
             private static final double kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
-            // private static final double kBackLeftEncoderOffset = 0;
 
             private static final double kBackLeftXPosInches = -10.125;
             private static final double kBackLeftYPosInches = 10.125;
@@ -145,7 +149,6 @@ public final class Constants {
             private static final int kBackRightSteerMotorId = 1;
             private static final int kBackRightEncoderId = 40;
             private static final double kBackRightEncoderOffset = -0.44140625 * Math.PI;
-            // private static final double kBackRightEncoderOffset = 0;
 
             private static final double kBackRightXPosInches = -10.125;
             private static final double kBackRightYPosInches = -10.125;
