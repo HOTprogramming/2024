@@ -1,19 +1,22 @@
 package frc.robot.Autons;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
 public class driveShoot extends AutonBase {
     enum Step {
         driveForeward,
-        shoot,
+        driveBackward,
+        shoot1,
+        shoot2,
         end
     }
 
     public Step step;
 
     private double firstPose = 5;
-    private double shootEndTime = 10;
+    private double drivePose;
 
     public driveShoot(RobotState robotState) {
         super(robotState);
@@ -24,21 +27,48 @@ public class driveShoot extends AutonBase {
     public void runAuto() {
         switch (step) {
             case driveForeward: 
-                if (robotState.getDrivePose() >= firstPose) {
+                if (robotState.getDrivePose() > 5 ) {
                     driveSpeed = 0;
-                    step = Step.shoot;
+                    step = Step.shoot1;
+                    timer.reset();
+                    drivePose = 0;
                 }
-                driveSpeed = 1;
-                break;
+                else{
+                driveSpeed = 0.05;
+                drivePose = robotState.getDrivePose();
+                
+                break;}
         
-            case shoot:
-                if (timer.get() > shootEndTime) {
+            case shoot1:
+                if (timer.get() > 3 ) {
+                    runShooter = false;
+                    step = Step.driveBackward;
+                    timer.reset();
+                }
+                else{
+                    runShooter = true;
+                    break;}
+            
+            case driveBackward:
+                if (robotState.getDrivePose() < -5 ) {
+                    driveSpeed = 0;
+                    step = Step.shoot2;
+                    timer.reset();
+                    drivePose = 0;
+                }
+                else{
+                driveSpeed = -0.05;
+                drivePose = robotState.getDrivePose();
+                break;} 
+
+            case shoot2:
+                if (timer.get() > 3 ) {
                     runShooter = false;
                     step = Step.end;
                 }
-                runShooter = true;
-                break;
-                
+                else{
+                    runShooter = true;
+                    break; }
             case end:
                 runShooter = false;
                 break;

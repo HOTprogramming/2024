@@ -31,6 +31,8 @@ public class Robot extends TimedRobot {
     driveShoot = new driveShoot(robotState);
 
     autoSelector.setDefaultOption("Drive and Shoot", "driveShoot");
+    
+    shooter.init();
   }
 
   @Override

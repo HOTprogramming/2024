@@ -3,6 +3,7 @@ package frc.robot;
 public class RobotState {
     private boolean shooterOn;
     private double drivePose;
+    private double position;
 
     /**
      * Set the current shooter state
@@ -29,6 +30,14 @@ public class RobotState {
      */
     public void setDrivePose(double drivePose) {
         this.drivePose = drivePose;
+    }
+
+    public void encoderCounts(double position){
+        this.position = position;
+    }
+
+    public double getEncoderCounts(){
+        return position;
     }
 
     /**
