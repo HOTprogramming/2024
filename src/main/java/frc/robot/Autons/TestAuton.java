@@ -38,15 +38,27 @@ public class TestAuton extends AutonBase {
         
         switch (step) {
             case firstRing:
-                step = (queuePath(List.of(robotState.getDrivePose(), betweenShootPose, firstShootPose), true)) ? Step.firstShoot : Step.firstRing;
-                break;
+                if (queuePath(List.of(robotState.getDrivePose(), betweenShootPose, firstShootPose), true)) {
+                     step = Step.firstShoot;
+                } else {
+                    step = Step.firstRing;
+                }
+               break;
         
             case firstShoot:
-                step = (queuePath(List.of(robotState.getDrivePose(), endPose), true)) ? Step.driveToEnd : Step.firstShoot;
+                if (queuePath(List.of(robotState.getDrivePose(), endPose), true)) {
+                    step = Step.driveToEnd;
+                } else {
+                    step = Step.firstShoot;
+                }
                 break;
                 
             case driveToEnd:
-                step = (checkTime()) ? Step.end : Step.driveToEnd;
+                if (checkTime()) {
+                    step = Step.end;
+                } else {
+                    step = Step.driveToEnd;
+                }
                 break;
             
             case end:
