@@ -19,14 +19,16 @@ public class TestAuton extends AutonBase {
     public Step step;
 
     // made on blue side
-    public Pose2d firstRingPose = new Pose2d(2, 5, Rotation2d.fromDegrees(0));
-    public Pose2d firstShootPose = new Pose2d(3, 3, Rotation2d.fromDegrees(0));
-    public Pose2d endPose = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
+    Pose2d betweenRingPose = new Pose2d(5.78, 1.3, Rotation2d.fromDegrees(0));
+    Pose2d firstRingPose = new Pose2d(8.29, .75, Rotation2d.fromDegrees(0));
+    Pose2d betweenShootPose = new Pose2d(5.78, 2.8, Rotation2d.fromDegrees(0));
+    Pose2d firstShootPose = new Pose2d(4, 2.25, Rotation2d.fromDegrees(0));
+    Pose2d endPose = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
 
     public TestAuton(RobotState robotState) {
         super(robotState);
         
-        startPose = new Pose2d(2, 1, Rotation2d.fromDegrees(0));
+        startPose = new Pose2d(1.4, 1.7, Rotation2d.fromDegrees(0));
     }
 
 
@@ -36,7 +38,7 @@ public class TestAuton extends AutonBase {
         
         switch (step) {
             case firstRing:
-                step = (queuePath(List.of(robotState.getDrivePose(), firstShootPose), true)) ? Step.firstShoot : Step.firstRing;
+                step = (queuePath(List.of(robotState.getDrivePose(), betweenShootPose, firstShootPose), true)) ? Step.firstShoot : Step.firstRing;
                 break;
         
             case firstShoot:
@@ -44,7 +46,7 @@ public class TestAuton extends AutonBase {
                 break;
                 
             case driveToEnd:
-                step = (queuePath(List.of(robotState.getDrivePose(), endPose), true)) ? Step.end : Step.driveToEnd;
+                step = (checkTime()) ? Step.end : Step.driveToEnd;
                 break;
             
             case end:
@@ -64,6 +66,6 @@ public class TestAuton extends AutonBase {
     public void reset() {
         super.reset();
         step = Step.firstRing;
-        generateTrajectory(List.of(robotState.getDrivePose(), firstRingPose));
+        generateTrajectory(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose));
     }
 }
