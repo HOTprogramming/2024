@@ -130,7 +130,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     @Override
-    public void init(RobotCommander commander) {}
+    public void init(RobotCommander commander) {
+        seedFieldRelative(commander.getOdomretryOverride());
+    }
     
     @Override
     public void enabled(RobotCommander commander) {

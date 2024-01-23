@@ -26,7 +26,8 @@ public final class Constants {
         public static final double ROBOT_WITDTH_INCHES = 20.25;
         public static final double MAX_VELOCITY_METERS = 6.37032; // from SDS
         // public static final double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
-        public static final double MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr
+        // public static final double MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
+        public static final double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
 
         // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
         // SWERVE BUILDER

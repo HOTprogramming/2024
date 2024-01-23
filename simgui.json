@@ -1,6 +1,7 @@
 {
   "NTProvider": {
     "types": {
+      "/Drivetrain": "Field2d",
       "/FMSInfo": "FMSInfo"
     }
   },
