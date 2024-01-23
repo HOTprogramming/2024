@@ -14,6 +14,7 @@ public class Robot extends TimedRobot {
   private Drivetrain drivetrain;
 
   private TestAuton testAuton;
+  private WillsSquare willsSquare;
 
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain(robotState);
 
     testAuton = new TestAuton(robotState);
+    willsSquare = new WillsSquare(robotState);
 
     autoSelector.setDefaultOption("NOT Drive and Shoot", "DriveShoot");
   }
@@ -42,6 +44,8 @@ public class Robot extends TimedRobot {
 
     if (selectedAuto == "DriveShoot") {
       autonCommander.setAuto(testAuton);
+    } else if (selectedAuto == "WillsSquare") {
+      autonCommander.setAuto(willsSquare);
     }
 
     drivetrain.init(autonCommander);
