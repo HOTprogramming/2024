@@ -55,10 +55,8 @@ public class TestAuton extends AutonBase {
         switch (step) {
             case start:
                 generateTrajectory(List.of(startPose, betweenRing1Pose, Ring1Pose));
-                // if (queuePath(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose), true)) {
-                //     step = Step.firstRing;
-                // }
                 step = Step.Ring1;
+                
                 break;
             case Ring1:
                 if (queuePath(List.of(robotState.getDrivePose(), betweenShoot1Pose, Shoot1Pose), true)) {
