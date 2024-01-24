@@ -77,8 +77,6 @@ public class TestAuton extends AutonBase {
                     step = Step.Ring3;
                 }
 
-                break;
-
             // case Ring2:
             //     if (queuePath(AUTON_DEFAULT_MAX_VELOCITY_METERS, AUTON_DEFAULT_MAX_ACCEL_METERS, 0, 2, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose), true)) {
             //         step = Step.Shoot2;
