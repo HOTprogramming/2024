@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -82,7 +83,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void povTurn(int targetTheta) {
-        setControl(fieldCentric.withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getDegrees(), targetTheta)));
+        setControl(fieldCentric.withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(), Units.degreesToRadians(targetTheta))));
     }
 
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
