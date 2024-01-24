@@ -31,4 +31,6 @@ public interface RobotCommander {
     public Pose2d getRefrenceTolerances();
 
     public Pose2d getOdomretryOverride();
+
+    public int getAngleSnapCommand();
 }

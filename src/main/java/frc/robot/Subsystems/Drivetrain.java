@@ -81,6 +81,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                                 
     }
 
+    private void povTurn(int targetTheta) {
+        setControl(fieldCentric.withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getDegrees(), targetTheta)));
+    }
+
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
         ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
 
@@ -132,6 +136,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     @Override
     public void init(RobotCommander commander) {
         seedFieldRelative(commander.getOdomretryOverride());
+        driveController.setTolerance(commander.getRefrenceTolerances());
     }
     
     @Override
@@ -145,6 +150,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getBrakeCommand()) {
             setControl(brake);
+        }
+
+        if (commander.getAngleSnapCommand() != -1) {
+            povTurn(commander.getAngleSnapCommand());
         }
     }
 

@@ -4,12 +4,13 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
 public class TestAuton extends AutonBase {
     enum Step {
+        start,
         firstRing,
         firstShoot,
         driveToEnd,
@@ -28,6 +29,7 @@ public class TestAuton extends AutonBase {
     public TestAuton(RobotState robotState) {
         super(robotState);
         
+        // refrenceTolerances = new Pose2d(.2, .2, Rotation2d.fromDegrees(5));
         startPose = new Pose2d(1.4, 1.7, Rotation2d.fromDegrees(0));
     }
 
@@ -35,18 +37,30 @@ public class TestAuton extends AutonBase {
     @Override
     public void runAuto() {
         
-        
         switch (step) {
+            case start:
+                generateTrajectory(List.of(startPose, betweenRingPose, firstRingPose));
+                // if (queuePath(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose), true)) {
+                //     step = Step.firstRing;
+                // }
+                step = Step.firstRing;
+                break;
             case firstRing:
-                step = (queuePath(List.of(robotState.getDrivePose(), betweenShootPose, firstShootPose), true)) ? Step.firstShoot : Step.firstRing;
+                if (queuePath(List.of(robotState.getDrivePose(), betweenShootPose, firstShootPose), true)) {
+                    step = Step.firstShoot;
+                }
                 break;
         
             case firstShoot:
-                step = (queuePath(List.of(robotState.getDrivePose(), endPose), true)) ? Step.driveToEnd : Step.firstShoot;
+                if (queuePath(List.of(robotState.getDrivePose(), endPose), true)) {
+                    step = Step.driveToEnd;
+                }
                 break;
                 
             case driveToEnd:
-                step = (checkTime()) ? Step.end : Step.driveToEnd;
+                if (checkTime() || robotState.getAtTargetPose())  {
+                    step = Step.end;
+                }
                 break;
             
             case end:
@@ -60,12 +74,15 @@ public class TestAuton extends AutonBase {
         } else {
             swerveBrake = true;
         }
+        
+        SmartDashboard.putString("Step", step.toString());
+        visualizePath();
     }
 
     @Override
     public void reset() {
         super.reset();
-        step = Step.firstRing;
-        generateTrajectory(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose));
+        swerveBrake = false;
+        step = Step.start;
     }
 }

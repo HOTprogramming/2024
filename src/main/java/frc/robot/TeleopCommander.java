@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.trajectory.RotationSequence;
@@ -47,14 +48,12 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public Pose2d getRefrenceTolerances() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRefrenceTolerances'");
+        return new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     }
 
 
     @Override
     public Pose2d getOdomretryOverride() {
-        // TODO Auto-generated method stub
         // will be camera stuff
         throw new UnsupportedOperationException("Unimplemented method 'getOdomretryOverride'");
     }
@@ -63,5 +62,10 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public boolean getBrakeCommand() {
         return driver.getAButton();
+    }
+
+    @Override
+    public int getAngleSnapCommand() {
+        return driver.getPOV();
     }  
 }

@@ -55,4 +55,9 @@ public class AutonCommander implements RobotCommander {
     public boolean getBrakeCommand() {
         return auto.swerveBrake;
     }
+
+    @Override
+    public int getAngleSnapCommand() {
+        return -1;
+    }
 }

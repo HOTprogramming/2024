@@ -40,10 +40,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     String selectedAuto = autoSelector.getSelected();
 
-    if (selectedAuto == "DriveShoot") {
-      autonCommander.setAuto(testAuton);
-    }
+    // if (selectedAuto == "DriveShoot") {
+    //   autonCommander.setAuto(testAuton);
+    // }
 
+    autonCommander.setAuto(testAuton);
     drivetrain.init(autonCommander);
   }
 
