@@ -9,6 +9,7 @@ import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -72,10 +73,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void percentDrive(double[] drivePercents) {
-        SmartDashboard.putNumber("XPercentTarget", drivePercents[0]);
-        SmartDashboard.putNumber("YPercentTarget", drivePercents[1]);
-        SmartDashboard.putNumber("ThetaPercentTarget", drivePercents[2]);
-
         setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
                                 .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
                                 .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
@@ -151,6 +148,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getBrakeCommand()) {
             setControl(brake);
+        }
+
+        if (commander.getPidgeonReset()) {
+            seedFieldRelative(new Pose2d(currentState.Pose.getX(), currentState.Pose.getY(), Rotation2d.fromRadians(0)));
         }
 
         if (commander.getAngleSnapCommand() != -1) {

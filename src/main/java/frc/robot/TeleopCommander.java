@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.trajectory.RotationSequence;
 
 public class TeleopCommander implements RobotCommander {
@@ -66,6 +67,16 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public int getAngleSnapCommand() {
-        return driver.getPOV();
+        int theta = driver.getPOV();
+        if (theta == 90 || theta == 270) {
+            theta += 180;
+        }
+        SmartDashboard.putNumber("POV", theta);
+        return theta;
+    }
+
+    @Override
+    public boolean getPidgeonReset() {
+        return driver.getStartButton();              
     }  
 }

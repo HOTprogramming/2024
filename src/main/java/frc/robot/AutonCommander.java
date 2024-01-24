@@ -60,4 +60,9 @@ public class AutonCommander implements RobotCommander {
     public int getAngleSnapCommand() {
         return -1;
     }
+
+    @Override
+    public boolean getPidgeonReset() {
+        return false;
+    }
 }
