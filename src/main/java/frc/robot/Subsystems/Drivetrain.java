@@ -9,6 +9,7 @@ import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -19,6 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -71,14 +73,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void percentDrive(double[] drivePercents) {
-        SmartDashboard.putNumber("XPercentTarget", drivePercents[0]);
-        SmartDashboard.putNumber("YPercentTarget", drivePercents[1]);
-        SmartDashboard.putNumber("ThetaPercentTarget", drivePercents[2]);
-
         setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
                                 .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
                                 .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
                                 
+    }
+
+    private void povTurn(int targetTheta) {
+        setControl(fieldCentric.withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(), Units.degreesToRadians(targetTheta))));
     }
 
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
@@ -132,6 +134,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     @Override
     public void init(RobotCommander commander) {
         seedFieldRelative(commander.getOdomretryOverride());
+        driveController.setTolerance(commander.getRefrenceTolerances());
     }
     
     @Override
@@ -145,6 +148,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getBrakeCommand()) {
             setControl(brake);
+        }
+
+        if (commander.getPidgeonReset()) {
+            seedFieldRelative(new Pose2d(currentState.Pose.getX(), currentState.Pose.getY(), Rotation2d.fromRadians(0)));
+        }
+
+        if (commander.getAngleSnapCommand() != -1) {
+            povTurn(commander.getAngleSnapCommand());
         }
     }
 

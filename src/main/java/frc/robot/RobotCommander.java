@@ -18,6 +18,7 @@ public interface RobotCommander {
     public double[] getDrivePercentCommand();
 
     public State getDriveState();
+
     public RotationSequence.State getDriveRotationState();
 
     /**
@@ -31,4 +32,8 @@ public interface RobotCommander {
     public Pose2d getRefrenceTolerances();
 
     public Pose2d getOdomretryOverride();
+
+    public boolean getPidgeonReset();
+
+    public int getAngleSnapCommand();
 }

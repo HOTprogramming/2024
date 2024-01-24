@@ -1,17 +1,25 @@
 package frc.robot.Autons;
 
+import static frc.robot.Constants.Drivetrain.MAX_VELOCITY_METERS;
+
 import java.util.List;
+import static frc.robot.Constants.Drivetrain.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
 public class TestAuton extends AutonBase {
     enum Step {
-        firstRing,
-        firstShoot,
+        start,
+        Ring1,
+        Shoot1,
+        Ring2,
+        Shoot2,
+        Ring3,
+        Shoot3,
         driveToEnd,
         end
     }
@@ -19,15 +27,24 @@ public class TestAuton extends AutonBase {
     public Step step;
 
     // made on blue side
-    Pose2d betweenRingPose = new Pose2d(5.78, 1.3, Rotation2d.fromDegrees(0));
-    Pose2d firstRingPose = new Pose2d(8.29, .75, Rotation2d.fromDegrees(0));
-    Pose2d betweenShootPose = new Pose2d(5.78, 2.8, Rotation2d.fromDegrees(0));
-    Pose2d firstShootPose = new Pose2d(4, 2.25, Rotation2d.fromDegrees(0));
+    Pose2d betweenRing1Pose = new Pose2d(5.78, 1.3, Rotation2d.fromDegrees(0));
+    Pose2d Ring1Pose = new Pose2d(8.29, .75, Rotation2d.fromDegrees(-10));
+    Pose2d betweenShoot1Pose = new Pose2d(5.78, 1.5, Rotation2d.fromDegrees(-20));
+    Pose2d Shoot1Pose = new Pose2d(4, 2.25, Rotation2d.fromDegrees(-30));
+    Pose2d betweenRing2Pose = new Pose2d(5.78, 1.5, Rotation2d.fromDegrees(-5));
+    Pose2d Ring2Pose = new Pose2d(8.29, 2.43, Rotation2d.fromDegrees(20));
+    Pose2d betweenShoot2Pose = new Pose2d(5.78, 1.5, Rotation2d.fromDegrees(0));
+    Pose2d Shoot2Pose = new Pose2d(4, 2.25, Rotation2d.fromDegrees(-30));
+    Pose2d betweenRing3Pose = new Pose2d(5, 4, Rotation2d.fromDegrees(0));
+    Pose2d Ring3Pose = new Pose2d(8.29, 4.11, Rotation2d.fromDegrees(0));
+    Pose2d betweenShoot3Pose = new Pose2d(4.5, 3.7, Rotation2d.fromDegrees(-15));
+    Pose2d Shoot3Pose = new Pose2d(4, 2.25, Rotation2d.fromDegrees(-30));
     Pose2d endPose = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
 
     public TestAuton(RobotState robotState) {
         super(robotState);
         
+        // refrenceTolerances = new Pose2d(.2, .2, Rotation2d.fromDegrees(5));
         startPose = new Pose2d(1.4, 1.7, Rotation2d.fromDegrees(0));
     }
 
@@ -35,29 +52,58 @@ public class TestAuton extends AutonBase {
     @Override
     public void runAuto() {
         
-        
         switch (step) {
-            case firstRing:
-                if (queuePath(List.of(robotState.getDrivePose(), betweenShootPose, firstShootPose), true)) {
-                     step = Step.firstShoot;
-                } else {
-                    step = Step.firstRing;
-                }
-               break;
-        
-            case firstShoot:
-                if (queuePath(List.of(robotState.getDrivePose(), endPose), true)) {
-                    step = Step.driveToEnd;
-                } else {
-                    step = Step.firstShoot;
+            case start:
+                generateTrajectory(List.of(startPose, betweenRing1Pose, Ring1Pose));
+                // if (queuePath(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose), true)) {
+                //     step = Step.firstRing;
+                // }
+                step = Step.Ring1;
+                break;
+            case Ring1:
+                if (queuePath(List.of(robotState.getDrivePose(), betweenShoot1Pose, Shoot1Pose), true)) {
+                    step = Step.Shoot1;
                 }
                 break;
+        
+            case Shoot1:
+                if (queuePath(List.of(robotState.getDrivePose(), betweenRing2Pose, Ring2Pose), true)) {
+                    step = Step.Ring2;
+                }
+                break;
+            
+            case Ring2:
+                if (queuePath(AUTON_DEFAULT_MAX_VELOCITY_METERS, 1, 0, 0, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose, betweenRing3Pose, Ring3Pose), true)) {
+                    step = Step.Ring3;
+                }
+
+            // case Ring2:
+            //     if (queuePath(AUTON_DEFAULT_MAX_VELOCITY_METERS, AUTON_DEFAULT_MAX_ACCEL_METERS, 0, 2, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose), true)) {
+            //         step = Step.Shoot2;
+            //     }
+            //     break;
+            
+            // case Shoot2:
+            //     if (queuePath(AUTON_DEFAULT_MAX_VELOCITY_METERS, AUTON_DEFAULT_MAX_ACCEL_METERS, 2, 0, List.of(robotState.getDrivePose(), betweenRing3Pose, Ring3Pose), true)) {
+            //         step = Step.Ring3;
+            //     }
+            //     break;
+
+            case Ring3:
+                if (queuePath(List.of(robotState.getDrivePose(), betweenShoot3Pose, Shoot3Pose), true)) {
+                    step = Step.Shoot3;
+                }
+                break;
+
+            case Shoot3:
+            if (queuePath(List.of(robotState.getDrivePose(), endPose), true)) {
+                step = Step.driveToEnd;
+            }
+            break;
                 
             case driveToEnd:
-                if (checkTime()) {
+                if (checkTime() || robotState.getAtTargetPose())  {
                     step = Step.end;
-                } else {
-                    step = Step.driveToEnd;
                 }
                 break;
             
@@ -72,12 +118,15 @@ public class TestAuton extends AutonBase {
         } else {
             swerveBrake = true;
         }
+        
+        SmartDashboard.putString("Step", step.toString());
+        visualizePath();
     }
 
     @Override
     public void reset() {
         super.reset();
-        step = Step.firstRing;
-        generateTrajectory(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose));
+        swerveBrake = false;
+        step = Step.start;
     }
 }
