@@ -10,9 +10,11 @@ import frc.robot.RobotState;
 
 public class WillsSquare extends AutonBase {
     enum Step {
+        start,
         side1,
         side2,
         side3,
+        side4,
         end
     }
 
@@ -20,9 +22,9 @@ public class WillsSquare extends AutonBase {
 
     // made on blue side
     Pose2d corner1 = new Pose2d(1, 0, Rotation2d.fromDegrees(0));
-    Pose2d corner2 = new Pose2d(1, 1, Rotation2d.fromDegrees(-90));
-    Pose2d corner3 = new Pose2d(0, 1, Rotation2d.fromDegrees(-180));
-    Pose2d corner0 = new Pose2d(0, 0, Rotation2d.fromDegrees(-270)); // Thanks Aiden :)
+    Pose2d corner2 = new Pose2d(1, 1, Rotation2d.fromDegrees(90));
+    Pose2d corner3 = new Pose2d(0, 1, Rotation2d.fromDegrees(180));
+    Pose2d corner0 = new Pose2d(0, 0, Rotation2d.fromDegrees(270)); // Thanks Aiden :)
 
     public WillsSquare(RobotState robotState) {
         super(robotState);
@@ -36,6 +38,11 @@ public class WillsSquare extends AutonBase {
         
         
         switch (step) {
+            case start:
+                generateTrajectory(List.of(robotState.getDrivePose(), corner1));
+
+                step = Step.side1;
+                break;
             case side1:
                 if (queuePath(List.of(robotState.getDrivePose(), corner2), true)) {
                      step = Step.side2;
@@ -54,9 +61,15 @@ public class WillsSquare extends AutonBase {
                 
             case side3:
                 if (queuePath(List.of(robotState.getDrivePose(), corner0), true)) {
-                    step = Step.end;
+                    step = Step.side4;
                 } else {
                     step = Step.side3;
+                }
+                break;
+
+                case side4:
+                if (checkTime() || robotState.getAtTargetPose())  {
+                    step = Step.end;
                 }
                 break;
             
@@ -76,7 +89,7 @@ public class WillsSquare extends AutonBase {
     @Override
     public void reset() {
         super.reset();
-        step = Step.side1;
-        generateTrajectory(List.of(robotState.getDrivePose(), corner1));
+        swerveBrake = false;
+        step = Step.start;
     }
 }

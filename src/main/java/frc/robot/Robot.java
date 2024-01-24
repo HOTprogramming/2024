@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(willsSquare);
     }
 
-    autonCommander.setAuto(testAuton);
+    autonCommander.setAuto(willsSquare);
     drivetrain.init(autonCommander);
   }
 
