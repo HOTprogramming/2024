@@ -56,7 +56,7 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public Pose2d getOdomretryOverride() {
         // will be camera stuff
-        throw new UnsupportedOperationException("Unimplemented method 'getOdomretryOverride'");
+        return null;
     }
 
 
