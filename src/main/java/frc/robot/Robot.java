@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
     willsSquare = new WillsSquare(robotState);
 
     autoSelector.setDefaultOption("NOT Drive and Shoot", "DriveShoot");
+    autoSelector.addOption("will", "WillsSquare");
   }
 
   @Override
