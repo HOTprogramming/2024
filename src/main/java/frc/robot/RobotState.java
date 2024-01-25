@@ -6,6 +6,9 @@ public class RobotState {
     private Pose2d drivePose;
     private boolean atTargetPose;
 
+    private Pose2d visionMeasurement;
+    private double visionTimestamp;
+
      /**
      * Set new drive pose
      * 
@@ -40,5 +43,22 @@ public class RobotState {
      */
     public boolean getAtTargetPose() {
         return atTargetPose;
+    }
+
+    public void setVisionMeasurement(Pose2d visionMeasurement) {
+        this.visionMeasurement = visionMeasurement;
+    }
+
+
+    public Pose2d getVisionMeasurement() {
+        return visionMeasurement;
+    }
+
+    public void setVisionTimestamp(double visionTimestamp) {
+        this.visionTimestamp = visionTimestamp;
+    }
+
+    public double getVisionTimestamp() {
+        return visionTimestamp;
     }
 }

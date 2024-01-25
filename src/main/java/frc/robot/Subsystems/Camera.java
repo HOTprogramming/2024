@@ -11,6 +11,7 @@ import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -39,7 +40,10 @@ public class Camera implements SubsystemBase {
     PhotonCameraSim simFrontCam;
     PhotonCameraSim simRearCam;
     SimCameraProperties globalShutterProperties;
-    
+
+    double currentTime;
+    double imageSampleTime;
+
     // docs https://docs.photonvision.org/ 
 
     public Camera(RobotState robotState) {
@@ -86,15 +90,32 @@ public class Camera implements SubsystemBase {
 
     @Override
     public void updateState() {
+        currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+
         if (Utils.isSimulation()) {
             simVision.update(robotState.getDrivePose());
-            
-
         }
-        // frontResult = frontCamera.getLatestResult();
-        // rearResult = rearCamera.getLatestResult();
+
+        frontResult = frontCamera.getLatestResult();
+        rearResult = rearCamera.getLatestResult();
+
+        if (frontResult != null) {
+            imageSampleTime = frontResult.getTimestampSeconds();
+            robotState.setVisionTimestamp(imageSampleTime);
+
+            frontResult.getBestTarget().getBestCameraToTarget();
+            frontResult.getBestTarget().getFiducialId();
+
+            if (tags.getTagPose(frontResult.getBestTarget().getFiducialId()).isPresent()) {
+                robotState.setVisionMeasurement(tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
+                                                    .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
+                                                    .toPose2d());
+            }
         
-        // frontResult.getBestTarget().getBestCameraToTarget();
+           
+        }
+        
+        
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -53,7 +54,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Pose2d lastPose = new Pose2d();
     private double lastTime = Utils.getCurrentTimeSeconds();
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
-
+    
 
     // Drive controllers
     private static final PIDController xController = new PIDController(4.9, 0.1, .1);
@@ -129,6 +130,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 SmartDashboard.putNumber("Swerve Encoder " + i + " (rads)", currentState.ModuleStates[i].angle.getRadians());
             }
         }
+
+        addVisionMeasurement(robotState.getVisionMeasurement(), robotState.getVisionTimestamp());
+        
     }
 
     @Override
