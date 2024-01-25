@@ -69,7 +69,7 @@ public class Camera implements SubsystemBase {
         if (Utils.isSimulation()) {
             globalShutterProperties = new SimCameraProperties();
             globalShutterProperties.setFPS(60);
-            globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(130));
+            globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
 
             simFrontCam = new PhotonCameraSim(frontCamera, globalShutterProperties);
             simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
