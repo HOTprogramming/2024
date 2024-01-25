@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
 
 import static frc.robot.Constants.Camera.*;
 
+import java.io.IOException;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
@@ -44,7 +45,12 @@ public class Camera implements SubsystemBase {
     public Camera(RobotState robotState) {
         this.robotState = robotState;
         
-        tags = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+        try {
+            tags = AprilTagFieldLayout.loadFromResource(("/org/Apriltags/2024-crescendo.json"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         // C:\Users\Public\wpilib\2024\maven\edu\wpi\first\apriltag
 
@@ -54,7 +60,7 @@ public class Camera implements SubsystemBase {
         if (Utils.isSimulation()) {
             globalShutterProperties = new SimCameraProperties();
             globalShutterProperties.setFPS(60);
-            globalShutterProperties.setCalibration(1920, 1080, new Rotation2d().fromDegrees(130));
+            globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(130));
 
             simFrontCam = new PhotonCameraSim(frontCamera, globalShutterProperties);
             simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
