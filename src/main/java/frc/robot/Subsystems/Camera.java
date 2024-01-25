@@ -109,11 +109,11 @@ public class Camera implements SubsystemBase {
 
         robotState.setVisionTimestamps(new double[] {frontSampleTime, rearSampleTime});
         
-        robotState.setVisionMeasurements(new Pose2d[] {(tags.getTagPose(frontResult.getBestTarget().getFiducialId()).isPresent()) ? 
+        robotState.setVisionMeasurements(new Pose2d[] {(frontResult.getBestTarget() != null) ? 
                                                         tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
                                                             .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
                                                             .toPose2d() : null,
-                                                        (tags.getTagPose(rearResult.getBestTarget().getFiducialId()).isPresent()) ? 
+                                                        (rearResult.getBestTarget() != null) ? 
                                                         tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
                                                             .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
                                                             .toPose2d() : null});

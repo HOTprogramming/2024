@@ -130,12 +130,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 SmartDashboard.putNumber("Swerve Encoder " + i + " (rads)", currentState.ModuleStates[i].angle.getRadians());
             }
         }
-
-        for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-            if (robotState.getVisionMeasurements()[i] != null) {
-                addVisionMeasurement(robotState.getVisionMeasurements()[i], i);
-            }
+        
+        if (robotState.getVisionMeasurements() != null) {
+            for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+                    if (robotState.getVisionMeasurements()[i] != null) {
+                        addVisionMeasurement(robotState.getVisionMeasurements()[i], i);
+                    }
+                }
         }
+
+        
 
         
     }
