@@ -6,6 +6,8 @@ import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.SimVisionSystem;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 import com.ctre.phoenix6.Utils;
 
@@ -45,6 +47,8 @@ public class Camera implements SubsystemBase {
     PhotonCameraSim simFrontCam;
     PhotonCameraSim simRearCam;
     SimCameraProperties globalShutterProperties;
+
+    Pose2d frontCamEstimation;
 
     double currentTime;
     
@@ -108,6 +112,13 @@ public class Camera implements SubsystemBase {
         rearSampleTime = rearResult.getTimestampSeconds();
 
         robotState.setVisionTimestamps(new double[] {frontSampleTime, rearSampleTime});
+
+        if (frontResult.getBestTarget() != null) {
+            frontCamEstimation = tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
+                            .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
+                            .toPose2d();
+        }
+       
         
         robotState.setVisionMeasurements(new Pose2d[] {(frontResult.getBestTarget() != null) ? 
                                                         tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
@@ -117,6 +128,10 @@ public class Camera implements SubsystemBase {
                                                         tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
                                                             .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
                                                             .toPose2d() : null});
+
+        if (frontCamEstimation != null) {
+            SmartDashboard.putNumberArray("FrontCamera ODO", new Double[] {frontCamEstimation.getX(), frontCamEstimation.getY(), frontCamEstimation.getRotation().getDegrees()});
+        }
     }
 
     @Override

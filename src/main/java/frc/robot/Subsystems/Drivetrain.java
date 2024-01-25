@@ -71,6 +71,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         this.robotState = robotState;    
 
         configNeutralMode(NeutralModeValue.Brake);
+        seedFieldRelative(new Pose2d(16.54, 8.2, Rotation2d.fromDegrees(-90)));
     }
 
     private void percentDrive(double[] drivePercents) {
@@ -130,7 +131,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 SmartDashboard.putNumber("Swerve Encoder " + i + " (rads)", currentState.ModuleStates[i].angle.getRadians());
             }
         }
-        
+
         if (robotState.getVisionMeasurements() != null) {
             for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
                     if (robotState.getVisionMeasurements()[i] != null) {
