@@ -11,6 +11,7 @@ import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -34,6 +35,10 @@ public class Camera implements SubsystemBase {
     PhotonPipelineResult frontResult;
     PhotonPipelineResult rearResult;
 
+    double frontSampleTime;
+    double rearSampleTime;
+
+
     AprilTagFieldLayout tags;
 
     VisionSystemSim simVision;
@@ -42,7 +47,7 @@ public class Camera implements SubsystemBase {
     SimCameraProperties globalShutterProperties;
 
     double currentTime;
-    double imageSampleTime;
+    
 
     // docs https://docs.photonvision.org/ 
 
@@ -99,20 +104,19 @@ public class Camera implements SubsystemBase {
         frontResult = frontCamera.getLatestResult();
         rearResult = rearCamera.getLatestResult();
 
-        if (frontResult != null) {
-            imageSampleTime = frontResult.getTimestampSeconds();
-            robotState.setVisionTimestamp(imageSampleTime);
+        frontSampleTime = frontResult.getTimestampSeconds();
+        rearSampleTime = rearResult.getTimestampSeconds();
 
-            if (tags.getTagPose(frontResult.getBestTarget().getFiducialId()).isPresent()) {
-                robotState.setVisionMeasurement(tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
-                                                    .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
-                                                    .toPose2d());
-            }
+        robotState.setVisionTimestamps(new double[] {frontSampleTime, rearSampleTime});
         
-           
-        }
-        
-        
+        robotState.setVisionMeasurements(new Pose2d[] {(tags.getTagPose(frontResult.getBestTarget().getFiducialId()).isPresent()) ? 
+                                                        tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
+                                                            .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
+                                                            .toPose2d() : null,
+                                                        (tags.getTagPose(rearResult.getBestTarget().getFiducialId()).isPresent()) ? 
+                                                        tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
+                                                            .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
+                                                            .toPose2d() : null});
     }
 
     @Override
