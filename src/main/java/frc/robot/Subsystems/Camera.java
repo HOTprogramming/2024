@@ -103,9 +103,6 @@ public class Camera implements SubsystemBase {
             imageSampleTime = frontResult.getTimestampSeconds();
             robotState.setVisionTimestamp(imageSampleTime);
 
-            frontResult.getBestTarget().getBestCameraToTarget();
-            frontResult.getBestTarget().getFiducialId();
-
             if (tags.getTagPose(frontResult.getBestTarget().getFiducialId()).isPresent()) {
                 robotState.setVisionMeasurement(tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
                                                     .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
