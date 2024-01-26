@@ -2,7 +2,8 @@
   "NTProvider": {
     "types": {
       "/Drivetrain": "Field2d",
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
     }
   },
   "NetworkTables Info": {

@@ -54,10 +54,8 @@ public class TestAuton extends AutonBase {
         switch (step) {
             case start:
                 generateTrajectory(List.of(startPose, betweenRing1Pose, Ring1Pose));
-                // if (queuePath(List.of(robotState.getDrivePose(), betweenRingPose, firstRingPose), true)) {
-                //     step = Step.firstRing;
-                // }
                 step = Step.Ring1;
+                
                 break;
             case Ring1:
                 if (queuePath(List.of(robotState.getDrivePose(), betweenShoot1Pose, Shoot1Pose), true)) {
@@ -111,12 +109,12 @@ public class TestAuton extends AutonBase {
                 break;
         }
 
-        if (step != Step.end) {
-            holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
-            rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
-        } else {
-            swerveBrake = true;
-        }
+        // if (step != Step.end) {
+        //     holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
+        //     rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
+        // } else {
+        //     swerveBrake = true;
+        // }
         
         SmartDashboard.putString("Step", step.toString());
         visualizePath();
@@ -127,5 +125,6 @@ public class TestAuton extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.start;
+        startPose = robotState.getVisionMeasurements()[0];
     }
 }
