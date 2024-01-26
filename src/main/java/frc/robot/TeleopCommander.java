@@ -43,7 +43,12 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public DriveMode getDriveMode() {
-        return DriveMode.percent;
+        if (driver.getLeftTriggerAxis() > 0) {
+            return DriveMode.stateDrive;
+        } else {
+             return DriveMode.percent;
+        }
+       
     }
 
 
@@ -78,5 +83,12 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public boolean getPidgeonReset() {
         return driver.getStartButton();              
-    }  
+    }
+
+    @Override
+    public boolean getLockPoseCommand() {
+       return (driver.getLeftTriggerAxis() > .1);
+    }
+
+
 }

@@ -62,6 +62,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(xController, yController, thetaController);
 
+    //TEMP pose 2d for get angle snap command
+    private Pose2d snapPose = new Pose2d(8.29, 4.11, Rotation2d.fromDegrees(0));
+
 
     public Drivetrain(RobotState robotState) {
         super(DRIVETRAIN_CONSTANTS, 
@@ -156,6 +159,27 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getAngleSnapCommand() != -1) {
             povTurn(commander.getAngleSnapCommand());
+        }
+
+        if (commander.getLockPoseCommand() == true) {
+            double goalX = snapPose.getX();
+            double goalY = snapPose.getY();
+            double robotX = robotState.getDrivePose().getX();
+            double robotY = robotState.getDrivePose().getY();
+            double diffX = robotX - goalX;
+            double diffY = robotY - goalY;
+            double hypot = Math.hypot(diffX, diffY);
+            double strafeX = diffY / hypot;
+            double strafeY = -(diffX / hypot);
+            double distX = diffX / hypot;
+            double distY = diffY / hypot;
+            double right = commander.getDrivePercentCommand()[0];
+            double up = commander.getDrivePercentCommand()[1];
+            double totalX = strafeX * right + distX * up;
+            double totalY = strafeY * right + distY * up;
+            Rotation2d rot = new Rotation2d(diffX, diffY);
+            Pose2d strafePose = new Pose2d(totalX, totalY, rot);
+            robotState.setDrivePose(strafePose);
         }
     }
 
