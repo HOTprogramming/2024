@@ -65,4 +65,9 @@ public class AutonCommander implements RobotCommander {
     public boolean getPidgeonReset() {
         return false;
     }
+
+    @Override
+    public boolean getLockPoseCommand() {
+        return false;
+    }
 }

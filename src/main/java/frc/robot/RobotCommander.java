@@ -36,4 +36,6 @@ public interface RobotCommander {
     public boolean getPidgeonReset();
 
     public int getAngleSnapCommand();
+
+    public boolean getLockPoseCommand();
 }

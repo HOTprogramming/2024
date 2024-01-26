@@ -1,9 +1,8 @@
 package frc.robot.Autons;
 
-import static frc.robot.Constants.Drivetrain.MAX_VELOCITY_METERS;
+import static frc.robot.Constants.Auton.*;
 
 import java.util.List;
-import static frc.robot.Constants.Drivetrain.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

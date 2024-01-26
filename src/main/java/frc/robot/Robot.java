@@ -12,12 +12,15 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
+  // define subsystem objects
   private Drivetrain drivetrain;
   private Camera camera;
 
+  // define autons
   private TestAuton testAuton;
   private WillsSquare willsSquare;
 
+  // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
   @Override
@@ -32,7 +35,7 @@ public class Robot extends TimedRobot {
     testAuton = new TestAuton(robotState);
     willsSquare = new WillsSquare(robotState);
 
-    autoSelector.setDefaultOption("NOT Drive and Shoot", "DriveShoot");
+    autoSelector.setDefaultOption("Testing", "TestAuton");
     autoSelector.addOption("will", "WillsSquare");
   }
 
@@ -49,13 +52,12 @@ public class Robot extends TimedRobot {
     String selectedAuto = autoSelector.getSelected();
 
 
-    if (selectedAuto == "DriveShoot") {
+    if (selectedAuto == "TestAuton") {
       autonCommander.setAuto(testAuton);
     } else if (selectedAuto == "WillsSquare") {
       autonCommander.setAuto(willsSquare);
     }
 
-    autonCommander.setAuto(testAuton);
     drivetrain.init(autonCommander);
   }
 
@@ -68,20 +70,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    drivetrain.reset();
 
+    drivetrain.reset();
   }
 
   @Override
   public void teleopPeriodic() {
-    drivetrain.enabled(teleopCommander);
 
+    drivetrain.enabled(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
-    drivetrain.disabled();
 
+    drivetrain.disabled();
   }
 
   @Override
@@ -97,7 +99,5 @@ public class Robot extends TimedRobot {
   public void simulationInit() {}
 
   @Override
-  public void simulationPeriodic() {
-    drivetrain.updateSimState(kDefaultPeriod, 12);
-  }
+  public void simulationPeriodic() {}
 }

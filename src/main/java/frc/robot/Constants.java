@@ -22,6 +22,13 @@ public final class Constants {
     }
 
 
+    public final class Auton {
+        public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
+        public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+        
+    }
+  
+  
     public final class Camera {
         public static final String FRONT_CAMERA_NAME = "front_camera";
         

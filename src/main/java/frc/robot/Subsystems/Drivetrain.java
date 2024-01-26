@@ -9,7 +9,6 @@ import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -31,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     RobotState robotState;
+    
 
     // swerve commands
     private static final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
@@ -63,11 +63,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(xController, yController, thetaController);
 
+    //TEMP pose 2d for get angle snap command
+    private Pose2d snapPose = new Pose2d(8.29, 4.11, Rotation2d.fromDegrees(0));
+
 
     public Drivetrain(RobotState robotState) {
+        // call swervedriveDrivetrain constructor (parent class)
         super(DRIVETRAIN_CONSTANTS, 
         FRONT_LEFT_MODULE_CONSTANTS, FRONT_RIGHT_MODULE_CONSTANTS, BACK_LEFT_MODULE_CONSTANTS, BACK_RIGHT_MODULE_CONSTANTS);
 
+        // initalize robot state
         this.robotState = robotState;    
 
         configNeutralMode(NeutralModeValue.Brake);
@@ -75,18 +80,22 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void percentDrive(double[] drivePercents) {
+        // setControl method from parent class, uses a SwerveRequest object to control drivetrain
         setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
                                 .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
                                 .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
                                 
     }
 
-    private void povTurn(int targetTheta) {
-        setControl(fieldCentric.withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(), Units.degreesToRadians(targetTheta))));
+    private void autoTurnControl(int targetTheta) {
+        // Uses theta control to rotate bot (radians)
+        setControl(fieldCentric.withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(), 
+                                                                            Units.degreesToRadians(targetTheta))));
     }
 
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
         if (holoDriveState != null && rotationState != null) {
+            // drive with target states from trajectory generator (auton)
             ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
 
             setControl(withChassisSpeeds.withSpeeds(chassisSpeeds));
@@ -96,15 +105,20 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void updateState() {
+        if (Utils.isSimulation()) {
+            updateSimState(.02, 12);
+        }
+        // gets current drive state
         currentState = getState();
 
-        
+        // updates robotState for auton pathing
         if (driveController.atReference()) {
             robotState.setAtTargetPose(true);
         } else {
             robotState.setAtTargetPose(false);
         }
 
+        // updates pose reliant functions
         if (currentState.Pose != null) {
             robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
@@ -115,6 +129,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
             velocities = distanceDifference.div(timeDifference);
 
+            // publishes pose to smartdashboard
             fieldTypePublisher.set("Field2d");
             posePublisher.set(new double[] {
                 currentState.Pose.getX(),
@@ -122,6 +137,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 currentState.Pose.getRotation().getDegrees()
             });
 
+            // publishes velocity to smartdashboard
             velocityPublisher.set(new double[] {
                 velocities.getX(),
                 velocities.getY(),
@@ -129,6 +145,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             });
         }
 
+        // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
             for (int i = 0; i < 4; i++) {
                 SmartDashboard.putNumber("Swerve Encoder " + i + " (rads)", currentState.ModuleStates[i].angle.getRadians());
@@ -153,12 +170,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void init(RobotCommander commander) {
+        // sets start pose to auton start pose
         seedFieldRelative(commander.getOdomretryOverride());
+
+        // sets boolean tolerances for auton refrence poses
         driveController.setTolerance(commander.getRefrenceTolerances());
     }
     
     @Override
     public void enabled(RobotCommander commander) {
+        // commands drivetrain based on target drivemode
         if (commander.getDriveMode() == DriveMode.percent) {
             percentDrive(commander.getDrivePercentCommand());
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
@@ -175,7 +196,29 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getAngleSnapCommand() != -1) {
-            povTurn(commander.getAngleSnapCommand());
+            autoTurnControl(commander.getAngleSnapCommand());
+        }
+
+        if (commander.getLockPoseCommand() == true) {
+            double goalX = snapPose.getX();
+            double goalY = snapPose.getY();
+            double robotX = robotState.getDrivePose().getX();
+            double robotY = robotState.getDrivePose().getY();
+            double diffX = robotX - goalX;
+            double diffY = robotY - goalY;
+            double hypot = Math.hypot(diffX, diffY);
+            double strafeX = diffY / hypot;
+            double strafeY = -(diffX / hypot);
+            double distX = diffX / hypot;
+            double distY = diffY / hypot;
+            double right = commander.getDrivePercentCommand()[0];
+            double up = commander.getDrivePercentCommand()[1];
+            double totalX = strafeX * right + distX * up;
+            double totalY = strafeY * right + distY * up;
+            Rotation2d rot = new Rotation2d(diffX, diffY);
+            Pose2d strafePose = new Pose2d(totalX, totalY, rot);
+            // aiden, NO BAD
+            robotState.setDrivePose(strafePose);
         }
     }
 
