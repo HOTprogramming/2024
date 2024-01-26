@@ -38,8 +38,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    drivetrain.updateState();
     camera.updateState();
+    drivetrain.updateState(); // drivetrain AFTER camera
+
 
   }
 

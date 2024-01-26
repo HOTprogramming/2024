@@ -13,12 +13,16 @@ import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 import static frc.robot.Constants.Camera.*;
@@ -49,6 +53,13 @@ public class Camera implements SubsystemBase {
     SimCameraProperties globalShutterProperties;
 
     Pose2d frontCamEstimation;
+    Pose2d rearCamEstimation;
+
+    Pose2d lastFrontEstimation;
+    Pose2d lastRearEstimation;
+
+    Matrix<N3, N2> stdevs;
+
 
     double currentTime;
     
@@ -68,6 +79,7 @@ public class Camera implements SubsystemBase {
         // C:\Users\Public\wpilib\2024\maven\edu\wpi\first\apriltag
 
         frontCamera = new PhotonCamera(FRONT_CAMERA_NAME);
+
         rearCamera = new PhotonCamera(REAR_CAMERA_NAME);
 
         if (Utils.isSimulation()) {
@@ -99,6 +111,9 @@ public class Camera implements SubsystemBase {
 
     @Override
     public void updateState() {
+        lastFrontEstimation = frontCamEstimation;
+        lastRearEstimation = rearCamEstimation;
+
         currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
 
         if (Utils.isSimulation()) {
@@ -116,18 +131,50 @@ public class Camera implements SubsystemBase {
         if (frontResult.getBestTarget() != null) {
             frontCamEstimation = tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
                             .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
+                            .transformBy(FRONT_CAMERA_TRANSFROM.inverse())
                             .toPose2d();
+        } else {
+            frontCamEstimation = null;
+        }
+
+        if (rearResult.getBestTarget() != null) {
+            rearCamEstimation = tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
+                            .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
+                            .transformBy(REAR_CAMERA_TRANSFROM.inverse())
+                            .toPose2d();
+        } else {
+            rearCamEstimation = null;
+        }
+
+        // stdev
+        if (lastFrontEstimation != null && frontCamEstimation != null) {
+            double[] last = new double[] {lastFrontEstimation.getX(), lastFrontEstimation.getY(), lastFrontEstimation.getRotation().getRadians()};
+            double[] current = new double[] {frontCamEstimation.getX(), frontCamEstimation.getY(), frontCamEstimation.getRotation().getRadians()};
+
+            for (int i = 0; i < 3; i++) {
+                double avg = (last[i] + current[i]) / 2;
+                stdevs.set(i, 0, Math.sqrt(((Math.pow(last[i] - avg, 2)) + (Math.pow(current[i] - avg, 2))) / 2));
+            }
+
         }
        
+        if (lastRearEstimation != null && rearCamEstimation != null) {
+            double[] last = new double[] {lastRearEstimation.getX(), lastRearEstimation.getY(), lastRearEstimation.getRotation().getRadians()};
+            double[] current = new double[] {rearCamEstimation.getX(), rearCamEstimation.getY(), rearCamEstimation.getRotation().getRadians()};
+
+            for (int i = 0; i < 3; i++) {
+                double avg = (last[i] + current[i]) / 2;
+                stdevs.set(i, 1, Math.sqrt(((Math.pow(last[i] - avg, 2)) + (Math.pow(current[i] - avg, 2))) / 2));
+            }
+
+        }
+
+        
         
         robotState.setVisionMeasurements(new Pose2d[] {(frontResult.getBestTarget() != null) ? 
-                                                        tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
-                                                            .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
-                                                            .toPose2d() : null,
+                                                        frontCamEstimation : null,
                                                         (rearResult.getBestTarget() != null) ? 
-                                                        tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
-                                                            .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
-                                                            .toPose2d() : null});
+                                                        rearCamEstimation : null});
 
         if (frontCamEstimation != null) {
             SmartDashboard.putNumberArray("FrontCamera ODO", new Double[] {frontCamEstimation.getX(), frontCamEstimation.getY(), frontCamEstimation.getRotation().getDegrees()});

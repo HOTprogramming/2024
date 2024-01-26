@@ -137,8 +137,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (robotState.getVisionMeasurements() != null) {
             for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-                    if (robotState.getVisionMeasurements()[i] != null) {
-                        addVisionMeasurement(robotState.getVisionMeasurements()[i], i);
+                    if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
+                        addVisionMeasurement(robotState.getVisionMeasurements()[i], robotState.getVisionTimestamps()[i], robotState.getVisionStdevs().extractColumnVector(i));
                     }
                 }
         }
