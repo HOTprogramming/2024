@@ -14,6 +14,7 @@ import com.ctre.phoenix6.Utils;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -58,7 +59,25 @@ public class Camera implements SubsystemBase {
     Pose2d lastFrontEstimation;
     Pose2d lastRearEstimation;
 
-    Matrix<N3, N2> stdevs;
+    Nat<N3> rows = new Nat<N3>() {
+
+        @Override
+        public int getNum() {
+            return 3;
+        }
+        
+    };
+    Nat<N2> colls = new Nat<N2>() {
+
+        @Override
+        public int getNum() {
+            return 2;
+        }
+        
+    };
+
+
+    Matrix<N3, N2> stdevs = new Matrix(rows, colls);
 
 
     double currentTime;
@@ -117,7 +136,9 @@ public class Camera implements SubsystemBase {
         currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
 
         if (Utils.isSimulation()) {
-            simVision.update(robotState.getDrivePose());
+            if (robotState.getDrivePose() != null) {
+                simVision.update(robotState.getDrivePose());
+            }
         }
 
         frontResult = frontCamera.getLatestResult();
