@@ -29,8 +29,8 @@ public class Robot extends TimedRobot {
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
 
-    drivetrain = new Drivetrain(robotState);
     camera = new Camera(robotState);
+    drivetrain = new Drivetrain(robotState);
 
     testAuton = new TestAuton(robotState);
     willsSquare = new WillsSquare(robotState);
