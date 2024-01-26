@@ -110,12 +110,12 @@ public class TestAuton extends AutonBase {
                 break;
         }
 
-        if (step != Step.end) {
-            holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
-            rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
-        } else {
-            swerveBrake = true;
-        }
+        // if (step != Step.end) {
+        //     holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
+        //     rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
+        // } else {
+        //     swerveBrake = true;
+        // }
         
         SmartDashboard.putString("Step", step.toString());
         visualizePath();
@@ -126,5 +126,6 @@ public class TestAuton extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.start;
+        startPose = robotState.getVisionMeasurements()[0];
     }
 }

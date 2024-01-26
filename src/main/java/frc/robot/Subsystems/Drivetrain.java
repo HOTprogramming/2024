@@ -86,9 +86,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
-        ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
+        if (holoDriveState != null && rotationState != null) {
+            ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
 
-        setControl(withChassisSpeeds.withSpeeds(chassisSpeeds));
+            setControl(withChassisSpeeds.withSpeeds(chassisSpeeds));
+        }
+        
     }
 
     @Override
