@@ -2,7 +2,7 @@ package frc.robot.Autons;
 
 import frc.robot.RobotState;
 
-import static frc.robot.Constants.Drivetrain.*;
+import static frc.robot.Constants.Auton.*;
 
 import java.util.ArrayList;
 import java.util.List;

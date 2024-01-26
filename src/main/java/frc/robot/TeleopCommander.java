@@ -30,15 +30,13 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public State getDriveState() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDriveState'");
+        return null;
     }
 
 
     @Override
     public RotationSequence.State getDriveRotationState() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDriveRotationState'");
+        return null;
     }
 
     @Override

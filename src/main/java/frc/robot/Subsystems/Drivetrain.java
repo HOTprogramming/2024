@@ -100,6 +100,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void updateState() {
+        if (Utils.isSimulation()) {
+            updateSimState(.02, 12);
+        }
         // gets current drive state
         currentState = getState();
 

@@ -18,9 +18,13 @@ public final class Constants {
         public static final double FLYWHEEL_MAX_VELOCITY_ERROR = .1; // percent of full speed
     }
 
-    public final class Drivetrain {
+    public final class Auton {
         public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+        
+    }
+
+    public final class Drivetrain {
 
         public static final double ROBOT_LENGTH_INCHES = 20.25;
         public static final double ROBOT_WITDTH_INCHES = 20.25;

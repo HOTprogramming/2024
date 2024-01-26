@@ -68,7 +68,6 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getLockPoseCommand() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLockPoseCommand'");
+        return false;
     }
 }
