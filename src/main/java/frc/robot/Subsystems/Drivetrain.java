@@ -179,6 +179,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             double totalY = strafeY * right + distY * up;
             Rotation2d rot = new Rotation2d(diffX, diffY);
             Pose2d strafePose = new Pose2d(totalX, totalY, rot);
+            // aiden, NO BAD
             robotState.setDrivePose(strafePose);
         }
     }
