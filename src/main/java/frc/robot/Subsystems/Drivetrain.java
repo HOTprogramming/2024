@@ -76,7 +76,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         this.robotState = robotState;    
 
         configNeutralMode(NeutralModeValue.Brake);
-        seedFieldRelative(new Pose2d(16.54, 8.2, Rotation2d.fromDegrees(-90)));
+        // seedFieldRelative(new Pose2d(16.54, 8.2, Rotation2d.fromDegrees(-90)));
     }
 
     private void percentDrive(double[] drivePercents) {
@@ -105,9 +105,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void updateState() {
-        if (Utils.isSimulation()) {
-            updateSimState(.02, 12);
-        }
         // gets current drive state
         currentState = getState();
 

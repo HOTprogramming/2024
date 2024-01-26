@@ -4,6 +4,8 @@ import static frc.robot.Constants.Auton.*;
 
 import java.util.List;
 
+import com.ctre.phoenix6.Utils;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -109,12 +111,12 @@ public class TestAuton extends AutonBase {
                 break;
         }
 
-        // if (step != Step.end) {
-        //     holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
-        //     rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
-        // } else {
-        //     swerveBrake = true;
-        // }
+        if (step != Step.end) {
+            holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
+            rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
+        } else {
+            swerveBrake = true;
+        }
         
         SmartDashboard.putString("Step", step.toString());
         visualizePath();
@@ -125,6 +127,8 @@ public class TestAuton extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.start;
-        startPose = robotState.getVisionMeasurements()[0];
+        if (robotState.getVisionMeasurements()[0] != null && !Utils.isSimulation()) {
+            startPose = robotState.getVisionMeasurements()[0];
+        }
     }
 }

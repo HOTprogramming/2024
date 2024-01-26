@@ -29,8 +29,9 @@ public class Robot extends TimedRobot {
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
 
-    camera = new Camera(robotState);
     drivetrain = new Drivetrain(robotState);
+    camera = new Camera(robotState);
+
 
     testAuton = new TestAuton(robotState);
     willsSquare = new WillsSquare(robotState);
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
     } else if (selectedAuto == "WillsSquare") {
       autonCommander.setAuto(willsSquare);
     }
+
+    autonCommander.setAuto(testAuton);
 
     drivetrain.init(autonCommander);
   }
@@ -99,5 +102,7 @@ public class Robot extends TimedRobot {
   public void simulationInit() {}
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    drivetrain.updateSimState(.02, 12);
+  }
 }
