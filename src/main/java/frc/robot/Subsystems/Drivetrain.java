@@ -233,13 +233,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             double robotY = robotState.getDrivePose().getY();
             double diffX = robotX - goalX;
             double diffY = robotY - goalY;
-            double hypot = Math.hypot(diffX, diffY);
             Rotation2d rot = new Rotation2d(diffX, diffY);
             double angle = rot.getDegrees() + 180;
-            System.out.println("diffx" + diffX);
-            System.out.println("diffy" + diffY);
-            System.out.println("slope" + diffY/diffX);
-            System.out.println("ang" + angle);
             autoTurnControl(commander.getDrivePercentCommand(), angle);
             driveType = true;
             // make robot face goal point
