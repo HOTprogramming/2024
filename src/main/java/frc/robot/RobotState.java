@@ -14,6 +14,7 @@ public class RobotState {
     private double[] visionTimestamps;
     private Matrix<N3, N2> visionStdevs;
 
+    private boolean shooterOn;
 
      /**
      * Set new drive pose
@@ -74,5 +75,9 @@ public class RobotState {
 
     public Matrix<N3, N2> getVisionStdevs() {
         return visionStdevs;
+    }
+
+    public void setShooterOn(boolean shooterOn) {
+        this.shooterOn = shooterOn;
     }
 }

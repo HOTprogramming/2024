@@ -17,6 +17,9 @@ public class Robot extends TimedRobot {
   // define subsystem objects
   private Drivetrain drivetrain;
   private Camera camera;
+
+  private Shooter shooter;
+
   private Arm arm;
 
   // define autons

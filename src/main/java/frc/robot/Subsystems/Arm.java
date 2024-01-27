@@ -66,4 +66,10 @@ public class Arm implements SubsystemBase{
     public void reset() {
 
     }
+
+    @Override
+    public void init(RobotCommander commander) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'init'");
+    }
 }

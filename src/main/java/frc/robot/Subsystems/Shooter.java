@@ -113,4 +113,10 @@ public class Shooter implements SubsystemBase {
         rightTargetSpeed = 0;
         leftTargetSpeed = 0;
     }
+
+    @Override
+    public void init(RobotCommander commander) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'init'");
+    }
 }
