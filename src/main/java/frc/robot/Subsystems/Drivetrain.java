@@ -4,14 +4,17 @@ import static frc.robot.Constants.DrivetrainConstants.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 
 public class Drivetrain implements SubsystemBase {
     RobotState robotState;
+
+    Pigeon2 pigeon = new Pigeon2(0);
     TalonFX driveMotor;
     
-
     public Drivetrain(RobotState robotState) {
         this.robotState = robotState;
         driveMotor = new TalonFX(DRIVE_CAN);

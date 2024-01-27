@@ -31,5 +31,11 @@ public class AutonCommander implements RobotCommander {
     public double getTargetArmSpeed() {
         return auto.armSpeed;
     }
+    
+    @Override
+    public double armPosition1() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'armPosition1'");
+    }
 
 }

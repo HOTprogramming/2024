@@ -7,6 +7,8 @@ public class TeleopCommander implements RobotCommander {
 
     RobotState robotState;
 
+    double armPos = 0;
+
 
     public TeleopCommander(RobotState robotState) {
         this.robotState = robotState;
@@ -26,6 +28,18 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public double getTargetArmSpeed() {
-        return joysticks.getRightY() * 10;
+        return joysticks.getRightY() * 5;
+    }
+
+    @Override
+    public double armPosition1() {
+        if(joysticks.getXButton()){
+            armPos = 0;
+        } else if(joysticks.getBButton()){
+            armPos = 2;
+        }
+
+        return armPos;
+
     }
 }

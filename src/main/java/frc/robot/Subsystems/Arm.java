@@ -31,24 +31,26 @@ public Arm(RobotState robotState) {
 
    armMagic = new MotionMagicVoltage(0);
 
+  //  armMotor.roto
+
 }
 
   public void armInit(){
+
+    
     TalonFXConfiguration cfg = new TalonFXConfiguration();
 
-    /* Configure current limits */
     MotionMagicConfigs mm = cfg.MotionMagic;
-    mm.MotionMagicCruiseVelocity = 10; // 5 rotations per second cruise
-    mm.MotionMagicAcceleration = 10; // Take approximately 0.5 seconds to reach max vel
-    // Take approximately 0.2 seconds to reach max accel 
-    mm.MotionMagicJerk = 50;
+    mm.MotionMagicCruiseVelocity = CRUISEVELOCITY; //rps
+    mm.MotionMagicAcceleration = ACCELERATION;
+    mm.MotionMagicJerk = JERK;
 
     Slot0Configs slot0 = cfg.Slot0;
-    slot0.kP = 60;
-    slot0.kI = 0;
-    slot0.kD = 0.1;
-    slot0.kV = 0.12;
-    slot0.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+    slot0.kP = ARMKP;
+    slot0.kI = ARMKI;
+    slot0.kD = ARMKD;
+    slot0.kV = ARMKV;
+    slot0.kS = ARMKS; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = cfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
@@ -69,22 +71,21 @@ public Arm(RobotState robotState) {
     }
     public void enabled(RobotCommander commander){
 
-        armMotor.setControl(armMagic.withPosition(commander.getTargetArmSpeed()).withSlot(0));
+        armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
 
 
-double armPosition = commander.getTargetArmSpeed();
+      double armPosition = commander.armPosition1();
 
+      SmartDashboard.putNumber("Desired Arm Position", armPosition);
       StatusSignal<Double> armPos = armMotor.getPosition();
       SmartDashboard.putNumber("ArmPos", armPos.getValueAsDouble());
       SmartDashboard.putNumber("Joystick", armPosition);
-      StatusSignal<Double> armSpeed = armMotor.getVelocity();
-      SmartDashboard.putNumber("ArmSpeed", armSpeed.getValueAsDouble());
-
     }
     public void disabled(){
         armMotor.stopMotor();
     }
     public void reset(){
         armMotor.stopMotor();
+        armMotor.setPosition(0);
     }
 }
