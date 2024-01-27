@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
 import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Drivetrain;
+import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Arm;
 
 
 public class Robot extends TimedRobot {
@@ -15,6 +17,7 @@ public class Robot extends TimedRobot {
   // define subsystem objects
   private Drivetrain drivetrain;
   private Camera camera;
+  private Arm arm;
 
   // define autons
   private TestAuton testAuton;
@@ -31,6 +34,7 @@ public class Robot extends TimedRobot {
 
     drivetrain = new Drivetrain(robotState);
     camera = new Camera(robotState);
+    arm = new Arm(robotState);
 
 
     testAuton = new TestAuton(robotState);
@@ -46,6 +50,8 @@ public class Robot extends TimedRobot {
     drivetrain.updateState(); // drivetrain AFTER camera
 
 
+    shooter.updateState();
+    arm.updateState();
   }
 
   @Override
@@ -67,6 +73,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
+    shooter.enabled(autonCommander);
+    drivetrain.enabled(autonCommander);
+    arm.enabled(autonCommander);
 
     drivetrain.enabled(autonCommander);
   }
@@ -75,18 +84,21 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
 
     drivetrain.reset();
+    arm.reset();
   }
 
   @Override
   public void teleopPeriodic() {
 
     drivetrain.enabled(teleopCommander);
+    arm.enabled(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
 
     drivetrain.disabled();
+    arm.disabled();
   }
 
   @Override

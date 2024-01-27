@@ -30,6 +30,9 @@ public abstract class AutonBase {
     
     TrajectoryConfig trajectoryConfig;
     CustomTrajectoryGenerator trajectoryGenerator;
+    public boolean runShooter;
+    public double driveSpeed;
+    public double armPos;
 
 
     public AutonBase(RobotState robotState){

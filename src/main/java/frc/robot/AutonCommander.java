@@ -25,6 +25,22 @@ public class AutonCommander implements RobotCommander {
         return new double[] {0, 0 ,0};
     }
 
+    public boolean increaseLeftTargetSpeed() {
+        return false;
+    }
+
+    public boolean decreaseLeftTargetSpeed() {
+        return false;
+    }
+
+    public boolean increaseRightTargetSpeed() {
+        return false;
+    }
+
+    public boolean decreaseRightTargetSpeed() {
+        return false;
+    }
+
     @Override
     public State getDriveState() {
         return auto.holoDriveState;
@@ -70,4 +86,8 @@ public class AutonCommander implements RobotCommander {
     public boolean getLockPoseCommand() {
         return false;
     }
+    public double getRunArm() {
+        return auto.armPos;
+    }
+
 }

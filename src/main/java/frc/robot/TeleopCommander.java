@@ -13,6 +13,7 @@ public class TeleopCommander implements RobotCommander {
 
 
     RobotState robotState;
+    double armPose;
 
 
     public TeleopCommander(RobotState robotState) {
@@ -48,6 +49,40 @@ public class TeleopCommander implements RobotCommander {
              return DriveMode.percent;
         }
        
+    }
+
+    @Override
+    public boolean getRunShooter() {
+        return operator.getRightBumper();
+    }
+
+    public boolean increaseLeftTargetSpeed() {
+        return operator.getAButtonPressed();
+    }
+
+    public boolean decreaseLeftTargetSpeed() {
+        return operator.getBButtonPressed();
+    }
+
+    public boolean increaseRightTargetSpeed() {
+        return operator.getXButtonPressed();
+    }
+
+    public boolean decreaseRightTargetSpeed() {
+        return operator.getYButtonPressed();
+    }
+
+    @Override
+    public double getTargetDriveSpeed() {
+        return 0;
+    }
+
+    public double getRunArm() {
+        if (operator.getLeftY() < 0.05 && operator.getLeftY() > -0.05) {
+            return 0;
+        } else {
+            return operator.getLeftY();
+        }
     }
 
 
