@@ -78,7 +78,10 @@ public Arm(RobotState robotState) {
 
       SmartDashboard.putNumber("Desired Arm Position", armPosition);
       StatusSignal<Double> armPos = armMotor.getPosition();
+      StatusSignal<Double> armSpeed = armMotor.getVelocity();
+
       SmartDashboard.putNumber("ArmPos", armPos.getValueAsDouble());
+      SmartDashboard.putNumber("ArmVelocity", armSpeed.getValueAsDouble());
       SmartDashboard.putNumber("Joystick", armPosition);
     }
     public void disabled(){

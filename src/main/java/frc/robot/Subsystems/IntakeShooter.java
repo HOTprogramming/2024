@@ -145,10 +145,13 @@ public class IntakeShooter implements SubsystemBase {
         if (commander.getRunShooter()) {
             shooter1.setControl(m_voltageVelocity.withVelocity(SHOOTER1_MAX_SPEED));
             shooter2.setControl(m_voltageVelocity.withVelocity(SHOOTER2_MAX_SPEED));
+
+        } 
+        if(commander.getShooterIntake()){
             floorIntake.setControl(m_voltageVelocity.withVelocity(FLOORINTAKE_MAX_SPEED));
             shooterIntake.setControl(m_voltageVelocity.withVelocity(SHOOTERINTAKE_MAX_SPEED));
-
-        } else {
+        }
+        else {
             shooter1.set(0);
             shooter2.set(0);
             floorIntake.set(0);

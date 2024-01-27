@@ -42,4 +42,9 @@ public class TeleopCommander implements RobotCommander {
         return armPos;
 
     }
+
+    @Override
+    public boolean getShooterIntake(){
+        return joysticks.getRightBumper();
+    }
 }

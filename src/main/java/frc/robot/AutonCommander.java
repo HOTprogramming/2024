@@ -37,5 +37,9 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'armPosition1'");
     }
+    @Override
+    public boolean getShooterIntake(){
+        return false;
+    }
 
 }
