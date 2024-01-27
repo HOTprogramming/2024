@@ -8,8 +8,9 @@ public abstract class AutonBase {
     
     RobotState robotState;
 
-    public Boolean runShooter;
+    public boolean runShooter;
     public double driveSpeed;
+    public double armPos;
 
 
     public AutonBase(RobotState robotState){

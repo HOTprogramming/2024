@@ -1,19 +1,18 @@
 package frc.robot.Autons;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
-
 
 public class driveShoot extends AutonBase {
     enum Step {
-        driveForeward,
+        driveforward,
         shoot,
+        drivebackward,
+        shoot2,
         end
     }
 
     public Step step;
-
-    private double firstPose = 5;
-    private double shootEndTime = 10;
 
     public driveShoot(RobotState robotState) {
         super(robotState);
@@ -22,23 +21,40 @@ public class driveShoot extends AutonBase {
 
     @Override
     public void runAuto() {
+        SmartDashboard.putNumber("timer", timer.get());
         switch (step) {
-            case driveForeward: 
-                if (robotState.getDrivePose() >= firstPose) {
+            case driveforward:
+                driveSpeed = 0.05;
+                if (timer.get() >= 5) {
                     driveSpeed = 0;
                     step = Step.shoot;
                 }
-                driveSpeed = 1;
                 break;
-        
+    
             case shoot:
-                if (timer.get() > shootEndTime) {
+                runShooter = true;
+                if (timer.get() >= 8) {
+                    runShooter = false;
+                    step = Step.drivebackward;
+                }
+                break;
+
+            case drivebackward:
+                driveSpeed = -0.05;
+                if (timer.get() >= 13) {
+                    driveSpeed = 0;
+                    step = Step.shoot2;
+                }
+                break;
+
+            case shoot2:
+                runShooter = true;
+                if (timer.get() >= 16) {
                     runShooter = false;
                     step = Step.end;
                 }
-                runShooter = true;
                 break;
-                
+
             case end:
                 runShooter = false;
                 break;
@@ -49,7 +65,7 @@ public class driveShoot extends AutonBase {
     public void reset() {
         driveSpeed = 0;
         runShooter = false;
-        step = Step.driveForeward;
+        step = Step.driveforward;
 
         timer.start();
         timer.reset();
