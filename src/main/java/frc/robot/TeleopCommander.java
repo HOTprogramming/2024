@@ -21,6 +21,11 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public double getTargetDriveSpeed() {
-        return joysticks.getLeftY();
+        return joysticks.getLeftY() * 0.05;
+    }
+
+    @Override
+    public double getTargetArmSpeed() {
+        return joysticks.getRightY() * 10;
     }
 }

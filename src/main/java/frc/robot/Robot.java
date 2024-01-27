@@ -3,8 +3,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.driveShoot;
+import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Drivetrain;
-import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.IntakeShooter;
 
 
 public class Robot extends TimedRobot {
@@ -12,10 +13,12 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
-  private Shooter shooter;
+  private IntakeShooter intakeShooter;
   private Drivetrain drivetrain;
 
   private driveShoot driveShoot;
+
+  private Arm arm;
 
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
@@ -25,20 +28,25 @@ public class Robot extends TimedRobot {
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
 
-    shooter = new Shooter(robotState);
+    intakeShooter = new IntakeShooter(robotState);
     drivetrain = new Drivetrain(robotState);
 
     driveShoot = new driveShoot(robotState);
+    arm = new Arm(robotState);
 
     autoSelector.setDefaultOption("Drive and Shoot", "driveShoot");
     
-    shooter.init();
+    intakeShooter.init();
+
+    arm.armInit();
+
   }
 
   @Override
   public void robotPeriodic() {
-    shooter.updateState();
+    intakeShooter.updateState();
     drivetrain.updateState();
+    arm.updateState();
   }
 
   @Override
@@ -54,27 +62,31 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
-    shooter.enabled(autonCommander);
+    intakeShooter.enabled(autonCommander);
     drivetrain.enabled(autonCommander);
+    arm.enabled(autonCommander);
 
   }
 
   @Override
   public void teleopInit() {
-    shooter.reset();
+    intakeShooter.reset();
     drivetrain.reset();
+    arm.reset();
   }
 
   @Override
   public void teleopPeriodic() {
-    shooter.enabled(teleopCommander);
+    intakeShooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
+    arm.enabled(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
-    shooter.disabled();
+    intakeShooter.disabled();
     drivetrain.disabled();
+    arm.disabled();
   }
 
   @Override

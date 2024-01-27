@@ -27,4 +27,9 @@ public class AutonCommander implements RobotCommander {
         return auto.driveSpeed;
     }
 
+    @Override
+    public double getTargetArmSpeed() {
+        return auto.armSpeed;
+    }
+
 }

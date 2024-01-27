@@ -79,6 +79,7 @@ public class driveShoot extends AutonBase {
     public void reset() {
         driveSpeed = 0;
         runShooter = false;
+        armSpeed = 0;
         step = Step.driveForeward;
 
         timer.start();
