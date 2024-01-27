@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.driveShoot;
 import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Arm;
 
 
 public class Robot extends TimedRobot {
@@ -14,6 +15,7 @@ public class Robot extends TimedRobot {
 
   private Shooter shooter;
   private Drivetrain drivetrain;
+  private Arm arm;
 
   private driveShoot driveShoot;
 
@@ -27,6 +29,7 @@ public class Robot extends TimedRobot {
 
     shooter = new Shooter(robotState);
     drivetrain = new Drivetrain(robotState);
+    arm = new Arm(robotState);
 
     driveShoot = new driveShoot(robotState);
 
@@ -37,6 +40,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     shooter.updateState();
     drivetrain.updateState();
+    arm.updateState();
   }
 
   @Override
@@ -54,6 +58,7 @@ public class Robot extends TimedRobot {
     autonCommander.auto.runAuto();
     shooter.enabled(autonCommander);
     drivetrain.enabled(autonCommander);
+    arm.enabled(autonCommander);
 
   }
 
@@ -61,18 +66,21 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     shooter.reset();
     drivetrain.reset();
+    arm.reset();
   }
 
   @Override
   public void teleopPeriodic() {
     shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
+    arm.enabled(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
     shooter.disabled();
     drivetrain.disabled();
+    arm.disabled();
   }
 
   @Override
