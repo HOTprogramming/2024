@@ -4,9 +4,9 @@ package frc.robot;
 public final class Constants {
 
     public final class ShooterConstants {
-        public static final int RIGHT_FLYWHEEL_CAN = 1;
-        public static final int LEFT_FLYWHEEL_CAN = 2;
-        public static final int FEEDER_CAN = 3;
+        public static final int RIGHT_FLYWHEEL_CAN = 12;
+        public static final int LEFT_FLYWHEEL_CAN = 11;
+        public static final int FEEDER_CAN = 13;
 
         public static final double TARGET_SPEED_INCREMENT = 3;
         public static final double FEEDER_SPEED = 0.05;
@@ -26,7 +26,7 @@ public final class Constants {
     }
 
     public final class ArmConstants {
-        public static final int ARM_CAN = 22;
+        public static final int ARM_CAN = 9;
 
         public static final double ARM_KP = 5;
         public static final double ARM_KI = 0;
