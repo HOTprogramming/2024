@@ -150,8 +150,8 @@ public final class Constants {
             // Front Left
             private static final boolean SWERVE_FRONT_LEFT_DRIVE_UNINVERT = !true;
             private static final boolean SWERVE_FRONT_LEFT_STEER_UNINVERT = false;
-            private static final int kFrontLeftDriveMotorId = 8;
-            private static final int kFrontLeftSteerMotorId = 7;
+            private static final int kFrontLeftDriveMotorId = 1;
+            private static final int kFrontLeftSteerMotorId = 2;
             private static final int kFrontLeftEncoderId = 43;
             private static final double kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
 
@@ -161,8 +161,8 @@ public final class Constants {
             // Front Right
             private static final boolean SWERVE_FRONT_RIGHT_DRIVE_UNINVERT = !true;
             private static final boolean SWERVE_FRONT_RIGHT_STEER_UNINVERT = true;
-            private static final int kFrontRightDriveMotorId = 4;
-            private static final int kFrontRightSteerMotorId = 3;
+            private static final int kFrontRightDriveMotorId = 3;
+            private static final int kFrontRightSteerMotorId = 4;
             private static final int kFrontRightEncoderId = 41;
             private static final double kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
 
@@ -172,8 +172,8 @@ public final class Constants {
             // Back Left
             private static final boolean SWERVE_BACK_LEFT_DRIVE_UNINVERT = !false;
             private static final boolean SWERVE_BACK_LEFT_STEER_UNINVERT = false;
-            private static final int kBackLeftDriveMotorId = 6;
-            private static final int kBackLeftSteerMotorId = 5;
+            private static final int kBackLeftDriveMotorId = 5;
+            private static final int kBackLeftSteerMotorId = 6;
             private static final int kBackLeftEncoderId = 42;
             private static final double kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
 
@@ -184,8 +184,8 @@ public final class Constants {
             // Back Right
             private static final boolean SWERVE_BACK_RIGHT_DRIVE_UNINVERT = !true;
             private static final boolean SWERVE_BACK_RIGHT_STEER_UNINVERT = false;
-            private static final int kBackRightDriveMotorId = 2;
-            private static final int kBackRightSteerMotorId = 1;
+            private static final int kBackRightDriveMotorId = 7;
+            private static final int kBackRightSteerMotorId = 8;
             private static final int kBackRightEncoderId = 40;
             private static final double kBackRightEncoderOffset = -0.44140625 * Math.PI;
 
