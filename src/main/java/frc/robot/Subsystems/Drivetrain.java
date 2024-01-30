@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory.State;
@@ -227,14 +228,15 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
              */
             // aiden, NO BAD
 
-            double goalX = snapPose.getX();
+            /*double goalX = snapPose.getX();
             double goalY = snapPose.getY();
             double robotX = robotState.getDrivePose().getX();
             double robotY = robotState.getDrivePose().getY();
             double diffX = robotX - goalX;
-            double diffY = robotY - goalY;
-            Rotation2d rot = new Rotation2d(diffX, diffY);
-            double angle = rot.getDegrees() + 180;
+            double diffY = robotY - goalY;*/
+
+            Transform2d diffPose = currentState.Pose.minus(snapPose);
+            double angle = diffPose.getRotation().getDegrees();
             autoTurnControl(commander.getDrivePercentCommand(), angle);
             driveType = true;
             // make robot face goal point
