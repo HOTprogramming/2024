@@ -20,13 +20,13 @@ public final class Constants {
         public static final int LEFT_FLYWHEEL_CAN = 11;
         public static final int FEEDER_CAN = 13;
 
-        public static final double TARGET_SPEED_INCREMENT = 3;
-        public static final double FEEDER_SPEED = 0.05;
+        public static final double TARGET_SPEED_INCREMENT = 10;
+        public static final double FEEDER_SPEED = 0.50;
 
         public static final double FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
         public static final double FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
 
-        public static final double SHOOTER_KP = 0.11;
+        public static final double SHOOTER_KP = 0.25;
         public static final double SHOOTER_KI = 0.5;
         public static final double SHOOTER_KD = 0.0001;
         public static final double SHOOTER_KV = 0.12;
