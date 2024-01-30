@@ -33,7 +33,7 @@ public class Shooter implements SubsystemBase {
         rightFlywheel = new TalonFX(RIGHT_FLYWHEEL_CAN, "drivetrain");
         feeder = new TalonFX(FEEDER_CAN, "drivetrain");
 
-        velocity = new VelocityVoltage(FLYWHEEL_MAX_VELOCITY_ERROR, FLYWHEEL_MAX_SPEED, false, FEEDER_SPEED, FEEDER_CAN, false, false, false)
+        // velocity = new VelocityVoltage(FLYWHEEL_MAX_VELOCITY_ERROR, FLYWHEEL_MAX_SPEED, false, FEEDER_SPEED, FEEDER_CAN, false, false, false)
 
         // leftVoltageVelocity = new VelocityTorqueCurrentFOC(0, 0, 0, FEEDER_CAN, true, false, false);
         // rightVoltageVelocity = new VelocityTorqueCurrentFOC(0, 0, true, 0, 0, false, false, false);
