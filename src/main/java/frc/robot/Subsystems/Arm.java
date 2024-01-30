@@ -100,14 +100,8 @@ public Arm(RobotState robotState) {
     cfg.Feedback.SensorToMechanismRatio = 1.0;
     cfg.Feedback.RotorToSensorRatio = 12.8;
 
-    StatusCode status = StatusCode.StatusCodeNotInitialized;
-    for(int i = 0; i < 5; ++i) {
-      status = armMotor.getConfigurator().apply(cfg);
-      if (status.isOK()) break;
-    }
-    if (!status.isOK()) {
-      System.out.println("Could not configure device. Error: " + status.toString());
-    }
+    armMotor.getConfigurator().apply(cfg);
+  
     
 }  
 
