@@ -5,7 +5,7 @@ package frc.robot;
 public final class Constants {
 
     public final class ShooterConstants {
-        public static final int SHOOTER1_CAN = 1;
+        public static final int SHOOTER1_CAN = 11;
         public static final double SHOOTER1_MAX_SPEED = 5; // percent of full speed
         public static final double SHOOTER1_MAX_VELOCITY_ERROR = .005; // percent of full speed
         public static final double SHOOTER1KP = 0.11;
@@ -13,7 +13,7 @@ public final class Constants {
         public static final double SHOOTER1KD = 0.0001;
         public static final double SHOOTER1KV = 0.12;
 
-        public static final int SHOOTER2_CAN = 3;
+        public static final int SHOOTER2_CAN = 12;
         public static final double SHOOTER2_MAX_SPEED = 5; // percent of full speed
         public static final double SHOOTER2_MAX_VELOCITY_ERROR = .005; // percent of full speed
         public static final double SHOOTER2KP = 0.11;
@@ -44,7 +44,7 @@ public final class Constants {
     }
 
     public final class ArmConstants {
-        public static final int ARM_CAN = 22;
+        public static final int ARM_CAN = 9;
         public static final double CRUISEVELOCITY = 100;
         public static final double ACCELERATION = 15;
         public static final double JERK = 50;
