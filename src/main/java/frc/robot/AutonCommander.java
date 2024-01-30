@@ -67,7 +67,13 @@ public class AutonCommander implements RobotCommander {
     }
 
     @Override
-    public boolean getLockPoseCommand() {
+    public boolean getLockSpeakerCommand() {
+        // may want to actually implement this
+        return false;
+    }
+
+    @Override
+    public boolean getLockRingCommand() {
         return false;
     }
 }

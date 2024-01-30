@@ -37,5 +37,7 @@ public interface RobotCommander {
 
     public int getAngleSnapCommand();
 
-    public boolean getLockPoseCommand();
+    public boolean getLockSpeakerCommand();
+
+    public boolean getLockRingCommand();
 }

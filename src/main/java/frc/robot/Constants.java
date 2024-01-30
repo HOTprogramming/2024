@@ -37,7 +37,7 @@ public final class Constants {
         public static final Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
 
         public static final Translation3d REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -.3, .1);
-        public static final Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), Units.degreesToRadians(180));
+        public static final Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180));
         public static final Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
 
@@ -199,6 +199,8 @@ public final class Constants {
     public final class Drivetrain {
         public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+
+        public static final double PIDGEON_OFFSET_DEGREES = 90;
 
         public static final double ROBOT_LENGTH_INCHES = 20.25;
         public static final double ROBOT_WITDTH_INCHES = 20.25;
