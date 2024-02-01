@@ -11,6 +11,8 @@ import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -127,10 +129,8 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void reset() {
-        rightFlywheel.stopMotor();
-        leftFlywheel.stopMotor();
-        rightTargetSpeed = 0;
-        leftTargetSpeed = 0;
+        rightTargetSpeed = 10;
+        leftTargetSpeed = 10;
     }
 
     @Override

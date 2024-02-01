@@ -57,19 +57,19 @@ public class TeleopCommander implements RobotCommander {
     }
 
     public boolean increaseLeftTargetSpeed() {
-        return operator.getAButton();
+        return operator.getYButtonPressed();
     }
 
     public boolean decreaseLeftTargetSpeed() {
-        return operator.getBButtonPressed();
-    }
-
-    public boolean increaseRightTargetSpeed() {
         return operator.getXButtonPressed();
     }
 
+    public boolean increaseRightTargetSpeed() {
+        return operator.getBButtonPressed();
+    }
+
     public boolean decreaseRightTargetSpeed() {
-        return operator.getYButtonPressed();
+        return operator.getAButtonPressed();
     }
 
     @Override

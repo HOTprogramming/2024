@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
     shooter = new Shooter(robotState);
     drivetrain = new Drivetrain(robotState);
     // camera = new Camera(robotState);
+    shooter = new Shooter(robotState);
+    // camera = new Camera(robotState);
     arm = new Arm(robotState);
 
 
@@ -91,6 +93,7 @@ public class Robot extends TimedRobot {
     shooter.reset();
     drivetrain.reset();
     arm.reset();
+    shooter.reset();
   }
 
   @Override
@@ -98,6 +101,7 @@ public class Robot extends TimedRobot {
     shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
     arm.enabled(teleopCommander);
+    shooter.enabled(teleopCommander);
   }
 
   @Override
@@ -105,6 +109,7 @@ public class Robot extends TimedRobot {
     shooter.disabled();
     drivetrain.disabled();
     arm.disabled();
+    shooter.disabled();
   }
 
   @Override
