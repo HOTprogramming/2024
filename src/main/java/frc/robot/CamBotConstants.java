@@ -6,7 +6,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
-import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -24,6 +23,8 @@ public class CamBotConstants extends ConstantsBase {
   
   
     public class Camera extends ConstantsBase.Camera {
+        public static final boolean HAS_CAMERA = true;
+        
         public static final String FRONT_CAMERA_NAME = "front_camera";
         
         public static final Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);

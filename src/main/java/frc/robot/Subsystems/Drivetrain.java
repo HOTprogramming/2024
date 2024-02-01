@@ -1,9 +1,10 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.Drivetrain.*;
 
+import frc.robot.ConstantsBase;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.ConstantsBase.ConstantsCreator;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
@@ -29,6 +30,7 @@ import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
+    ConstantsBase.Drivetrain constants =  ConstantsCreator.Drivetrain.getDrivetrain();
     RobotState robotState;
     
 
@@ -66,15 +68,17 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     public Drivetrain(RobotState robotState) {
         // call swervedriveDrivetrain constructor (parent class)
-        super(DRIVETRAIN_CONSTANTS,
-                FRONT_LEFT_MODULE_CONSTANTS, FRONT_RIGHT_MODULE_CONSTANTS, BACK_LEFT_MODULE_CONSTANTS,
-                BACK_RIGHT_MODULE_CONSTANTS);
+        super(ConstantsCreator.Drivetrain.getDrivetrain().DRIVETRAIN_CONSTANTS,
+                ConstantsCreator.Drivetrain.getDrivetrain().FRONT_LEFT_MODULE_CONSTANTS, 
+                ConstantsCreator.Drivetrain.getDrivetrain().FRONT_RIGHT_MODULE_CONSTANTS, 
+                ConstantsCreator.Drivetrain.getDrivetrain().BACK_LEFT_MODULE_CONSTANTS,
+                ConstantsCreator.Drivetrain.getDrivetrain().BACK_RIGHT_MODULE_CONSTANTS);
+                
 
         // initalize robot state
         this.robotState = robotState;
 
         configNeutralMode(NeutralModeValue.Brake);
-        seedFieldRelative(new Pose2d(0, 0, Rotation2d.fromDegrees(PIDGEON_OFFSET_DEGREES)));
     }
 
     /**
@@ -85,13 +89,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
      */
     private void percentDrive(double[] drivePercents, boolean fieldCentricDrive) {
         if (fieldCentricDrive) {
-            setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
+            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
         } else {
-            setControl(robotCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
+            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
         }
     }
 
@@ -105,13 +109,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private void autoTurnControl(double[] drivePercents, Rotation2d targetTheta, boolean fieldCentricDrive) {
         // Uses theta control to rotate (Rotation2d)
         if (fieldCentricDrive) {
-            setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
+            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                                     .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
                                             targetTheta.getRadians())));
         } else {
-            setControl(robotCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
+            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                                     .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
                                             targetTheta.getRadians())));
         }

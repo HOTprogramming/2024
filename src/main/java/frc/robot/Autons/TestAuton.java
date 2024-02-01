@@ -1,7 +1,5 @@
 package frc.robot.Autons;
 
-import static frc.robot.Constants.Auton.*;
-
 import java.util.List;
 
 import com.ctre.phoenix6.Utils;
@@ -72,7 +70,7 @@ public class TestAuton extends AutonBase {
                 break;
             
             case Ring2:
-                if (queuePath(AUTON_DEFAULT_MAX_VELOCITY_METERS, 1, 0, 0, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose, betweenRing3Pose, Ring3Pose), true)) {
+                if (queuePath(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 1, 0, 0, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose, betweenRing3Pose, Ring3Pose), true)) {
                     step = Step.Ring3;
                 }
 

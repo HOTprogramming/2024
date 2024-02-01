@@ -1,16 +1,11 @@
 package frc.robot;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-
-import javax.management.InvalidAttributeValueException;
-
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
-import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -18,92 +13,18 @@ import edu.wpi.first.math.util.Units;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
-public class ConstantsBase {
-    public static final RobotType ROBOT_TYPE = RobotType.Comp;
-    
-    static Auton kAuton;
-    static Camera kCamera;
-    static Drivetrain kDrivetrain;
+public class PracticeBotConstants extends ConstantsBase {
 
-
-    public ConstantsBase() {
-        if (ROBOT_TYPE == RobotType.Comp) {
-            System.out.println("boogie woogie moogie <p> hoogie");
-
-        } else if (ROBOT_TYPE == RobotType.Practice) {
-            PracticeBotConstants practiceBotConstants = new PracticeBotConstants();
-
-            kAuton = practiceBotConstants.new Auton();
-            kCamera = practiceBotConstants.new Camera();
-            kDrivetrain = practiceBotConstants.new Drivetrain();
-
-        } else {
-            CamBotConstants camBotConstants = new CamBotConstants();
-
-            kAuton = camBotConstants.new Auton();
-            kCamera = camBotConstants.new Camera();
-            kDrivetrain = camBotConstants.new Drivetrain();
-        }
-
-        
-    }
-
-    public enum ConstantsCreator {
-        Auton(kAuton),
-        Camera(kCamera),
-        Drivetrain(kDrivetrain);
-        
-        Auton auton;
-        Camera camera;
-        Drivetrain drivetrain;
-        
-
-        private ConstantsCreator(Auton auton) {
-            this.auton = auton;
-        }
-
-        private ConstantsCreator(Camera camera) {
-            this.camera = camera;
-        }
-
-        private ConstantsCreator(Drivetrain drivetrain) {
-            this.drivetrain = drivetrain;
-        }
-
-        public Auton getAuton() {
-            return auton;
-        }
-
-        public Camera getCamera() {
-            return camera;
-        }
-
-        public Drivetrain getDrivetrain() {
-            return drivetrain;
-        }
-    }
-
-    private enum RobotType {
-        Comp,
-        Practice,
-        Camera
-    }
-
-    public static abstract class IHateYou {
-        public static final double THE_N_WORD = 5.4;
-        
-    }
-
-
-    public static abstract class Auton {
+    public class Auton extends ConstantsBase.Auton {
         public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
         
     }
   
   
-    public static abstract class Camera {
-        public static final boolean HAS_CAMERA = true;
+    public class Camera extends ConstantsBase.Camera {
+        public static final boolean HAS_CAMERA = false;
+
         public static final String FRONT_CAMERA_NAME = "front_camera";
         
         public static final Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);
@@ -118,8 +39,8 @@ public class ConstantsBase {
 
         public static final String REAR_CAMERA_NAME = "back_camera";
     }
-  
-    public static abstract class Drivetrain {
+
+    public class Drivetrain extends ConstantsBase.Drivetrain {
         public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
 
@@ -213,8 +134,8 @@ public class ConstantsBase {
             // Front Left
             private static final boolean SWERVE_FRONT_LEFT_DRIVE_UNINVERT = !true;
             private static final boolean SWERVE_FRONT_LEFT_STEER_UNINVERT = false;
-            private static final int kFrontLeftDriveMotorId = 8;
-            private static final int kFrontLeftSteerMotorId = 7;
+            private static final int kFrontLeftDriveMotorId = 1;
+            private static final int kFrontLeftSteerMotorId = 2;
             private static final int kFrontLeftEncoderId = 43;
             private static final double kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
 
@@ -224,8 +145,8 @@ public class ConstantsBase {
             // Front Right
             private static final boolean SWERVE_FRONT_RIGHT_DRIVE_UNINVERT = !true;
             private static final boolean SWERVE_FRONT_RIGHT_STEER_UNINVERT = true;
-            private static final int kFrontRightDriveMotorId = 4;
-            private static final int kFrontRightSteerMotorId = 3;
+            private static final int kFrontRightDriveMotorId = 3;
+            private static final int kFrontRightSteerMotorId = 4;
             private static final int kFrontRightEncoderId = 41;
             private static final double kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
 
@@ -235,8 +156,8 @@ public class ConstantsBase {
             // Back Left
             private static final boolean SWERVE_BACK_LEFT_DRIVE_UNINVERT = !false;
             private static final boolean SWERVE_BACK_LEFT_STEER_UNINVERT = false;
-            private static final int kBackLeftDriveMotorId = 6;
-            private static final int kBackLeftSteerMotorId = 5;
+            private static final int kBackLeftDriveMotorId = 5;
+            private static final int kBackLeftSteerMotorId = 6;
             private static final int kBackLeftEncoderId = 42;
             private static final double kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
 
@@ -247,8 +168,8 @@ public class ConstantsBase {
             // Back Right
             private static final boolean SWERVE_BACK_RIGHT_DRIVE_UNINVERT = !true;
             private static final boolean SWERVE_BACK_RIGHT_STEER_UNINVERT = false;
-            private static final int kBackRightDriveMotorId = 2;
-            private static final int kBackRightSteerMotorId = 1;
+            private static final int kBackRightDriveMotorId = 7;
+            private static final int kBackRightSteerMotorId = 8;
             private static final int kBackRightEncoderId = 40;
             private static final double kBackRightEncoderOffset = -0.44140625 * Math.PI;
 
