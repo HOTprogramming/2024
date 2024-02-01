@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Autons.driveShoot;
+import frc.robot.Autons.*;
 import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Arm;
@@ -13,12 +13,21 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
-  private Shooter shooter;
+  // define subsystem objects
   private Drivetrain drivetrain;
+  // private Camera camera;
+
+  private Shooter shooter;
+
   private Arm arm;
 
-  private driveShoot driveShoot;
+  // define autons
+  private TestAuton testAuton;
+  private WillsSquare willsSquare;
+  private RandomAuto randomAuto;
+  private ActualAuton actualAuton;
 
+  // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
   @Override
@@ -26,20 +35,30 @@ public class Robot extends TimedRobot {
     robotState = new RobotState();
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
-
     shooter = new Shooter(robotState);
     drivetrain = new Drivetrain(robotState);
+    // camera = new Camera(robotState);
+    shooter = new Shooter(robotState);
+    // camera = new Camera(robotState);
     arm = new Arm(robotState);
 
-    driveShoot = new driveShoot(robotState);
 
-    autoSelector.setDefaultOption("Drive and Shoot", "driveShoot");
+    testAuton = new TestAuton(robotState);
+    willsSquare = new WillsSquare(robotState);
+    randomAuto = new RandomAuto(robotState);
+    actualAuton = new ActualAuton(robotState);
+
+    autoSelector.setDefaultOption("Testing", "TestAuton");
+    autoSelector.addOption("will", "WillsSquare");
   }
 
   @Override
   public void robotPeriodic() {
+    // camera.updateState();
+    drivetrain.updateState(); // drivetrain AFTER camera
+
+
     shooter.updateState();
-    drivetrain.updateState();
     arm.updateState();
   }
 
@@ -47,10 +66,16 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     String selectedAuto = autoSelector.getSelected();
 
-    if (selectedAuto == "driveShoot") {
-      autonCommander.setAuto(driveShoot);
+
+    if (selectedAuto == "TestAuton") {
+      autonCommander.setAuto(testAuton);
+    } else if (selectedAuto == "WillsSquare") {
+      autonCommander.setAuto(willsSquare);
     }
-    autonCommander.auto.reset();
+
+    autonCommander.setAuto(actualAuton);
+
+    drivetrain.init(autonCommander);
   }
 
   @Override
@@ -60,6 +85,7 @@ public class Robot extends TimedRobot {
     drivetrain.enabled(autonCommander);
     arm.enabled(autonCommander);
 
+    drivetrain.enabled(autonCommander);
   }
 
   @Override
@@ -67,6 +93,7 @@ public class Robot extends TimedRobot {
     shooter.reset();
     drivetrain.reset();
     arm.reset();
+    shooter.reset();
   }
 
   @Override
@@ -74,6 +101,7 @@ public class Robot extends TimedRobot {
     shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
     arm.enabled(teleopCommander);
+    shooter.enabled(teleopCommander);
   }
 
   @Override
@@ -81,6 +109,7 @@ public class Robot extends TimedRobot {
     shooter.disabled();
     drivetrain.disabled();
     arm.disabled();
+    shooter.disabled();
   }
 
   @Override
@@ -96,5 +125,7 @@ public class Robot extends TimedRobot {
   public void simulationInit() {}
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    drivetrain.updateSimState(.02, 12);
+  }
 }
