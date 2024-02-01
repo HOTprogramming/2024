@@ -127,8 +127,5 @@ public class TestAuton extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.start;
-        if (robotState.getVisionMeasurements()[0] != null && !Utils.isSimulation()) {
-            startPose = robotState.getVisionMeasurements()[0];
-        }
     }
 }
