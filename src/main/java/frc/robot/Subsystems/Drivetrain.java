@@ -243,7 +243,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void disabled() {
-        // setControl(brake);
+        setControl(brake);
     }
 
     @Override
