@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Constants;
 
 
 import com.ctre.phoenix6.configs.Slot0Configs;

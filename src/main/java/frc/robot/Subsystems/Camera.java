@@ -29,9 +29,9 @@ import edu.wpi.first.math.util.Units;
 
 import java.io.IOException;
 
-import frc.robot.ConstantsBase;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.Constants.ConstantsBase;
 
 public class Camera implements SubsystemBase {
     RobotState robotState;
