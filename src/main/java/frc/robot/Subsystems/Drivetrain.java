@@ -207,36 +207,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getLockPoseCommand()) {
-            /*
-             * double goalX = snapPose.getX();
-             * double goalY = snapPose.getY();
-             * double robotX = robotState.getDrivePose().getX();
-             * double robotY = robotState.getDrivePose().getY();
-             * double diffX = robotX - goalX;
-             * double diffY = robotY - goalY;
-             * double hypot = Math.hypot(diffX, diffY);
-             * double strafeX = diffY / hypot;
-             * double strafeY = -(diffX / hypot);
-             * double distX = diffX / hypot;
-             * double distY = diffY / hypot;
-             * double right = commander.getDrivePercentCommand()[0];
-             * double up = commander.getDrivePercentCommand()[1];
-             * double totalX = strafeX * right + distX * up;
-             * double totalY = strafeY * right + distY * up;
-             * Rotation2d rot = new Rotation2d(diffX, diffY);
-             * Pose2d strafePose = new Pose2d(totalX, totalY, rot);
-             */
-            // aiden, NO BAD
-
-            /*double goalX = snapPose.getX();
-            double goalY = snapPose.getY();
-            double robotX = robotState.getDrivePose().getX();
-            double robotY = robotState.getDrivePose().getY();
-            double diffX = robotX - goalX;
-            double diffY = robotY - goalY;*/
-
             Transform2d diffPose = currentState.Pose.minus(snapPose);
             double angle = diffPose.getRotation().getDegrees();
+
             autoTurnControl(commander.getDrivePercentCommand(), angle);
             driveType = true;
             // make robot face goal point
