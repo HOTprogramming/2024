@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
-public class FebOneAuton extends AutonBase {
+public class Red2Ring extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -35,7 +35,7 @@ public class FebOneAuton extends AutonBase {
     public Pose2d note2approach2 = new Pose2d(14.47, 5.56, Rotation2d.fromDegrees(180));
     public Pose2d shoot2 = new Pose2d(14.5, 4.5, Rotation2d.fromDegrees(30));
 
-    public FebOneAuton(RobotState robotState) {
+    public Red2Ring(RobotState robotState) {
         super(robotState);
         // starting pos code here + any extra inits
         startPose = new Pose2d(15.2, 5.6, Rotation2d.fromDegrees(180));

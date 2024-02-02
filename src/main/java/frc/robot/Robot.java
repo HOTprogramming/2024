@@ -16,13 +16,15 @@ public class Robot extends TimedRobot {
   private Drivetrain drivetrain;
   private Camera camera;
 
-  // define autons
-  private TestAuton testAuton;
+  // define autons (alphabetical)
+  private AidenSquare aidenSquare;
+  private Blue3Park blue3Park;
+  private Blue3Ring blue3Ring;
+  private Blue3Under blue3Under;
+  private Blue4Ring blue4Ring;
+  private Red2Ring red2Ring;
+  private Triangle triangle;
   private WillsSquare willsSquare;
-  private RandomAuto randomAuto;
-  private ActualAuton actualAuton;
-  private FebOneAuton febOneAuton;
-  private AidenAuton aidenAuton;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -36,16 +38,23 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain(robotState);
     camera = new Camera(robotState);
 
-
-    testAuton = new TestAuton(robotState);
+    aidenSquare = new AidenSquare(robotState);
+    blue3Park = new Blue3Park(robotState);
+    blue3Ring = new Blue3Ring(robotState);
+    blue3Under = new Blue3Under(robotState);
+    blue4Ring = new Blue4Ring(robotState);
+    red2Ring = new Red2Ring(robotState);
+    triangle = new Triangle(robotState);
     willsSquare = new WillsSquare(robotState);
-    randomAuto = new RandomAuto(robotState);
-    actualAuton = new ActualAuton(robotState);
-    febOneAuton = new FebOneAuton(robotState);
-    aidenAuton = new AidenAuton(robotState);
 
-    autoSelector.setDefaultOption("Testing", "TestAuton");
-    autoSelector.addOption("will", "WillsSquare");
+    autoSelector.setDefaultOption("A. Square", "aidenSquare");
+    autoSelector.addOption("B3 Park", "blue3Park");
+    autoSelector.addOption("B3", "blue3Ring");
+    autoSelector.addOption("B3 Under", "blue3Under");
+    autoSelector.addOption("B4", "blue4Ring");
+    autoSelector.addOption("R2", "red2Ring");
+    autoSelector.addOption("Triangle", "triangle");
+    autoSelector.addOption("W. Square", "willsSquare");
   }
 
   @Override
@@ -61,13 +70,26 @@ public class Robot extends TimedRobot {
     String selectedAuto = autoSelector.getSelected();
 
 
-
-    if (selectedAuto == "TestAuton") {
-      autonCommander.setAuto(testAuton);
-    } else if (selectedAuto == "WillsSquare") {
+    // auton selector base
+    if (selectedAuto == "aidenSquare") {
+      autonCommander.setAuto(aidenSquare);
+    } else if (selectedAuto == "blue3Park") {
+      autonCommander.setAuto(blue3Park);
+    } else if (selectedAuto == "blue3Ring") {
+      autonCommander.setAuto(blue3Ring);
+    } else if (selectedAuto == "blue3Under") {
+      autonCommander.setAuto(blue3Under);
+    } else if (selectedAuto == "blue4Ring") {
+      autonCommander.setAuto(blue4Ring);
+    } else if (selectedAuto == "red2Ring") {
+      autonCommander.setAuto(red2Ring);
+    } else if (selectedAuto == "triangle") {
+      autonCommander.setAuto(triangle);
+    } else if (selectedAuto == "willsSquare") {
       autonCommander.setAuto(willsSquare);
     }
 
+    // autonCommander.setAuto(<TESTING AUTON>);
 
     drivetrain.init(autonCommander);
   }

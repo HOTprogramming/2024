@@ -11,7 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
-public class AidenAuton extends AutonBase {
+public class Blue4Ring extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -35,7 +35,7 @@ public class AidenAuton extends AutonBase {
     boolean holdingRing = false;
     boolean ringExists = true;
 
-    public AidenAuton(RobotState robotState) {
+    public Blue4Ring(RobotState robotState) {
         super(robotState);
         // starting pos code here + any extra inits
     }

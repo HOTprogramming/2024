@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
-public class FourBlueRight extends AutonBase {
+public class Blue3Park extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -43,7 +43,7 @@ public class FourBlueRight extends AutonBase {
     Pose2d park = new Pose2d(2.029, 4.762, Rotation2d.fromDegrees(0));
    
 
-    public FourBlueRight(RobotState robotState) {
+    public Blue3Park(RobotState robotState) {
         super(robotState);
         startPose = new Pose2d(1.424, 3.161, Rotation2d.fromDegrees(0));
     }
