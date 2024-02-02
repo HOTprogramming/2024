@@ -132,4 +132,16 @@ public class Shooter implements SubsystemBase {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'init'");
     }
+
+    public TalonFX getLeftShooter(){
+        return leftFlywheel;
+    }
+
+    public TalonFX getRightShooter(){
+        return rightFlywheel;
+    }
+
+    public TalonFX getFeederMotor(){
+        return feeder;
+    }
 }
