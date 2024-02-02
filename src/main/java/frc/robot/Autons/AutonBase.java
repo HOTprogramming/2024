@@ -2,7 +2,6 @@ package frc.robot.Autons;
 
 import frc.robot.ConstantsBase;
 import frc.robot.RobotState;
-import frc.robot.ConstantsBase.ConstantsCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +16,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class AutonBase {
-    ConstantsBase.Auton constants = ConstantsCreator.Auton.getAuton();
+    RobotState robotState;
+    ConstantsBase.Auton constants;
+
     Timer timer = new Timer();
     
-    RobotState robotState;
 
     // default values if possible
     public Pose2d startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
@@ -35,6 +35,8 @@ public abstract class AutonBase {
 
     public AutonBase(RobotState robotState){
         this.robotState = robotState;
+
+        this.constants = robotState.getConstants().getAutonConstants();
     }
 
     public void visualizePath() {

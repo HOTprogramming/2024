@@ -4,7 +4,6 @@ package frc.robot.Subsystems;
 import frc.robot.ConstantsBase;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
-import frc.robot.ConstantsBase.ConstantsCreator;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
@@ -30,8 +29,8 @@ import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
-    ConstantsBase.Drivetrain constants =  ConstantsCreator.Drivetrain.getDrivetrain();
     RobotState robotState;
+    ConstantsBase.Drivetrain constants;
     
 
     // swerve commands
@@ -68,12 +67,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     public Drivetrain(RobotState robotState) {
         // call swervedriveDrivetrain constructor (parent class)
-        super(ConstantsCreator.Drivetrain.getDrivetrain().DRIVETRAIN_CONSTANTS,
-                ConstantsCreator.Drivetrain.getDrivetrain().FRONT_LEFT_MODULE_CONSTANTS, 
-                ConstantsCreator.Drivetrain.getDrivetrain().FRONT_RIGHT_MODULE_CONSTANTS, 
-                ConstantsCreator.Drivetrain.getDrivetrain().BACK_LEFT_MODULE_CONSTANTS,
-                ConstantsCreator.Drivetrain.getDrivetrain().BACK_RIGHT_MODULE_CONSTANTS);
+        super(robotState.getConstants().getDriveTrainConstants().DRIVETRAIN_CONSTANTS,
+                robotState.getConstants().getDriveTrainConstants().FRONT_LEFT_MODULE_CONSTANTS, 
+                robotState.getConstants().getDriveTrainConstants().FRONT_RIGHT_MODULE_CONSTANTS, 
+                robotState.getConstants().getDriveTrainConstants().BACK_LEFT_MODULE_CONSTANTS,
+                robotState.getConstants().getDriveTrainConstants().BACK_RIGHT_MODULE_CONSTANTS);
                 
+        this.constants = robotState.getConstants().getDriveTrainConstants();
 
         // initalize robot state
         this.robotState = robotState;

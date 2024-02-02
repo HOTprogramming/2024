@@ -23,6 +23,7 @@ public class ActualAuton extends AutonBase {
 
     public Step step;
 
+
     Pose2d a = new Pose2d(8.29, .75, Rotation2d.fromDegrees(0));
     Pose2d b = new Pose2d(5.78, 1.75, Rotation2d.fromDegrees(0));
     Pose2d c = new Pose2d(8.29, 2.45, Rotation2d.fromDegrees(0));
@@ -37,7 +38,6 @@ public class ActualAuton extends AutonBase {
     public ActualAuton(RobotState robotState) {
         super(robotState);
         startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
-     
     }
 
 

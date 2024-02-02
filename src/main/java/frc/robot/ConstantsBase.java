@@ -1,8 +1,5 @@
 package frc.robot;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-
-import javax.management.InvalidAttributeValueException;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -10,7 +7,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
-import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -19,68 +15,46 @@ import edu.wpi.first.math.util.Units;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public static final RobotType ROBOT_TYPE = RobotType.Comp;
-    
-    static Auton kAuton;
-    static Camera kCamera;
-    static Drivetrain kDrivetrain;
+    public RobotType ROBOT_TYPE = RobotType.Camera;
 
+    private Auton auton;
+    private Camera camera;
+    private Drivetrain drivetrain;
 
-    public ConstantsBase() {
+    public void setAllConstants() {
+        CamBotConstants camBotConstants = new CamBotConstants();
+        PracticeBotConstants practiceBotConstants = new PracticeBotConstants();
+        CompBotConstants compBotConstants = new CompBotConstants();
+
         if (ROBOT_TYPE == RobotType.Comp) {
-            System.out.println("boogie woogie moogie <p> hoogie");
+
+            this.auton = compBotConstants.new Auton();
+            this.camera = compBotConstants.new Camera();
+            this.drivetrain = compBotConstants.new Drivetrain();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
-            PracticeBotConstants practiceBotConstants = new PracticeBotConstants();
-
-            kAuton = practiceBotConstants.new Auton();
-            kCamera = practiceBotConstants.new Camera();
-            kDrivetrain = practiceBotConstants.new Drivetrain();
+            
+            this.auton = practiceBotConstants.new Auton();
+            this.camera = practiceBotConstants.new Camera();
+            this.drivetrain = practiceBotConstants.new Drivetrain();
 
         } else {
-            CamBotConstants camBotConstants = new CamBotConstants();
-
-            kAuton = camBotConstants.new Auton();
-            kCamera = camBotConstants.new Camera();
-            kDrivetrain = camBotConstants.new Drivetrain();
+            this.auton = camBotConstants.new Auton();
+            this.camera = camBotConstants.new Camera();
+            this.drivetrain = camBotConstants.new Drivetrain();
         }
-
-        
     }
 
-    public enum ConstantsCreator {
-        Auton(kAuton),
-        Camera(kCamera),
-        Drivetrain(kDrivetrain);
-        
-        Auton auton;
-        Camera camera;
-        Drivetrain drivetrain;
-        
+    public Auton getAutonConstants() {
+        return this.auton;
+    }
 
-        private ConstantsCreator(Auton auton) {
-            this.auton = auton;
-        }
+    public Camera getCameraConstants() {
+        return this.camera;
+    }
 
-        private ConstantsCreator(Camera camera) {
-            this.camera = camera;
-        }
-
-        private ConstantsCreator(Drivetrain drivetrain) {
-            this.drivetrain = drivetrain;
-        }
-
-        public Auton getAuton() {
-            return auton;
-        }
-
-        public Camera getCamera() {
-            return camera;
-        }
-
-        public Drivetrain getDrivetrain() {
-            return drivetrain;
-        }
+    public Drivetrain getDriveTrainConstants() {
+        return this.drivetrain;
     }
 
     private enum RobotType {
@@ -89,105 +63,99 @@ public class ConstantsBase {
         Camera
     }
 
-    public static abstract class IHateYou {
-        public static final double THE_N_WORD = 5.4;
-        
-    }
 
-
-    public static abstract class Auton {
-        public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-        public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+    public abstract class Auton {
+        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
+        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
         
     }
   
   
-    public static abstract class Camera {
-        public static final boolean HAS_CAMERA = true;
-        public static final String FRONT_CAMERA_NAME = "front_camera";
+    public abstract class Camera {
+        public boolean HAS_CAMERA = false;
+        public String FRONT_CAMERA_NAME = "front_camera";
         
-        public static final Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);
-        public static final Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
-        public static final Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+        public Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);
+        public Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
+        public Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
 
-        public static final Translation3d REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -.3, .1);
-        public static final Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180));
-        public static final Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+        public String REAR_CAMERA_NAME = "back_camera";
 
+        public Translation3d REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -.3, .1);
+        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180));
+        public Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
-
-        public static final String REAR_CAMERA_NAME = "back_camera";
     }
   
-    public static abstract class Drivetrain {
-        public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-        public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+    public abstract class Drivetrain {
+        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
+        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
 
-        public static final double ROBOT_LENGTH_INCHES = 20.25;
-        public static final double ROBOT_WITDTH_INCHES = 20.25;
-        public static final double MAX_VELOCITY_METERS = 6.37032; // from SDS
-        // public static final double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
-        // public static final double MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
-        public static final double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
+        public double ROBOT_LENGTH_INCHES = 20.25;
+        public double ROBOT_WITDTH_INCHES = 20.25;
+        public double MAX_VELOCITY_METERS = 6.37032; // from SDS
+        // public double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
+        // public double MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
+        public double MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
 
         // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
         // SWERVE BUILDER
-        private static final Slot0Configs SWERVE_STEER_GAINS = new Slot0Configs()
+        public Slot0Configs SWERVE_STEER_GAINS = new Slot0Configs()
         .withKP(100).withKI(0).withKD(0.2)
         .withKS(0).withKV(1.5).withKA(0);
 
-        private static final Slot0Configs SWERVE_DRIVE_GAINS = new Slot0Configs()
+        public Slot0Configs SWERVE_DRIVE_GAINS = new Slot0Configs()
         .withKP(3).withKI(0).withKD(0)
         .withKS(0).withKV(0).withKA(0);
         
-        // private static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        // private ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
-        // private static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        // private ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
         
-        private static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
+        public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
-        private static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
+        public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
 
 
-        private static final double WHEEL_SLIP_CURRENT = 300.0; // *tune later
+        public double WHEEL_SLIP_CURRENT = 300.0; // *tune later
 
         // Meters per second theroretical max speed at 12 volts
-        public static final double FREE_SPEED_12V = 6.37032;
+        public double FREE_SPEED_12V = 6.37032;
 
         // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
         // This may need to be tuned to your individual robot
-        private static final double kCoupleRatio = 3.5714285714285716; // tune later
+        public double kCoupleRatio = 3.5714285714285716; // tune later
 
-        private static final double kDriveGearRatio = 5.01;
-        private static final double kSteerGearRatio = 13.3714;
-        private static final double kWheelRadiusInches = 2;
+        public double kDriveGearRatio = 5.01;
+        public double kSteerGearRatio = 13.3714;
+        public double kWheelRadiusInches = 2;
 
         // Are steer motors GENERALLY reversed
-        private static final boolean kSteerMotorReversed = true;
+        public boolean kSteerMotorReversed = true;
 
 
         
 
-        private static final String CANBUS_NAME = "drivetrain";
-        private static final int PIDGEON_CAN = 50;
+        public String CANBUS_NAME = "drivetrain";
+        public int PIDGEON_CAN = 50;
 
         // These are only used for simulation
-        private static final double kSteerInertia = 0.00001;
+        public double kSteerInertia = 0.00001;
         // REAL swerve rotational inertia 3.05 lbs*in^2 or 0.0008925509 kg * m^2
-        private static final double kDriveInertia = 0.001;
+        public double kDriveInertia = 0.001;
 
         // Simulated voltage necessary to overcome friction
-        private static final double kSteerFrictionVoltage = 0.25;
-        private static final double kDriveFrictionVoltage = 0.25;   
+        public double kSteerFrictionVoltage = 0.25;
+        public double kDriveFrictionVoltage = 0.25;   
 
 
-        public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS = new SwerveDrivetrainConstants()
+        public SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS = new SwerveDrivetrainConstants()
         .withPigeon2Id(PIDGEON_CAN)
         .withCANbusName(CANBUS_NAME);
 
-        private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
+        public SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
             .withDriveMotorGearRatio(kDriveGearRatio)
             .withSteerMotorGearRatio(kSteerGearRatio)
             .withWheelRadius(kWheelRadiusInches)
@@ -211,61 +179,61 @@ public class ConstantsBase {
             // offsets in radians
 
             // Front Left
-            private static final boolean SWERVE_FRONT_LEFT_DRIVE_UNINVERT = !true;
-            private static final boolean SWERVE_FRONT_LEFT_STEER_UNINVERT = false;
-            private static final int kFrontLeftDriveMotorId = 8;
-            private static final int kFrontLeftSteerMotorId = 7;
-            private static final int kFrontLeftEncoderId = 43;
-            private static final double kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
+            public boolean SWERVE_FRONT_LEFT_DRIVE_UNINVERT = !true;
+            public boolean SWERVE_FRONT_LEFT_STEER_UNINVERT = false;
+            public int kFrontLeftDriveMotorId = 8;
+            public int kFrontLeftSteerMotorId = 7;
+            public int kFrontLeftEncoderId = 43;
+            public double kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
 
-            private static final double kFrontLeftXPosInches = 10.125;
-            private static final double kFrontLeftYPosInches = 10.125;
+            public double kFrontLeftXPosInches = 10.125;
+            public double kFrontLeftYPosInches = 10.125;
 
             // Front Right
-            private static final boolean SWERVE_FRONT_RIGHT_DRIVE_UNINVERT = !true;
-            private static final boolean SWERVE_FRONT_RIGHT_STEER_UNINVERT = true;
-            private static final int kFrontRightDriveMotorId = 4;
-            private static final int kFrontRightSteerMotorId = 3;
-            private static final int kFrontRightEncoderId = 41;
-            private static final double kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
+            public boolean SWERVE_FRONT_RIGHT_DRIVE_UNINVERT = !true;
+            public boolean SWERVE_FRONT_RIGHT_STEER_UNINVERT = true;
+            public int kFrontRightDriveMotorId = 4;
+            public int kFrontRightSteerMotorId = 3;
+            public int kFrontRightEncoderId = 41;
+            public double kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
 
-            private static final double kFrontRightXPosInches = 10.125;
-            private static final double kFrontRightYPosInches = -10.125;
+            public double kFrontRightXPosInches = 10.125;
+            public double kFrontRightYPosInches = -10.125;
 
             // Back Left
-            private static final boolean SWERVE_BACK_LEFT_DRIVE_UNINVERT = !false;
-            private static final boolean SWERVE_BACK_LEFT_STEER_UNINVERT = false;
-            private static final int kBackLeftDriveMotorId = 6;
-            private static final int kBackLeftSteerMotorId = 5;
-            private static final int kBackLeftEncoderId = 42;
-            private static final double kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
+            public boolean SWERVE_BACK_LEFT_DRIVE_UNINVERT = !false;
+            public boolean SWERVE_BACK_LEFT_STEER_UNINVERT = false;
+            public int kBackLeftDriveMotorId = 6;
+            public int kBackLeftSteerMotorId = 5;
+            public int kBackLeftEncoderId = 42;
+            public double kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
 
-            private static final double kBackLeftXPosInches = -10.125;
-            private static final double kBackLeftYPosInches = 10.125;
+            public double kBackLeftXPosInches = -10.125;
+            public double kBackLeftYPosInches = 10.125;
 
 
             // Back Right
-            private static final boolean SWERVE_BACK_RIGHT_DRIVE_UNINVERT = !true;
-            private static final boolean SWERVE_BACK_RIGHT_STEER_UNINVERT = false;
-            private static final int kBackRightDriveMotorId = 2;
-            private static final int kBackRightSteerMotorId = 1;
-            private static final int kBackRightEncoderId = 40;
-            private static final double kBackRightEncoderOffset = -0.44140625 * Math.PI;
+            public boolean SWERVE_BACK_RIGHT_DRIVE_UNINVERT = !true;
+            public boolean SWERVE_BACK_RIGHT_STEER_UNINVERT = false;
+            public int kBackRightDriveMotorId = 2;
+            public int kBackRightSteerMotorId = 1;
+            public int kBackRightEncoderId = 40;
+            public double kBackRightEncoderOffset = -0.44140625 * Math.PI;
 
-            private static final double kBackRightXPosInches = -10.125;
-            private static final double kBackRightYPosInches = -10.125;
+            public double kBackRightXPosInches = -10.125;
+            public double kBackRightYPosInches = -10.125;
 
 
-            public static final SwerveModuleConstants FRONT_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+            public SwerveModuleConstants FRONT_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
             kFrontLeftSteerMotorId, kFrontLeftDriveMotorId, kFrontLeftEncoderId, kFrontLeftEncoderOffset / Math.PI, Units.inchesToMeters(kFrontLeftXPosInches), Units.inchesToMeters(kFrontLeftYPosInches), !SWERVE_FRONT_LEFT_DRIVE_UNINVERT)
             .withSteerMotorInverted(!SWERVE_FRONT_LEFT_STEER_UNINVERT);
-            public static final SwerveModuleConstants FRONT_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+            public SwerveModuleConstants FRONT_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
             kFrontRightSteerMotorId, kFrontRightDriveMotorId, kFrontRightEncoderId, kFrontRightEncoderOffset / Math.PI, Units.inchesToMeters(kFrontRightXPosInches), Units.inchesToMeters(kFrontRightYPosInches), !SWERVE_FRONT_RIGHT_DRIVE_UNINVERT)
             .withSteerMotorInverted(!SWERVE_FRONT_RIGHT_STEER_UNINVERT);
-            public static final SwerveModuleConstants BACK_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+            public SwerveModuleConstants BACK_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
             kBackLeftSteerMotorId, kBackLeftDriveMotorId, kBackLeftEncoderId, kBackLeftEncoderOffset / Math.PI, Units.inchesToMeters(kBackLeftXPosInches), Units.inchesToMeters(kBackLeftYPosInches), !SWERVE_BACK_LEFT_DRIVE_UNINVERT)
             .withSteerMotorInverted(!SWERVE_BACK_LEFT_STEER_UNINVERT);
-            public static final SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+            public SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
             kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset / Math.PI, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), !SWERVE_BACK_RIGHT_DRIVE_UNINVERT)
             .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
     }

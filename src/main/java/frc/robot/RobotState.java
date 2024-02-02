@@ -2,11 +2,11 @@ package frc.robot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 
 public class RobotState {
+    private ConstantsBase constants;
     private Pose2d drivePose;
     private boolean atTargetPose;
 
@@ -14,6 +14,13 @@ public class RobotState {
     private double[] visionTimestamps;
     private Matrix<N3, N2> visionStdevs;
 
+    public RobotState(ConstantsBase constants) {
+        this.constants = constants;
+    }
+
+    public ConstantsBase getConstants() {
+        return constants;
+    }
 
      /**
      * Set new drive pose

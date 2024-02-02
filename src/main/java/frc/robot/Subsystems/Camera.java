@@ -32,11 +32,11 @@ import java.io.IOException;
 import frc.robot.ConstantsBase;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
-import frc.robot.ConstantsBase.ConstantsCreator;
 
 public class Camera implements SubsystemBase {
-    ConstantsBase.Camera constants = ConstantsCreator.Camera.getCamera();
     RobotState robotState;
+    ConstantsBase.Camera constants;
+
 
     PhotonCamera frontCamera;
     PhotonCamera rearCamera;
@@ -89,49 +89,56 @@ public class Camera implements SubsystemBase {
 
     public Camera(RobotState robotState) {
         this.robotState = robotState;
+        this.constants = robotState.getConstants().getCameraConstants();
+
+        if (constants.HAS_CAMERA) {
         
-        try {
-            tags = AprilTagFieldLayout.loadFromResource(("/org/Apriltags/2024-crescendo.json"));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // C:\Users\Public\wpilib\2024\maven\edu\wpi\first\apriltag
-
-        frontCamera = new PhotonCamera(constants.FRONT_CAMERA_NAME);
-
-        rearCamera = new PhotonCamera(constants.REAR_CAMERA_NAME);
-
-        if (Utils.isSimulation()) {
-            globalShutterProperties = new SimCameraProperties();
-            globalShutterProperties.setFPS(60);
-            globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
-
-            simFrontCam = new PhotonCameraSim(frontCamera, globalShutterProperties);
-            simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
-
-            simVision = new VisionSystemSim("SimVision");
-            simVision.addCamera(simFrontCam, new Transform3d(constants.FRONT_CAMERA_REALITIVE_POSITION, constants.FRONT_CAMERA_RELATIVE_ROTATION));
-            simVision.addCamera(simRearCam, new Transform3d(constants.REAR_CAMERA_REALITIVE_POSITION, constants.REAR_CAMERA_RELATIVE_ROTATION));
-
-            simVision.addAprilTags(tags);
+            try {
+                tags = AprilTagFieldLayout.loadFromResource(("/org/Apriltags/2024-crescendo.json"));
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
 
-            simFrontCam.enableRawStream(true); // localhost:1181
-            simFrontCam.enableProcessedStream(true); // localhost:1182
+            frontCamera = new PhotonCamera(constants.FRONT_CAMERA_NAME);
 
-            simFrontCam.enableDrawWireframe(true); // resource intesive
+            rearCamera = new PhotonCamera(constants.REAR_CAMERA_NAME);
 
-            simRearCam.enableRawStream(true); // localhost:1183
-            simRearCam.enableProcessedStream(true); // localhost:1184
+            if (Utils.isSimulation()) {
+                globalShutterProperties = new SimCameraProperties();
+                globalShutterProperties.setFPS(60);
+                globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
 
-            simRearCam.enableDrawWireframe(true); // resource intesive
+                simFrontCam = new PhotonCameraSim(frontCamera, globalShutterProperties);
+                simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
+
+                simVision = new VisionSystemSim("SimVision");
+                simVision.addCamera(simFrontCam, new Transform3d(constants.FRONT_CAMERA_REALITIVE_POSITION, constants.FRONT_CAMERA_RELATIVE_ROTATION));
+                simVision.addCamera(simRearCam, new Transform3d(constants.REAR_CAMERA_REALITIVE_POSITION, constants.REAR_CAMERA_RELATIVE_ROTATION));
+
+                simVision.addAprilTags(tags);
+
+
+                simFrontCam.enableRawStream(true); // localhost:1181
+                simFrontCam.enableProcessedStream(true); // localhost:1182
+
+                simFrontCam.enableDrawWireframe(true); // resource intesive
+
+                simRearCam.enableRawStream(true); // localhost:1183
+                simRearCam.enableProcessedStream(true); // localhost:1184
+
+                simRearCam.enableDrawWireframe(true); // resource intesive
+            }
         }
     }
 
     @Override
     public void updateState() {
+        if (!constants.HAS_CAMERA) {
+            return;
+        }
+        
         lastFrontEstimation = frontCamEstimation;
         lastRearEstimation = rearCamEstimation;
 
