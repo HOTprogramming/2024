@@ -21,6 +21,7 @@ public class Robot extends TimedRobot {
   private WillsSquare willsSquare;
   private RandomAuto randomAuto;
   private ActualAuton actualAuton;
+  private FebOneAuton febOneAuton;
   private AidenAuton aidenAuton;
 
   // creates autonSelector
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
     willsSquare = new WillsSquare(robotState);
     randomAuto = new RandomAuto(robotState);
     actualAuton = new ActualAuton(robotState);
+    febOneAuton = new FebOneAuton(robotState);
     aidenAuton = new AidenAuton(robotState);
 
     autoSelector.setDefaultOption("Testing", "TestAuton");
@@ -59,13 +61,13 @@ public class Robot extends TimedRobot {
     String selectedAuto = autoSelector.getSelected();
 
 
+
     if (selectedAuto == "TestAuton") {
       autonCommander.setAuto(testAuton);
     } else if (selectedAuto == "WillsSquare") {
       autonCommander.setAuto(willsSquare);
     }
 
-    autonCommander.setAuto(aidenAuton);
 
     drivetrain.init(autonCommander);
   }
