@@ -34,8 +34,13 @@ public class Red3Ring extends AutonBase {
 
     public Red3Ring(RobotState robotState) {
         super(robotState);
-        startPose = new Pose2d(15.3, 5.465, Rotation2d.fromDegrees(180));
-       
+
+        if (robotState.getVisionMeasurements() != null) {
+            
+        } else {
+            startPose = new Pose2d(15.3, 5.465, Rotation2d.fromDegrees(180));
+        }
+        // startPose = new Pose2d(15.3, 5.465, Rotation2d.fromDegrees(180));
     }
 
 

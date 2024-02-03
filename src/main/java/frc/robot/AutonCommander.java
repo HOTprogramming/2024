@@ -110,7 +110,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getResetRobotPose() {
-        return true;
+        return false;
     }
 
 }

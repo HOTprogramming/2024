@@ -8,6 +8,9 @@ import frc.robot.RobotCommander.DriveMode;
 import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
 
+import java.sql.Driver;
+import java.util.Optional;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -26,9 +29,11 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
+public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     RobotState robotState;
     ConstantsBase.Drivetrain constants;
     
@@ -235,8 +240,10 @@ public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             setControl(brake);
         }
 
+
         if (commander.getPidgeonReset()) {
             m_pigeon2.reset();
+            
         }
 
         if (commander.getAngleSnapCommand() != -1) {
@@ -254,10 +261,16 @@ public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // }
 
         if (commander.getResetRobotPose()) {
-            if (robotState.getVisionMeasurements()[0] != null) {
-                seedFieldRelative(robotState.getVisionMeasurements()[0]);
-            }
-            
+            seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            // Pose2d[] vision = robotState.getVisionMeasurements();
+            // if (vision != null) {
+            //     if (vision[0] != null) {
+            //         seedFieldRelative(new Pose2d(vision[0].getTranslation(), vision[0].getRotation()));
+            //     } else if (vision[1] != null) {
+            //         seedFieldRelative(new Pose2d(vision[1].getTranslation(), vision[1].getRotation()));
+            //     }
+                
+            // }
         }
     }
 
