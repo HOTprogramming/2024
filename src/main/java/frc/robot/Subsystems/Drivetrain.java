@@ -28,7 +28,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
+public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     RobotState robotState;
     ConstantsBase.Drivetrain constants;
     
