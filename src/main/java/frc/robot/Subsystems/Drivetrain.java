@@ -210,7 +210,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                         currentState.ModuleStates[i].angle.getRadians());
             }
         }
-
         
     }
 
@@ -253,6 +252,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // if (commander.getLockRingCommand()) {
         //     autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getVisionRingTranslation), true);
         // }
+
+        if (commander.getResetRobotPose()) {
+            if (robotState.getVisionMeasurements()[0] != null) {
+                seedFieldRelative(robotState.getVisionMeasurements()[0]);
+            }
+            
+        }
     }
 
     @Override

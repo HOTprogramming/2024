@@ -202,6 +202,14 @@ public class Camera implements SubsystemBase {
 
         if (frontCamEstimation != null) {
             SmartDashboard.putNumberArray("FrontCamera ODO", new Double[] {frontCamEstimation.getX(), frontCamEstimation.getY(), frontCamEstimation.getRotation().getDegrees()});
+        } else {
+            SmartDashboard.putNumberArray("FrontCamera ODO", new Double[] {0.0, 0.0, 0.0});
+        }
+
+        if (rearCamEstimation != null) {
+            SmartDashboard.putNumberArray("RearCamera ODO", new Double[] {rearCamEstimation.getX(), rearCamEstimation.getY(), rearCamEstimation.getRotation().getDegrees()});
+        } else {
+            SmartDashboard.putNumberArray("RearCamera ODO", new Double[] {0.0, 0.0, 0.0});
         }
     }
 

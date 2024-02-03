@@ -131,5 +131,10 @@ public class TeleopCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public boolean getResetRobotPose() {
+        return driver.getBackButton();
+    }
+
 
 }
