@@ -1,7 +1,5 @@
 package frc.robot.Autons;
 
-import static frc.robot.Constants.Auton.*;
-
 import java.util.List;
 
 import com.fasterxml.jackson.core.StreamReadCapability;

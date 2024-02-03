@@ -1,8 +1,8 @@
 package frc.robot.Autons;
 
 import frc.robot.RobotState;
+import frc.robot.Constants.ConstantsBase;
 
-import static frc.robot.Constants.Auton.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class AutonBase {
+    ConstantsBase.Auton constants;
     Timer timer = new Timer();
     
     RobotState robotState;
@@ -34,6 +35,8 @@ public abstract class AutonBase {
 
     public AutonBase(RobotState robotState){
         this.robotState = robotState;
+
+        constants = robotState.getConstants().getAutonConstants();
     }
 
     public void visualizePath() {
@@ -61,7 +64,7 @@ public abstract class AutonBase {
     }
 
     public void generateTrajectory(List<Pose2d> points) {
-        trajectoryConfig = new  TrajectoryConfig(AUTON_DEFAULT_MAX_VELOCITY_METERS, AUTON_DEFAULT_MAX_ACCEL_METERS);
+        trajectoryConfig = new  TrajectoryConfig(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, constants.AUTON_DEFAULT_MAX_ACCEL_METERS);
         trajectoryGenerator = new CustomTrajectoryGenerator();
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();

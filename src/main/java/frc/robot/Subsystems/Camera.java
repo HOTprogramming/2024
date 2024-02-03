@@ -26,14 +26,15 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
-import static frc.robot.Constants.Camera.*;
 
 import java.io.IOException;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.Constants.ConstantsBase;
 
 public class Camera implements SubsystemBase {
+    ConstantsBase.Camera constants;
     RobotState robotState;
 
     PhotonCamera frontCamera;
@@ -87,6 +88,8 @@ public class Camera implements SubsystemBase {
 
     public Camera(RobotState robotState) {
         this.robotState = robotState;
+
+        constants = robotState.getConstants().getCameraConstants();
         
         try {
             tags = AprilTagFieldLayout.loadFromResource(("/org/Apriltags/2024-crescendo.json"));
@@ -97,9 +100,9 @@ public class Camera implements SubsystemBase {
 
         // C:\Users\Public\wpilib\2024\maven\edu\wpi\first\apriltag
 
-        frontCamera = new PhotonCamera(FRONT_CAMERA_NAME);
+        frontCamera = new PhotonCamera(constants.FRONT_CAMERA_NAME);
 
-        rearCamera = new PhotonCamera(REAR_CAMERA_NAME);
+        rearCamera = new PhotonCamera(constants.REAR_CAMERA_NAME);
 
         if (Utils.isSimulation()) {
             globalShutterProperties = new SimCameraProperties();
@@ -110,8 +113,8 @@ public class Camera implements SubsystemBase {
             simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
 
             simVision = new VisionSystemSim("SimVision");
-            simVision.addCamera(simFrontCam, new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION));
-            simVision.addCamera(simRearCam, new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION));
+            simVision.addCamera(simFrontCam, new Transform3d(constants.FRONT_CAMERA_REALITIVE_POSITION, constants.FRONT_CAMERA_RELATIVE_ROTATION));
+            simVision.addCamera(simRearCam, new Transform3d(constants.REAR_CAMERA_REALITIVE_POSITION, constants.REAR_CAMERA_RELATIVE_ROTATION));
 
             simVision.addAprilTags(tags);
 
@@ -152,7 +155,7 @@ public class Camera implements SubsystemBase {
         if (frontResult.getBestTarget() != null) {
             frontCamEstimation = tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
                             .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
-                            .transformBy(FRONT_CAMERA_TRANSFROM.inverse())
+                            .transformBy(constants.FRONT_CAMERA_TRANSFROM.inverse())
                             .toPose2d();
         } else {
             frontCamEstimation = null;
@@ -161,7 +164,7 @@ public class Camera implements SubsystemBase {
         if (rearResult.getBestTarget() != null) {
             rearCamEstimation = tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
                             .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
-                            .transformBy(REAR_CAMERA_TRANSFROM.inverse())
+                            .transformBy(constants.REAR_CAMERA_TRANSFROM.inverse())
                             .toPose2d();
         } else {
             rearCamEstimation = null;

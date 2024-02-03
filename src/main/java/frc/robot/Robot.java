@@ -3,11 +3,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
+import frc.robot.Constants.ConstantsBase;
 import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Drivetrain;
 
 
 public class Robot extends TimedRobot {
+  private ConstantsBase constantsBase;
   private RobotState robotState;
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
@@ -31,7 +33,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    robotState = new RobotState();
+    constantsBase = new ConstantsBase();
+
+    robotState = new RobotState(constantsBase);
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
 
