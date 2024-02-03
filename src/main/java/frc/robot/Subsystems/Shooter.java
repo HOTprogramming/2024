@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+/*package frc.robot.Subsystems;
 
 import static frc.robot.Constants.ShooterConstants.*;
 
@@ -126,6 +126,7 @@ public class Shooter implements SubsystemBase {
         rightTargetSpeed = 10;
         leftTargetSpeed = 10;
     }
+<<<<<<< Updated upstream
 
     @Override
     public void init(RobotCommander commander) {
@@ -145,3 +146,7 @@ public class Shooter implements SubsystemBase {
         return feeder;
     }
 }
+=======
+}
+*/
+>>>>>>> Stashed changes

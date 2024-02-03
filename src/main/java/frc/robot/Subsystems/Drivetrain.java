@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+/*package frc.robot.Subsystems;
 
 
 import frc.robot.RobotCommander;
@@ -284,5 +284,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         tareEverything();
         m_pigeon2.reset();
     }
+<<<<<<< Updated upstream
 
 }
+=======
+}*/
+>>>>>>> Stashed changes

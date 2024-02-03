@@ -45,6 +45,11 @@ public interface RobotCommander {
     public abstract boolean increaseRightTargetSpeed();
     public abstract boolean decreaseRightTargetSpeed();
     public abstract double getTargetDriveSpeed();
+<<<<<<< Updated upstream
     public abstract double getRunArm();
     public boolean getLockSpeakerCommand();
+=======
+    public abstract boolean getIntake();
+    
+>>>>>>> Stashed changes
 }

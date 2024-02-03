@@ -18,12 +18,31 @@ public class RobotState {
 
 
     private boolean shooterOn;
+<<<<<<< Updated upstream
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
+=======
+    private double drivePose;
+    private boolean ledsOn;
+
+    /**
+     * Set the current shooter state
+     * 
+     * @param shooterOn New shooter state
+     */
+    public void setShooterOn(boolean shooterOn) {
+        this.shooterOn = shooterOn;
+>>>>>>> Stashed changes
     }
 
     public ConstantsBase getConstants() {
         return this.constants;
+    }
+    public void setLedsOn(boolean ledsOn){
+        this.ledsOn = ledsOn;
+    }
+    public boolean getLedsOn(){
+        return ledsOn;
     }
 
 

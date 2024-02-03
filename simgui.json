@@ -1,9 +1,13 @@
 {
   "NTProvider": {
     "types": {
+<<<<<<< Updated upstream
       "/Drivetrain": "Field2d",
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
+=======
+      "/FMSInfo": "FMSInfo"
+>>>>>>> Stashed changes
     }
   },
   "NetworkTables Info": {

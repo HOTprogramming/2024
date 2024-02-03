@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+<<<<<<< Updated upstream
 import frc.robot.Autons.*;
 import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
@@ -9,6 +10,13 @@ import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Arm;
+=======
+import frc.robot.Autons.driveShoot;
+import frc.robot.Subsystems.Led;
+//import frc.robot.Subsystems.Drivetrain;
+//import frc.robot.Subsystems.Intake;
+//import frc.robot.Subsystems.Shooter;
+>>>>>>> Stashed changes
 
 
 public class Robot extends TimedRobot {
@@ -18,12 +26,20 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
+<<<<<<< Updated upstream
   private Shooter shooter;
   private Drivetrain drivetrain;
   private Camera camera;
   private Arm arm;
 
   // define subsystem objects
+=======
+ // private Shooter shooter;
+ // private Drivetrain drivetrain;
+ // private Intake intake;
+  private Led led;
+  private driveShoot driveShoot;
+>>>>>>> Stashed changes
 
   // define autons (alphabetical)
   private AidenSquare aidenSquare;
@@ -49,6 +65,7 @@ public class Robot extends TimedRobot {
     
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
+<<<<<<< Updated upstream
     shooter = new Shooter(robotState);
     arm = new Arm(robotState);
     drivetrain = new Drivetrain(robotState);  
@@ -74,16 +91,32 @@ public class Robot extends TimedRobot {
     autoSelector.addOption("R2", "red2Ring");
     autoSelector.addOption("Triangle", "triangle");
     autoSelector.addOption("W. Square", "willsSquare");
+=======
+
+    //shooter = new Shooter(robotState);
+    //drivetrain = new Drivetrain(robotState);
+    //intake = new Intake(robotState);
+    driveShoot = new driveShoot(robotState);
+    led = new Led(robotState);
+    autoSelector.setDefaultOption("Drive and Shoot", "driveShoot");
+>>>>>>> Stashed changes
   }
 
   @Override
   public void robotPeriodic() {
+<<<<<<< Updated upstream
     camera.updateState();
     drivetrain.updateState(); // drivetrain AFTER camera
 
 
     shooter.updateState();
     arm.updateState();
+=======
+  //  shooter.updateState();
+    //drivetrain.updateState();
+    //intake.updateState();
+    led.updateState();
+>>>>>>> Stashed changes
   }
 
   @Override
@@ -118,33 +151,61 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
+<<<<<<< Updated upstream
     // shooter.enabled(autonCommander);
     drivetrain.enabled(autonCommander);
     // arm.enabled(autonCommander);
+=======
+    //shooter.enabled(autonCommander);
+  //  drivetrain.enabled(autonCommander);
+   // intake.enabled(autonCommander);
+    led.enabled(autonCommander);
+>>>>>>> Stashed changes
   }
 
   @Override
   public void teleopInit() {
+<<<<<<< Updated upstream
     shooter.reset();
     drivetrain.reset();
     arm.reset();
     shooter.reset();
+=======
+   // shooter.reset();
+   // drivetrain.reset();
+  //  intake.reset();
+    led.reset();
+>>>>>>> Stashed changes
   }
 
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
     shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
     arm.enabled(teleopCommander);
     shooter.enabled(teleopCommander);
+=======
+    //shooter.enabled(teleopCommander);
+    //drivetrain.enabled(teleopCommander);
+    //intake.enabled(teleopCommander);
+    led.enabled(teleopCommander);
+>>>>>>> Stashed changes
   }
 
   @Override
   public void disabledInit() {
+<<<<<<< Updated upstream
     shooter.disabled();
     drivetrain.disabled();
     arm.disabled();
     shooter.disabled();
+=======
+    //shooter.disabled();
+    //drivetrain.disabled();
+   // intake.disabled();
+    led.disabled();
+>>>>>>> Stashed changes
   }
 
   @Override

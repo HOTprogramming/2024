@@ -224,4 +224,37 @@ public final class Constants {
         public static final double ARM_ACCELERATION = 10;
         public static final double ARM_JERK = 50;
     }
+<<<<<<< Updated upstream
 }
+=======
+
+    public final class CANdleConstants {
+        public static final int LED_CAN = 9;
+        public static final int LedCount = 8;
+        public static final int MaxBrightnessAngle = 90;
+        public static final int MidBrightnessAngle = 180;
+        public static final int ZeroBrightnessAngle = 270;
+    }
+}
+
+
+/* LF DRIVE = 1
+ * LF STEER = 2
+ * RF DRIVE = 3
+ * RF STEER = 4
+ * LB DRIVE = 5
+ * LB STEER = 6
+ * RB DRIVE = 7
+ * RB STEER = 8
+ * ARM ROT CENT = 9
+ * TRAP EXIT = 10
+ * SHOOTER LEFT = 11
+ * SHOOTER RIGHT = 12
+ * STAGE SHOOT = 13
+ * INTAKE ROLL = 14
+ * HELP ROLL = 15
+ * HPR ROL EXIT = 16
+ * CHAIN CLIMB = 18
+ * FEED MECH = 19
+ */
+>>>>>>> Stashed changes
