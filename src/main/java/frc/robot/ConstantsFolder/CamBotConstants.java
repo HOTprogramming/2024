@@ -31,11 +31,11 @@ public class CamBotConstants extends ConstantsBase {
             
             FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(0.27, -0.2, 0.175);
             FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
-            FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+            FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
             
             REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -0.28, 0.14);
             REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180));
-            REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+            REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
 
 

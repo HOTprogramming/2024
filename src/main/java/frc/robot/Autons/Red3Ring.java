@@ -35,11 +35,7 @@ public class Red3Ring extends AutonBase {
     public Red3Ring(RobotState robotState) {
         super(robotState);
 
-        if (robotState.getVisionMeasurements() != null) {
-            
-        } else {
-            startPose = new Pose2d(15.3, 5.465, Rotation2d.fromDegrees(180));
-        }
+        
         // startPose = new Pose2d(15.3, 5.465, Rotation2d.fromDegrees(180));
     }
 
@@ -49,6 +45,8 @@ public class Red3Ring extends AutonBase {
         
         switch (step) {
             case start:
+            
+
              generateTrajectory(List.of(startPose, firstring1, firstring2));
             step = Step.firstring1;
             break;
@@ -123,5 +121,7 @@ public class Red3Ring extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.start;
+
+        startPose = new Pose2d(15.3, 5.465, Rotation2d.fromDegrees(180));
     }
 }
