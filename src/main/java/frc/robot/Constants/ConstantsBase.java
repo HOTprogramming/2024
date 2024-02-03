@@ -43,6 +43,11 @@ public class ConstantsBase {
             this.camera = camBotConstants.new Camera();
             this.drivetrain = camBotConstants.new Drivetrain();
         }
+
+        this.auton = camBotConstants.new Auton();
+        this.camera = camBotConstants.new Camera();
+        this.drivetrain = camBotConstants.new Drivetrain();
+
     }
 
     public Auton getAutonConstants() {
@@ -68,6 +73,9 @@ public class ConstantsBase {
         public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
         
+        public Auton getAuton() {
+            return this;
+        }
     }
   
   

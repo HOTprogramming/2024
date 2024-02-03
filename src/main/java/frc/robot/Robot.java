@@ -9,13 +9,15 @@ import frc.robot.Subsystems.Drivetrain;
 
 
 public class Robot extends TimedRobot {
+  private Drivetrain drivetrain;
+
   private ConstantsBase constantsBase;
   private RobotState robotState;
+
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
   // define subsystem objects
-  private Drivetrain drivetrain;
   private Camera camera;
 
   // define autons (alphabetical)
@@ -34,12 +36,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     constantsBase = new ConstantsBase();
-
+    constantsBase.setAllConstants();
     robotState = new RobotState(constantsBase);
+    
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
 
-    drivetrain = new Drivetrain(robotState);
+    drivetrain = new Drivetrain(robotState);  
     camera = new Camera(robotState);
 
     aidenSquare = new AidenSquare(robotState);

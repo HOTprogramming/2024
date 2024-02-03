@@ -172,6 +172,6 @@ public class CamBotConstants extends ConstantsBase {
             BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
                     kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), kInvertRightSide);
 
-        }       
+        }
     }
 }
