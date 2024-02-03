@@ -98,9 +98,10 @@ public Arm(RobotState robotState) {
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
     cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
-    cfg.Feedback.SensorToMechanismRatio = 0.00001; //changes what the cancoder and fx encoder ratio is
+    cfg.Feedback.SensorToMechanismRatio = -1; //changes what the cancoder and fx encoder ratio is
     cfg.Feedback.RotorToSensorRatio = 1; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    //cancoder.setPosition(0);
 
 
     StatusCode armStatus = StatusCode.StatusCodeNotInitialized;
@@ -130,10 +131,12 @@ public Arm(RobotState robotState) {
       armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble());
-
+      SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
 
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble());
+      SmartDashboard.putNumber("ArmCommandedPosition", commander.armPosition1());
+
     }
     public void disabled(){
         armMotor.stopMotor();

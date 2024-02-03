@@ -36,7 +36,7 @@ public class TeleopCommander implements RobotCommander {
         if(joysticks.getXButton()){
             armPos = 0;
         } else if(joysticks.getBButton()){
-            armPos = 1;
+            armPos = 1.02*2;
         }
 
         return armPos;
