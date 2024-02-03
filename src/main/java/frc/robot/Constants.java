@@ -44,15 +44,16 @@ public final class Constants {
     }
 
     public final class ArmConstants {
+        public static final int CANCODER_CAN = 0;
         public static final int ARM_CAN = 9;
-        public static final double CRUISEVELOCITY = 100;
-        public static final double ACCELERATION = 15;
+        public static final double CRUISEVELOCITY = 0.5;
+        public static final double ACCELERATION = 0.3;
         public static final double JERK = 50;
-        public static final double ARMKP = 15;
+        public static final double ARMKP = 0.1;
         public static final double ARMKI = 0;
-        public static final double ARMKD = 0.5;
-        public static final double ARMKV = 0.12;
-        public static final double ARMKS = 0.25;
+        public static final double ARMKD = 0;
+        public static final double ARMKV = 0.1;
+        public static final double ARMKS = 0.1;
         
     }
 }

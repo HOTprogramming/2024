@@ -23,6 +23,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -51,7 +52,7 @@ StatusSignal<Double> armRotorPos;
 public Arm(RobotState robotState) {
     this.robotState = robotState;
     armMotor = new TalonFX(ARM_CAN);
-    cancoder = new CANcoder(1);
+    cancoder = new CANcoder(CANCODER_CAN);
 
    armMagic = new MotionMagicVoltage(0);
 
@@ -86,7 +87,7 @@ public Arm(RobotState robotState) {
     slot0.kS = ARMKS; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = cfg.Feedback;
-    fdb.SensorToMechanismRatio = 12.8;
+    fdb.SensorToMechanismRatio = 1;
 
 
     CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
@@ -97,10 +98,19 @@ public Arm(RobotState robotState) {
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
     cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
-    cfg.Feedback.SensorToMechanismRatio = 1.0;
-    cfg.Feedback.RotorToSensorRatio = 12.8;
+    cfg.Feedback.SensorToMechanismRatio = 0.00001; //changes what the cancoder and fx encoder ratio is
+    cfg.Feedback.RotorToSensorRatio = 1; //12.8;
+    cfg.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-    armMotor.getConfigurator().apply(cfg);
+
+    StatusCode armStatus = StatusCode.StatusCodeNotInitialized;
+    for(int i = 0; i < 5; ++i) {
+      armStatus = armMotor.getConfigurator().apply(cfg);
+      if (armStatus.isOK()) break;
+    }
+    if (!armStatus.isOK()) {
+      System.out.println("Could not configure device. Error: " + armStatus.toString());
+    }
   
     
 }  
@@ -117,12 +127,10 @@ public Arm(RobotState robotState) {
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
 
-      armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
+     // armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
 
+      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble());
 
-      double armComPosition = commander.armPosition1();
-
-      SmartDashboard.putNumber("Desired Arm Position", armComPosition);
 
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble());
