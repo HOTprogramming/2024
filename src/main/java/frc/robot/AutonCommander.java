@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Arm.armDesiredPos;
 
 public class AutonCommander implements RobotCommander {
     RobotState robotState;
@@ -33,7 +34,7 @@ public class AutonCommander implements RobotCommander {
     }
     
     @Override
-    public double armPosition1() {
+    public armDesiredPos armPosition() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'armPosition1'");
     }

@@ -49,6 +49,23 @@ StatusSignal<Double> cancoderPosition;
 StatusSignal<Double> cancoderVelocity;
 StatusSignal<Double> armRotorPos;
 
+public enum armDesiredPos{
+
+  shoot(1.02),
+  zero(0);
+
+  public final double armcpos;
+  public double getcommmPosition(){
+    return armcpos;
+  }
+
+armDesiredPos(double armcpos){
+this.armcpos = armcpos;
+}
+
+
+}
+
 public Arm(RobotState robotState) {
     this.robotState = robotState;
     armMotor = new TalonFX(ARM_CAN);
@@ -128,14 +145,16 @@ public Arm(RobotState robotState) {
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
 
-      armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
+      armDesiredPos thePos = commander.armPosition();
+
+      armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()).withSlot(0));
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble());
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
 
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble());
-      SmartDashboard.putNumber("ArmCommandedPosition", commander.armPosition1());
+      SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
 
     }
     public void disabled(){

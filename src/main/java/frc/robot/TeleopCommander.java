@@ -1,13 +1,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Subsystems.Arm.armDesiredPos;
 
 public class TeleopCommander implements RobotCommander {
     private static XboxController joysticks;
 
     RobotState robotState;
 
-    double armPos = 0;
+
+    armDesiredPos armSetXPos = armDesiredPos.zero;
 
 
     public TeleopCommander(RobotState robotState) {
@@ -32,15 +34,17 @@ public class TeleopCommander implements RobotCommander {
     }
 
     @Override
-    public double armPosition1() {
+    public armDesiredPos armPosition() {
         if(joysticks.getXButton()){
-            armPos = 0;
+            armSetXPos = armDesiredPos.zero;
+            return armSetXPos;
         } else if(joysticks.getBButton()){
-            armPos = 1.02*2;
+            armSetXPos = armDesiredPos.shoot;
+            return armSetXPos;
         }
-
-        return armPos;
-
+        else{
+        return armSetXPos;
+        }
     }
 
     @Override
