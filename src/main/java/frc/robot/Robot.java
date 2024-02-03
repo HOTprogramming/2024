@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
   private Triangle triangle;
   private WillsSquare willsSquare;
 
+  private StraightLine straightLine;
+
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
 
@@ -61,6 +63,8 @@ public class Robot extends TimedRobot {
     red3Ring = new Red3Ring(robotState);
     triangle = new Triangle(robotState);
     willsSquare = new WillsSquare(robotState);
+
+    straightLine = new StraightLine(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");
     autoSelector.addOption("B3 Park", "blue3Park");
