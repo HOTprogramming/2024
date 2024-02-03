@@ -192,6 +192,17 @@ public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             });
         }
 
+        if (robotState.getVisionMeasurements() != null) {
+            for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+                if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
+                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                            robotState.getVisionTimestamps()[i],
+                            robotState.getVisionStdevs().extractColumnVector(i));
+                    // assuming it wants rotation in radians
+                }
+            }
+        }
+
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
             for (int i = 0; i < 4; i++) {
@@ -199,7 +210,7 @@ public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                         currentState.ModuleStates[i].angle.getRadians());
             }
         }
-
+        
     }
 
     @Override
@@ -241,6 +252,13 @@ public class  Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // if (commander.getLockRingCommand()) {
         //     autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getVisionRingTranslation), true);
         // }
+
+        if (commander.getResetRobotPose()) {
+            if (robotState.getVisionMeasurements()[0] != null) {
+                seedFieldRelative(robotState.getVisionMeasurements()[0]);
+            }
+            
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
+import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
 // import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Drivetrain;
@@ -11,8 +12,6 @@ import frc.robot.Subsystems.Arm;
 
 
 public class Robot extends TimedRobot {
-  private Drivetrain drivetrain;
-
   private ConstantsBase constantsBase;
   private RobotState robotState;
 
@@ -20,6 +19,8 @@ public class Robot extends TimedRobot {
   private AutonCommander autonCommander;
 
   private Shooter shooter;
+  private Drivetrain drivetrain;
+  private Camera camera;
   private Arm arm;
 
   // define subsystem objects
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
     shooter = new Shooter(robotState);
     arm = new Arm(robotState);
     drivetrain = new Drivetrain(robotState);  
-    // camera = new Camera(robotState);
+    camera = new Camera(robotState);
 
     aidenSquare = new AidenSquare(robotState);
     blue3Park = new Blue3Park(robotState);
@@ -73,7 +74,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // camera.updateState();
+    camera.updateState();
     drivetrain.updateState(); // drivetrain AFTER camera
 
 
