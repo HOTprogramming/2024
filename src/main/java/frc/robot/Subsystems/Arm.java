@@ -127,7 +127,7 @@ public Arm(RobotState robotState) {
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
 
-     // armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
+      armMotor.setControl(armMagic.withPosition(commander.armPosition1()).withSlot(0));
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble());
 
