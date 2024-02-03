@@ -49,9 +49,9 @@ public class CamBotConstants extends ConstantsBase {
             AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
             AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
 
-            ROBOT_LENGTH_INCHES = 20.25;
-            ROBOT_WITDTH_INCHES = 20.25;
-            MAX_VELOCITY_METERS = 6.37032; // from SDS
+            ROBOT_LENGTH_INCHES = 17.6;
+            ROBOT_WITDTH_INCHES = 17.6;
+            MAX_VELOCITY_METERS = 6; 
             // public MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
             // public MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
             MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
