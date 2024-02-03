@@ -16,7 +16,6 @@ public class Red3Ring extends AutonBase {
         start,
         shoot1,
         firstring1, 
-        firstring2,
         shoot2,
         actualshoot2,
         secondring1,
@@ -45,29 +44,22 @@ public class Red3Ring extends AutonBase {
         
         switch (step) {
             case start:
-            generateTrajectory(List.of(startPose, firstring1));
             step = Step.shoot1;
             break;
         
             case shoot1:
+            generateTrajectory(List.of(startPose, firstring1, firstring2));
             step = Step.firstring1;
             break;
 
             case firstring1:
-            if (queuePath(List.of(robotState.getDrivePose(), firstring2), true) ) {
-                step = Step.firstring2;
+            if (queuePath(List.of(robotState.getDrivePose(), shoot2), true) ) {
+                step = Step.shoot2;
            } else {
                step = Step.firstring1;
            }
             break;
 
-            case firstring2:
-            if (queuePath(List.of(robotState.getDrivePose(), shoot2), true)) {
-                step = Step.shoot2;
-           } else {
-               step = Step.firstring2;
-           }
-            break;
 
             case shoot2:
             if (checkTime() || robotState.getAtTargetPose()) {

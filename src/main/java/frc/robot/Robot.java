@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(willsSquare);
     }
 
-    // autonCommander.setAuto(<TESTING AUTON>);
+    autonCommander.setAuto(red3Ring);
 
     drivetrain.init(autonCommander);
   }
