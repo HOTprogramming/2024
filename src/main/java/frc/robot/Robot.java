@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   private Blue3Under blue3Under;
   private Blue4Ring blue4Ring;
   private Red2Ring red2Ring;
+  private Red3Ring red3Ring;
   private Triangle triangle;
   private WillsSquare willsSquare;
 
@@ -56,6 +57,7 @@ public class Robot extends TimedRobot {
     blue3Under = new Blue3Under(robotState);
     blue4Ring = new Blue4Ring(robotState);
     red2Ring = new Red2Ring(robotState);
+    red3Ring = new Red3Ring(robotState);
     triangle = new Triangle(robotState);
     willsSquare = new WillsSquare(robotState);
 
@@ -103,7 +105,7 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(willsSquare);
     }
 
-    // autonCommander.setAuto(<TESTING AUTON>);
+    autonCommander.setAuto(red3Ring);
 
     drivetrain.init(autonCommander);
   }
