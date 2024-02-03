@@ -102,4 +102,10 @@ public class AutonCommander implements RobotCommander {
         throw new UnsupportedOperationException("Unimplemented method 'getTargetDriveSpeed'");
     }
 
+    @Override
+    public boolean getLockPoseCommand() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLockPoseCommand'");
+    }
+
 }

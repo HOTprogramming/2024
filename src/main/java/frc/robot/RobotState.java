@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.Constants.ConstantsBase;
+import frc.robot.ConstantsFolder.ConstantsBase;
 
 public class RobotState {
     private ConstantsBase constants;

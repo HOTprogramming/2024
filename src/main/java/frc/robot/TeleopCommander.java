@@ -125,5 +125,11 @@ public class TeleopCommander implements RobotCommander {
         return (driver.getLeftTriggerAxis() > .1);
     }
 
+    @Override
+    public boolean getLockPoseCommand() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 
 }
