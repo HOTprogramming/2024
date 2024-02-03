@@ -44,11 +44,7 @@ public class Red3Ring extends AutonBase {
         
         switch (step) {
             case start:
-            step = Step.shoot1;
-            break;
-        
-            case shoot1:
-            generateTrajectory(List.of(startPose, firstring1, firstring2));
+             generateTrajectory(List.of(startPose, firstring1, firstring2));
             step = Step.firstring1;
             break;
 
