@@ -84,8 +84,6 @@ public class Robot extends TimedRobot {
     shooter.enabled(autonCommander);
     drivetrain.enabled(autonCommander);
     arm.enabled(autonCommander);
-
-    drivetrain.enabled(autonCommander);
   }
 
   @Override
