@@ -119,9 +119,10 @@ public class TeleopCommander implements RobotCommander {
         return driver.getStartButton();              
     }
 
+
     @Override
-    public boolean getLockPoseCommand() {
-       return (driver.getLeftTriggerAxis() > .1);
+    public boolean getLockSpeakerCommand() {
+        return (driver.getLeftTriggerAxis() > .1);
     }
 
 

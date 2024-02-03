@@ -1,7 +1,5 @@
 package frc.robot.Autons;
 
-import static frc.robot.Constants.Auton.*;
-
 import java.util.List;
 
 import com.ctre.phoenix6.Utils;
@@ -12,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
-public class TestAuton extends AutonBase {
+public class Blue3Under extends AutonBase {
     enum Step {
         start,
         Ring1,
@@ -42,7 +40,7 @@ public class TestAuton extends AutonBase {
     Pose2d Shoot3Pose = new Pose2d(4, 2.25, Rotation2d.fromDegrees(-30));
     Pose2d endPose = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
 
-    public TestAuton(RobotState robotState) {
+    public Blue3Under(RobotState robotState) {
         super(robotState);
         
         // refrenceTolerances = new Pose2d(.2, .2, Rotation2d.fromDegrees(5));
@@ -72,7 +70,7 @@ public class TestAuton extends AutonBase {
                 break;
             
             case Ring2:
-                if (queuePath(AUTON_DEFAULT_MAX_VELOCITY_METERS, 1, 0, 0, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose, betweenRing3Pose, Ring3Pose), true)) {
+                if (queuePath(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 1, 0, 0, List.of(robotState.getDrivePose(), betweenShoot2Pose, Shoot2Pose, betweenRing3Pose, Ring3Pose), true)) {
                     step = Step.Ring3;
                 }
 

@@ -1,7 +1,5 @@
 package frc.robot.Autons;
 
-import static frc.robot.Constants.Auton.*;
-
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
-public class ActualAuton extends AutonBase {
+public class Blue3Ring extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -36,7 +34,7 @@ public class ActualAuton extends AutonBase {
     
     boolean isShooting = true; 
     
-    public ActualAuton(RobotState robotState) {
+    public Blue3Ring(RobotState robotState) {
         super(robotState);
         startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
      

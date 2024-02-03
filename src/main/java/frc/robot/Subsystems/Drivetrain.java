@@ -1,9 +1,9 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.Drivetrain.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.Constants.ConstantsBase;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory.State;
@@ -29,7 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     RobotState robotState;
-    boolean driveType = true;
+    ConstantsBase.Drivetrain constants;
+    
 
     // swerve commands
     private static final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
@@ -61,45 +63,61 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             xController, yController, thetaController);
 
     // TEMP pose 2d for get angle snap command
-    private Pose2d snapPose = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
 
     public Drivetrain(RobotState robotState) {
         // call swervedriveDrivetrain constructor (parent class)
-        super(DRIVETRAIN_CONSTANTS,
-                FRONT_LEFT_MODULE_CONSTANTS, FRONT_RIGHT_MODULE_CONSTANTS, BACK_LEFT_MODULE_CONSTANTS,
-                BACK_RIGHT_MODULE_CONSTANTS);
+        super(robotState.getConstants().getDriveTrainConstants().DRIVETRAIN_CONSTANTS,
+                robotState.getConstants().getDriveTrainConstants().FRONT_LEFT_MODULE_CONSTANTS, 
+                robotState.getConstants().getDriveTrainConstants().FRONT_RIGHT_MODULE_CONSTANTS, 
+                robotState.getConstants().getDriveTrainConstants().BACK_LEFT_MODULE_CONSTANTS,
+                robotState.getConstants().getDriveTrainConstants().BACK_RIGHT_MODULE_CONSTANTS);
+                
+        this.constants = robotState.getConstants().getDriveTrainConstants();
 
         // initalize robot state
         this.robotState = robotState;
 
         configNeutralMode(NeutralModeValue.Brake);
-        // seedFieldRelative(new Pose2d(16.54, 8.2, Rotation2d.fromDegrees(-90)));
     }
 
-    private void percentDrive(double[] drivePercents) {
-        if (driveType) {
-            setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
+    /**
+     * Controller method built for joystick output
+     * 
+     * @param drivePercents index of length 3, contains values -1 to 1
+     * @param fieldCentricDrive drive fieldcentricly or robotcentricaly
+     */
+    private void percentDrive(double[] drivePercents, boolean fieldCentricDrive) {
+        if (fieldCentricDrive) {
+            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
         } else {
-            setControl(robotCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * MAX_ANGULAR_VELOCITY_RADS));
+            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
         }
     }
 
-    private void autoTurnControl(double[] drivePercents, double targetTheta) {
-        // Uses theta control to rotate bot (radians)
-        if (driveType) {
-            setControl(fieldCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
-                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
-                            Units.degreesToRadians(targetTheta))));
+    /**
+     * Turn automatically in teleop
+     * 
+     * @param drivePercents joystick commands
+     * @param targetTheta target rotation to hit
+     * @param fieldCentricDrive driving fieldcentricaly or robotcentricaly
+     */
+    private void autoTurnControl(double[] drivePercents, Rotation2d targetTheta, boolean fieldCentricDrive) {
+        // Uses theta control to rotate (Rotation2d)
+        if (fieldCentricDrive) {
+            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
         } else {
-            setControl(robotCentric.withVelocityX(drivePercents[0] * MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * MAX_VELOCITY_METERS)
-                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
-                            Units.degreesToRadians(targetTheta))));
+            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
         }
 
     }
@@ -113,6 +131,27 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
     }
+
+    /**
+     * used to point the robot at a relative position
+     * 
+     * @param snapTranslation pose to point at usefull for intaking
+     * @return target angle for intake side
+     */
+    private Rotation2d pointAt(Translation2d snapTranslation) {
+        return new Rotation2d(snapTranslation.getX(), snapTranslation.getY());
+    }
+
+    /**
+     * used to point the robot at an absolute pose
+     * 
+     * @param snapPose pose to point at. Usefull for shooting
+     * @return target angle for shooter side
+     */
+    private Rotation2d pointAt(Pose2d snapPose) {
+        return this.pointAt(currentState.Pose.minus(snapPose).getTranslation());
+    }
+
 
     @Override
     public void updateState() {
@@ -176,7 +215,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     public void enabled(RobotCommander commander) {
         // commands drivetrain based on target drivemode
         if (commander.getDriveMode() == DriveMode.percent) {
-            percentDrive(commander.getDrivePercentCommand());
+            percentDrive(commander.getDrivePercentCommand(), true);
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
         }
@@ -186,59 +225,22 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getPidgeonReset()) {
-            seedFieldRelative(
-                    new Pose2d(currentState.Pose.getX(), currentState.Pose.getY(), Rotation2d.fromRadians(0)));
+            m_pigeon2.reset();
         }
 
         if (commander.getAngleSnapCommand() != -1) {
-            autoTurnControl(commander.getDrivePercentCommand(), commander.getAngleSnapCommand());
+            autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
         }
 
-        if (commander.getLockPoseCommand()) {
-            /*
-             * double goalX = snapPose.getX();
-             * double goalY = snapPose.getY();
-             * double robotX = robotState.getDrivePose().getX();
-             * double robotY = robotState.getDrivePose().getY();
-             * double diffX = robotX - goalX;
-             * double diffY = robotY - goalY;
-             * double hypot = Math.hypot(diffX, diffY);
-             * double strafeX = diffY / hypot;
-             * double strafeY = -(diffX / hypot);
-             * double distX = diffX / hypot;
-             * double distY = diffY / hypot;
-             * double right = commander.getDrivePercentCommand()[0];
-             * double up = commander.getDrivePercentCommand()[1];
-             * double totalX = strafeX * right + distX * up;
-             * double totalY = strafeY * right + distY * up;
-             * Rotation2d rot = new Rotation2d(diffX, diffY);
-             * Pose2d strafePose = new Pose2d(totalX, totalY, rot);
-             */
-            // aiden, NO BAD
-
-            double goalX = snapPose.getX();
-            double goalY = snapPose.getY();
-            double robotX = robotState.getDrivePose().getX();
-            double robotY = robotState.getDrivePose().getY();
-            double diffX = robotX - goalX;
-            double diffY = robotY - goalY;
-            double hypot = Math.hypot(diffX, diffY);
-            Rotation2d rot = new Rotation2d(diffX, diffY);
-            double angle = rot.getDegrees() + 180;
-            System.out.println("diffx" + diffX);
-            System.out.println("diffy" + diffY);
-            System.out.println("slope" + diffY/diffX);
-            System.out.println("ang" + angle);
-            autoTurnControl(commander.getDrivePercentCommand(), angle);
-            driveType = true;
-            // make robot face goal point
-            // set to robot centric
-
-        } else {
-            driveType = true;
-            // in case something else makes it false just add in a thing to instead of
-            // directly false read it and set it to what it was
+        if (commander.getLockSpeakerCommand()) {
+            // TODO add driverstation get for speaker lock pose
+            // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
+            autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker).plus(Rotation2d.fromDegrees(180)), false);
         }
+
+        // if (commander.getLockRingCommand()) {
+        //     autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getVisionRingTranslation), true);
+        // }
     }
 
     @Override
@@ -248,6 +250,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void reset() {
+        tareEverything();
+        m_pigeon2.reset();
     }
 
 }

@@ -5,13 +5,23 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.Constants.ConstantsBase;
 
 public class RobotState {
+    private ConstantsBase constants;
     private Pose2d drivePose;
     private boolean atTargetPose;
 
 
     private boolean shooterOn;
+    public RobotState(ConstantsBase constants) {
+        this.constants = constants;
+    }
+
+    public ConstantsBase getConstants() {
+        return this.constants;
+    }
+
 
      /**
      * Set new drive pose
