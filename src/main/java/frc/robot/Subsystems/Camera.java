@@ -1,11 +1,15 @@
 package frc.robot.Subsystems;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+import org.photonvision.proto.Photon.ProtobufPhotonTrackedTarget;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.SimVisionSystem;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -42,6 +46,10 @@ public class Camera implements SubsystemBase {
 
     PhotonPipelineResult frontResult;
     PhotonPipelineResult rearResult;
+
+    PhotonTrackedTarget frontBestTarget;
+    PhotonTrackedTarget rearBestTarget;
+
 
     double frontSampleTime;
     double rearSampleTime;
@@ -147,25 +155,34 @@ public class Camera implements SubsystemBase {
         frontResult = frontCamera.getLatestResult();
         rearResult = rearCamera.getLatestResult();
 
+        frontBestTarget = frontResult.getBestTarget();
+        rearBestTarget = rearResult.getBestTarget();
+
         frontSampleTime = frontResult.getTimestampSeconds();
         rearSampleTime = rearResult.getTimestampSeconds();
 
         robotState.setVisionTimestamps(new double[] {frontSampleTime, rearSampleTime});
 
-        if (frontResult.getBestTarget() != null) {
-            frontCamEstimation = tags.getTagPose(frontResult.getBestTarget().getFiducialId()).get()
-                            .transformBy(frontResult.getBestTarget().getBestCameraToTarget().inverse())
-                            .transformBy(constants.FRONT_CAMERA_TRANSFROM.inverse())
-                            .toPose2d();
+        if (frontBestTarget != null) {
+            frontCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
+                                                                            tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
+                                                                            constants.FRONT_CAMERA_TRANSFORM).toPose2d();
+            // frontCamEstimation = tags.getTagPose(frontBestTarget.getFiducialId()).get()
+            //                 .transformBy(frontBestTarget.getBestCameraToTarget().inverse())
+            //                 .transformBy(constants.FRONT_CAMERA_TRANSFROM.inverse())
+            //                 .toPose2d();
         } else {
             frontCamEstimation = null;
         }
 
-        if (rearResult.getBestTarget() != null) {
-            rearCamEstimation = tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
-                            .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
-                            .transformBy(constants.REAR_CAMERA_TRANSFROM.inverse())
-                            .toPose2d();
+        if (rearBestTarget != null) {
+            rearCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(rearBestTarget.getBestCameraToTarget(), 
+                                                                            tags.getTagPose(rearBestTarget.getFiducialId()).get(), 
+                                                                            constants.REAR_CAMERA_TRANSFORM).toPose2d();
+            // rearCamEstimation = tags.getTagPose(rearResult.getBestTarget().getFiducialId()).get()
+            //                 .transformBy(rearResult.getBestTarget().getBestCameraToTarget().inverse())
+            //                 .transformBy(constants.REAR_CAMERA_TRANSFORM.inverse())
+            //                 .toPose2d();
         } else {
             rearCamEstimation = null;
         }
@@ -195,7 +212,7 @@ public class Camera implements SubsystemBase {
 
         
         
-        robotState.setVisionMeasurements(new Pose2d[] {(frontResult.getBestTarget() != null) ? 
+        robotState.setVisionMeasurements(new Pose2d[] {(frontBestTarget != null) ? 
                                                         frontCamEstimation : null,
                                                         (rearResult.getBestTarget() != null) ? 
                                                         rearCamEstimation : null});
