@@ -108,4 +108,9 @@ public class AutonCommander implements RobotCommander {
         throw new UnsupportedOperationException("Unimplemented method 'getLockPoseCommand'");
     }
 
+    @Override
+    public boolean getResetRobotPose() {
+        return false;
+    }
+
 }

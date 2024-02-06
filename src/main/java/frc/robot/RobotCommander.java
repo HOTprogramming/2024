@@ -32,6 +32,7 @@ public interface RobotCommander {
     public Pose2d getRefrenceTolerances();
 
     public Pose2d getOdomretryOverride();
+    public boolean getResetRobotPose();
 
     public boolean getPidgeonReset();
 

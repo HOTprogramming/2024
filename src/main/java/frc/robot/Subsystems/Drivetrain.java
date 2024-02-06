@@ -8,6 +8,9 @@ import frc.robot.RobotCommander.DriveMode;
 import frc.robot.trajectory.CustomHolonomicDriveController;
 import frc.robot.trajectory.RotationSequence;
 
+import java.sql.Driver;
+import java.util.Optional;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -27,7 +30,8 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
@@ -194,6 +198,17 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             });
         }
 
+        if (robotState.getVisionMeasurements() != null) {
+            for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+                if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
+                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                            robotState.getVisionTimestamps()[i],
+                            robotState.getVisionStdevs().extractColumnVector(i));
+                    // assuming it wants rotation in radians
+                }
+            }
+        }
+
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
             for (int i = 0; i < 4; i++) {
@@ -201,7 +216,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                         currentState.ModuleStates[i].angle.getRadians());
             }
         }
-
+        
     }
 
     @Override
@@ -237,8 +252,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             setControl(brake);
         }
 
+
         if (commander.getPidgeonReset()) {
             m_pigeon2.reset();
+            
         }
 
         if (commander.getAngleSnapCommand() != -1) {
@@ -254,6 +271,19 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // if (commander.getLockRingCommand()) {
         //     autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getVisionRingTranslation), true);
         // }
+
+        if (commander.getResetRobotPose()) {
+            seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            // Pose2d[] vision = robotState.getVisionMeasurements();
+            // if (vision != null) {
+            //     if (vision[0] != null) {
+            //         seedFieldRelative(new Pose2d(vision[0].getTranslation(), vision[0].getRotation()));
+            //     } else if (vision[1] != null) {
+            //         seedFieldRelative(new Pose2d(vision[1].getTranslation(), vision[1].getRotation()));
+            //     }
+                
+            // }
+        }
     }
 
     @Override

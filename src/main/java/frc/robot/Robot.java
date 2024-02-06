@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
+import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
 // import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Drivetrain;
@@ -11,8 +12,6 @@ import frc.robot.Subsystems.Arm;
 
 
 public class Robot extends TimedRobot {
-  private Drivetrain drivetrain;
-
   private ConstantsBase constantsBase;
   private RobotState robotState;
 
@@ -20,6 +19,8 @@ public class Robot extends TimedRobot {
   private AutonCommander autonCommander;
 
   private Shooter shooter;
+  private Drivetrain drivetrain;
+  private Camera camera;
   private Arm arm;
 
   // define subsystem objects
@@ -31,9 +32,11 @@ public class Robot extends TimedRobot {
   private Blue3Under blue3Under;
   private Blue4Ring blue4Ring;
   private Red2Ring red2Ring;
+  private Red3Ring red3Ring;
   private Triangle triangle;
   private WillsSquare willsSquare;
-  private Red2Left red2Left; 
+
+  private StraightLine straightLine;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -49,7 +52,7 @@ public class Robot extends TimedRobot {
     shooter = new Shooter(robotState);
     arm = new Arm(robotState);
     drivetrain = new Drivetrain(robotState);  
-    // camera = new Camera(robotState);
+    camera = new Camera(robotState);
 
     aidenSquare = new AidenSquare(robotState);
     blue3Park = new Blue3Park(robotState);
@@ -57,9 +60,11 @@ public class Robot extends TimedRobot {
     blue3Under = new Blue3Under(robotState);
     blue4Ring = new Blue4Ring(robotState);
     red2Ring = new Red2Ring(robotState);
+    red3Ring = new Red3Ring(robotState);
     triangle = new Triangle(robotState);
     willsSquare = new WillsSquare(robotState);
-    red2Left = new Red2Left(robotState);
+
+    straightLine = new StraightLine(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");
     autoSelector.addOption("B3 Park", "blue3Park");
@@ -73,7 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // camera.updateState();
+    camera.updateState();
     drivetrain.updateState(); // drivetrain AFTER camera
 
 
@@ -105,7 +110,7 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(willsSquare);
     }
 
-     autonCommander.setAuto(red2Left);
+    autonCommander.setAuto(red3Ring);
 
     drivetrain.init(autonCommander);
   }

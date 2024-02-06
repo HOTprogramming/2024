@@ -31,11 +31,11 @@ public class CamBotConstants extends ConstantsBase {
             
             FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(0.27, -0.2, 0.175);
             FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
-            FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+            FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
             
             REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -0.28, 0.14);
             REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180));
-            REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+            REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
 
 
@@ -49,9 +49,9 @@ public class CamBotConstants extends ConstantsBase {
             AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
             AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
 
-            ROBOT_LENGTH_INCHES = 20.25;
-            ROBOT_WITDTH_INCHES = 20.25;
-            MAX_VELOCITY_METERS = 6.37032; // from SDS
+            ROBOT_LENGTH_INCHES = 17.6;
+            ROBOT_WITDTH_INCHES = 17.6;
+            MAX_VELOCITY_METERS = 6; 
             // public MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
             // public MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
             MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
@@ -61,8 +61,8 @@ public class CamBotConstants extends ConstantsBase {
             // The steer motor uses any SwerveModule.SteerRequestType control request with the
             // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
             SWERVE_STEER_GAINS = new Slot0Configs()
-                .withKP(100).withKI(0).withKD(0.05)
-                .withKS(0).withKV(1.5).withKA(0);
+            .withKP(200).withKI(0).withKD(8)
+            .withKS(0).withKV(1.5).withKA(0);
             // When using closed-loop control, the drive motor uses the control
             // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
             SWERVE_DRIVE_GAINS = new Slot0Configs()
