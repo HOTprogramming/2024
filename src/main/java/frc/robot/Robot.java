@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   private Red2Ring red2Ring;
   private Triangle triangle;
   private WillsSquare willsSquare;
+  private Red2Left red2Left; 
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
     red2Ring = new Red2Ring(robotState);
     triangle = new Triangle(robotState);
     willsSquare = new WillsSquare(robotState);
+    red2Left = new Red2Left(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");
     autoSelector.addOption("B3 Park", "blue3Park");
@@ -103,7 +105,7 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(willsSquare);
     }
 
-    // autonCommander.setAuto(<TESTING AUTON>);
+     autonCommander.setAuto(red2Left);
 
     drivetrain.init(autonCommander);
   }

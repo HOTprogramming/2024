@@ -12,6 +12,7 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.fasterxml.jackson.databind.node.POJONode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
@@ -26,6 +27,7 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
@@ -211,6 +213,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         driveController.setTolerance(commander.getRefrenceTolerances());
     }
 
+    Field2d desiredField = new Field2d();
+
     @Override
     public void enabled(RobotCommander commander) {
         // commands drivetrain based on target drivemode
@@ -218,7 +222,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             percentDrive(commander.getDrivePercentCommand(), true);
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
-        }
+
+        desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(), 
+        commander.getDriveState().poseMeters.getY(),
+        commander.getDriveRotationState().position));
+
+                SmartDashboard.putData("Desired Pose", desiredField);
+        }   
+
+
+
 
         if (commander.getBrakeCommand()) {
             setControl(brake);
