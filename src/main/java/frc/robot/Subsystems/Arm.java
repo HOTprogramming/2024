@@ -51,8 +51,8 @@ StatusSignal<Double> armRotorPos;
 
 public enum armDesiredPos{
 
-  shoot(1.02),
-  zero(0);
+  shoot(127),
+  zero(95);
 
   public final double armcpos;
   public double getcommmPosition(){
@@ -68,8 +68,8 @@ this.armcpos = armcpos;
 
 public Arm(RobotState robotState) {
     this.robotState = robotState;
-    armMotor = new TalonFX(ARM_CAN);
-    cancoder = new CANcoder(CANCODER_CAN);
+    armMotor = new TalonFX(ARM_CAN, "drivetrain");
+    cancoder = new CANcoder(CANCODER_CAN, "drivetrain");               
 
    armMagic = new MotionMagicVoltage(0);
 
@@ -108,16 +108,16 @@ public Arm(RobotState robotState) {
 
 
     CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
-    cancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+    cancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     cancoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     cancoderConfig.MagnetSensor.MagnetOffset = 0.4;
     cancoder.getConfigurator().apply(cancoderConfig);
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
     cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
-    cfg.Feedback.SensorToMechanismRatio = -1; //changes what the cancoder and fx encoder ratio is
-    cfg.Feedback.RotorToSensorRatio = 1; //12.8;
-    cfg.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    cfg.Feedback.SensorToMechanismRatio = 1; //changes what the cancoder and fx encoder ratio is
+    cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
+    cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     //cancoder.setPosition(0);
 
 
@@ -147,13 +147,13 @@ public Arm(RobotState robotState) {
 
       armDesiredPos thePos = commander.armPosition();
 
-      armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()).withSlot(0));
+      armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
 
-      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble());
+      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
 
-      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble());
-      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble());
+      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
       SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
 
     }

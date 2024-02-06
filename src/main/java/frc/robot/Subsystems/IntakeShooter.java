@@ -142,21 +142,21 @@ public class IntakeShooter implements SubsystemBase {
     
     @Override
     public void enabled(RobotCommander commander) {
-        if (commander.getRunShooter()) {
-            shooter1.setControl(m_voltageVelocity.withVelocity(SHOOTER1_MAX_SPEED));
-            shooter2.setControl(m_voltageVelocity.withVelocity(SHOOTER2_MAX_SPEED));
+        // if (commander.getRunShooter()) {
+        //     shooter1.setControl(m_voltageVelocity.withVelocity(SHOOTER1_MAX_SPEED));
+        //     shooter2.setControl(m_voltageVelocity.withVelocity(SHOOTER2_MAX_SPEED));
 
-        } 
-        if(commander.getShooterIntake()){
-            floorIntake.setControl(m_voltageVelocity.withVelocity(FLOORINTAKE_MAX_SPEED));
-            shooterIntake.setControl(m_voltageVelocity.withVelocity(SHOOTERINTAKE_MAX_SPEED));
-        }
-        else {
-            shooter1.set(0);
-            shooter2.set(0);
-            floorIntake.set(0);
-            shooterIntake.set(0);
-        }
+        // } 
+        // if(commander.getShooterIntake()){
+        //     floorIntake.setControl(m_voltageVelocity.withVelocity(FLOORINTAKE_MAX_SPEED));
+        //     shooterIntake.setControl(m_voltageVelocity.withVelocity(SHOOTERINTAKE_MAX_SPEED));
+        // }
+        // else {
+        //     shooter1.set(0);
+        //     shooter2.set(0);
+        //     floorIntake.set(0);
+        //     shooterIntake.set(0);
+        // }
     }
 
     @Override

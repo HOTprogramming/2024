@@ -35,16 +35,15 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public armDesiredPos armPosition() {
-        if(joysticks.getXButton()){
-            armSetXPos = armDesiredPos.zero;
-            return armSetXPos;
-        } else if(joysticks.getBButton()){
+        if(joysticks.getRightBumper()){
             armSetXPos = armDesiredPos.shoot;
             return armSetXPos;
         }
         else{
+        armSetXPos = armDesiredPos.zero;
         return armSetXPos;
         }
+
     }
 
     @Override
