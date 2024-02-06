@@ -66,6 +66,17 @@ public abstract class AutonBase {
         trajectoryGenerator.generate(trajectoryConfig, waypoints);
     }
 
+     public void generateTrajectory(double maxV, double maxAccel, List<Pose2d> points) {
+        trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel);
+        trajectoryGenerator = new CustomTrajectoryGenerator();
+        
+        List<Waypoint> waypoints = new ArrayList<Waypoint>();
+        for (Pose2d point:points) {
+            waypoints.add(Waypoint.fromHolonomicPose(point));
+        }
+        trajectoryGenerator.generate(trajectoryConfig, waypoints);
+    }
+
     public void generateTrajectory(List<Pose2d> points) {
         trajectoryConfig = new  TrajectoryConfig(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, constants.AUTON_DEFAULT_MAX_ACCEL_METERS);
         trajectoryGenerator = new CustomTrajectoryGenerator();
@@ -115,6 +126,20 @@ public abstract class AutonBase {
     public boolean queuePath(List<Pose2d> points, boolean timed) {
         if (trajectoryGenerator == null) {
             generateTrajectory(points);
+        }
+        if (robotState.getAtTargetPose() || (timed && checkTime())) {
+            timer.reset();
+
+            generateTrajectory(points);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+     public boolean queuePath(List<Pose2d> points, double maxV, double maxA, boolean timed) {
+        if (trajectoryGenerator == null) {
+            generateTrajectory(maxV, maxA, points);
         }
         if (robotState.getAtTargetPose() || (timed && checkTime())) {
             timer.reset();
