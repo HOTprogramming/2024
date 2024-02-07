@@ -1,6 +1,5 @@
 package frc.robot.ConstantsFolder;
 
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
@@ -49,8 +48,8 @@ public class CompBotConstants extends ConstantsBase {
             .withKP(3).withKI(0).withKD(0)
             .withKS(0).withKV(0).withKA(0);
             
-
-            if (Utils.isSimulation()) {
+            
+            if (IS_SIMULATION) {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
@@ -59,8 +58,6 @@ public class CompBotConstants extends ConstantsBase {
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }
-            
-            
 
 
 
