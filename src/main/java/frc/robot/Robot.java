@@ -18,9 +18,9 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
-  private Shooter shooter;
+  // private Shooter shooter;
   private Drivetrain drivetrain;
-  private Camera camera;
+  // private Camera camera;
   private Arm arm;
 
   // define subsystem objects
@@ -49,10 +49,10 @@ public class Robot extends TimedRobot {
     
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
-    shooter = new Shooter(robotState);
+    // shooter = new Shooter(robotState);
     arm = new Arm(robotState);
     drivetrain = new Drivetrain(robotState);  
-    camera = new Camera(robotState);
+    // camera = new Camera(robotState);
 
     aidenSquare = new AidenSquare(robotState);
     blue3Park = new Blue3Park(robotState);
@@ -78,11 +78,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    camera.updateState();
+    // camera.updateState();
     drivetrain.updateState(); // drivetrain AFTER camera
 
 
-    shooter.updateState();
+    // shooter.updateState();
     arm.updateState();
   }
 
@@ -125,26 +125,26 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    shooter.reset();
+    // shooter.reset();
     drivetrain.reset();
     arm.reset();
-    shooter.reset();
+    // shooter.reset();
   }
 
   @Override
   public void teleopPeriodic() {
-    shooter.enabled(teleopCommander);
+    // shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
     arm.enabled(teleopCommander);
-    shooter.enabled(teleopCommander);
+    // shooter.enabled(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
-    shooter.disabled();
+    // shooter.disabled();
     drivetrain.disabled();
     arm.disabled();
-    shooter.disabled();
+    // shooter.disabled();
   }
 
   @Override

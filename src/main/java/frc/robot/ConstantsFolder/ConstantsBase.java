@@ -15,7 +15,8 @@ import edu.wpi.first.math.util.Units;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Comp;
+    public RobotType ROBOT_TYPE = RobotType.Practice;
+    public boolean IS_SIMULATION = true;
 
     private Auton auton;
     private Camera camera;
@@ -43,11 +44,6 @@ public class ConstantsBase {
             this.camera = camBotConstants.new Camera();
             this.drivetrain = camBotConstants.new Drivetrain();
         }
-
-        this.auton = camBotConstants.new Auton();
-        this.camera = camBotConstants.new Camera();
-        this.drivetrain = camBotConstants.new Drivetrain();
-
     }
 
     public Auton getAutonConstants() {
@@ -157,9 +153,9 @@ public class ConstantsBase {
         // private ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
         
-        public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
-        public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
 
 
