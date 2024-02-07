@@ -25,7 +25,6 @@ public class CompBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            HAS_CAMERA = false;
         }
     }
 

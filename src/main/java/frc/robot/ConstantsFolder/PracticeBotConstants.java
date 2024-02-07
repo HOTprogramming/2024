@@ -22,7 +22,9 @@ public class PracticeBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            HAS_CAMERA = false;
+            HAS_LEFT_CAMERA = true;
+            HAS_RIGHT_CAMERA = true;
+            HAS_REAR_CAMERA = true;
         }
     }
 
