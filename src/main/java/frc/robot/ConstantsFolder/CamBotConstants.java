@@ -1,7 +1,6 @@
 package frc.robot.ConstantsFolder;
 
 
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
@@ -72,7 +71,7 @@ public class CamBotConstants extends ConstantsBase {
 
             // The closed-loop output type to use for the steer motors;
             // This affects the PID/FF gains for the steer motors
-            if (Utils.isSimulation()) {
+            if (IS_SIMULATION) {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;

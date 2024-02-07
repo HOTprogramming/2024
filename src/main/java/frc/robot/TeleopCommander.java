@@ -27,7 +27,7 @@ public class TeleopCommander implements RobotCommander {
    @Override
    
     public double[] getDrivePercentCommand() {
-        return new double[] {-driver.getLeftY(), driver.getLeftX(), driver.getRightX()};
+        return new double[] {-driver.getLeftY(), -driver.getLeftX(), -driver.getRightX()};
     }
 
     @Override
