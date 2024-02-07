@@ -6,7 +6,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
-
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
@@ -23,7 +25,12 @@ public class PracticeBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            HAS_CAMERA = false;
+            //PracticeBot will have all 4 cameras, missing front right now
+            HAS_FRONT_CAMERA = false;
+            HAS_REAR_CAMERA = true;
+            HAS_LEFT_CAMERA = true;
+            HAS_RIGHT_CAMERA = true;
+            
         }
     }
 
