@@ -112,7 +112,7 @@ public class Camera implements SubsystemBase {
 
         rearCamera = new PhotonCamera(constants.REAR_CAMERA_NAME);
 
-        if (Utils.isSimulation()) {
+        if (true) {
             globalShutterProperties = new SimCameraProperties();
             globalShutterProperties.setFPS(60);
             globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
@@ -146,7 +146,7 @@ public class Camera implements SubsystemBase {
 
         currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
 
-        if (Utils.isSimulation()) {
+        if (true) {
             if (robotState.getDrivePose() != null) {
                 simVision.update(robotState.getDrivePose());
             }

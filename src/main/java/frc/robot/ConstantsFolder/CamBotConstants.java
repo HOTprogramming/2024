@@ -72,7 +72,7 @@ public class CamBotConstants extends ConstantsBase {
 
             // The closed-loop output type to use for the steer motors;
             // This affects the PID/FF gains for the steer motors
-            if (Utils.isSimulation()) {
+            if (true) {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
