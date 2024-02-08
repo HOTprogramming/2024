@@ -25,8 +25,10 @@ public class CamBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            HAS_CAMERA = true;
                
+            //FRONT CAMEARA
+            HAS_FRONT_CAMERA = true;
+
             FRONT_CAMERA_NAME = "front_camera";
             
             FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(0.27, -0.2, 0.175);
