@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.trajectory.RotationSequence;
 
@@ -14,6 +15,9 @@ public class TeleopCommander implements RobotCommander {
 
     RobotState robotState;
     double armPose;
+
+
+    armDesiredPos armSetXPos = armDesiredPos.zero;
 
 
     public TeleopCommander(RobotState robotState) {
@@ -55,6 +59,9 @@ public class TeleopCommander implements RobotCommander {
     public boolean getRunShooter() {
         return operator.getRightBumper();
     }
+    public boolean getRunFeeder() {
+        return (operator.getRightTriggerAxis() > 0.01);
+    }
 
     public boolean increaseLeftTargetSpeed() {
         return operator.getYButtonPressed();
@@ -74,15 +81,25 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public double getTargetDriveSpeed() {
-        return 0;
+        return operator.getLeftY();
     }
 
-    public double getRunArm() {
-        if (operator.getLeftY() < 0.05 && operator.getLeftY() > -0.05) {
-            return 0;
-        } else {
-            return operator.getLeftY();
+    @Override
+    public double getTargetArmSpeed() {
+        return operator.getRightY() * 5;
+    }
+
+    @Override
+    public armDesiredPos armPosition() {
+        if(operator.getRightBumper()){
+            armSetXPos = armDesiredPos.shoot;
+            return armSetXPos;
         }
+        else{
+        armSetXPos = armDesiredPos.zero;
+        return armSetXPos;
+        }
+
     }
 
 

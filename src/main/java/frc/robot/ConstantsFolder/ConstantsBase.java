@@ -21,6 +21,7 @@ public class ConstantsBase {
     private Auton auton;
     private Camera camera;
     private Drivetrain drivetrain;
+    private Shooter shooter;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -32,17 +33,20 @@ public class ConstantsBase {
             this.auton = compBotConstants.new Auton();
             this.camera = compBotConstants.new Camera();
             this.drivetrain = compBotConstants.new Drivetrain();
+            this.shooter = practiceBotConstants.new Shooter();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
             this.drivetrain = practiceBotConstants.new Drivetrain();
+            this.shooter = practiceBotConstants.new Shooter();
 
         } else {
             this.auton = camBotConstants.new Auton();
             this.camera = camBotConstants.new Camera();
             this.drivetrain = camBotConstants.new Drivetrain();
+            this.shooter = practiceBotConstants.new Shooter();
         }
     }
 
@@ -57,6 +61,11 @@ public class ConstantsBase {
     public Drivetrain getDriveTrainConstants() {
         return this.drivetrain;
     }
+
+    public Shooter getShooterConstants() {
+        return this.shooter;
+    }
+
 
     private enum RobotType {
         Comp,
@@ -90,7 +99,34 @@ public class ConstantsBase {
         public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
     }
-  
+ 
+    public abstract class Shooter {
+        public int RIGHT_FLYWHEEL_CAN = 12;
+        public int LEFT_FLYWHEEL_CAN = 11;
+        public int FEEDER_CAN = 13;
+
+        public double TARGET_SPEED_INCREMENT = 5;
+        public double START_TARGET_SPEED = 0;
+
+        public double FEEDER_SPEED = 10;
+        public double FEEDER_REVOLUTIONS = 25;
+
+        public double FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+        public double FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
+
+        public double FLYWHEEL_KP = 0.25;
+        public double FLYWHEEL_KI = 0.5;
+        public double FLYWHEEL_KD = 0.0001;
+        public double LEFT_FLYWHEEL_KV = 0.133;
+        public double RIGHT_FLYWHEEL_KV = 0.138;
+        public double LEFT_FLYWHEEL_KS = 0.384;
+        public double RIGHT_FLYWHEEL_KS = 0.38;
+        public double FLYWHEEL_PEAK_VOLTAGE = 12;
+        public double FEEDER_KP = 0.25;
+        public double FEEDER_KI = 0.5;
+        public double FEEDER_KD = 0.0001;
+    }
+
     public abstract class Drivetrain {
         public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
