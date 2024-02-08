@@ -2,6 +2,9 @@ package frc.robot;
 
 import frc.robot.Autons.AutonBase;
 import frc.robot.Subsystems.Arm.armDesiredPos;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.trajectory.Trajectory.State;
+import frc.robot.trajectory.RotationSequence;
 
 public class AutonCommander implements RobotCommander {
     RobotState robotState;
@@ -19,13 +22,85 @@ public class AutonCommander implements RobotCommander {
     }
 
     @Override
+    public double[] getDrivePercentCommand() {
+        return new double[] {0, 0 ,0};
+    }
+
+    public boolean increaseLeftTargetSpeed() {
+        return false;
+    }
+
+    public boolean decreaseLeftTargetSpeed() {
+        return false;
+    }
+
+    public boolean increaseRightTargetSpeed() {
+        return false;
+    }
+
+    public boolean decreaseRightTargetSpeed() {
+        return false;
+    }
+
+    @Override
+    public State getDriveState() {
+        return auto.holoDriveState;
+    }
+
+
+    @Override
+    public RotationSequence.State getDriveRotationState() {
+        return auto.rotationState;
+    }
+
+    @Override
+    public DriveMode getDriveMode() {
+        return DriveMode.stateDrive;
+    }
+
+    @Override
+    public Pose2d getRefrenceTolerances() {
+        return auto.refrenceTolerances;
+    }
+
+    @Override
+    public Pose2d getOdomretryOverride() {
+        return auto.startPose;
+    }
+
+    @Override
+    public boolean getBrakeCommand() {
+        return auto.swerveBrake;
+    }
+
+    @Override
+    public int getAngleSnapCommand() {
+        return -1;
+    }
+
+    @Override
+    public boolean getPidgeonReset() {
+        return false;
+    }
+
+    @Override
+    public boolean getLockSpeakerCommand() {
+        return false;
+    }
+    public double getRunArm() {
+        return auto.armPos;
+    }
+
+    @Override
     public boolean getRunShooter() {
-        return auto.runShooter;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRunShooter'");
     }
 
     @Override
     public double getTargetDriveSpeed() {
-        return auto.driveSpeed;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTargetDriveSpeed'");
     }
 
     @Override
@@ -40,6 +115,17 @@ public class AutonCommander implements RobotCommander {
     }
     @Override
     public boolean getShooterIntake(){
+        return false;
+    }
+
+    @Override
+    public boolean getLockPoseCommand() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLockPoseCommand'");
+    }
+
+    @Override
+    public boolean getResetRobotPose() {
         return false;
     }
 

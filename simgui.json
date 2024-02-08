@@ -1,20 +1,9 @@
 {
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
-    }
-  },
-  "NetworkTables": {
-    "transitory": {
-      "Shuffleboard": {
-        ".metadata": {
-          "open": true
-        },
-        ".recording": {
-          "open": true
-        },
-        "open": true
-      }
+      "/Drivetrain": "Field2d",
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
     }
   },
   "NetworkTables Info": {
