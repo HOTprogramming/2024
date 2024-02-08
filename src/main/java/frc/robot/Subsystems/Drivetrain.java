@@ -84,6 +84,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         this.robotState = robotState;
 
         configNeutralMode(NeutralModeValue.Brake);
+        fieldTypePublisher.set("Field2d");
+
     }
 
     /**
@@ -182,7 +184,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             velocities = distanceDifference.div(timeDifference);
 
             // publishes pose to smartdashboard
-            fieldTypePublisher.set("Field2d");
             posePublisher.set(new double[] {
                     currentState.Pose.getX(),
                     currentState.Pose.getY(),
