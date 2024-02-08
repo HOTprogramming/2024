@@ -55,13 +55,13 @@ public class RobotState {
         this.atTargetPose = atTargetPose;
     }
 
-    public void encoderCounts(double position){
-        this.position = position;
-    }
+    // public void encoderCounts(double position){
+    //     this.position = position;
+    // }
 
-    public double getEncoderCounts(){
-        return position;
-    }
+    // public double getEncoderCounts(){
+    //     return position;
+    // }
 
     /**
      * Get within target tolerances

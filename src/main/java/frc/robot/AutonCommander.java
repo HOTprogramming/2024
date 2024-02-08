@@ -88,7 +88,8 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
     public double getRunArm() {
-        return auto.armPos;
+        // return auto.armPos;
+        return 0;
     }
 
     @Override
@@ -112,10 +113,6 @@ public class AutonCommander implements RobotCommander {
     public armDesiredPos armPosition() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'armPosition1'");
-    }
-    @Override
-    public boolean getShooterIntake(){
-        return false;
     }
 
     @Override

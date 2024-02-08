@@ -57,7 +57,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getRunShooter() {
-        return operator.getRightBumper();
+        return driver.getRightTriggerAxis() > .25;
     }
 
     public boolean increaseLeftTargetSpeed() {
@@ -78,17 +78,17 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public double getTargetDriveSpeed() {
-        return joysticks.getLeftY();
+        return operator.getLeftY();
     }
 
     @Override
     public double getTargetArmSpeed() {
-        return joysticks.getRightY() * 5;
+        return operator.getRightY() * 5;
     }
 
     @Override
     public armDesiredPos armPosition() {
-        if(joysticks.getRightBumper()){
+        if(operator.getRightBumper()){
             armSetXPos = armDesiredPos.shoot;
             return armSetXPos;
         }

@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
-  // private Shooter shooter;
+  private Shooter shooter;
   private Drivetrain drivetrain;
   // private Camera camera;
   private Arm arm;
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
-    // shooter = new Shooter(robotState);
+    shooter = new Shooter(robotState);
     arm = new Arm(robotState);
     drivetrain = new Drivetrain(robotState);  
     // camera = new Camera(robotState);
@@ -66,7 +66,6 @@ public class Robot extends TimedRobot {
     willsSquare = new WillsSquare(robotState);
 
     straightLine = new StraightLine(robotState);
-    arm = new Arm(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");
     autoSelector.addOption("B3 Park", "blue3Park");

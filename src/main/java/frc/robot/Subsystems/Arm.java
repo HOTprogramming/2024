@@ -164,4 +164,9 @@ public Arm(RobotState robotState) {
         armMotor.stopMotor();
         armMotor.setPosition(0);
     }
+
+    @Override
+    public void init(RobotCommander commander) {
+      // TODO Auto-generated method stub
+    }
 }
