@@ -71,10 +71,15 @@ public class CamBotConstants extends ConstantsBase {
 
             // The closed-loop output type to use for the steer motors;
             // This affects the PID/FF gains for the steer motors
-            STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
-            // The closed-loop output type to use for the drive motors;
-            // This affects the PID/FF gains for the drive motors
-            DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+            if (IS_SIMULATION) {
+                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
+
+                DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
+            } else {
+                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+
+                DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+            }
 
             // The stator current at which the wheels start to slip;
             // This needs to be tuned to your individual robot
