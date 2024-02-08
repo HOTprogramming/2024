@@ -1,6 +1,5 @@
 package frc.robot.ConstantsFolder;
 
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
@@ -36,25 +35,31 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {
+            AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
+            AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+
             ROBOT_LENGTH_INCHES = 20.25;
             ROBOT_WITDTH_INCHES = 20.25;
             MAX_VELOCITY_METERS = 6.37032; // from SDS
-            // public MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
-            // public MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
+            // MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
+            // MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
             MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
 
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
-            Slot0Configs SWERVE_STEER_GAINS = new Slot0Configs()
+            SWERVE_STEER_GAINS = new Slot0Configs()
             .withKP(100).withKI(0).withKD(0.2)
             .withKS(0).withKV(1.5).withKA(0);
 
-            Slot0Configs SWERVE_DRIVE_GAINS = new Slot0Configs()
+            SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
             .withKS(0).withKV(0).withKA(0);
             
-            
-            if (true) {
+            // STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+
+            // DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+
+            if (IS_SIMULATION) {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
@@ -63,6 +68,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }
+            
 
 
 
@@ -82,6 +88,8 @@ public class PracticeBotConstants extends ConstantsBase {
             // Are steer motors GENERALLY reversed
             kSteerMotorReversed = true;
 
+
+            
 
             CANBUS_NAME = "drivetrain";
             PIDGEON_CAN = 50;
@@ -121,66 +129,67 @@ public class PracticeBotConstants extends ConstantsBase {
 
                         
             
-            // offsets in radians
+                // offsets in radians
 
-            // Front Left
-            SWERVE_FRONT_LEFT_DRIVE_UNINVERT = !true;
-            SWERVE_FRONT_LEFT_STEER_UNINVERT = false;
-            kFrontLeftDriveMotorId = 1;
-            kFrontLeftSteerMotorId = 2;
-            kFrontLeftEncoderId = 43;
-            kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
+                // Front Left
+                SWERVE_FRONT_LEFT_DRIVE_UNINVERT = !true;
+                SWERVE_FRONT_LEFT_STEER_UNINVERT = false;
+                kFrontLeftDriveMotorId = 1;
+                kFrontLeftSteerMotorId = 2;
+                kFrontLeftEncoderId = 43;
+                kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
 
-            kFrontLeftXPosInches = 10.125;
-            kFrontLeftYPosInches = 10.125;
+                kFrontLeftXPosInches = 10.125;
+                kFrontLeftYPosInches = 10.125;
 
-            // Front Right
-            SWERVE_FRONT_RIGHT_DRIVE_UNINVERT = !true;
-            SWERVE_FRONT_RIGHT_STEER_UNINVERT = true;
-            kFrontRightDriveMotorId = 3;
-            kFrontRightSteerMotorId = 4;
-            kFrontRightEncoderId = 41;
-            kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
+                // Front Right
+                SWERVE_FRONT_RIGHT_DRIVE_UNINVERT = !true;
+                SWERVE_FRONT_RIGHT_STEER_UNINVERT = true;
+                kFrontRightDriveMotorId = 3;
+                kFrontRightSteerMotorId = 4;
+                kFrontRightEncoderId = 41;
+                kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
 
-            kFrontRightXPosInches = 10.125;
-            kFrontRightYPosInches = -10.125;
+                kFrontRightXPosInches = 10.125;
+                kFrontRightYPosInches = -10.125;
 
-            // Back Left
-            SWERVE_BACK_LEFT_DRIVE_UNINVERT = !false;
-            SWERVE_BACK_LEFT_STEER_UNINVERT = false;
-            kBackLeftDriveMotorId = 5;
-            kBackLeftSteerMotorId = 6;
-            kBackLeftEncoderId = 42;
-            kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
+                // Back Left
+                SWERVE_BACK_LEFT_DRIVE_UNINVERT = !false;
+                SWERVE_BACK_LEFT_STEER_UNINVERT = false;
+                kBackLeftDriveMotorId = 5;
+                kBackLeftSteerMotorId = 6;
+                kBackLeftEncoderId = 42;
+                kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
 
-            kBackLeftXPosInches = -10.125;
-            kBackLeftYPosInches = 10.125;
-
-
-            // Back Right
-            SWERVE_BACK_RIGHT_DRIVE_UNINVERT = !true;
-            SWERVE_BACK_RIGHT_STEER_UNINVERT = false;
-            kBackRightDriveMotorId = 7;
-            kBackRightSteerMotorId = 8;
-            kBackRightEncoderId = 40;
-            kBackRightEncoderOffset = -0.44140625 * Math.PI;
-
-            kBackRightXPosInches = -10.125;
-            kBackRightYPosInches = -10.125;
+                kBackLeftXPosInches = -10.125;
+                kBackLeftYPosInches = 10.125;
 
 
-            FRONT_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
-            kFrontLeftSteerMotorId, kFrontLeftDriveMotorId, kFrontLeftEncoderId, kFrontLeftEncoderOffset / Math.PI, Units.inchesToMeters(kFrontLeftXPosInches), Units.inchesToMeters(kFrontLeftYPosInches), !SWERVE_FRONT_LEFT_DRIVE_UNINVERT)
-            .withSteerMotorInverted(!SWERVE_FRONT_LEFT_STEER_UNINVERT);
-            FRONT_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
-            kFrontRightSteerMotorId, kFrontRightDriveMotorId, kFrontRightEncoderId, kFrontRightEncoderOffset / Math.PI, Units.inchesToMeters(kFrontRightXPosInches), Units.inchesToMeters(kFrontRightYPosInches), !SWERVE_FRONT_RIGHT_DRIVE_UNINVERT)
-            .withSteerMotorInverted(!SWERVE_FRONT_RIGHT_STEER_UNINVERT);
-            BACK_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
-            kBackLeftSteerMotorId, kBackLeftDriveMotorId, kBackLeftEncoderId, kBackLeftEncoderOffset / Math.PI, Units.inchesToMeters(kBackLeftXPosInches), Units.inchesToMeters(kBackLeftYPosInches), !SWERVE_BACK_LEFT_DRIVE_UNINVERT)
-            .withSteerMotorInverted(!SWERVE_BACK_LEFT_STEER_UNINVERT);
-            BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
-            kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset / Math.PI, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), !SWERVE_BACK_RIGHT_DRIVE_UNINVERT)
-            .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
+                // Back Right
+                SWERVE_BACK_RIGHT_DRIVE_UNINVERT = !true;
+                SWERVE_BACK_RIGHT_STEER_UNINVERT = false;
+                kBackRightDriveMotorId = 7;
+                kBackRightSteerMotorId = 8;
+                kBackRightEncoderId = 40;
+                kBackRightEncoderOffset = -0.44140625 * Math.PI;
+
+                kBackRightXPosInches = -10.125;
+                kBackRightYPosInches = -10.125;
+
+
+                FRONT_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+                kFrontLeftSteerMotorId, kFrontLeftDriveMotorId, kFrontLeftEncoderId, kFrontLeftEncoderOffset / Math.PI, Units.inchesToMeters(kFrontLeftXPosInches), Units.inchesToMeters(kFrontLeftYPosInches), !SWERVE_FRONT_LEFT_DRIVE_UNINVERT)
+                .withSteerMotorInverted(!SWERVE_FRONT_LEFT_STEER_UNINVERT);
+                FRONT_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+                kFrontRightSteerMotorId, kFrontRightDriveMotorId, kFrontRightEncoderId, kFrontRightEncoderOffset / Math.PI, Units.inchesToMeters(kFrontRightXPosInches), Units.inchesToMeters(kFrontRightYPosInches), !SWERVE_FRONT_RIGHT_DRIVE_UNINVERT)
+                .withSteerMotorInverted(!SWERVE_FRONT_RIGHT_STEER_UNINVERT);
+                BACK_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+                kBackLeftSteerMotorId, kBackLeftDriveMotorId, kBackLeftEncoderId, kBackLeftEncoderOffset / Math.PI, Units.inchesToMeters(kBackLeftXPosInches), Units.inchesToMeters(kBackLeftYPosInches), !SWERVE_BACK_LEFT_DRIVE_UNINVERT)
+                .withSteerMotorInverted(!SWERVE_BACK_LEFT_STEER_UNINVERT);
+                BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+                kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset / Math.PI, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), !SWERVE_BACK_RIGHT_DRIVE_UNINVERT)
+                .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
+            
         }
     }
 }

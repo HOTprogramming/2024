@@ -15,7 +15,8 @@ import edu.wpi.first.math.util.Units;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Comp;
+    public RobotType ROBOT_TYPE = RobotType.Practice;
+    public boolean IS_SIMULATION = true;
 
     private Auton auton;
     private Camera camera;
@@ -43,11 +44,6 @@ public class ConstantsBase {
             this.camera = camBotConstants.new Camera();
             this.drivetrain = camBotConstants.new Drivetrain();
         }
-
-        this.auton = camBotConstants.new Auton();
-        this.camera = camBotConstants.new Camera();
-        this.drivetrain = camBotConstants.new Drivetrain();
-
     }
 
     public Auton getAutonConstants() {
@@ -116,8 +112,8 @@ public class ConstantsBase {
 
         public String RIGHT_CAMERA_NAME = "right_camera";
 
-        public Translation3d RIGHT_CAMERA_REALITIVE_POSITION = new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet
-        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(5), Units.degreesToRadians(-30));
+        public Translation3d RIGHT_CAMERA_REALITIVE_POSITION = new Translation3d(Units.inchesToMeters(3), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet
+        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(5), Units.degreesToRadians(-30)); //Angle is not set yet
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_REALITIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 
         //LEFT
@@ -125,8 +121,8 @@ public class ConstantsBase {
 
         public String LEFT_CAMERA_NAME = "left_camera";
 
-        public Translation3d LEFT_CAMERA_REALITIVE_POSITION = new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(5), Units.degreesToRadians(30));
+        public Translation3d LEFT_CAMERA_REALITIVE_POSITION = new Translation3d(Units.inchesToMeters(3), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet
+        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(5), Units.degreesToRadians(30)); //Angle is not set yet
         public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_REALITIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
     }
@@ -157,9 +153,9 @@ public class ConstantsBase {
         // private ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
         
-        public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
-        public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+        public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
 
 

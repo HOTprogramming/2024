@@ -1,7 +1,6 @@
 package frc.robot.ConstantsFolder;
 
 
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
@@ -26,11 +25,8 @@ public class CamBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //The cambot we have been practicing with uses a front and a back camera  
-
-            //FRONT CAMERA
-            HAS_FRONT_CAMERA = true;
-
+            HAS_CAMERA = true;
+               
             FRONT_CAMERA_NAME = "front_camera";
             
             FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(0.27, -0.2, 0.175);
@@ -76,7 +72,7 @@ public class CamBotConstants extends ConstantsBase {
 
             // The closed-loop output type to use for the steer motors;
             // This affects the PID/FF gains for the steer motors
-            if (true) {
+            if (IS_SIMULATION) {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
