@@ -33,6 +33,36 @@ public class PracticeBotConstants extends ConstantsBase {
         }
     }
 
+    public class Shooter extends ConstantsBase.Shooter {
+        public Shooter() {
+            RIGHT_FLYWHEEL_CAN = 12;
+            LEFT_FLYWHEEL_CAN = 11;
+            FEEDER_CAN = 13;
+
+            TARGET_SPEED_INCREMENT = 5;
+            START_TARGET_SPEED = 10;
+
+            FEEDER_SPEED = 20;
+            FEEDER_REVOLUTIONS = 50;
+
+            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
+
+            FLYWHEEL_KP = 0.25;
+            FLYWHEEL_KI = 0.5;
+            FLYWHEEL_KD = 0.0001;
+            LEFT_FLYWHEEL_KV = 0.133;
+            RIGHT_FLYWHEEL_KV = 0.138;
+            LEFT_FLYWHEEL_KS = 0.384;
+            RIGHT_FLYWHEEL_KS = 0.38;
+            FLYWHEEL_PEAK_VOLTAGE = 12;
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+        }
+
+    }
+
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {
             AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;

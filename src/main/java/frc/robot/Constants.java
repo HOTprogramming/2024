@@ -40,7 +40,6 @@ public final class Constants {
     public final class Auton {
         public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
-        
     }
   
   
@@ -211,17 +210,18 @@ public final class Constants {
         .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
     }
     
+
     public final class ArmConstants {
+        public static final int CANCODER_CAN = 44;
         public static final int ARM_CAN = 9;
-
-        public static final double ARM_KP = 5;
-        public static final double ARM_KI = 0;
-        public static final double ARM_KD = 0.1;
-        public static final double ARM_KV = 0.12;
-        public static final double ARM_KS = 0.25;
-
-        public static final double ARM_CRUISE_VELOCITY = 5;
-        public static final double ARM_ACCELERATION = 10;
-        public static final double ARM_JERK = 50;
+        public static final double CRUISEVELOCITY = 400;
+        public static final double ACCELERATION = 400;
+        public static final double JERK = 2000;
+        public static final double ARMKP = 380;
+        public static final double ARMKI = 0;
+        public static final double ARMKD = 0;
+        public static final double ARMKV = 0.8;
+        public static final double ARMKS = 0.1;
+        
     }
 }
