@@ -1,0 +1,23 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        ".metadata": {
+          "open": true
+        },
+        ".recording": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  }
+}
