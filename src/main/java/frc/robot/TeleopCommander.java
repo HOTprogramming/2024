@@ -59,6 +59,9 @@ public class TeleopCommander implements RobotCommander {
     public boolean getRunShooter() {
         return driver.getRightTriggerAxis() > .25;
     }
+    public boolean getRunFeeder() {
+        return (operator.getRightTriggerAxis() > 0.01);
+    }
 
     public boolean increaseLeftTargetSpeed() {
         return operator.getYButtonPressed();

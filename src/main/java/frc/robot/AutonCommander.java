@@ -126,4 +126,10 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public boolean getRunFeeder() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }
