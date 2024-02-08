@@ -159,7 +159,6 @@ public class Camera implements SubsystemBase {
 
         // simulation setup
         if (tempSimBool) {
-            System.out.println("test");
             globalShutterProperties = new SimCameraProperties();
             globalShutterProperties.setFPS(60);
             globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
