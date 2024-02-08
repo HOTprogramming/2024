@@ -228,7 +228,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         driveController.setTolerance(commander.getRefrenceTolerances());
     }
 
-    Field2d desiredField = new Field2d();
+    //Field2d desiredField = new Field2d();
 
     @Override
     public void enabled(RobotCommander commander) {
@@ -238,11 +238,11 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
 
-        desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(), 
-        commander.getDriveState().poseMeters.getY(),
-        commander.getDriveRotationState().position));
+        //desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(), 
+        //commander.getDriveState().poseMeters.getY(),
+        //commander.getDriveRotationState().position));
 
-                SmartDashboard.putData("Desired Pose", desiredField);
+                //SmartDashboard.putData("Desired Pose", desiredField);
         }   
 
 

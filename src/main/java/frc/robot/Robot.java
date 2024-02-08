@@ -35,6 +35,9 @@ public class Robot extends TimedRobot {
   private Red3Ring red3Ring;
   private Triangle triangle;
   private WillsSquare willsSquare;
+  private Red3Left red3Left;
+  private Red3Right red3Right; 
+  private Close3 close3; 
 
   private StraightLine straightLine;
 
@@ -63,6 +66,9 @@ public class Robot extends TimedRobot {
     red3Ring = new Red3Ring(robotState);
     triangle = new Triangle(robotState);
     willsSquare = new WillsSquare(robotState);
+    red3Left = new Red3Left(robotState);
+    red3Right = new Red3Right(robotState);
+    close3 = new Close3(robotState);
 
     straightLine = new StraightLine(robotState);
 
@@ -110,7 +116,7 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(willsSquare);
     }
 
-    autonCommander.setAuto(red3Ring);
+    autonCommander.setAuto(red3Left);
 
     drivetrain.init(autonCommander);
   }
