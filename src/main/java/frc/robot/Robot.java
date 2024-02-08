@@ -137,12 +137,14 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
+    arm.enabled(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
     shooter.disabled();
     drivetrain.disabled();
+    arm.disabled();
   }
 
   @Override

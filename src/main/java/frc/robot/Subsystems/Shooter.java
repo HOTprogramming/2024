@@ -18,6 +18,7 @@ public class Shooter implements SubsystemBase {
     TalonFX leftFlywheel;
     TalonFX rightFlywheel;
     TalonFX feeder;
+    
     VelocityVoltage leftVoltageVelocity;
     VelocityVoltage rightVoltageVelocity;
     VelocityVoltage feederVoltageVelocity;

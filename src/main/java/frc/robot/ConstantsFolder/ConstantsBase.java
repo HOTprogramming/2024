@@ -106,10 +106,10 @@ public class ConstantsBase {
         public int FEEDER_CAN = 13;
 
         public double TARGET_SPEED_INCREMENT = 5;
-        public double START_TARGET_SPEED = 10;
+        public double START_TARGET_SPEED = 0;
 
-        public double FEEDER_SPEED = 20;
-        public double FEEDER_REVOLUTIONS = 50;
+        public double FEEDER_SPEED = 10;
+        public double FEEDER_REVOLUTIONS = 25;
 
         public double FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
         public double FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed

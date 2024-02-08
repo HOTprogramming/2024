@@ -6,6 +6,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.armDesiredPos;
 
 public class RobotState {
     private ConstantsBase constants;
@@ -19,6 +20,7 @@ public class RobotState {
 
     private boolean shooterOn;
     private double armPos;
+    private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
     }
