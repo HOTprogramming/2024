@@ -159,6 +159,7 @@ public class Camera implements SubsystemBase {
 
         // simulation setup
         if (tempSimBool) {
+            System.out.println("test");
             globalShutterProperties = new SimCameraProperties();
             globalShutterProperties.setFPS(60);
             globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
@@ -228,7 +229,7 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 frontCamEstimation = null;
-                frontCameraPub.set(null);
+                // frontCameraPub.set(null);
             }
         }
         if (constants.HAS_LEFT_CAMERA) {
@@ -248,7 +249,7 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 leftCamEstimation = null;
-                leftCameraPub.set(null);
+                // leftCameraPub.set(null);
             }
         }
         if (constants.HAS_RIGHT_CAMERA) {
@@ -268,7 +269,7 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 rightCamEstimation = null;
-                rightCameraPub.set(null);
+                // rightCameraPub.set(null);
             }
         }
         if (constants.HAS_REAR_CAMERA) {
@@ -288,7 +289,7 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 rearCamEstimation = null;
-                rearCameraPub.set(null);
+                // rearCameraPub.set(null);
             }
         }
     }
