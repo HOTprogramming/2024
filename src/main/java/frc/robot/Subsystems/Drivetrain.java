@@ -31,6 +31,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
@@ -218,6 +219,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         
     }
 
+    Field2d desiredField = new Field2d();
+
     @Override
     public void init(RobotCommander commander) {
         // sets start pose to auton start pose
@@ -225,8 +228,11 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // sets boolean tolerances for auton refrence poses
         driveController.setTolerance(commander.getRefrenceTolerances());
+
+        SmartDashboard.putData("Desired Field", desiredField);
     }
 
+    
     @Override
     public void enabled(RobotCommander commander) {
         // commands drivetrain based on target drivemode
@@ -234,6 +240,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             percentDrive(commander.getDrivePercentCommand(), true);
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
+        }
+
+
+        if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
+            desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
+                                                commander.getDriveState().poseMeters.getY(),
+                                                commander.getDriveRotationState().position));         
         }
 
         if (commander.getBrakeCommand()) {

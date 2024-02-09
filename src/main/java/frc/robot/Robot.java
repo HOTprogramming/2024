@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
 
   private Shooter shooter;
   private Drivetrain drivetrain;
-  // private Camera camera;
+  private Camera camera;
   private Arm arm;
 
   // define subsystem objects
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     shooter = new Shooter(robotState);
     arm = new Arm(robotState);
     drivetrain = new Drivetrain(robotState);  
-    // camera = new Camera(robotState);
+    camera = new Camera(robotState);
 
     aidenSquare = new AidenSquare(robotState);
     blue3Park = new Blue3Park(robotState);
@@ -80,12 +80,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // camera.updateState();
+    camera.updateState();
     drivetrain.updateState(); // drivetrain AFTER camera
 
 
     // shooter.updateState();
-    arm.updateState();
     arm.updateState();
   }
 
@@ -94,24 +93,24 @@ public class Robot extends TimedRobot {
     String selectedAuto = autoSelector.getSelected();
 
 
-    // auton selector base
-    if (selectedAuto == "aidenSquare") {
-      autonCommander.setAuto(aidenSquare);
-    } else if (selectedAuto == "blue3Park") {
-      autonCommander.setAuto(blue3Park);
-    } else if (selectedAuto == "blue3Ring") {
-      autonCommander.setAuto(blue3Ring);
-    } else if (selectedAuto == "blue3Under") {
-      autonCommander.setAuto(blue3Under);
-    } else if (selectedAuto == "blue4Ring") {
-      autonCommander.setAuto(blue4Ring);
-    } else if (selectedAuto == "red2Ring") {
-      autonCommander.setAuto(red2Ring);
-    } else if (selectedAuto == "triangle") {
-      autonCommander.setAuto(triangle);
-    } else if (selectedAuto == "willsSquare") {
-      autonCommander.setAuto(willsSquare);
-    }
+    // // auton selector base
+    // if (selectedAuto == "aidenSquare") {
+    //   autonCommander.setAuto(aidenSquare);
+    // } else if (selectedAuto == "blue3Park") {
+    //   autonCommander.setAuto(blue3Park);
+    // } else if (selectedAuto == "blue3Ring") {
+    //   autonCommander.setAuto(blue3Ring);
+    // } else if (selectedAuto == "blue3Under") {
+    //   autonCommander.setAuto(blue3Under);
+    // } else if (selectedAuto == "blue4Ring") {
+    //   autonCommander.setAuto(blue4Ring);
+    // } else if (selectedAuto == "red2Ring") {
+    //   autonCommander.setAuto(red2Ring);
+    // } else if (selectedAuto == "triangle") {
+    //   autonCommander.setAuto(triangle);
+    // } else if (selectedAuto == "willsSquare") {
+    //   autonCommander.setAuto(willsSquare);
+    // }
 
     autonCommander.setAuto(red3Ring);
 
