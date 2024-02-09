@@ -95,13 +95,13 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean getRunShooter() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRunShooter'");
+        return false;
     }
 
     @Override
     public double getTargetDriveSpeed() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTargetDriveSpeed'");
+        return 0;
     }
 
     @Override
@@ -112,13 +112,13 @@ public class AutonCommander implements RobotCommander {
     @Override
     public armDesiredPos armPosition() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'armPosition1'");
+        return armDesiredPos.zero;
     }
 
     @Override
     public boolean getLockPoseCommand() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLockPoseCommand'");
+        return false;
     }
 
     @Override
@@ -128,6 +128,12 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getRunFeeder() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntake() {
         // TODO Auto-generated method stub
         return false;
     }
