@@ -25,8 +25,15 @@ import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm implements SubsystemBase {
@@ -35,6 +42,9 @@ RobotState robotState;
 TalonFX armMotor;
 
 MotionMagicVoltage armMagic;
+
+TalonFXSimState armSimState;
+DCMotorSim armSim;
 
 CANcoder cancoder;
 
@@ -66,7 +76,19 @@ this.armcpos = armcpos;
 
 }
 
+Mechanism2d armMech = new Mechanism2d(4, 4);
+MechanismRoot2d root;
+
+MechanismLigament2d armLig;
+
 public Arm(RobotState robotState) {
+
+    root = armMech.getRoot("arm", 2, 0);
+    
+    armLig = root.append(new MechanismLigament2d("Arm Lig", 2, 0));
+
+    SmartDashboard.putData("Arm Mech", armMech);
+
     this.robotState = robotState;
     armMotor = new TalonFX(ARM_CAN, "drivetrain");
     cancoder = new CANcoder(CANCODER_CAN, "drivetrain");               
@@ -87,8 +109,6 @@ public Arm(RobotState robotState) {
 }
 
   public void armInit(){
-
-    
     TalonFXConfiguration cfg = new TalonFXConfiguration();
 
     MotionMagicConfigs mm = cfg.MotionMagic;
@@ -114,9 +134,9 @@ public Arm(RobotState robotState) {
     cancoder.getConfigurator().apply(cancoderConfig);
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
-    cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+    // cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
     cfg.Feedback.SensorToMechanismRatio = 1; //changes what the cancoder and fx encoder ratio is
-    cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
+    // cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     //cancoder.setPosition(0);
 
@@ -129,8 +149,8 @@ public Arm(RobotState robotState) {
     if (!armStatus.isOK()) {
       System.out.println("Could not configure device. Error: " + armStatus.toString());
     }
-  
-    
+
+    armSim = new DCMotorSim(DCMotor.getKrakenX60(1), 500, .001);
 }  
 
     public void updateState(){
@@ -163,6 +183,31 @@ public Arm(RobotState robotState) {
     public void reset(){
         armMotor.stopMotor();
         armMotor.setPosition(0);
+    }
+
+    public void simulation(){
+        armSimState = armMotor.getSimState();
+
+        armSimState.setSupplyVoltage(12);
+        
+        var motorVoltage = armSimState.getMotorVoltage();
+
+        SmartDashboard.putNumber("Motor VOlts", motorVoltage);
+
+        // use the motor voltage to calculate new position and velocity using an external MotorSimModel class
+        armSim.setInputVoltage(motorVoltage);
+        armSim.update(0.020); // assume 20 ms loop time
+
+        SmartDashboard.putNumber("Arm Sim Pos", armSim.getAngularPositionRotations());
+        SmartDashboard.putNumber("Arm Sim Speed", armSim.getAngularVelocityRPM());
+
+        // SmartDashboard.putNumber("Correct Arm Pos", armMotor.getposition().getValueAsDouble());
+
+        // apply the new rotor position and velocity to the TalonFX
+        armSimState.setRawRotorPosition(armSim.getAngularPositionRotations());
+        armSimState.setRotorVelocity(armSim.getAngularVelocityRPM() / 60);
+
+        armLig.setAngle(Rotation2d.fromDegrees((armPosition.getValue()*360) - 85  ));
     }
 
     @Override

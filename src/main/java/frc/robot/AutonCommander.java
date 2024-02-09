@@ -112,7 +112,7 @@ public class AutonCommander implements RobotCommander {
     @Override
     public armDesiredPos armPosition() {
         // TODO Auto-generated method stub
-        return armDesiredPos.zero;
+        return auto.desiredArmPos;
     }
 
     @Override

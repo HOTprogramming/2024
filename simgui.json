@@ -3,6 +3,7 @@
     "types": {
       "/Drivetrain": "Field2d",
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Desired Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
     }
   },

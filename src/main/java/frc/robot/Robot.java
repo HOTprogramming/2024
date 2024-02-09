@@ -161,5 +161,6 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationPeriodic() {
     drivetrain.updateSimState(.02, 12);
+    arm.simulation();
   }
 }

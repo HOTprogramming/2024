@@ -2,6 +2,7 @@ package frc.robot.Autons;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public abstract class AutonBase {
     public RotationSequence.State rotationState = new RotationSequence.State(Rotation2d.fromDegrees(0), 0);
 
     
+    public Arm.armDesiredPos desiredArmPos = Arm.armDesiredPos.zero;
+
     TrajectoryConfig trajectoryConfig;
     CustomTrajectoryGenerator trajectoryGenerator;
     public boolean runShooter;
