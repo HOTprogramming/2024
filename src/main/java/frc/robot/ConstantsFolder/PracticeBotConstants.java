@@ -26,6 +26,18 @@ public class PracticeBotConstants extends ConstantsBase {
         }
     }
 
+    public class Intake extends ConstantsBase.Intake {
+        public Intake() {
+         INTAKE_ENTER_CAN = 14;
+        INTAKE_TRANSFER_CAN = 13;
+         INTAKESTOP = 0;
+         INTAKESPEED = 83;
+         INTAKE_VELOCITY_ERROR = .01;
+         ENTER_SENSOR_CHANNEL = 0;
+         TRANSFER_SENSOR_CHANNEL = 1;
+        }
+    }
+
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
             RIGHT_FLYWHEEL_CAN = 12;

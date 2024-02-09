@@ -153,5 +153,10 @@ public class TeleopCommander implements RobotCommander {
         return driver.getBackButton();
     }
 
+    @Override
+    public boolean getIntake() {
+        return operator.getLeftBumper();
+    }
+
 
 }
