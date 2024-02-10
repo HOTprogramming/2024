@@ -142,7 +142,7 @@ public class ConstantsBase {
         public int FEEDER_CAN = 13;
 
         public double TARGET_SPEED_INCREMENT = 5;
-        public double START_TARGET_SPEED = 0;
+        public double START_TARGET_SPEED = 70;
 
         public double FEEDER_SPEED = 10;
         public double FEEDER_REVOLUTIONS = 25;
@@ -153,10 +153,10 @@ public class ConstantsBase {
         public double FLYWHEEL_KP = 0.25;
         public double FLYWHEEL_KI = 0.5;
         public double FLYWHEEL_KD = 0.0001;
-        public double LEFT_FLYWHEEL_KV = 0.133;
-        public double RIGHT_FLYWHEEL_KV = 0.138;
-        public double LEFT_FLYWHEEL_KS = 0.384;
-        public double RIGHT_FLYWHEEL_KS = 0.38;
+        public double LEFT_FLYWHEEL_KV = .130; //.133
+        public double RIGHT_FLYWHEEL_KV = .130; //.138
+        public double LEFT_FLYWHEEL_KS = 0.8; //.384
+        public double RIGHT_FLYWHEEL_KS = 0.8; //38
         public double FLYWHEEL_PEAK_VOLTAGE = 12;
         public double FEEDER_KP = 0.25;
         public double FEEDER_KI = 0.5;

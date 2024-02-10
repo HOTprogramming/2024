@@ -51,5 +51,6 @@ public interface RobotCommander {
     public abstract double getTargetArmSpeed();
     public boolean runArm();
     public boolean zeroArm();
+    public boolean setShoot();
 
 }

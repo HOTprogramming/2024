@@ -69,7 +69,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getRunShooter() {
-        return operator.getRightBumper();
+        return operator.getRightTriggerAxis() > .1;
     }
     public boolean getRunFeeder() {
         return (operator.getRightTriggerAxis() > 0.01);
@@ -188,6 +188,11 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public boolean getIntake() {
         return operator.getLeftTriggerAxis() > .1;
+    }
+
+    @Override
+    public boolean setShoot() {
+        return driver.getRightBumper();
     }
 
 

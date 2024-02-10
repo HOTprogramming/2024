@@ -223,7 +223,7 @@ public final class Constants {
         public static final double ARMKV = 0.8;
         public static final double ARMKS = 0.1;
         public static final double ZERO = 95;
-        public static final double SHOOT = 127;
+        public static final double SHOOT = 115;
         
     }
 }

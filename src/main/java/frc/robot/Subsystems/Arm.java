@@ -67,6 +67,7 @@ StatusSignal<Double> armRotorPos;
 // }
 
 public boolean setArmDesPos;
+public double armComPos;
 
 public Arm(RobotState robotState) {
     this.robotState = robotState;
@@ -152,11 +153,13 @@ public Arm(RobotState robotState) {
       //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
       
       if(commander.runArm()){
-        armMotor.setControl(armMagic.withPosition(SHOOT/360).withSlot(0));
+        armComPos = SHOOT/360;
+        armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
       
       } else if (commander.zeroArm()) {
-         armMotor.setControl(armMagic.withPosition(ZERO/360).withSlot(0));
-         
+        armComPos = ZERO/360;
+         armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+
       } else{
         armMotor.setVoltage(0);
       }
@@ -166,6 +169,7 @@ public Arm(RobotState robotState) {
 
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmCommandedPosition", armComPos*360);
       //SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
 
     }
