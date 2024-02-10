@@ -105,7 +105,7 @@ public class Intake implements SubsystemBase {
             SmartDashboard.putNumber("Intake RPS", intakeEnter.getVelocity().getValueAsDouble());
             SmartDashboard.putNumber(" Intake set point", constants.INTAKESPEED);
             SmartDashboard.putNumber("Intake error", intakeEnter.getClosedLoopError().getValueAsDouble());
-            if (false/*sensorEnter.get() *//*&& !sensorTransfer.get()*/){
+            if (sensorEnter.get()/*&& !sensorTransfer.get()*/){
                 intakeEnter.setControl(Out);
                 intakeTransfer.setControl(Out);
             }  else { 
