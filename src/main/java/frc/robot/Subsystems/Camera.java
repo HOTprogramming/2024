@@ -96,7 +96,7 @@ public class Camera implements SubsystemBase {
     VisionSystemSim simVision;
     SimCameraProperties globalShutterProperties;
 
-    boolean tempSimBool = true;
+    boolean tempSimBool = false;
     boolean drawWireframes = false; // resource heavy
 
     Nat<N3> rows = new Nat<N3>() {

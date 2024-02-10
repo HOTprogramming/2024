@@ -199,7 +199,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-            if (robotState.getVisionTimestamps()[i] != -1) {
+            if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
                 addVisionMeasurement(robotState.getVisionMeasurements()[i],
                         robotState.getVisionTimestamps()[i],
                         robotState.getVisionStdevs().extractColumnVector(i));

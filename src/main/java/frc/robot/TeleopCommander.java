@@ -35,19 +35,19 @@ public class TeleopCommander implements RobotCommander {
         double leftx;
         double rightx;
 
-        if (Math.abs(driver.getLeftY()) > .1) {
+        if (Math.abs(driver.getLeftY()) > .15) {
             leftY = -driver.getLeftY();
         } else {
             leftY = 0;
         }
 
-        if (Math.abs(driver.getLeftX()) > .1) {
+        if (Math.abs(driver.getLeftX()) > .15) {
             leftx = -driver.getLeftX();
         } else {
             leftx = 0;
         }
 
-        if (Math.abs(driver.getRightX()) > .1) {
+        if (Math.abs(driver.getRightX()) > .15) {
             rightx = -driver.getRightX();
         } else {
             rightx = 0;

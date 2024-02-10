@@ -200,6 +200,8 @@ public class ConstantsBase {
     }
 
     public abstract class Drivetrain {
+        public double CAM_MAX_ERROR = 1.0;
+
         public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
 
