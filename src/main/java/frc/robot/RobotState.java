@@ -19,6 +19,9 @@ public class RobotState {
 
 
     private boolean shooterOn;
+        private boolean intakeOn;
+            private boolean feederOn;
+
     private double armPos;
     private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
@@ -77,6 +80,13 @@ public class RobotState {
     public void setShooterOn(boolean shooterOn) {
         this.shooterOn = shooterOn;
     }
+        public void setIntakeOn(boolean intakeOn) {
+        this.intakeOn = intakeOn;
+    }
+       public void setFeederOn(boolean feederOn) {
+        this.feederOn = feederOn;
+    }
+
 
     public void setVisionMeasurements(Pose2d[] visionMeasurements) {
         this.visionMeasurements = visionMeasurements;

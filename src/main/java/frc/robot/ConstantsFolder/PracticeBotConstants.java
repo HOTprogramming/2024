@@ -29,12 +29,18 @@ public class PracticeBotConstants extends ConstantsBase {
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
          INTAKE_ENTER_CAN = 14;
-        INTAKE_TRANSFER_CAN = 13;
-         INTAKESTOP = 0;
-         INTAKESPEED = 83;
+         INTAKESPEED = 10;
          INTAKE_VELOCITY_ERROR = .01;
-         ENTER_SENSOR_CHANNEL = 0;
-         TRANSFER_SENSOR_CHANNEL = 1;
+        }
+    }
+    
+    public class Feeder extends ConstantsBase.Feeder {
+        public Feeder() {
+        FEEDER_CAN = 13;
+         FEEDERSPEED = 10;
+         DESIREDTIMER = 300;
+         FEEDER_VELOCITY_ERROR = .01;
+         TRUE_FEEDER_SENSOR_CHANNEL = 0;
         }
     }
 

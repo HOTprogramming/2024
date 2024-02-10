@@ -157,6 +157,10 @@ public class TeleopCommander implements RobotCommander {
     public boolean getIntake() {
         return operator.getLeftBumper();
     }
+     @Override
+    public boolean getFeeder() {
+        return operator.getLeftBumper();
+    }
 
 
 }

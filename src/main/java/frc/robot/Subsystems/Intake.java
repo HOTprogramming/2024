@@ -28,18 +28,15 @@ public class Intake implements SubsystemBase {
     RobotState robotState;
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX intakeEnter;
-     TalonFX intakeTransfer;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
-     static DigitalInput sensorEnter;
-     static DigitalInput sensorTransfer;
+     static DigitalInput sensorFeeder;
+
     TalonFXConfiguration enterConfigs = new TalonFXConfiguration();
-    TalonFXConfiguration transferConfigs = new TalonFXConfiguration();
 
     public Intake(RobotState robotState) { 
         this.robotState = robotState;
          constants = robotState.getConstants().getIntakeConstants();
-        sensorEnter = new DigitalInput(constants.ENTER_SENSOR_CHANNEL); 
-        sensorTransfer = new DigitalInput(constants.TRANSFER_SENSOR_CHANNEL);
+      //   sensorFeeder = new DigitalInput(constants.FEEDER_SENSOR_CHANNEL);
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
         enterConfigs.Slot0.kD = constants.D0IntakeEnter;
@@ -48,20 +45,8 @@ public class Intake implements SubsystemBase {
         enterConfigs.Slot1.kI = constants.I1IntakeEnter;
         enterConfigs.Slot1.kD = constants.D1IntakeEnter;
         enterConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        enterConfigs.TorqueCurrent.PeakForwardTorqueCurrent = constants.EnterPeakForwardTorqueCurrent;
-        enterConfigs.TorqueCurrent.PeakReverseTorqueCurrent = constants.EnterPeakReverseTorqueCurrent;
-        transferConfigs.Slot0.kP = constants.P0IntakeTransfer;
-        transferConfigs.Slot0.kI = constants.I0IntakeTransfer;
-        transferConfigs.Slot0.kD = constants.D0IntakeTransfer;
-        transferConfigs.Slot0.kV = constants.V0IntakeTransfer;
-        transferConfigs.Slot1.kP = constants.P1IntakeTransfer;
-        transferConfigs.Slot1.kI = constants.I1IntakeTransfer;
-        transferConfigs.Slot1.kD = constants.D1IntakeTransfer;
-        transferConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         intakeEnter = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
-         intakeTransfer = new TalonFX(constants.INTAKE_TRANSFER_CAN, "drivetrain");
-
         enterConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         
         StatusCode enterStatus = StatusCode.StatusCodeNotInitialized;
@@ -72,14 +57,6 @@ public class Intake implements SubsystemBase {
           if(!enterStatus.isOK()) {
             System.out.println("Could not apply configs, error code: " + enterStatus.toString());
           }
-        // StatusCode transferStatus = StatusCode.StatusCodeNotInitialized;
-        // for (int i = 0; i < 5; ++i) {
-        //     transferStatus = intakeTransfer.getConfigurator().apply(enterConfigs);
-        //     if (transferStatus.isOK()) break;
-        //   }
-        //   if(!transferStatus.isOK()) {
-        //     System.out.println("Could not apply configs, error code: " + transferStatus.toString());
-        //   }
     }
 
 
@@ -87,36 +64,33 @@ public class Intake implements SubsystemBase {
     public void updateState() {
         SmartDashboard.putNumber("intake Speed", intakeEnter.getVelocity().getValueAsDouble());
         if ((intakeEnter.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
-            robotState.setShooterOn(true);
+            robotState.setIntakeOn(true);
         } else {
-            robotState.setShooterOn(false);
+            robotState.setIntakeOn(false);
         }
     }
     
     @Override
     public void enabled(RobotCommander commander){
-         sensorEnter.get();
-        sensorTransfer.get();
+        // sensorFeeder.get();
         
-        SmartDashboard.putBoolean("enter detection", sensorEnter.get());
-     //   SmartDashboard.putBoolean("transfer detection", sensorTransfer.get());
+       // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake()) {
-            intakeEnter.setControl(Out);
-            SmartDashboard.putNumber("Intake RPS", intakeEnter.getVelocity().getValueAsDouble());
-            SmartDashboard.putNumber(" Intake set point", constants.INTAKESPEED);
-            SmartDashboard.putNumber("Intake error", intakeEnter.getClosedLoopError().getValueAsDouble());
-            if (false/*sensorEnter.get() *//*&& !sensorTransfer.get()*/){
-                intakeEnter.setControl(Out);
-                intakeTransfer.setControl(Out);
-            }  else { 
-               intakeEnter.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
-                intakeTransfer.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
-            }           
+          intakeEnter.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
+
+          //  intakeEnter.setControl(Out);
+           // SmartDashboard.putNumber("Intake RPS", intakeEnter.getVelocity().getValueAsDouble());
+          //  SmartDashboard.putNumber(" Intake set point", constants.INTAKESPEED);
+          //  SmartDashboard.putNumber("Intake error", intakeEnter.getClosedLoopError().getValueAsDouble());
+          //  if (false){
+          //      intakeEnter.setControl(Out);
+          //  }  else { 
+          //     intakeEnter.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
+          //  }           
             } else {
-                Out.Output = 0;
-                intakeEnter.setControl(Out);
-                intakeTransfer.setControl(Out);
-            }
+             Out.Output = 0;
+               intakeEnter.setControl(Out);
+           }
         }
     
 
