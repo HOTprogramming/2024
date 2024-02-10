@@ -132,7 +132,7 @@ public class ConstantsBase {
         //Y: Left and right (Left +)
         //Z: Vertical distance from the floor to the camera (Up +)
 
-
+        public double[] STDEV_GAIN = new double[] {1, 1, 1};
 
         //FRONT
         public boolean HAS_FRONT_CAMERA = false;

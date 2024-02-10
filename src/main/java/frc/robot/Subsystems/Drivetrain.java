@@ -198,14 +198,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             });
         }
 
-        if (robotState.getVisionMeasurements() != null) {
-            for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-                if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
-                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                            robotState.getVisionTimestamps()[i],
-                            robotState.getVisionStdevs().extractColumnVector(i));
-                    // assuming it wants rotation in radians
-                }
+        for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+            if (robotState.getVisionTimestamps()[i] != -1) {
+                addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                        robotState.getVisionTimestamps()[i],
+                        robotState.getVisionStdevs().extractColumnVector(i));
+                // assuming it wants rotation in radians
             }
         }
 
@@ -262,16 +260,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // }
 
         if (commander.getResetRobotPose()) {
-            seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            // Pose2d[] vision = robotState.getVisionMeasurements();
-            // if (vision != null) {
-            //     if (vision[0] != null) {
-            //         seedFieldRelative(new Pose2d(vision[0].getTranslation(), vision[0].getRotation()));
-            //     } else if (vision[1] != null) {
-            //         seedFieldRelative(new Pose2d(vision[1].getTranslation(), vision[1].getRotation()));
-            //     }
-                
-            // }
+            if (robotState.getVisionMeasurements()[3] != null) {
+                seedFieldRelative(robotState.getVisionMeasurements()[3]);   
+            }
         }
     }
 
