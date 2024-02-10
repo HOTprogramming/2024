@@ -112,8 +112,8 @@ public class ConstantsBase {
 
         public String REAR_CAMERA_NAME = "back_camera";
 
-        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12.425), Units.inchesToMeters(0), Units.inchesToMeters(6.008));
-        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(8), Units.degreesToRadians(180));
+        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12.563), Units.inchesToMeters(0), Units.inchesToMeters(6.193));
+        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(180));
         public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
         //RIGHT
@@ -121,7 +121,7 @@ public class ConstantsBase {
 
         public String RIGHT_CAMERA_NAME = "right_camera";
 
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(3), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
         public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(5), Units.degreesToRadians(-30));
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 
@@ -130,7 +130,7 @@ public class ConstantsBase {
 
         public String LEFT_CAMERA_NAME = "left_camera";
 
-        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(3), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
         public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(5), Units.degreesToRadians(30));
         public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
