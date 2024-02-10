@@ -26,8 +26,8 @@ public class Shooter implements SubsystemBase {
     VelocityVoltage feederVoltageVelocity;
     VelocityTorqueCurrentFOC leftTorqueCurrentFOC;
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
-    double leftTargetSpeed = 69.9;
-    double rightTargetSpeed = 56.7;
+    double leftTargetSpeed = 66.6;
+    double rightTargetSpeed = 50;
     boolean isShooting = false;
     
     ConstantsBase.Shooter constants;
@@ -62,9 +62,10 @@ public class Shooter implements SubsystemBase {
         leftConfigs.Slot0.kV = constants.LEFT_FLYWHEEL_KV;
         leftConfigs.Slot0.kS = constants.LEFT_FLYWHEEL_KS;
         
-        rightConfigs.Slot0.kP = constants.FLYWHEEL_KP;
-        rightConfigs.Slot0.kI = constants.FLYWHEEL_KI;
-        rightConfigs.Slot0.kD = constants.FLYWHEEL_KD;
+        
+        rightConfigs.Slot0.kP = constants.RFLYWHEEL_KP;
+        rightConfigs.Slot0.kI = constants.RFLYWHEEL_KI;
+        rightConfigs.Slot0.kD = constants.RFLYWHEEL_KD;
         rightConfigs.Slot0.kV = constants.RIGHT_FLYWHEEL_KV;
         rightConfigs.Slot0.kS = constants.RIGHT_FLYWHEEL_KS;
 
@@ -84,10 +85,10 @@ public class Shooter implements SubsystemBase {
         rightConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-        leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 70;
-        leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -70;
-        rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 70;
-        rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -70;
+        leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 80;
+        leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -80;
+        rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 80;
+        rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -80;
 
         for (int i = 0; i < 5; ++i) {
             leftStatus = leftFlywheel.getConfigurator().apply(leftConfigs);
@@ -113,8 +114,8 @@ public class Shooter implements SubsystemBase {
     @Override
     public void enabled(RobotCommander commander) {
         if (commander.runArm()) {
-             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftTargetSpeed).withFeedForward(.2));
-             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightTargetSpeed).withFeedForward(.2));
+             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftTargetSpeed).withFeedForward(25));
+             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightTargetSpeed).withFeedForward(25));
             // rightFlywheel.setVoltage(7.5);
             // leftFlywheel.setVoltage(7.5);
         } else {
@@ -155,6 +156,7 @@ public class Shooter implements SubsystemBase {
         SmartDashboard.putNumber("Right speed RPM", rightFlywheel.getVelocity().getValueAsDouble() * 60);
         SmartDashboard.putNumber("ShootVolt", leftFlywheel.getMotorVoltage().getValue());
         SmartDashboard.putNumber("commandedvolts", leftFlywheel.getSupplyVoltage().getValue());
+        
        // SmartDashboard.putNumber("feeder position", feeder.getPosition().getValueAsDouble());
         SmartDashboard.putBoolean("isShooting", isShooting);
     }

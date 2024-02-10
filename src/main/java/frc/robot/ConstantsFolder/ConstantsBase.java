@@ -161,6 +161,10 @@ public class ConstantsBase {
         public double FEEDER_KP = 0.25;
         public double FEEDER_KI = 0.5;
         public double FEEDER_KD = 0.0001;
+
+        public double RFLYWHEEL_KP = 0.25;
+        public double RFLYWHEEL_KI = 0.5;
+        public double RFLYWHEEL_KD = 0.0001;
     }
 
     public abstract class Drivetrain {

@@ -53,9 +53,9 @@ public class PracticeBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_SPEED = 1; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
 
-            FLYWHEEL_KP = 30;
-            FLYWHEEL_KI = 0.5; //.5
-            FLYWHEEL_KD = 0.001; //.0001
+            FLYWHEEL_KP = 40;
+            FLYWHEEL_KI = 1.5; //.5
+            FLYWHEEL_KD = .75; //.0001
             LEFT_FLYWHEEL_KV = 0;
             RIGHT_FLYWHEEL_KV = 0;
             LEFT_FLYWHEEL_KS = 7.5;
@@ -64,6 +64,10 @@ public class PracticeBotConstants extends ConstantsBase {
             FEEDER_KP = 0.25;
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
+
+            RFLYWHEEL_KP = 40;
+            RFLYWHEEL_KI = 1.5; //.5
+            RFLYWHEEL_KD = .75; //.0001
 
 
         }
