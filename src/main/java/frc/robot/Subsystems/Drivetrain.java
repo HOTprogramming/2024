@@ -273,8 +273,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void reset() {
-        tareEverything();
-        m_pigeon2.reset();
     }
 
 }
