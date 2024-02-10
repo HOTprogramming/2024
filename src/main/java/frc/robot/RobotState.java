@@ -17,6 +17,7 @@ public class RobotState {
     private double[] visionTimestamps;
     private Matrix<N3, N2> visionStdevs;
 
+    private Pose2d notePose;
 
     private boolean shooterOn;
     private double armPos;
@@ -109,5 +110,13 @@ public class RobotState {
 
     public double getArmPos(){
         return armPos;
+    }
+
+    public void setNotePose(Pose2d notePose){
+        this.notePose = notePose;
+    }
+
+    public Pose2d getNotePose(){
+        return notePose;
     }
 }

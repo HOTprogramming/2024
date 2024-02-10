@@ -8,6 +8,7 @@ import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,6 +24,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
@@ -34,6 +36,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 
 import java.io.IOException;
+import java.util.List;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
@@ -214,18 +217,40 @@ public class Camera implements SubsystemBase {
         if (constants.HAS_FRONT_CAMERA) {
             frontResult = frontCamera.getLatestResult();
             frontSampleTime = frontResult.getTimestampSeconds();
-            
+
             if (frontResult.hasTargets()) {
                 frontBestTarget = frontResult.getBestTarget();
-                frontCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
-                                                                            tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
-                                                                            constants.FRONT_CAMERA_TRANSFORM).toPose2d();
+                if(frontCamera.getPipelineIndex() == 0){
+                    frontCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
+                                                                                tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
+                                                                                constants.FRONT_CAMERA_TRANSFORM).toPose2d();
 
-                frontCameraPub.set(new double[] {
-                    frontCamEstimation.getX(),
-                    frontCamEstimation.getY(),
-                    frontCamEstimation.getRotation().getDegrees()
-                });
+                    frontCameraPub.set(new double[] {
+                        frontCamEstimation.getX(),
+                        frontCamEstimation.getY(),
+                        frontCamEstimation.getRotation().getDegrees()
+                    });
+                }
+
+                if(frontCamera.getPipelineIndex() == 1){
+                    double robotAngle = robotState.getDrivePose().getRotation().getRadians();
+
+                    List<TargetCorner> noteCorners = frontBestTarget.getDetectedCorners();
+                    double noteX = (noteCorners.get(0).x + noteCorners.get(1).x + noteCorners.get(2).x + noteCorners.get(3).x)/4-Math.toDegrees(constants.FRONT_CAMERA_RELATIVE_ROTATION.getZ()); //gets the note center position in degrees of x, includes offsets
+                    double noteY = (noteCorners.get(0).y + noteCorners.get(1).y + noteCorners.get(2).y + noteCorners.get(3).y)/4-Math.toDegrees(constants.FRONT_CAMERA_RELATIVE_ROTATION.getY()); //see above for y
+                    double distance = -constants.FRONT_CAMERA_RELATIVE_POSITION.getZ()/Math.tan(Math.toRadians(noteY)); //gets the distance of the note to the camera
+                    Translation2d noteToCamera = new Translation2d(distance, 0).rotateBy(new Rotation2d(robotAngle-Math.toRadians(noteX))); //Creates a translation of x distance, and then rotates it by the degrees of the robot and of the note
+                    Translation2d cameraToRobot = new Translation2d(constants.FRONT_CAMERA_RELATIVE_POSITION.getX(), constants.FRONT_CAMERA_RELATIVE_POSITION.getY()).rotateBy(new Rotation2d(robotAngle-Math.toRadians(noteX))); //does the same thing as above except its the camera to the robot using constants
+                    Rotation2d noteRotation = new Rotation2d(robotAngle-Math.toRadians(noteY)); //points the robot to the note
+                    Pose2d totalPose = new Pose2d(noteToCamera.plus(cameraToRobot), noteRotation); 
+                    robotState.setNotePose(totalPose);
+
+                    SmartDashboard.putBoolean("CAMERA: Note detected?", frontResult.hasTargets());
+                    SmartDashboard.putNumber("CAMERA: Note Distance", distance);
+                    SmartDashboard.putNumber("CAMERA: Note X Position", totalPose.getX());
+                    SmartDashboard.putNumber("CAMERA: Note Y position", totalPose.getY());
+                }
+
             } else {
                 frontCamEstimation = null;
                 // frontCameraPub.set(null);
@@ -291,6 +316,10 @@ public class Camera implements SubsystemBase {
                 // rearCameraPub.set(null);
             }
         }
+    }
+
+    public void setFrontCameraPipeline(int pipeline){ //sets the pipeline of the front camera
+        frontCamera.setPipelineIndex(pipeline);
     }
 
     @Override
