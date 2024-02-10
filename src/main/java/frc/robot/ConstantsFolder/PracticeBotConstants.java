@@ -29,9 +29,9 @@ public class PracticeBotConstants extends ConstantsBase {
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
          INTAKE_ENTER_CAN = 14;
-        INTAKE_TRANSFER_CAN = 13;
+         INTAKE_TRANSFER_CAN = 13;
          INTAKESTOP = 0;
-         INTAKESPEED = 83;
+         INTAKESPEED = 91.6;
          INTAKE_VELOCITY_ERROR = .01;
          ENTER_SENSOR_CHANNEL = 0;
          TRANSFER_SENSOR_CHANNEL = 1;
@@ -45,25 +45,27 @@ public class PracticeBotConstants extends ConstantsBase {
             FEEDER_CAN = 13;
 
             TARGET_SPEED_INCREMENT = 5;
-            START_TARGET_SPEED = 10;
+            START_TARGET_SPEED = 63.3;
 
             FEEDER_SPEED = 20;
             FEEDER_REVOLUTIONS = 50;
 
-            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_SPEED = 1; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
 
-            FLYWHEEL_KP = 0.25;
-            FLYWHEEL_KI = 0.5;
-            FLYWHEEL_KD = 0.0001;
-            LEFT_FLYWHEEL_KV = 0.133;
-            RIGHT_FLYWHEEL_KV = 0.138;
-            LEFT_FLYWHEEL_KS = 0.384;
-            RIGHT_FLYWHEEL_KS = 0.38;
+            FLYWHEEL_KP = 30;
+            FLYWHEEL_KI = 0.5; //.5
+            FLYWHEEL_KD = 0.001; //.0001
+            LEFT_FLYWHEEL_KV = 0;
+            RIGHT_FLYWHEEL_KV = 0;
+            LEFT_FLYWHEEL_KS = 7.5;
+            RIGHT_FLYWHEEL_KS = 7.5;
             FLYWHEEL_PEAK_VOLTAGE = 12;
             FEEDER_KP = 0.25;
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
+
+
         }
 
     }

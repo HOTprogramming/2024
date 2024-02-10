@@ -49,22 +49,25 @@ StatusSignal<Double> cancoderPosition;
 StatusSignal<Double> cancoderVelocity;
 StatusSignal<Double> armRotorPos;
 
-public enum armDesiredPos{
+// public enum armDesiredPos{
 
-  shoot(127),
-  zero(95);
+//   shoot(127),
+//   zero(95);
 
-  public final double armcpos;
-  public double getcommmPosition(){
-    return armcpos;
-  }
+//   public final double armcpos;
+//   public double getcommmPosition(){
+//     return armcpos;
+//   }
 
-armDesiredPos(double armcpos){
-this.armcpos = armcpos;
-}
+// armDesiredPos(double armcpos){
+// this.armcpos = armcpos;
+// }
 
 
-}
+// }
+
+public boolean setArmDesPos;
+public double armComPos;
 
 public Arm(RobotState robotState) {
     this.robotState = robotState;
@@ -145,16 +148,29 @@ public Arm(RobotState robotState) {
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
 
-      armDesiredPos thePos = commander.armPosition();
+      //armDesiredPos thePos = commander.armPosition();
 
-      armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
+      //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
+      
+      if(commander.runArm()){
+        armComPos = SHOOT/360;
+        armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+      
+      } else if (commander.zeroArm()) {
+        armComPos = ZERO/360;
+         armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+
+      } else{
+        armMotor.setVoltage(0);
+      }
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
 
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
-      SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
+      SmartDashboard.putNumber("ArmCommandedPosition", armComPos*360);
+      //SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
 
     }
     public void disabled(){
