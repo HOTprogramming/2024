@@ -3,14 +3,14 @@ package frc.robot.Autons;
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Arm;
+import frc.robot.utils.trajectory.CustomTrajectoryGenerator;
+import frc.robot.utils.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.Waypoint;
 
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.trajectory.CustomTrajectoryGenerator;
-import frc.robot.trajectory.RotationSequence;
-import frc.robot.trajectory.Waypoint;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;

@@ -1,10 +1,10 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.utils.trajectory.RotationSequence;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import frc.robot.trajectory.RotationSequence;
 
 public class AutonCommander implements RobotCommander {
     RobotState robotState;

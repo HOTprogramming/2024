@@ -5,8 +5,8 @@ import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.RobotCommander.DriveMode;
-import frc.robot.trajectory.CustomHolonomicDriveController;
-import frc.robot.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.CustomHolonomicDriveController;
+import frc.robot.utils.trajectory.RotationSequence;
 
 import java.sql.Driver;
 import java.util.Optional;

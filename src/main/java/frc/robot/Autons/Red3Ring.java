@@ -69,7 +69,7 @@ public class Red3Ring extends AutonBase {
            } else {
                step = Step.shoot2;
             //    desiredArmPos = armDesiredPos.shoot;
-                runArm = false;
+                // runArm = false;
            }
            break; 
 
@@ -79,7 +79,7 @@ public class Red3Ring extends AutonBase {
                 
            } else {
                step = Step.actualshoot2;
-                runArm = true;
+                // runArm = true;
            }
             break;
 
@@ -88,7 +88,7 @@ public class Red3Ring extends AutonBase {
                 step = Step.shoot3;
            } else {
                step = Step.secondring1;
-                runArm = false;
+                // runArm = false;
            }
             break;
 

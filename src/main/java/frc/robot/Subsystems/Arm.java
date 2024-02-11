@@ -4,7 +4,6 @@ import static frc.robot.Constants.ArmConstants.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
-import frc.robot.utils.InterpolatingDouble;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -28,7 +27,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
-import frc.robot.utils.InterpolatingTreeMap;
+import frc.robot.utils.Interpolation.InterpolatingDouble;
+import frc.robot.utils.Interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -115,8 +115,9 @@ public Arm(RobotState robotState) {
   cancoderVelocity = cancoder.getVelocity();
   armRotorPos = armMotor.getRotorPosition();
 
-  armMap.put(new InterpolatingDouble(1.0), new InterpolatingDouble(2.0));
-    armMap.put(new InterpolatingDouble(2.0), new InterpolatingDouble(3.0));
+  armMap.put(new InterpolatingDouble(1.0), new InterpolatingDouble(145.0));
+  armMap.put(new InterpolatingDouble(3.0), new InterpolatingDouble(138.0));
+  armMap.put(new InterpolatingDouble(6.5), new InterpolatingDouble(118.0));
 
 }
 
@@ -184,10 +185,12 @@ public Arm(RobotState robotState) {
       //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
       
       if(commander.runArm()){
-        armComPos = SHOOT/360;
-        armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+        mapArmPos = armMap.getInterpolated(new InterpolatingDouble(Math.abs(robotState.getDrivePose().getX() - 16))).value;
 
-        mapArmPos = armMap.getInterpolated(new InterpolatingDouble(1.5)).value;
+        armComPos = SHOOT/360;
+        // armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+        armMotor.setControl(armMagic.withPosition(mapArmPos/360).withSlot(0));
+
       
       } else if (commander.zeroArm()) {
         armComPos = ZERO/360;

@@ -1,4 +1,4 @@
-package frc.robot.utils;
+package frc.robot.utils.Interpolation;
 
 import java.util.Map;
 import java.util.TreeMap;
