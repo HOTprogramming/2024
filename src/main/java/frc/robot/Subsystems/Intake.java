@@ -58,6 +58,7 @@ public class Intake implements SubsystemBase {
         transferConfigs.Slot1.kI = constants.I1IntakeTransfer;
         transferConfigs.Slot1.kD = constants.D1IntakeTransfer;
         transferConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        
 
         intakeEnter = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
          intakeTransfer = new TalonFX(constants.INTAKE_TRANSFER_CAN, "drivetrain");
@@ -97,26 +98,44 @@ public class Intake implements SubsystemBase {
     public void enabled(RobotCommander commander){
          sensorEnter.get();
         sensorTransfer.get();
-        
+        SmartDashboard.putNumber("Feeder_Velocity", intakeTransfer.getVelocity().getValue());
         SmartDashboard.putBoolean("enter detection", sensorEnter.get());
      //   SmartDashboard.putBoolean("transfer detection", sensorTransfer.get());
-        if (commander.getIntake()) {
+        if (commander.getIntake() || commander.setShoot()) {
             intakeEnter.setControl(Out);
             SmartDashboard.putNumber("Intake RPS", intakeEnter.getVelocity().getValueAsDouble());
             SmartDashboard.putNumber(" Intake set point", constants.INTAKESPEED);
             SmartDashboard.putNumber("Intake error", intakeEnter.getClosedLoopError().getValueAsDouble());
-            if (false/*sensorEnter.get() *//*&& !sensorTransfer.get()*/){
+            
+            if (sensorEnter.get()/*&& !sensorTransfer.get()*/){
                 intakeEnter.setControl(Out);
-                intakeTransfer.setControl(Out);
+                if (commander.setShoot()) {
+                    intakeTransfer.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
+                } else {
+                    intakeTransfer.stopMotor();
+                }
+                
             }  else { 
                intakeEnter.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
                 intakeTransfer.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
-            }           
+            }        
+            
+            
+
             } else {
                 Out.Output = 0;
                 intakeEnter.setControl(Out);
-                intakeTransfer.setControl(Out);
+                intakeTransfer.stopMotor();
             }
+
+            
+
+
+            // if (commander.setShoot() || sensorE) {
+            //         intakeTransfer.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
+            //     } else {
+            //         intakeTransfer.setControl(Out);
+            //     }
         }
     
 
@@ -128,6 +147,7 @@ public class Intake implements SubsystemBase {
     @Override
     public void reset() {
         intakeEnter.stopMotor();
+        
     }
 
 
