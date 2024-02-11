@@ -148,7 +148,7 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean zeroArm() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'offArm'");
+        return !auto.runArm;
     }
 
     @Override
