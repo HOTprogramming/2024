@@ -34,16 +34,30 @@ public class TeleopCommander implements RobotCommander {
    @Override
    
     public double[] getDrivePercentCommand() {
-        LX = driver.getLeftX();
-        LY = driver.getLeftY();
-        RX = driver.getRightX();
-        if (Math.abs(LX) < .15) {LX = 0;}
+        double leftY;
+        double leftx;
+        double rightx;
 
-        if (Math.abs(LY) < .15) {LY = 0;}      // Temp DeadBands
+        if (Math.abs(driver.getLeftY()) > .15) {
+            leftY = -driver.getLeftY();
+        } else {
+            leftY = 0;
+        }
 
-        if (Math.abs(RX) < .15) {RX = 0;}
+        if (Math.abs(driver.getLeftX()) > .15) {
+            leftx = -driver.getLeftX();
+        } else {
+            leftx = 0;
+        }
 
-        return new double[] {-LY, -LX, -RX};
+        if (Math.abs(driver.getRightX()) > .15) {
+            rightx = -driver.getRightX();
+        } else {
+            rightx = 0;
+        }
+
+
+        return new double[] {leftY, leftx, rightx};
     }
 
     @Override

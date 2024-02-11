@@ -46,13 +46,13 @@ public final class Constants {
     public final class Camera {
         public static final String FRONT_CAMERA_NAME = "front_camera";
         
-        public static final Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);
+        public static final Translation3d FRONT_CAMERA_RELATIVE_POSITION = new Translation3d(.35, .29, .165);
         public static final Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
-        public static final Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+        public static final Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_RELATIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
 
-        public static final Translation3d REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -.3, .1);
+        public static final Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(0, -.3, .1);
         public static final Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), Units.degreesToRadians(180));
-        public static final Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+        public static final Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
 
 
