@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
+import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Drivetrain;
