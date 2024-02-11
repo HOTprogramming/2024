@@ -185,12 +185,8 @@ public Arm(RobotState robotState) {
       //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
       
       if(commander.runArm()){
-        mapArmPos = armMap.getInterpolated(new InterpolatingDouble(Math.abs(robotState.getDrivePose().getX() - 16))).value;
-
         armComPos = SHOOT/360;
-        // armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
-        armMotor.setControl(armMagic.withPosition(mapArmPos/360).withSlot(0));
-
+        armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
       
       } else if (commander.zeroArm()) {
         armComPos = ZERO/360;
