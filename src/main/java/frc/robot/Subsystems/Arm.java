@@ -4,6 +4,7 @@ import static frc.robot.Constants.ArmConstants.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.utils.InterpolatingDouble;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -27,6 +28,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import frc.robot.utils.InterpolatingTreeMap;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -58,6 +60,10 @@ StatusSignal<Double> armVelocity;
 StatusSignal<Double> cancoderPosition;
 StatusSignal<Double> cancoderVelocity;
 StatusSignal<Double> armRotorPos;
+
+
+static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> armMap = new InterpolatingTreeMap<>();
+
 
 // public enum armDesiredPos{
 
@@ -108,6 +114,9 @@ public Arm(RobotState robotState) {
   cancoderPosition = cancoder.getPosition();
   cancoderVelocity = cancoder.getVelocity();
   armRotorPos = armMotor.getRotorPosition();
+
+  armMap.put(new InterpolatingDouble(1.0), new InterpolatingDouble(2.0));
+    armMap.put(new InterpolatingDouble(2.0), new InterpolatingDouble(3.0));
 
 }
 
@@ -161,6 +170,8 @@ public Arm(RobotState robotState) {
     }
 
 
+    double mapArmPos = ZERO;
+
     public void enabled(RobotCommander commander){
 
       armPosition.refresh(); 
@@ -175,6 +186,8 @@ public Arm(RobotState robotState) {
       if(commander.runArm()){
         armComPos = SHOOT/360;
         armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+
+        mapArmPos = armMap.getInterpolated(new InterpolatingDouble(1.5)).value;
       
       } else if (commander.zeroArm()) {
         armComPos = ZERO/360;
@@ -186,7 +199,7 @@ public Arm(RobotState robotState) {
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
-
+      SmartDashboard.putNumber("Calced Arm Pose", mapArmPos);
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
       SmartDashboard.putNumber("ArmCommandedPosition", armComPos*360);
