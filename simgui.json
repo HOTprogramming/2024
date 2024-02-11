@@ -6,6 +6,13 @@
       "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
     "visible": true
   }
