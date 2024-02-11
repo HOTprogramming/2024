@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
-import frc.robot.Subsystems.Arm.armDesiredPos;
+// import frc.robot.Subsystems.Arm.armDesiredPos;
 
 
 public class Red3Ring extends AutonBase {
@@ -68,7 +68,7 @@ public class Red3Ring extends AutonBase {
                 step = Step.actualshoot2;
            } else {
                step = Step.shoot2;
-               desiredArmPos = armDesiredPos.shoot;
+            //    desiredArmPos = armDesiredPos.shoot;
            }
            break; 
 
@@ -94,7 +94,7 @@ public class Red3Ring extends AutonBase {
                 step = Step.actualshoot3;
            } else {
                step = Step.shoot3;
-            desiredArmPos = armDesiredPos.zero;
+                // desiredArmPos = armDesiredPos.zero;
            }
            break; 
 

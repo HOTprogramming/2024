@@ -30,7 +30,7 @@ public abstract class AutonBase {
     public RotationSequence.State rotationState = new RotationSequence.State(Rotation2d.fromDegrees(0), 0);
 
     
-    public Arm.armDesiredPos desiredArmPos = Arm.armDesiredPos.zero;
+    // public Arm.armDesiredPos desiredArmPos = Arm.armDesiredPos.zero;
 
     TrajectoryConfig trajectoryConfig;
     CustomTrajectoryGenerator trajectoryGenerator;
