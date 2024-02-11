@@ -37,6 +37,7 @@ public abstract class AutonBase {
     public boolean runShooter;
     public double driveSpeed;
     public double armSpeed;
+    public boolean runArm;
 
 
     public AutonBase(RobotState robotState){
