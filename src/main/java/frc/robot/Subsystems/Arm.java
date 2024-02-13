@@ -140,8 +140,6 @@ public Arm(RobotState robotState) {
     if (!armStatus.isOK()) {
       System.out.println("Could not configure device. Error: " + armStatus.toString());
     }
-
-    armSim = new DCMotorSim(DCMotor.getKrakenX60(1), 500, .001);
 }  
 
     public void updateState(){
@@ -178,7 +176,6 @@ public Arm(RobotState robotState) {
         armMotor.setVoltage(0);
       }
     
-
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
       SmartDashboard.putNumber("Calced Arm Pose", mapArmPos);
@@ -200,28 +197,6 @@ public Arm(RobotState robotState) {
     }
 
     public void simulation(){
-        armSimState = armMotor.getSimState();
-
-        armSimState.setSupplyVoltage(12);
-        
-        var motorVoltage = armSimState.getMotorVoltage();
-
-        SmartDashboard.putNumber("Motor VOlts", motorVoltage);
-
-        // use the motor voltage to calculate new position and velocity using an external MotorSimModel class
-        armSim.setInputVoltage(motorVoltage);
-        armSim.update(0.020); // assume 20 ms loop time
-
-        SmartDashboard.putNumber("Arm Sim Pos", armSim.getAngularPositionRotations());
-        SmartDashboard.putNumber("Arm Sim Speed", armSim.getAngularVelocityRPM());
-
-        // SmartDashboard.putNumber("Correct Arm Pos", armMotor.getposition().getValueAsDouble());
-
-        // apply the new rotor position and velocity to the TalonFX
-        armSimState.setRawRotorPosition(armSim.getAngularPositionRotations());
-        armSimState.setRotorVelocity(armSim.getAngularVelocityRPM() / 60);
-
-        armLig.setAngle(Rotation2d.fromDegrees((armPosition.getValue()*360) - 85  ));
     }
 
     @Override

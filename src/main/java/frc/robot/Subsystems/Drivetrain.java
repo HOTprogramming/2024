@@ -180,7 +180,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
-if (currentAlliance == Alliance.Blue) {
+        if (currentAlliance == Alliance.Blue) {
                 currentRobotePos = currentState.Pose.minus(blueSpeaker).getTranslation().getNorm();
             }
             else{

@@ -16,7 +16,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
     public RobotType ROBOT_TYPE = RobotType.Practice;
-    public boolean IS_SIMULATION = true;
+    public boolean IS_SIMULATION = false;
 
     private Auton auton;
     private Camera camera;
