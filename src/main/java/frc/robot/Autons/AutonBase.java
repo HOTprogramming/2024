@@ -31,7 +31,7 @@ public abstract class AutonBase {
     
     TrajectoryConfig trajectoryConfig;
     CustomTrajectoryGenerator trajectoryGenerator;
-    public boolean runShooter;
+    public boolean runShooter = false;
     public double driveSpeed;
     public double armPos;
     public boolean runIntake = false; 

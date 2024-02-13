@@ -82,8 +82,10 @@ public class Red3Left extends AutonBase {
        case shoot2:
         if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
             step = Step.ring3;
+            runShooter = false; 
        } else {
            step = Step.shoot2;
+           runShooter = true; 
        }
        break;
 
@@ -100,8 +102,10 @@ public class Red3Left extends AutonBase {
        case shoot3:
         if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, shoot3), true)) {
             step = Step.end;
+            runShooter = false; 
        } else {
            step = Step.shoot3;
+           runShooter = true; 
        }
        break;
 
