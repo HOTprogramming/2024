@@ -3,7 +3,7 @@ package frc.robot;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import frc.robot.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.RotationSequence;
 public interface RobotCommander {
     public enum DriveMode {
         percent,
@@ -51,5 +51,7 @@ public interface RobotCommander {
     public abstract double getTargetArmSpeed();
     public boolean runArm();
     public boolean zeroArm();
+    public boolean setShoot();
+
 
 }
