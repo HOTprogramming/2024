@@ -29,6 +29,7 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -206,6 +207,15 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                         robotState.getVisionStdevs().extractColumnVector(i));
                 // assuming it wants rotation in radians
             }
+
+            if(robotState.getVisionMeasurements()[i] != null){
+                SmartDashboard.putNumber("X Camera Pose " + i, robotState.getVisionMeasurements()[i].getX());
+                SmartDashboard.putNumber("Y Camera Pose " + i, robotState.getVisionMeasurements()[i].getY());
+                SmartDashboard.putNumber("Angle Camera Pose " + i, robotState.getVisionMeasurements()[i].getRotation().getDegrees());
+
+            } 
+        
+
         }
 
         // updates module states for finding encoder offsets
