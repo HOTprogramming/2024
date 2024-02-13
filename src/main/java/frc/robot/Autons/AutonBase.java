@@ -2,15 +2,14 @@ package frc.robot.Autons;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
-import frc.robot.Subsystems.Arm;
-import frc.robot.utils.trajectory.CustomTrajectoryGenerator;
-import frc.robot.utils.trajectory.RotationSequence;
-import frc.robot.utils.trajectory.Waypoint;
 
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.utils.trajectory.CustomTrajectoryGenerator;
+import frc.robot.utils.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.Waypoint;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;
@@ -30,18 +29,18 @@ public abstract class AutonBase {
     public RotationSequence.State rotationState = new RotationSequence.State(Rotation2d.fromDegrees(0), 0);
 
     
-    // public Arm.armDesiredPos desiredArmPos = Arm.armDesiredPos.zero;
-
     TrajectoryConfig trajectoryConfig;
     CustomTrajectoryGenerator trajectoryGenerator;
     public boolean runShooter;
     public double driveSpeed;
-    public double armSpeed;
-    public boolean runArm;
+    public double armPos;
+    public boolean runIntake = false; 
+    public boolean runArm = false; 
 
 
     public AutonBase(RobotState robotState){
         this.robotState = robotState;
+    
 
         constants = robotState.getConstants().getAutonConstants();
     }

@@ -241,7 +241,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
 
-
+        }
+        
         if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
             desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
                                                 commander.getDriveState().poseMeters.getY(),

@@ -106,7 +106,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public double getTargetArmSpeed() {
-        return auto.armSpeed;
+        return 0; 
     }
     
     // @Override
@@ -137,7 +137,7 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean getIntake() {
         // TODO Auto-generated method stub
-        return false;
+        return auto.runIntake;
     }
 
     @Override
