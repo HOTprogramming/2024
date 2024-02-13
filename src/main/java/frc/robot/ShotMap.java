@@ -44,8 +44,8 @@ public double calculateSlope(double a2, double a1, double d2, double d1, double 
 }
 
 public double calcShotMap(){
-    //xPos = robotState.getPoseToSpeaker();
-    xPos = 3;
+    xPos = robotState.getPoseToSpeaker();
+    //xPos = 4.5;
     SmartDashboard.putNumber("distancetotarget", xPos);
     if(xPos<distance1){
     //angleX = angle1 - (((angle1 - 95)*(distance1 - xPos))/(distance1 - 0));

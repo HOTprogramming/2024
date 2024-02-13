@@ -53,6 +53,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
+    Alliance currentAlliance = Alliance.Red;
+
+    private double currentRobotePos;
+
     // for velocity calcs
     private SwerveDriveState currentState;
     private Pose2d lastPose = new Pose2d();
@@ -69,6 +73,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     // TEMP pose 2d for get angle snap command
     private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
         // call swervedriveDrivetrain constructor (parent class)
@@ -172,6 +177,15 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
+if (currentAlliance == Alliance.Blue) {
+                currentRobotePos = currentState.Pose.minus(blueSpeaker).getTranslation().getNorm();
+            }
+            else{
+                currentRobotePos = currentState.Pose.minus(redSpeaker).getTranslation().getNorm();
+            }
+
+            robotState.setPoseToSpeaker(currentRobotePos);
+            
             robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
             double timeDifference = currentTime - lastTime;
@@ -253,7 +267,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         if (commander.getLockSpeakerCommand()) {
             // TODO add driverstation get for speaker lock pose
             // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
         }
 
         // if (commander.getLockRingCommand()) {
