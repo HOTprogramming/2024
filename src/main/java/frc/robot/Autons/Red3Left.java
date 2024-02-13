@@ -37,9 +37,7 @@ public class Red3Left extends AutonBase {
 
     public Red3Left(RobotState robotState) {
         super(robotState);
-        //startPose = new Pose2d(16.54, 5.55, Rotation2d.fromDegrees(180));
         startPose = new Pose2d(15.2, 2, Rotation2d.fromDegrees(180));
-        //startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
     }
 
 
@@ -86,8 +84,8 @@ public class Red3Left extends AutonBase {
        break;
 
        case ring3:
-        if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, almostshoot3, shoot3), true)) {
-            step = Step.end;
+        if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
+            step = Step.shoot3;
        } else {
            step = Step.ring3;
        }

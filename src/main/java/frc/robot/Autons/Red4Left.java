@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
-public class Red3Right extends AutonBase {
+public class Red4Left extends AutonBase {
    
     enum Step {
         start,
@@ -20,23 +20,34 @@ public class Red3Right extends AutonBase {
         ring3,
         ringalmost3,
         shoot3,
+        ringalmost4,
+        ring4,
+        almostshoot4,
+        shoot4,
         end
     }
 
     public Step step;
-    public Pose2d ring1 = new Pose2d(8.29, 7.46, Rotation2d.fromDegrees(180));
-    public Pose2d shoot1 = new Pose2d(13.47, 6.5, Rotation2d.fromDegrees(180));
-    public Pose2d almostring2 = new Pose2d(10.72, 6.5, Rotation2d.fromDegrees(180));
-    public Pose2d ring2 = new Pose2d(8.29, 5.78, Rotation2d.fromDegrees(180));
-    public Pose2d shoot2 = new Pose2d(13.47, 6.5, Rotation2d.fromDegrees(180));
+    public Pose2d ring1 = new Pose2d(8.29, .75, Rotation2d.fromDegrees(180));
+    public Pose2d shoot1 = new Pose2d(13.5, 2.5, Rotation2d.fromDegrees(180));
+    public Pose2d almostring2 = new Pose2d(10.72, 1.8, Rotation2d.fromDegrees(180));
+    public Pose2d ring2 = new Pose2d(8.29, 2.43, Rotation2d.fromDegrees(180));
+    public Pose2d shoot2 = new Pose2d(13.5, 2.5, Rotation2d.fromDegrees(180));
+    public Pose2d almostring3 = new Pose2d(10.72, 1.8, Rotation2d.fromDegrees(180));
     public Pose2d ring3 = new Pose2d(8.29, 4.11, Rotation2d.fromDegrees(180));
     public Pose2d ringalmost3 = new Pose2d(11.5, 4, Rotation2d.fromDegrees(180));
-    public Pose2d shoot3 = new Pose2d(13.47, 6.5, Rotation2d.fromDegrees(180));
+    public Pose2d almostshoot3 = new Pose2d(11.45, 4.1, Rotation2d.fromDegrees(180));
+    public Pose2d shoot3 = new Pose2d(13.5, 2.5, Rotation2d.fromDegrees(180));
+    public Pose2d ringalmost4 = new Pose2d(10.72, 1.8, Rotation2d.fromDegrees(180));
+    public Pose2d ring4 = new Pose2d(8.29, 5.78, Rotation2d.fromDegrees(180));
+    public Pose2d almostshoot4 = new Pose2d(10.72, 6.3, Rotation2d.fromDegrees(180));
+    public Pose2d shoot4 = new Pose2d(13.47, 7.01, Rotation2d.fromDegrees(180));
 
-    public Red3Right(RobotState robotState) {
+
+    public Red4Left(RobotState robotState) {
         super(robotState);
         //startPose = new Pose2d(16.54, 5.55, Rotation2d.fromDegrees(180));
-        startPose = new Pose2d(13.47, 5.55, Rotation2d.fromDegrees(180));
+        startPose = new Pose2d(15.2, 2, Rotation2d.fromDegrees(180));
         //startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
     }
 
@@ -47,7 +58,7 @@ public class Red3Right extends AutonBase {
         switch (step) {
             
             case start:
-            generateTrajectory(List.of(startPose, almostring2, ring1));
+            generateTrajectory(List.of(startPose, ring1));
             step = Step.ring1;
             break;
 
@@ -60,7 +71,7 @@ public class Red3Right extends AutonBase {
           break;
 
           case shoot1:
-          if (queuePath(List.of(robotState.getDrivePose(), almostring2, ring2), true)) {
+          if (queuePath(List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
             step = Step.ring2;
        } else {
            step = Step.shoot1;
@@ -68,7 +79,7 @@ public class Red3Right extends AutonBase {
       break;
 
          case ring2:
-         if (queuePath(List.of(robotState.getDrivePose(), almostring2, shoot2), true)) {
+         if (queuePath(List.of(robotState.getDrivePose(), almostring3, shoot2), true)) {
             step = Step.shoot2;
        } else {
            step = Step.ring2;
@@ -84,7 +95,7 @@ public class Red3Right extends AutonBase {
        break;
 
        case ring3:
-        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, shoot3), true)) {
+        if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
             step = Step.shoot3;
        } else {
            step = Step.ring3;
@@ -92,10 +103,26 @@ public class Red3Right extends AutonBase {
        break;
 
        case shoot3:
-        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, shoot3), true)) {
-            step = Step.end;
+        if (queuePath(List.of(robotState.getDrivePose(), ringalmost4, ring4), true)) {
+            step = Step.ring4;
        } else {
            step = Step.shoot3;
+       }
+       break;
+
+        case ring4:
+        if (queuePath(List.of(robotState.getDrivePose(),  almostshoot4, shoot4), true)) {
+            step = Step.shoot4;
+       } else {
+           step = Step.ring4;
+       }
+       break;
+
+       case shoot4:
+        if (queuePath(List.of(robotState.getDrivePose(), almostshoot4, shoot4), true)) {
+            step = Step.end;
+       } else {
+           step = Step.shoot4;
        }
        break;
 

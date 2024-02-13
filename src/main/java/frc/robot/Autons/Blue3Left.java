@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
 
-public class Close3 extends AutonBase {
+public class Blue3Left extends AutonBase {
    
     enum Step {
         start,
@@ -24,17 +24,21 @@ public class Close3 extends AutonBase {
     }
 
     public Step step;
-    public Pose2d ring1 = new Pose2d(13.47, 7.01, Rotation2d.fromDegrees(180));
-    public Pose2d shoot1 = new Pose2d(15, 6, Rotation2d.fromDegrees(180));
-    public Pose2d ring2 = new Pose2d(13.47, 5.46, Rotation2d.fromDegrees(180));
-    public Pose2d shoot2 = new Pose2d(15, 4.7, Rotation2d.fromDegrees(180));
-    public Pose2d ring3 = new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(180));
-    public Pose2d shoot3 = new Pose2d(15, 2.5, Rotation2d.fromDegrees(90));
+    public Pose2d ring1 = new Pose2d(8.29, 7.46, Rotation2d.fromDegrees(180));
+    public Pose2d shoot1 = new Pose2d(3.07, 7.01, Rotation2d.fromDegrees(180));
+    public Pose2d almostring2 = new Pose2d(5.78, 6.5, Rotation2d.fromDegrees(180));
+    public Pose2d ring2 = new Pose2d(8.29, 5.78, Rotation2d.fromDegrees(180));
+    public Pose2d shoot2 = new Pose2d(3.07, 7.01, Rotation2d.fromDegrees(180));
+    public Pose2d almostring3 = new Pose2d(5, 4.11, Rotation2d.fromDegrees(180));
+    public Pose2d ring3 = new Pose2d(8.29, 4.11, Rotation2d.fromDegrees(180));
+    public Pose2d ringalmost3 = new Pose2d(5, 4.11, Rotation2d.fromDegrees(180));
+    public Pose2d almostshoot3 = new Pose2d(5, 4.11, Rotation2d.fromDegrees(180));
+    public Pose2d shoot3 = new Pose2d(3.07, 5.56, Rotation2d.fromDegrees(180));
 
-    public Close3(RobotState robotState) {
+    public Blue3Left(RobotState robotState) {
         super(robotState);
         //startPose = new Pose2d(16.54, 5.55, Rotation2d.fromDegrees(180));
-        startPose = new Pose2d(17, 6, Rotation2d.fromDegrees(180));
+        startPose = new Pose2d(.93, 5.55, Rotation2d.fromDegrees(180));
         //startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
     }
 
@@ -58,7 +62,7 @@ public class Close3 extends AutonBase {
           break;
 
           case shoot1:
-          if (queuePath(List.of(robotState.getDrivePose(), ring2), true)) {
+          if (queuePath(List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
             step = Step.ring2;
        } else {
            step = Step.shoot1;
@@ -74,7 +78,7 @@ public class Close3 extends AutonBase {
       break;
 
        case shoot2:
-        if (queuePath(List.of(robotState.getDrivePose(), ring3), true)) {
+        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
             step = Step.ring3;
        } else {
            step = Step.shoot2;
@@ -82,15 +86,15 @@ public class Close3 extends AutonBase {
        break;
 
        case ring3:
-        if (queuePath(List.of(robotState.getDrivePose(), shoot3), true)) {
-            step = Step.end;
+        if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
+            step = Step.shoot3;
        } else {
            step = Step.ring3;
        }
        break;
 
        case shoot3:
-        if (queuePath(List.of(robotState.getDrivePose(), shoot3), true)) {
+        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, shoot3), true)) {
             step = Step.end;
        } else {
            step = Step.shoot3;
