@@ -22,8 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Feeder implements SubsystemBase {
     ConstantsBase.Feeder constants;
 
-   
-
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX feeder;
     int timer = 0;
@@ -33,8 +31,8 @@ public class Feeder implements SubsystemBase {
 RobotState robotState;
     public Feeder(RobotState robotState) { 
         this.robotState = robotState;
-         constants = robotState.getConstants().getFeederConstants();
-        sensorFeeder = new DigitalInput(constants.TRUE_FEEDER_SENSOR_CHANNEL);
+        constants = robotState.getConstants().getFeederConstants();
+        sensorFeeder = new DigitalInput(constants.FEEDER_SENSOR_CHANNEL);
         feederConfigs.Slot0.kP = constants.P0IntakeFeeder;
         feederConfigs.Slot0.kI = constants.I0IntakeFeeder;
         feederConfigs.Slot0.kD = constants.D0IntakeFeeder;
@@ -42,7 +40,7 @@ RobotState robotState;
         feederConfigs.Slot1.kP = constants.P1IntakeFeeder;
         feederConfigs.Slot1.kI = constants.I1IntakeFeeder;
         feederConfigs.Slot1.kD = constants.D1IntakeFeeder;
-        feederConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        feederConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         feeder = new TalonFX(constants.FEEDER_CAN, "drivetrain");
 
@@ -74,8 +72,8 @@ RobotState robotState;
     public void enabled(RobotCommander commander){
        if (sensorFeeder.get()){
             timer += 1;
-        }   else {
-            timer =0;
+        } else {
+            timer = 0;
         }
            SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getFeeder()) {
@@ -89,7 +87,7 @@ RobotState robotState;
                 } else {
                     feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
                 }
-            }  else { 
+            } else { 
                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }           
             } else {
@@ -98,8 +96,6 @@ RobotState robotState;
             }
         }
         
-    
-
     @Override
     public void disabled() {
         feeder.stopMotor();
@@ -109,7 +105,6 @@ RobotState robotState;
     public void reset() {
         feeder.stopMotor();
     }
-
 
     @Override
     public void init(RobotCommander commander) {

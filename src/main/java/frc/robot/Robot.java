@@ -25,8 +25,8 @@ public class Robot extends TimedRobot {
   private Drivetrain drivetrain;
   // private Camera camera;
   private Arm arm;
-    private Feeder feeder;
-    private Intake intake;
+  private Feeder feeder;
+  private Intake intake;
 
 
   // define subsystem objects
@@ -57,8 +57,8 @@ public class Robot extends TimedRobot {
     autonCommander = new AutonCommander(robotState);
     shooter = new Shooter(robotState);
     arm = new Arm(robotState);
-        feeder = new Feeder(robotState);
-        intake = new Intake(robotState);
+    feeder = new Feeder(robotState);
+    intake = new Intake(robotState);
     drivetrain = new Drivetrain(robotState);  
     // camera = new Camera(robotState);
 
@@ -131,6 +131,8 @@ public class Robot extends TimedRobot {
     shooter.enabled(autonCommander);
     drivetrain.enabled(autonCommander);
     arm.enabled(autonCommander);
+    intake.enabled(autonCommander);
+    feeder.enabled(autonCommander);
   }
 
   @Override
@@ -138,8 +140,8 @@ public class Robot extends TimedRobot {
     shooter.reset();
     drivetrain.reset();
     arm.reset();
-        intake.reset();
-                feeder.reset();
+    intake.reset();
+    feeder.reset();
   }
 
   @Override
@@ -147,8 +149,8 @@ public class Robot extends TimedRobot {
     shooter.enabled(teleopCommander);
     drivetrain.enabled(teleopCommander);
     arm.enabled(teleopCommander);
-        intake.enabled(teleopCommander);
-                feeder.enabled(teleopCommander);
+    intake.enabled(teleopCommander);
+    feeder.enabled(teleopCommander);
   }
 
   @Override
@@ -156,8 +158,8 @@ public class Robot extends TimedRobot {
     shooter.disabled();
     drivetrain.disabled();
     arm.disabled();
-        feeder.disabled();
-        intake.disabled();
+    feeder.disabled();
+    intake.disabled();
   }
 
   @Override

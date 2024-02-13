@@ -100,10 +100,9 @@ public class ConstantsBase {
 
     public abstract class Intake {
         public int INTAKE_ENTER_CAN = 14;
-        public double INTAKESPEED = 10;
+        public double INTAKESPEED = 83;
         public double INTAKE_VELOCITY_ERROR = .1;
-     //   public int FEEDER_SENSOR_CHANNEL = 0;
-        public double P0IntakeEnter = 0.11;
+        public double P0IntakeEnter = 4.0;
         public double I0IntakeEnter = 0.5;
         public double D0IntakeEnter = 0.0001;
         public double V0IntakeEnter = 0.12;
@@ -114,11 +113,11 @@ public class ConstantsBase {
 
     public abstract class Feeder {
         public int FEEDER_CAN = 13;
-        public double FEEDERSPEED = 10;
-        public int DESIREDTIMER = 300;
-        public int TRUE_FEEDER_SENSOR_CHANNEL = 0;
+        public double FEEDERSPEED = 40;
+        public int DESIREDTIMER = 0;
+        public int FEEDER_SENSOR_CHANNEL = 0;
         public double FEEDER_VELOCITY_ERROR = .1;
-        public double P0IntakeFeeder = 0.11;
+        public double P0IntakeFeeder = 4.0;
         public double I0IntakeFeeder = 0.5;
         public double D0IntakeFeeder = 0.0001;
         public double V0IntakeFeeder = 0.12;

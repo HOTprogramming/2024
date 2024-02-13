@@ -27,7 +27,7 @@ public class Intake implements SubsystemBase {
 
     RobotState robotState;
     private final DutyCycleOut Out = new DutyCycleOut(0);
-    TalonFX intakeEnter;
+    TalonFX intake;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
      static DigitalInput sensorFeeder;
 
@@ -35,8 +35,7 @@ public class Intake implements SubsystemBase {
 
     public Intake(RobotState robotState) { 
         this.robotState = robotState;
-         constants = robotState.getConstants().getIntakeConstants();
-      //   sensorFeeder = new DigitalInput(constants.FEEDER_SENSOR_CHANNEL);
+        constants = robotState.getConstants().getIntakeConstants();
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
         enterConfigs.Slot0.kD = constants.D0IntakeEnter;
@@ -46,12 +45,12 @@ public class Intake implements SubsystemBase {
         enterConfigs.Slot1.kD = constants.D1IntakeEnter;
         enterConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        intakeEnter = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
+        intake = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
         enterConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         
         StatusCode enterStatus = StatusCode.StatusCodeNotInitialized;
         for (int i = 0; i < 5; ++i) {
-            enterStatus = intakeEnter.getConfigurator().apply(enterConfigs);
+            enterStatus = intake.getConfigurator().apply(enterConfigs);
             if (enterStatus.isOK()) break;
           }
           if(!enterStatus.isOK()) {
@@ -62,8 +61,8 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void updateState() {
-        SmartDashboard.putNumber("intake Speed", intakeEnter.getVelocity().getValueAsDouble());
-        if ((intakeEnter.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
+        SmartDashboard.putNumber("intake Speed", intake.getVelocity().getValueAsDouble());
+        if ((intake.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
             robotState.setIntakeOn(true);
         } else {
             robotState.setIntakeOn(false);
@@ -76,32 +75,22 @@ public class Intake implements SubsystemBase {
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake()) {
-          intakeEnter.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
-
-          //  intakeEnter.setControl(Out);
-           // SmartDashboard.putNumber("Intake RPS", intakeEnter.getVelocity().getValueAsDouble());
-          //  SmartDashboard.putNumber(" Intake set point", constants.INTAKESPEED);
-          //  SmartDashboard.putNumber("Intake error", intakeEnter.getClosedLoopError().getValueAsDouble());
-          //  if (false){
-          //      intakeEnter.setControl(Out);
-          //  }  else { 
-          //     intakeEnter.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
-          //  }           
+          intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));      
             } else {
              Out.Output = 0;
-               intakeEnter.setControl(Out);
+               intake.setControl(Out);
            }
         }
     
 
     @Override
     public void disabled() {
-        intakeEnter.stopMotor();
+        intake.stopMotor();
     }
 
     @Override
     public void reset() {
-        intakeEnter.stopMotor();
+        intake.stopMotor();
     }
 
 
