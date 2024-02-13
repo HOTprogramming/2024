@@ -2,80 +2,244 @@ package frc.robot.Subsystems;
 
 import static frc.robot.Constants.ArmConstants.*;
 
+import frc.robot.RobotCommander;
+import frc.robot.RobotState;
+
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import frc.robot.utils.Interpolation.InterpolatingDouble;
+import frc.robot.utils.Interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotState;
-import frc.robot.RobotCommander;
 
-public class Arm implements SubsystemBase{
-    RobotState robotState;
+public class Arm implements SubsystemBase {
 
-    TalonFX armMotor;
-    MotionMagicVoltage motionMagic;
+RobotState robotState;    
+TalonFX armMotor;
 
-    public Arm(RobotState robotState) {
-        this.robotState = robotState;
-        armMotor = new TalonFX(ARM_CAN);
-        motionMagic = new MotionMagicVoltage(0);
+MotionMagicVoltage armMagic;
 
-        StatusCode status = StatusCode.StatusCodeNotInitialized;
+TalonFXSimState armSimState;
+DCMotorSim armSim;
 
-        TalonFXConfiguration configs = new TalonFXConfiguration();
+CANcoder cancoder;
 
-        MotionMagicConfigs mm = configs.MotionMagic;
-        mm.MotionMagicCruiseVelocity = ARM_CRUISE_VELOCITY; // 5 rotations per second cruise
-        mm.MotionMagicAcceleration = ARM_ACCELERATION; // Take approximately 0.5 seconds to reach max vel
-        mm.MotionMagicJerk = ARM_JERK;
+StatusSignal<Boolean> f_fusedSensorOutOfSync;
+StatusSignal<Boolean> sf_fusedSensorOutOfSync;
+StatusSignal<Boolean> f_remoteSensorInvalid;
+StatusSignal<Boolean> sf_remoteSensorInvalid;
 
-        Slot0Configs slot0 = configs.Slot0;
-        slot0.kP = ARM_KP;
-        slot0.kI = ARM_KI;
-        slot0.kD = ARM_KD;
-        slot0.kV = ARM_KV;
-        slot0.kS = ARM_KS;
+StatusSignal<Double> armPosition;
+StatusSignal<Double> armVelocity;
+StatusSignal<Double> cancoderPosition;
+StatusSignal<Double> cancoderVelocity;
+StatusSignal<Double> armRotorPos;
 
-        for(int i = 0; i < 5; ++i) {
-            status = armMotor.getConfigurator().apply(configs);
-            if (status.isOK()) break;
-        }
-        if (!status.isOK()) {
-            System.out.println("Could not configure device. Error: " + status.toString());
-        }
-    }
 
-    public void updateState() {
+static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> armMap = new InterpolatingTreeMap<>();
 
-    }
 
-    public void enabled(RobotCommander commander) {
+// public enum armDesiredPos{
+
+//   shoot(127),
+//   zero(95);
+
+//   public final double armcpos;
+//   public double getcommmPosition(){
+//     return armcpos;
+//   }
+
+// armDesiredPos(double armcpos){
+// this.armcpos = armcpos;
+// }
+
+
+// }
+
+public boolean setArmDesPos;
+public double armComPos;
+
+Mechanism2d armMech = new Mechanism2d(4, 4);
+MechanismRoot2d root;
+
+MechanismLigament2d armLig;
+
+public Arm(RobotState robotState) {
+
+    root = armMech.getRoot("arm", 2, 0);
     
-        SmartDashboard.putNumber("position", armMotor.getPosition().getValueAsDouble());
-        armMotor.setControl(motionMagic.withPosition(commander.getRunArm()).withSlot(0));
+    armLig = root.append(new MechanismLigament2d("Arm Lig", 2, 0));
+
+    SmartDashboard.putData("Arm Mech", armMech);
+
+    this.robotState = robotState;
+    armMotor = new TalonFX(ARM_CAN, "drivetrain");
+    cancoder = new CANcoder(CANCODER_CAN, "drivetrain");               
+
+   armMagic = new MotionMagicVoltage(0);
+
+  f_fusedSensorOutOfSync = armMotor.getFault_FusedSensorOutOfSync();
+  sf_fusedSensorOutOfSync = armMotor.getStickyFault_FusedSensorOutOfSync();
+  f_remoteSensorInvalid = armMotor.getFault_RemoteSensorDataInvalid();
+  sf_remoteSensorInvalid = armMotor.getStickyFault_RemoteSensorDataInvalid();
+
+  armPosition = armMotor.getPosition();
+  armVelocity = armMotor.getVelocity();
+  cancoderPosition = cancoder.getPosition();
+  cancoderVelocity = cancoder.getVelocity();
+  armRotorPos = armMotor.getRotorPosition();
+
+  armMap.put(new InterpolatingDouble(1.0), new InterpolatingDouble(145.0));
+  armMap.put(new InterpolatingDouble(3.0), new InterpolatingDouble(138.0));
+  armMap.put(new InterpolatingDouble(6.5), new InterpolatingDouble(118.0));
+
+}
+
+  public void armInit(){
+    TalonFXConfiguration cfg = new TalonFXConfiguration();
+
+    MotionMagicConfigs mm = cfg.MotionMagic;
+    mm.MotionMagicCruiseVelocity = CRUISEVELOCITY; //rps
+    mm.MotionMagicAcceleration = ACCELERATION;
+    mm.MotionMagicJerk = JERK;
+
+    Slot0Configs slot0 = cfg.Slot0;
+    slot0.kP = ARMKP;
+    slot0.kI = ARMKI;
+    slot0.kD = ARMKD;
+    slot0.kV = ARMKV;
+    slot0.kS = ARMKS; // Approximately 0.25V to get the mechanism moving
+
+    FeedbackConfigs fdb = cfg.Feedback;
+    fdb.SensorToMechanismRatio = 1;
+
+
+    CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
+    cancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+    cancoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    cancoderConfig.MagnetSensor.MagnetOffset = 0.4;
+    cancoder.getConfigurator().apply(cancoderConfig);
+
+    cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
+    // cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+    cfg.Feedback.SensorToMechanismRatio = 1; //changes what the cancoder and fx encoder ratio is
+    // cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
+    cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    //cancoder.setPosition(0);
+
+
+    StatusCode armStatus = StatusCode.StatusCodeNotInitialized;
+    for(int i = 0; i < 5; ++i) {
+      armStatus = armMotor.getConfigurator().apply(cfg);
+      if (armStatus.isOK()) break;
+    }
+    if (!armStatus.isOK()) {
+      System.out.println("Could not configure device. Error: " + armStatus.toString());
     }
 
-    public void disabled() {
+    armSim = new DCMotorSim(DCMotor.getKrakenX60(1), 500, .001);
+}  
 
+    public void updateState(){
+        robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
     }
 
-    public void reset() {
 
+    double mapArmPos = ZERO;
+
+    public void enabled(RobotCommander commander){
+
+      armPosition.refresh(); 
+      armVelocity.refresh();
+      cancoderPosition.refresh(); 
+      cancoderVelocity.refresh();
+
+      //armDesiredPos thePos = commander.armPosition();
+
+      //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
+      
+      if(commander.runArm()){
+        armComPos = SHOOT/360;
+        armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+      
+      } else if (commander.zeroArm()) {
+        armComPos = ZERO/360;
+         armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+
+      } else{
+        armMotor.setVoltage(0);
+      }
+
+      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
+      SmartDashboard.putNumber("Calced Arm Pose", mapArmPos);
+      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmCommandedPosition", armComPos*360);
+      //SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
+
+    }
+    public void disabled(){
+        armMotor.stopMotor();
+    }
+    public void reset(){
+        armMotor.stopMotor();
+        armMotor.setPosition(0);
+    }
+
+    public void simulation(){
+        armSimState = armMotor.getSimState();
+
+        armSimState.setSupplyVoltage(12);
+        
+        var motorVoltage = armSimState.getMotorVoltage();
+
+        SmartDashboard.putNumber("Motor VOlts", motorVoltage);
+
+        // use the motor voltage to calculate new position and velocity using an external MotorSimModel class
+        armSim.setInputVoltage(motorVoltage);
+        armSim.update(0.020); // assume 20 ms loop time
+
+        SmartDashboard.putNumber("Arm Sim Pos", armSim.getAngularPositionRotations());
+        SmartDashboard.putNumber("Arm Sim Speed", armSim.getAngularVelocityRPM());
+
+        // SmartDashboard.putNumber("Correct Arm Pos", armMotor.getposition().getValueAsDouble());
+
+        // apply the new rotor position and velocity to the TalonFX
+        armSimState.setRawRotorPosition(armSim.getAngularPositionRotations());
+        armSimState.setRotorVelocity(armSim.getAngularVelocityRPM() / 60);
+
+        armLig.setAngle(Rotation2d.fromDegrees((armPosition.getValue()*360) - 85  ));
     }
 
     @Override
     public void init(RobotCommander commander) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'init'");
-    }
-
-    public TalonFX getArmMotor(){
-        return armMotor;
+      // TODO Auto-generated method stub
     }
 }

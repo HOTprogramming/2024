@@ -40,20 +40,19 @@ public final class Constants {
     public final class Auton {
         public static final double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public static final double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
-        
     }
   
   
     public final class Camera {
         public static final String FRONT_CAMERA_NAME = "front_camera";
         
-        public static final Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);
+        public static final Translation3d FRONT_CAMERA_RELATIVE_POSITION = new Translation3d(.35, .29, .165);
         public static final Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
-        public static final Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+        public static final Transform3d FRONT_CAMERA_TRANSFROM = new Transform3d(FRONT_CAMERA_RELATIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
 
-        public static final Translation3d REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -.3, .1);
+        public static final Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(0, -.3, .1);
         public static final Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), Units.degreesToRadians(180));
-        public static final Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+        public static final Transform3d REAR_CAMERA_TRANSFROM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
 
 
@@ -211,17 +210,20 @@ public final class Constants {
         .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
     }
     
+
     public final class ArmConstants {
+        public static final int CANCODER_CAN = 44;
         public static final int ARM_CAN = 9;
-
-        public static final double ARM_KP = 5;
-        public static final double ARM_KI = 0;
-        public static final double ARM_KD = 0.1;
-        public static final double ARM_KV = 0.12;
-        public static final double ARM_KS = 0.25;
-
-        public static final double ARM_CRUISE_VELOCITY = 5;
-        public static final double ARM_ACCELERATION = 10;
-        public static final double ARM_JERK = 50;
+        public static final double CRUISEVELOCITY = 400;
+        public static final double ACCELERATION = 400;
+        public static final double JERK = 2000;
+        public static final double ARMKP = 380;
+        public static final double ARMKI = 0;
+        public static final double ARMKD = 0;
+        public static final double ARMKV = 0.8;
+        public static final double ARMKS = 0.1;
+        public static final double ZERO = 95;
+        public static final double SHOOT = 118;
+        
     }
 }

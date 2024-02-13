@@ -4,8 +4,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
+//import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.RotationSequence;
 
 public class TeleopCommander implements RobotCommander {
     private static XboxController driver;
@@ -14,6 +15,12 @@ public class TeleopCommander implements RobotCommander {
 
     RobotState robotState;
     double armPose;
+    double LX;
+    double LY;
+    double RX;
+
+
+  //  armDesiredPos armSetXPos = armDesiredPos.zero;
 
 
     public TeleopCommander(RobotState robotState) {
@@ -27,7 +34,30 @@ public class TeleopCommander implements RobotCommander {
    @Override
    
     public double[] getDrivePercentCommand() {
-        return new double[] {-driver.getLeftY(), -driver.getLeftX(), -driver.getRightX()};
+        double leftY;
+        double leftx;
+        double rightx;
+
+        if (Math.abs(driver.getLeftY()) > .15) {
+            leftY = -driver.getLeftY();
+        } else {
+            leftY = 0;
+        }
+
+        if (Math.abs(driver.getLeftX()) > .15) {
+            leftx = -driver.getLeftX();
+        } else {
+            leftx = 0;
+        }
+
+        if (Math.abs(driver.getRightX()) > .15) {
+            rightx = -driver.getRightX();
+        } else {
+            rightx = 0;
+        }
+
+
+        return new double[] {leftY, leftx, rightx};
     }
 
     @Override
@@ -53,7 +83,10 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getRunShooter() {
-        return operator.getRightBumper();
+        return operator.getRightTriggerAxis() > .1;
+    }
+    public boolean getRunFeeder() {
+        return (operator.getRightTriggerAxis() > 0.01);
     }
 
     public boolean increaseLeftTargetSpeed() {
@@ -74,14 +107,44 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public double getTargetDriveSpeed() {
-        return 0;
+        return operator.getLeftY();
     }
 
-    public double getRunArm() {
-        if (operator.getLeftY() < 0.05 && operator.getLeftY() > -0.05) {
-            return 0;
-        } else {
-            return operator.getLeftY();
+    @Override
+    public double getTargetArmSpeed() {
+        return operator.getRightY() * 5;
+    }
+
+    // @Override
+    // public armDesiredPos armPosition() {
+    //     if(operator.getRightBumper()){
+    //         armSetXPos = armDesiredPos.shoot;
+    //         return armSetXPos;
+    //     }
+    //     else{
+    //     armSetXPos = armDesiredPos.zero;
+    //     return armSetXPos;
+    //     }
+
+    // }
+
+    @Override
+    public boolean runArm(){
+        if(operator.getRightBumper()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean zeroArm(){
+        if(operator.getLeftBumper()){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -134,6 +197,16 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public boolean getResetRobotPose() {
         return driver.getBackButton();
+    }
+
+    @Override
+    public boolean getIntake() {
+        return operator.getLeftTriggerAxis() > .1;
+    }
+
+    @Override
+    public boolean setShoot() {
+        return driver.getRightBumper();
     }
 
 
