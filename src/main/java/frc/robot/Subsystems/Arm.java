@@ -134,12 +134,12 @@ public Arm(RobotState robotState) {
     cancoder.getConfigurator().apply(cancoderConfig);
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
-    // cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+    cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
     cfg.Feedback.SensorToMechanismRatio = 1; //changes what the cancoder and fx encoder ratio is
-    // cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
+    cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     cfg.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .37;
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .42;
     cfg.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     cfg.SoftwareLimitSwitch.ReverseSoftLimitThreshold = .25;
 
@@ -183,7 +183,7 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       
       } else if (commander.zeroArm()) {
-        commandedPosition = 95/360;
+        commandedPosition = 100/360;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
       } else{

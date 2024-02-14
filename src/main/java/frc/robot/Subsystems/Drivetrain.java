@@ -287,9 +287,7 @@ if (currentAlliance == Alliance.Blue) {
         // }
 
         if (commander.getResetRobotPose()) {
-            if (robotState.getVisionMeasurements()[3] != null) {
-                seedFieldRelative(robotState.getVisionMeasurements()[3]);   
-            }
+            seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
         }
     }
 
