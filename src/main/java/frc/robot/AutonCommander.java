@@ -115,8 +115,6 @@ public class AutonCommander implements RobotCommander {
     //     return armDesiredPos.zero;
     // }
 
-    
-
     @Override
     public boolean getLockPoseCommand() {
         // TODO Auto-generated method stub
@@ -162,5 +160,4 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setShoot'");
     }
-
 }

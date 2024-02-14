@@ -76,14 +76,20 @@ RobotState robotState;
             timer = 0;
         }
            SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getFeeder()) {
+        if (commander.getFeeder() || commander.setShoot()) {
             feeder.setControl(Out);
             SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
             SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
             SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
             if (sensorFeeder.get()){
                 if (timer >= constants.DESIREDTIMER){
-                feeder.setControl(Out);
+                
+                    if (commander.setShoot()) {
+                        feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+                    } else {
+                        feeder.setControl(Out);
+                    }
+
                 } else {
                     feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
                 }

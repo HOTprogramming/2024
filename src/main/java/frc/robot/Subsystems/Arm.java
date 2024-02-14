@@ -4,6 +4,7 @@ import static frc.robot.Constants.ArmConstants.*;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.ShotMap;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -61,10 +62,6 @@ StatusSignal<Double> cancoderPosition;
 StatusSignal<Double> cancoderVelocity;
 StatusSignal<Double> armRotorPos;
 
-
-static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> armMap = new InterpolatingTreeMap<>();
-
-
 // public enum armDesiredPos{
 
 //   shoot(127),
@@ -83,22 +80,17 @@ static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> armMap = n
 // }
 
 public boolean setArmDesPos;
-public double armComPos;
 
-Mechanism2d armMech = new Mechanism2d(4, 4);
-MechanismRoot2d root;
+public double robotePosToSpeaker;
+public double commandedPosition;
 
-MechanismLigament2d armLig;
+ShotMap shotMap;
 
 public Arm(RobotState robotState) {
 
-    root = armMech.getRoot("arm", 2, 0);
-    
-    armLig = root.append(new MechanismLigament2d("Arm Lig", 2, 0));
-
-    SmartDashboard.putData("Arm Mech", armMech);
-
     this.robotState = robotState;
+
+    shotMap = new ShotMap(robotState);
     armMotor = new TalonFX(ARM_CAN, "drivetrain");
     cancoder = new CANcoder(CANCODER_CAN, "drivetrain");               
 
@@ -114,11 +106,6 @@ public Arm(RobotState robotState) {
   cancoderPosition = cancoder.getPosition();
   cancoderVelocity = cancoder.getVelocity();
   armRotorPos = armMotor.getRotorPosition();
-
-  armMap.put(new InterpolatingDouble(1.0), new InterpolatingDouble(145.0));
-  armMap.put(new InterpolatingDouble(3.0), new InterpolatingDouble(138.0));
-  armMap.put(new InterpolatingDouble(6.5), new InterpolatingDouble(118.0));
-
 }
 
   public void armInit(){
@@ -147,11 +134,14 @@ public Arm(RobotState robotState) {
     cancoder.getConfigurator().apply(cancoderConfig);
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
-    // cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+    cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
     cfg.Feedback.SensorToMechanismRatio = 1; //changes what the cancoder and fx encoder ratio is
-    // cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
+    cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    //cancoder.setPosition(0);
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .42;
+    cfg.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    cfg.SoftwareLimitSwitch.ReverseSoftLimitThreshold = .25;
 
 
     StatusCode armStatus = StatusCode.StatusCodeNotInitialized;
@@ -184,24 +174,34 @@ public Arm(RobotState robotState) {
 
       //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
       
+      robotePosToSpeaker = robotState.getPoseToSpeaker();
+
+      
+      
       if(commander.runArm()){
-        armComPos = SHOOT/360;
-        armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
+        commandedPosition = shotMap.calcShotMap()/360;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       
       } else if (commander.zeroArm()) {
-        armComPos = ZERO/360;
-         armMotor.setControl(armMagic.withPosition(armComPos).withSlot(0));
-
+        commandedPosition = 100/360;
+         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+         
       } else{
         armMotor.setVoltage(0);
       }
+    
+   
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
       SmartDashboard.putNumber("Calced Arm Pose", mapArmPos);
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
-      SmartDashboard.putNumber("ArmCommandedPosition", armComPos*360);
+      SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);
+      // if(this.robotState != null){
+        SmartDashboard.putNumber("commandedPosition", shotMap.calcShotMap());
+      // }
       //SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
 
     }
@@ -235,7 +235,6 @@ public Arm(RobotState robotState) {
         armSimState.setRawRotorPosition(armSim.getAngularPositionRotations());
         armSimState.setRotorVelocity(armSim.getAngularVelocityRPM() / 60);
 
-        armLig.setAngle(Rotation2d.fromDegrees((armPosition.getValue()*360) - 85  ));
     }
 
     @Override
@@ -243,3 +242,4 @@ public Arm(RobotState robotState) {
       // TODO Auto-generated method stub
     }
 }
+
