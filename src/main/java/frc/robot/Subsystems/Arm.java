@@ -128,7 +128,10 @@ public Arm(RobotState robotState) {
     cfg.Feedback.SensorToMechanismRatio = 1; //changes what the cancoder and fx encoder ratio is
     cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    //cancoder.setPosition(0);
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .37;
+    cfg.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    cfg.SoftwareLimitSwitch.ReverseSoftLimitThreshold = .25;
 
 
     StatusCode armStatus = StatusCode.StatusCodeNotInitialized;
@@ -181,6 +184,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
 
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
       SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);
       // if(this.robotState != null){

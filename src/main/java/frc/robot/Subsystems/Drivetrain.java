@@ -211,16 +211,16 @@ if (currentAlliance == Alliance.Blue) {
             });
         }
 
-        if (robotState.getVisionMeasurements() != null) {
-            for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-                if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
-                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                            robotState.getVisionTimestamps()[i],
-                            robotState.getVisionStdevs().extractColumnVector(i));
-                    // assuming it wants rotation in radians
-                }
-            }
-        }
+        // if (robotState.getVisionMeasurements() != null) {
+        //     for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+        //         if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
+        //             addVisionMeasurement(robotState.getVisionMeasurements()[i],
+        //                     robotState.getVisionTimestamps()[i],
+        //                     robotState.getVisionStdevs().extractColumnVector(i));
+        //             // assuming it wants rotation in radians
+        //         }
+        //     }
+        // }
 
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
