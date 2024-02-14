@@ -23,6 +23,7 @@ public class ConstantsBase {
     private Drivetrain drivetrain;
     private Shooter shooter;
     private Intake intake;
+    private Feeder feeder;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -36,6 +37,7 @@ public class ConstantsBase {
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
+                                    this.feeder = practiceBotConstants.new Feeder();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
@@ -44,6 +46,7 @@ public class ConstantsBase {
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
+                        this.feeder = practiceBotConstants.new Feeder();
 
         } else {
             this.auton = camBotConstants.new Auton();
@@ -51,6 +54,7 @@ public class ConstantsBase {
             this.drivetrain = camBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
+                        this.feeder = practiceBotConstants.new Feeder();
         }
     }
 
@@ -60,6 +64,9 @@ public class ConstantsBase {
     
     public Auton getAutonConstants() {
         return this.auton;
+    }
+    public Feeder getFeederConstants() {
+        return this.feeder;
     }
 
     public Camera getCameraConstants() {
@@ -93,46 +100,81 @@ public class ConstantsBase {
 
     public abstract class Intake {
         public int INTAKE_ENTER_CAN = 14;
-        public int INTAKE_TRANSFER_CAN = 13;
         public double INTAKESPEED = 83;
-        public double INTAKESTOP = 0;
         public double INTAKE_VELOCITY_ERROR = .1;
-        public int ENTER_SENSOR_CHANNEL = 0;
-        public int TRANSFER_SENSOR_CHANNEL = 1;
-        public double P0IntakeEnter = 8.0;
+        public double P0IntakeEnter = 4.0;
         public double I0IntakeEnter = 0.5;
         public double D0IntakeEnter = 0.0001;
         public double V0IntakeEnter = 0.12;
         public double P1IntakeEnter = 5;
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
-        public double EnterPeakForwardTorqueCurrent = 40;
-        public double EnterPeakReverseTorqueCurrent = -40;
-        public double P0IntakeTransfer = 0.11;
-        public double I0IntakeTransfer = 0.5;
-        public double D0IntakeTransfer = 0.0001;
-        public double V0IntakeTransfer = 0.12;
-        public double P1IntakeTransfer = 5;
-        public double I1IntakeTransfer = 1;
-        public double D1IntakeTransfer = 0.001;
-        public double TransferPeakForwardTorqueCurrent = 40;
-        public double TransferPeakReverseTorqueCurrent = -40;
     }
-  
-  
+
+    public abstract class Feeder {
+        public int FEEDER_CAN = 13;
+        public double FEEDERSPEED = 40;
+        public int DESIREDTIMER = 0;
+        public int FEEDER_SENSOR_CHANNEL = 0;
+        public double FEEDER_VELOCITY_ERROR = .1;
+        public double P0IntakeFeeder = 4.0;
+        public double I0IntakeFeeder = 0.5;
+        public double D0IntakeFeeder = 0.0001;
+        public double V0IntakeFeeder = 0.12;
+        public double P1IntakeFeeder = 5;
+        public double I1IntakeFeeder = 1;
+        public double D1IntakeFeeder = 0.001;
+        }
+
     public abstract class Camera {
-        public boolean HAS_CAMERA = false;
+        //DEFAULT VALUES ARE PRACTICE BOT VALUES
+
+        //Intake (Front): 12.483in forward of robot middle. On center. 8.625in above ground Perpendicular to floor
+        //Shooting (Back): 12.425in reward of robot middle. On center. 6.008in above ground. Angled 8 degrees up from floor
+        //Left Side: 10.696in left of robot middle. 30 degrees left of rear. 16.838in above ground. angled 5 degrees up from floor
+        //Right Side: 10.696in right of robot middle. 30 degrees right of rear. 16.838in above ground. angled 5 degrees up from floor
+        //(X, Y, Z)
+        //X: Front and back (Front +)
+        //Y: Left and right (Left +)
+        //Z: Vertical distance from the floor to the camera (Up +)
+
+        public double[] STDEV_GAIN = new double[] {1, 1, 1};
+
+        //FRONT
+        public boolean HAS_FRONT_CAMERA = false;
+
         public String FRONT_CAMERA_NAME = "front_camera";
         
-        public Translation3d FRONT_CAMERA_REALITIVE_POSITION = new Translation3d(.35, .29, .165);
-        public Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-8), 0);
-        public Transform3d FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_REALITIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+        public Translation3d FRONT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625));
+        public Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, 0, 0);
+        public Transform3d FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_RELATIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+
+        //REAR
+        public boolean HAS_REAR_CAMERA = false;
 
         public String REAR_CAMERA_NAME = "back_camera";
 
-        public Translation3d REAR_CAMERA_REALITIVE_POSITION = new Translation3d(0, -.3, .1);
-        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180));
-        public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_REALITIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12.563), Units.inchesToMeters(0), Units.inchesToMeters(6.193)); // -12.563, 0, 6.193
+        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)); // 0 20 180
+        public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
+
+        //RIGHT
+        public boolean HAS_RIGHT_CAMERA = false;
+
+        public String RIGHT_CAMERA_NAME = "right_camera";
+
+        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(-30));
+        public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
+
+        //LEFT
+        public boolean HAS_LEFT_CAMERA = false;
+
+        public String LEFT_CAMERA_NAME = "left_camera";
+
+        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(30));
+        public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
     }
  
@@ -142,7 +184,7 @@ public class ConstantsBase {
         public int FEEDER_CAN = 13;
 
         public double TARGET_SPEED_INCREMENT = 5;
-        public double START_TARGET_SPEED = 0;
+        public double START_TARGET_SPEED = 70;
 
         public double FEEDER_SPEED = 10;
         public double FEEDER_REVOLUTIONS = 25;
@@ -153,17 +195,23 @@ public class ConstantsBase {
         public double FLYWHEEL_KP = 0.25;
         public double FLYWHEEL_KI = 0.5;
         public double FLYWHEEL_KD = 0.0001;
-        public double LEFT_FLYWHEEL_KV = 0.133;
-        public double RIGHT_FLYWHEEL_KV = 0.138;
-        public double LEFT_FLYWHEEL_KS = 0.384;
-        public double RIGHT_FLYWHEEL_KS = 0.38;
+        public double LEFT_FLYWHEEL_KV = .130; //.133
+        public double RIGHT_FLYWHEEL_KV = .130; //.138
+        public double LEFT_FLYWHEEL_KS = 0.8; //.384
+        public double RIGHT_FLYWHEEL_KS = 0.8; //38
         public double FLYWHEEL_PEAK_VOLTAGE = 12;
         public double FEEDER_KP = 0.25;
         public double FEEDER_KI = 0.5;
         public double FEEDER_KD = 0.0001;
+
+        public double RFLYWHEEL_KP = 0.25;
+        public double RFLYWHEEL_KI = 0.5;
+        public double RFLYWHEEL_KD = 0.0001;
     }
 
     public abstract class Drivetrain {
+        public double CAM_MAX_ERROR = 1.0;
+
         public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
         public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
 

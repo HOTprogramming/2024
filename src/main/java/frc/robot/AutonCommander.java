@@ -1,10 +1,10 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.utils.trajectory.RotationSequence;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import frc.robot.trajectory.RotationSequence;
 
 public class AutonCommander implements RobotCommander {
     RobotState robotState;
@@ -136,6 +136,29 @@ public class AutonCommander implements RobotCommander {
     public boolean getIntake() {
         // TODO Auto-generated method stub
         return false;
+    }
+    
+    @Override
+    public boolean getFeeder() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean runArm() {
+        return auto.runArm;
+    }
+
+    @Override
+    public boolean zeroArm() {
+        // TODO Auto-generated method stub
+        return !auto.runArm;
+    }
+
+    @Override
+    public boolean setShoot() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setShoot'");
     }
 
     @Override
