@@ -139,6 +139,12 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         return false;
     }
+    
+    @Override
+    public boolean getFeeder() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
     @Override
     public boolean runArm() {

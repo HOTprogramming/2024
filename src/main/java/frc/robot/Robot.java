@@ -7,10 +7,9 @@ import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Drivetrain;
-import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Intake;
-
-
+import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Feeder;
 
 public class Robot extends TimedRobot {
   private ConstantsBase constantsBase;
@@ -23,7 +22,9 @@ public class Robot extends TimedRobot {
   private Drivetrain drivetrain;
   private Camera camera;
   private Arm arm;
+  private Feeder feeder;
   private Intake intake;
+
 
   // define subsystem objects
 
@@ -53,6 +54,8 @@ public class Robot extends TimedRobot {
     autonCommander = new AutonCommander(robotState);
     shooter = new Shooter(robotState);
     arm = new Arm(robotState);
+    feeder = new Feeder(robotState);
+    intake = new Intake(robotState);
     drivetrain = new Drivetrain(robotState);  
     camera = new Camera(robotState);
     intake = new Intake(robotState);
@@ -126,6 +129,8 @@ public class Robot extends TimedRobot {
     shooter.enabled(autonCommander);
     drivetrain.enabled(autonCommander);
     arm.enabled(autonCommander);
+    intake.enabled(autonCommander);
+    feeder.enabled(autonCommander);
   }
 
   @Override
@@ -134,6 +139,7 @@ public class Robot extends TimedRobot {
     drivetrain.reset();
     arm.reset();
     intake.reset();
+    feeder.reset();
   }
 
   @Override
@@ -142,6 +148,7 @@ public class Robot extends TimedRobot {
     drivetrain.enabled(teleopCommander);
     arm.enabled(teleopCommander);
     intake.enabled(teleopCommander);
+    feeder.enabled(teleopCommander);
   }
 
   @Override
@@ -149,6 +156,8 @@ public class Robot extends TimedRobot {
     shooter.disabled();
     drivetrain.disabled();
     arm.disabled();
+    feeder.disabled();
+    intake.disabled();
   }
 
   @Override

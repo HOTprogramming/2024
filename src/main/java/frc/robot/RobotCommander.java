@@ -37,7 +37,8 @@ public interface RobotCommander {
     public boolean getPidgeonReset();
 
     public int getAngleSnapCommand();
-    public abstract boolean getIntake();    
+    public abstract boolean getIntake();
+        public abstract boolean getFeeder();        
     public abstract boolean getRunFeeder();
     public boolean getLockPoseCommand();
     public abstract boolean getRunShooter();
