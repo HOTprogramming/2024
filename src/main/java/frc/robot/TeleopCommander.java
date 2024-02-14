@@ -210,7 +210,7 @@ public class TeleopCommander implements RobotCommander {
     }
      @Override
     public boolean getFeeder() {
-        return operator.getLeftBumper();
+        return operator.getLeftTriggerAxis() > .1;
     }
 
 
