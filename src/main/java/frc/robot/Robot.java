@@ -3,16 +3,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
+import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
-// import frc.robot.Subsystems.Camera;
-import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Feeder;
-import frc.robot.Subsystems.Arm;
-
 
 public class Robot extends TimedRobot {
   private ConstantsBase constantsBase;
@@ -23,7 +20,7 @@ public class Robot extends TimedRobot {
 
   private Shooter shooter;
   private Drivetrain drivetrain;
-  // private Camera camera;
+  private Camera camera;
   private Arm arm;
   private Feeder feeder;
   private Intake intake;
@@ -60,7 +57,8 @@ public class Robot extends TimedRobot {
     feeder = new Feeder(robotState);
     intake = new Intake(robotState);
     drivetrain = new Drivetrain(robotState);  
-    // camera = new Camera(robotState);
+    camera = new Camera(robotState);
+    intake = new Intake(robotState);
 
     aidenSquare = new AidenSquare(robotState);
     blue3Park = new Blue3Park(robotState);
@@ -87,12 +85,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // camera.updateState();
+    camera.updateState();
     drivetrain.updateState(); // drivetrain AFTER camera
 
+    intake.updateState();
 
     // shooter.updateState();
-    arm.updateState();
     arm.updateState();
   }
 
@@ -101,24 +99,24 @@ public class Robot extends TimedRobot {
     String selectedAuto = autoSelector.getSelected();
 
 
-    // auton selector base
-    if (selectedAuto == "aidenSquare") {
-      autonCommander.setAuto(aidenSquare);
-    } else if (selectedAuto == "blue3Park") {
-      autonCommander.setAuto(blue3Park);
-    } else if (selectedAuto == "blue3Ring") {
-      autonCommander.setAuto(blue3Ring);
-    } else if (selectedAuto == "blue3Under") {
-      autonCommander.setAuto(blue3Under);
-    } else if (selectedAuto == "blue4Ring") {
-      autonCommander.setAuto(blue4Ring);
-    } else if (selectedAuto == "red2Ring") {
-      autonCommander.setAuto(red2Ring);
-    } else if (selectedAuto == "triangle") {
-      autonCommander.setAuto(triangle);
-    } else if (selectedAuto == "willsSquare") {
-      autonCommander.setAuto(willsSquare);
-    }
+    // // auton selector base
+    // if (selectedAuto == "aidenSquare") {
+    //   autonCommander.setAuto(aidenSquare);
+    // } else if (selectedAuto == "blue3Park") {
+    //   autonCommander.setAuto(blue3Park);
+    // } else if (selectedAuto == "blue3Ring") {
+    //   autonCommander.setAuto(blue3Ring);
+    // } else if (selectedAuto == "blue3Under") {
+    //   autonCommander.setAuto(blue3Under);
+    // } else if (selectedAuto == "blue4Ring") {
+    //   autonCommander.setAuto(blue4Ring);
+    // } else if (selectedAuto == "red2Ring") {
+    //   autonCommander.setAuto(red2Ring);
+    // } else if (selectedAuto == "triangle") {
+    //   autonCommander.setAuto(triangle);
+    // } else if (selectedAuto == "willsSquare") {
+    //   autonCommander.setAuto(willsSquare);
+    // }
 
     autonCommander.setAuto(red3Ring);
 
@@ -177,5 +175,6 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationPeriodic() {
     drivetrain.updateSimState(.02, 12);
+    arm.simulation();
   }
 }

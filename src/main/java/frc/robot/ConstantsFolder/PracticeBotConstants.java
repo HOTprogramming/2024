@@ -5,7 +5,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
-
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
@@ -22,7 +24,12 @@ public class PracticeBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            HAS_CAMERA = false;
+            //PracticeBot will have all 4 cameras, missing front right now
+            HAS_FRONT_CAMERA = false;
+            HAS_REAR_CAMERA = true;
+            HAS_LEFT_CAMERA = true;
+            HAS_RIGHT_CAMERA = true;
+            
         }
     }
 
@@ -51,25 +58,31 @@ public class PracticeBotConstants extends ConstantsBase {
             FEEDER_CAN = 13;
 
             TARGET_SPEED_INCREMENT = 5;
-            START_TARGET_SPEED = 10;
+            START_TARGET_SPEED = 63.3;
 
             FEEDER_SPEED = 20;
             FEEDER_REVOLUTIONS = 50;
 
-            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_SPEED = 1; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
 
-            FLYWHEEL_KP = 0.25;
-            FLYWHEEL_KI = 0.5;
-            FLYWHEEL_KD = 0.0001;
-            LEFT_FLYWHEEL_KV = 0.133;
-            RIGHT_FLYWHEEL_KV = 0.138;
-            LEFT_FLYWHEEL_KS = 0.384;
-            RIGHT_FLYWHEEL_KS = 0.38;
+            FLYWHEEL_KP = 40;
+            FLYWHEEL_KI = 1.5; //.5
+            FLYWHEEL_KD = .75; //.0001
+            LEFT_FLYWHEEL_KV = 0;
+            RIGHT_FLYWHEEL_KV = 0;
+            LEFT_FLYWHEEL_KS = 7.5;
+            RIGHT_FLYWHEEL_KS = 7.5;
             FLYWHEEL_PEAK_VOLTAGE = 12;
             FEEDER_KP = 0.25;
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
+
+            RFLYWHEEL_KP = 40;
+            RFLYWHEEL_KI = 1.5; //.5
+            RFLYWHEEL_KD = .75; //.0001
+
+
         }
 
     }

@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
+// import frc.robot.Subsystems.Arm.armDesiredPos;
 
 
 public class Red3Ring extends AutonBase {
@@ -46,9 +47,10 @@ public class Red3Ring extends AutonBase {
         switch (step) {
             case start:
             
-
-             generateTrajectory(List.of(startPose, firstring1, firstring2));
+            generateTrajectory(List.of(startPose, firstring1, firstring2));
+            runArm = true;
             step = Step.firstring1;
+            
             break;
 
             case firstring1:
@@ -56,6 +58,7 @@ public class Red3Ring extends AutonBase {
                 step = Step.shoot2;
            } else {
                step = Step.firstring1;
+                runArm = true;
            }
             break;
 
@@ -65,14 +68,18 @@ public class Red3Ring extends AutonBase {
                 step = Step.actualshoot2;
            } else {
                step = Step.shoot2;
+            //    desiredArmPos = armDesiredPos.shoot;
+                // runArm = false;
            }
            break; 
 
             case actualshoot2:
              if (queuePath(List.of(robotState.getDrivePose(), secondring1), true)) {
                 step = Step.secondring1;
+                
            } else {
                step = Step.actualshoot2;
+                // runArm = true;
            }
             break;
 
@@ -81,6 +88,7 @@ public class Red3Ring extends AutonBase {
                 step = Step.shoot3;
            } else {
                step = Step.secondring1;
+                // runArm = false;
            }
             break;
 
@@ -89,6 +97,7 @@ public class Red3Ring extends AutonBase {
                 step = Step.actualshoot3;
            } else {
                step = Step.shoot3;
+                // desiredArmPos = armDesiredPos.zero;
            }
            break; 
 

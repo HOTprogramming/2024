@@ -5,8 +5,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.numbers.N4;
 import frc.robot.ConstantsFolder.ConstantsBase;
-import frc.robot.Subsystems.Arm.armDesiredPos;
+//import frc.robot.Subsystems.Arm.armDesiredPos;
 
 public class RobotState {
     private ConstantsBase constants;
@@ -15,7 +16,7 @@ public class RobotState {
 
     private Pose2d[] visionMeasurements;
     private double[] visionTimestamps;
-    private Matrix<N3, N2> visionStdevs;
+    private Matrix<N3, N4> visionStdevs;
 
 
     private boolean shooterOn;
@@ -23,7 +24,7 @@ public class RobotState {
             private boolean feederOn;
 
     private double armPos;
-    private armDesiredPos stateArmPos;
+ //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
     }
@@ -105,11 +106,11 @@ public class RobotState {
         return visionTimestamps;
     }
 
-    public void setVisionStdevs(Matrix<N3, N2> visionStdevs) {
+    public void setVisionStdevs(Matrix<N3, N4> visionStdevs) {
         this.visionStdevs = visionStdevs;
     }
 
-    public Matrix<N3, N2> getVisionStdevs() {
+    public Matrix<N3, N4> getVisionStdevs() {
         return visionStdevs;
     }
 

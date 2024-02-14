@@ -3,7 +3,16 @@
     "types": {
       "/Drivetrain": "Field2d",
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Arm Mech": "Mechanism2d",
+      "/SmartDashboard/Desired Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {
