@@ -5,8 +5,8 @@ import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.RobotCommander.DriveMode;
-import frc.robot.trajectory.CustomHolonomicDriveController;
-import frc.robot.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.CustomHolonomicDriveController;
+import frc.robot.utils.trajectory.RotationSequence;
 
 import java.sql.Driver;
 import java.util.Optional;
@@ -31,6 +31,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
@@ -53,6 +54,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
+    Alliance currentAlliance = Alliance.Red;
+
+    private double currentRobotePos;
+
     // for velocity calcs
     private SwerveDriveState currentState;
     private Pose2d lastPose = new Pose2d();
@@ -69,6 +74,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     // TEMP pose 2d for get angle snap command
     private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
         // call swervedriveDrivetrain constructor (parent class)
@@ -174,6 +180,15 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
+if (currentAlliance == Alliance.Blue) {
+                currentRobotePos = currentState.Pose.minus(blueSpeaker).getTranslation().getNorm();
+            }
+            else{
+                currentRobotePos = currentState.Pose.minus(redSpeaker).getTranslation().getNorm();
+            }
+
+            robotState.setPoseToSpeaker(currentRobotePos);
+            
             robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
             double timeDifference = currentTime - lastTime;
@@ -198,16 +213,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             });
         }
 
-        if (robotState.getVisionMeasurements() != null) {
-            for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-                if (robotState.getVisionMeasurements()[i] != null && robotState.getVisionStdevs() != null) {
-                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                            robotState.getVisionTimestamps()[i],
-                            robotState.getVisionStdevs().extractColumnVector(i));
-                    // assuming it wants rotation in radians
-                }
-            }
-        }
+        // for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+        //     if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
+        //         addVisionMeasurement(robotState.getVisionMeasurements()[i],
+        //                 robotState.getVisionTimestamps()[i],
+        //                 robotState.getVisionStdevs().extractColumnVector(i));
+        //         // assuming it wants rotation in radians
+        //     }
+        // }
 
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
@@ -219,6 +232,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         
     }
 
+    Field2d desiredField = new Field2d();
+
     @Override
     public void init(RobotCommander commander) {
         // sets start pose to auton start pose
@@ -226,8 +241,11 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // sets boolean tolerances for auton refrence poses
         driveController.setTolerance(commander.getRefrenceTolerances());
+
+        SmartDashboard.putData("Desired Field", desiredField);
     }
 
+    
     @Override
     public void enabled(RobotCommander commander) {
         // commands drivetrain based on target drivemode
@@ -235,6 +253,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             percentDrive(commander.getDrivePercentCommand(), true);
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
+        }
+
+
+        if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
+            desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
+                                                commander.getDriveState().poseMeters.getY(),
+                                                commander.getDriveRotationState().position));         
         }
 
         if (commander.getBrakeCommand()) {
@@ -254,7 +279,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         if (commander.getLockSpeakerCommand()) {
             // TODO add driverstation get for speaker lock pose
             // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
         }
 
         // if (commander.getLockRingCommand()) {
@@ -263,15 +288,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getResetRobotPose()) {
             seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            // Pose2d[] vision = robotState.getVisionMeasurements();
-            // if (vision != null) {
-            //     if (vision[0] != null) {
-            //         seedFieldRelative(new Pose2d(vision[0].getTranslation(), vision[0].getRotation()));
-            //     } else if (vision[1] != null) {
-            //         seedFieldRelative(new Pose2d(vision[1].getTranslation(), vision[1].getRotation()));
-            //     }
-                
-            // }
         }
     }
 
@@ -282,8 +298,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void reset() {
-        tareEverything();
-        m_pigeon2.reset();
     }
 
 }

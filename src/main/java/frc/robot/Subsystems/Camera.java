@@ -19,6 +19,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -29,14 +30,17 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 
+import java.beans.VetoableChangeListener;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
@@ -52,6 +56,8 @@ public class Camera implements SubsystemBase {
     PhotonTrackedTarget frontBestTarget;
     double frontSampleTime;
     Pose2d frontCamEstimation;
+    Matrix<N3, N1> frontDevs = VecBuilder.fill(1, 1, 1);
+
 
     PhotonCameraSim simFrontCam;
 
@@ -61,6 +67,8 @@ public class Camera implements SubsystemBase {
     PhotonTrackedTarget leftBestTarget;
     double leftSampleTime;
     Pose2d leftCamEstimation;
+    Matrix<N3, N1> leftDevs = VecBuilder.fill(1, 1, 1);
+
 
     PhotonCameraSim simLeftCam;
 
@@ -70,6 +78,8 @@ public class Camera implements SubsystemBase {
     PhotonTrackedTarget rightBestTarget;
     double rightSampleTime;
     Pose2d rightCamEstimation;
+    Matrix<N3, N1> rightDevs = VecBuilder.fill(1, 1, 1);
+
 
     PhotonCameraSim simRightCam;
 
@@ -79,6 +89,8 @@ public class Camera implements SubsystemBase {
     PhotonTrackedTarget rearBestTarget;
     double rearSampleTime;
     Pose2d rearCamEstimation;
+    Matrix<N3, N1> rearDevs = VecBuilder.fill(1, 1, 1);
+
 
     PhotonCameraSim simRearCam;
 
@@ -87,28 +99,35 @@ public class Camera implements SubsystemBase {
     VisionSystemSim simVision;
     SimCameraProperties globalShutterProperties;
 
-    boolean tempSimBool = true;
+    boolean tempSimBool = false;
     boolean drawWireframes = false; // resource heavy
 
-    // Nat<N3> rows = new Nat<N3>() {
+    Nat<N3> rows = new Nat<N3>() {
 
-    //     @Override
-    //     public int getNum() {
-    //         return 3;
-    //     }
+        @Override
+        public int getNum() {
+            return 3;
+        }
         
-    // };
-    // Nat<N2> colls = new Nat<N2>() {
+    };
+    Nat<N4> colls = new Nat<N4>() {
 
-    //     @Override
-    //     public int getNum() {
-    //         return 2;
-    //     }
+        @Override
+        public int getNum() {
+            return 4;
+        }
         
-    // };
+    };
 
+    Matrix<N3, N4> stDevs = new Matrix(rows, colls);
+    double[] timestamps = new double[] {-1, -1, -1 ,-1};
+    Pose2d[] poses = new Pose2d[] {
+        new Pose2d(),
+        new Pose2d(),
+        new Pose2d(),
+        new Pose2d()
+    };
 
-    // Matrix<N3, N2> stdevs = new Matrix(rows, colls);
 
 
     
@@ -255,8 +274,11 @@ public class Camera implements SubsystemBase {
             } else {
                 frontCamEstimation = null;
                 SmartDashboard.putBoolean("CAMERA: Note detected?", frontResult.hasTargets() && frontCamera.getPipelineIndex() == 0);
+                frontSampleTime = -1;
                 // frontCameraPub.set(null);
             }
+            timestamps[0] = frontSampleTime;
+            poses[0] = frontCamEstimation;
         }
         if (constants.HAS_LEFT_CAMERA) {
             leftResult = leftCamera.getLatestResult();
@@ -268,6 +290,12 @@ public class Camera implements SubsystemBase {
                                                                         tags.getTagPose(leftBestTarget.getFiducialId()).get(),
                                                                         constants.LEFT_CAMERA_TRANSFORM).toPose2d();
                 
+                
+                for (int i = 0; i < 3; i++) {
+                    leftDevs.set(i, 0, leftBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
+                }
+                stDevs.setColumn(1, leftDevs);
+
                 leftCameraPub.set(new double[] {
                     leftCamEstimation.getX(),
                     leftCamEstimation.getY(),
@@ -275,8 +303,12 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 leftCamEstimation = null;
+                leftSampleTime = -1;
                 // leftCameraPub.set(null);
             }
+            timestamps[1] = leftSampleTime;
+            poses[1] = leftCamEstimation;
+
         }
         if (constants.HAS_RIGHT_CAMERA) {
             rightResult = rightCamera.getLatestResult();
@@ -288,6 +320,11 @@ public class Camera implements SubsystemBase {
                                                                             tags.getTagPose(rightBestTarget.getFiducialId()).get(),
                                                                             constants.RIGHT_CAMERA_TRANSFORM).toPose2d();
 
+                for (int i = 0; i < 3; i++) {
+                    rightDevs.set(i, 0, rightBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
+                }
+                stDevs.setColumn(2, rightDevs);
+
                 rightCameraPub.set(new double[] {
                     rightCamEstimation.getX(),
                     rightCamEstimation.getY(),
@@ -295,8 +332,12 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 rightCamEstimation = null;
+                rightSampleTime = -1;
                 // rightCameraPub.set(null);
             }
+            timestamps[2] = rightSampleTime;
+            poses[2] = rightCamEstimation;
+
         }
         if (constants.HAS_REAR_CAMERA) {
             rearResult = rearCamera.getLatestResult();
@@ -308,6 +349,11 @@ public class Camera implements SubsystemBase {
                                                                             tags.getTagPose(rearBestTarget.getFiducialId()).get(),
                                                                             constants.REAR_CAMERA_TRANSFORM).toPose2d();
                 
+                for (int i = 0; i < 3; i++) {
+                    rearDevs.set(i, 0, rearBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
+                }
+                stDevs.setColumn(3, rearDevs);
+
                 rearCameraPub.set(new double[] {
                         rearCamEstimation.getX(),
                         rearCamEstimation.getY(),
@@ -315,9 +361,17 @@ public class Camera implements SubsystemBase {
                 });
             } else {
                 rearCamEstimation = null;
+                rearSampleTime = -1;
                 // rearCameraPub.set(null);
             }
+            timestamps[3] = rearSampleTime;
+            poses[3] = rearCamEstimation;
+
         }
+
+        robotState.setVisionStdevs(stDevs);
+        robotState.setVisionTimestamps(timestamps);
+        robotState.setVisionMeasurements(poses);
     }
 
     public void setFrontCameraPipeline(int pipeline){ //sets the pipeline of the front camera
