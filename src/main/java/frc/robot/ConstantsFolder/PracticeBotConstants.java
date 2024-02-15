@@ -28,7 +28,7 @@ public class PracticeBotConstants extends ConstantsBase {
             HAS_FRONT_CAMERA = false;
             HAS_REAR_CAMERA = true;
             HAS_LEFT_CAMERA = true;
-            HAS_RIGHT_CAMERA = true;
+            HAS_RIGHT_CAMERA = false;
             
         }
     }
