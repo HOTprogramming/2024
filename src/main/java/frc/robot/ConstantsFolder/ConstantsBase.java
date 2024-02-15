@@ -143,6 +143,9 @@ public class ConstantsBase {
         public Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, 0, 0);
         public Transform3d FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_RELATIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
 
+        public double[] FRONT_CAMERA_RESOLUTION = {640, 480}; //x, y
+        public double[] FRONT_CAMERA_FOV = {54.06, 41.91}; //x, y
+
         //REAR
         public boolean HAS_REAR_CAMERA = false;
 

@@ -24,8 +24,7 @@ public class PracticeBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //PracticeBot will have all 4 cameras, missing front right now
-            HAS_FRONT_CAMERA = false;
+            HAS_FRONT_CAMERA = true;
             HAS_REAR_CAMERA = true;
             HAS_LEFT_CAMERA = true;
             HAS_RIGHT_CAMERA = true;
@@ -35,13 +34,13 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
-         INTAKE_ENTER_CAN = 14;
-        INTAKE_TRANSFER_CAN = 13;
-         INTAKESTOP = 0;
-         INTAKESPEED = 83;
-         INTAKE_VELOCITY_ERROR = .01;
-         ENTER_SENSOR_CHANNEL = 0;
-         TRANSFER_SENSOR_CHANNEL = 1;
+            INTAKE_ENTER_CAN = 14;
+            INTAKE_TRANSFER_CAN = 13;
+            INTAKESTOP = 0;
+            INTAKESPEED = 83;
+            INTAKE_VELOCITY_ERROR = .01;
+            ENTER_SENSOR_CHANNEL = 0;
+            TRANSFER_SENSOR_CHANNEL = 1;
         }
     }
 
