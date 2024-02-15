@@ -213,14 +213,14 @@ if (currentAlliance == Alliance.Blue) {
             });
         }
 
-        // for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-        //     if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
-        //         addVisionMeasurement(robotState.getVisionMeasurements()[i],
-        //                 robotState.getVisionTimestamps()[i],
-        //                 robotState.getVisionStdevs().extractColumnVector(i));
-        //         // assuming it wants rotation in radians
-        //     }
-        // }
+        for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
+            if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
+                addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                        robotState.getVisionTimestamps()[i],
+                        robotState.getVisionStdevs().extractColumnVector(i));
+                // assuming it wants rotation in radians
+            }
+        }
 
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
@@ -287,7 +287,10 @@ if (currentAlliance == Alliance.Blue) {
         // }
 
         if (commander.getResetRobotPose()) {
-            seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            if (robotState.getVisionTimestamps()[3] != -1) {
+                seedFieldRelative(robotState.getVisionMeasurements()[3]);
+            }
         }
     }
 
