@@ -102,7 +102,7 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(100).withKI(0).withKD(0.2)
+            .withKP(400).withKI(0).withKD(8)
             .withKS(0).withKV(1.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
