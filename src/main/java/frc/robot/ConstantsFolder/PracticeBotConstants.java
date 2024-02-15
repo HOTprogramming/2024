@@ -28,7 +28,11 @@ public class PracticeBotConstants extends ConstantsBase {
             HAS_REAR_CAMERA = true;
             HAS_LEFT_CAMERA = true;
             HAS_RIGHT_CAMERA = true;
-            
+
+            FRONT_CAMERA_RESOLUTION[0] = 640; //x, y
+            FRONT_CAMERA_RESOLUTION[1] = 480;
+            FRONT_CAMERA_FOV[0] = 54.06; //x, y
+            FRONT_CAMERA_FOV[1] = 41.91;
         }
     }
 
