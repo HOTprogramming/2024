@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
@@ -135,6 +136,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    robotState.setAlliance(DriverStation.getAlliance().get());
     shooter.reset();
     drivetrain.reset();
     arm.reset();

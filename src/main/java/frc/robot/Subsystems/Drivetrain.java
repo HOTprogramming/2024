@@ -54,8 +54,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
-    Alliance currentAlliance = Alliance.Red;
-
     private double currentRobotePos;
 
     // for velocity calcs
@@ -180,14 +178,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
-if (currentAlliance == Alliance.Blue) {
-                currentRobotePos = currentState.Pose.minus(blueSpeaker).getTranslation().getNorm();
+            if (robotState.getAlliance() == Alliance.Blue) {
+                robotState.setPoseToSpeaker(currentState.Pose.minus(blueSpeaker).getTranslation().getNorm());
             }
             else{
-                currentRobotePos = currentState.Pose.minus(redSpeaker).getTranslation().getNorm();
+                robotState.setPoseToSpeaker(currentState.Pose.minus(redSpeaker).getTranslation().getNorm());
             }
 
-            robotState.setPoseToSpeaker(currentRobotePos);
             
             robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
@@ -277,9 +274,12 @@ if (currentAlliance == Alliance.Blue) {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            // TODO add driverstation get for speaker lock pose
             // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+            }
         }
 
         // if (commander.getLockRingCommand()) {
