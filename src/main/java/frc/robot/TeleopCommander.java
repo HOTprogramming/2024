@@ -17,7 +17,7 @@ public class TeleopCommander implements RobotCommander {
     RobotState robotState;
     double armPose;
 
-    double deadbands = 0.15;
+    double deadbands = 0.0;
     double LX;
     double LY;
     double RX;

@@ -276,9 +276,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         if (commander.getLockSpeakerCommand()) {
             // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
             if (robotState.getAlliance() == Alliance.Red) {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
             } else {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), false);
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
             }
         }
 
