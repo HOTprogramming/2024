@@ -180,7 +180,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
-if (currentAlliance == Alliance.Blue) {
+            if (currentAlliance == Alliance.Blue) {
                 currentRobotePos = currentState.Pose.minus(blueSpeaker).getTranslation().getNorm();
             }
             else{
@@ -277,9 +277,12 @@ if (currentAlliance == Alliance.Blue) {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            // TODO add driverstation get for speaker lock pose
             // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            }
         }
 
         // if (commander.getLockRingCommand()) {

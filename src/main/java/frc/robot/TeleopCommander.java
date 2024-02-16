@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.trajectory.RotationSequence;
@@ -15,6 +16,8 @@ public class TeleopCommander implements RobotCommander {
 
     RobotState robotState;
     double armPose;
+
+    double deadbands = 0.15;
     double LX;
     double LY;
     double RX;
@@ -38,24 +41,43 @@ public class TeleopCommander implements RobotCommander {
         double leftx;
         double rightx;
 
-        if (Math.abs(driver.getLeftY()) > .15) {
-            leftY = -driver.getLeftY();
-        } else {
-            leftY = 0;
-        }
+        if (robotState.getAlliance() == Alliance.Red) {
+            if (Math.abs(driver.getLeftY()) > deadbands) {
+                leftY = driver.getLeftY();
+            } else {
+                leftY = 0;
+            }
 
-        if (Math.abs(driver.getLeftX()) > .15) {
-            leftx = -driver.getLeftX();
-        } else {
-            leftx = 0;
-        }
+            if (Math.abs(driver.getLeftX()) > deadbands) {
+                leftx = driver.getLeftX();
+            } else {
+                leftx = 0;
+            }
 
-        if (Math.abs(driver.getRightX()) > .15) {
-            rightx = -driver.getRightX();
+            if (Math.abs(driver.getRightX()) > deadbands) {
+                rightx = -driver.getRightX();
+            } else {
+                rightx = 0;
+            }            
         } else {
-            rightx = 0;
-        }
+            if (Math.abs(driver.getLeftY()) > deadbands) {
+                leftY = -driver.getLeftY();
+            } else {
+                leftY = 0;
+            }
 
+            if (Math.abs(driver.getLeftX()) > deadbands) {
+                leftx = -driver.getLeftX();
+            } else {
+                leftx = 0;
+            }
+
+            if (Math.abs(driver.getRightX()) > deadbands) {
+                rightx = -driver.getRightX();
+            } else {
+                rightx = 0;
+            }
+        }
 
         return new double[] {leftY, leftx, rightx};
     }
