@@ -173,17 +173,16 @@ public Arm(RobotState robotState) {
       //armDesiredPos thePos = commander.armPosition();
 
       //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
-      
+    
       robotePosToSpeaker = robotState.getPoseToSpeaker();
 
-      
-      
       if(commander.runArm()){
         commandedPosition = shotMap.calcShotMap()/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       
-      } else if (commander.zeroArm()) {
-        commandedPosition = 100/360;
+      } 
+       else if (commander.zeroArm()) {
+         commandedPosition = 95.0/360;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
       } else{
@@ -200,7 +199,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
       SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);
       // if(this.robotState != null){
-        SmartDashboard.putNumber("commandedPosition", shotMap.calcShotMap());
+        SmartDashboard.putNumber("commandedPosition", commandedPosition*360);
       // }
       //SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
 
