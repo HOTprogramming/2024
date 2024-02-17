@@ -112,6 +112,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
 
 
