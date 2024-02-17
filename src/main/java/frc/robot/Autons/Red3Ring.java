@@ -47,9 +47,25 @@ public class Red3Ring extends AutonBase {
         switch (step) {
             case start:
             
+            step = Step.shoot1;
+            
+            break;  
+            
+            case shoot1:
+            
             generateTrajectory(List.of(startPose, firstring1, firstring2));
-            runArm = true;
-            step = Step.firstring1;
+            if (timer.get() >= 1) {
+                timer.reset();
+                runArm = false;
+                runShooter = false;
+                step = Step.firstring1;
+            } else if (timer.get() >= .5) {
+                runArm = true;
+                runShooter = true;
+            }  else {
+                runArm = true;
+                step = Step.shoot1;
+            }
             
             break;
 
@@ -112,7 +128,7 @@ public class Red3Ring extends AutonBase {
             break; 
         }
 
-        if (step != Step.end) {
+        if (step != Step.end && step != Step.shoot1) {
             holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
             rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
         } else {
