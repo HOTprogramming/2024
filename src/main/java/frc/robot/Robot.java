@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
 
     intake.updateState();
 
-    // shooter.updateState();
+    shooter.updateState();
     arm.updateState();
     
   }
