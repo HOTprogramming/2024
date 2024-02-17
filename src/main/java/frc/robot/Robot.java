@@ -11,6 +11,7 @@ import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Feeder;
+import frc.robot.Subsystems.Lights;
 
 public class Robot extends TimedRobot {
   private ConstantsBase constantsBase;
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
   private Arm arm;
   private Feeder feeder;
   private Intake intake;
+  private Lights lights;
 
 
   // define subsystem objects
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain(robotState);  
     camera = new Camera(robotState);
     intake = new Intake(robotState);
+    lights = new Lights(robotState);
 
     aidenSquare = new AidenSquare(robotState);
     blue3Park = new Blue3Park(robotState);
@@ -132,6 +135,7 @@ public class Robot extends TimedRobot {
     arm.enabled(autonCommander);
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
+    lights.enabled(autonCommander);
   }
 
   @Override
@@ -142,6 +146,7 @@ public class Robot extends TimedRobot {
     arm.reset();
     intake.reset();
     feeder.reset();
+    lights.reset();
   }
 
   @Override
@@ -151,6 +156,7 @@ public class Robot extends TimedRobot {
     arm.enabled(teleopCommander);
     intake.enabled(teleopCommander);
     feeder.enabled(teleopCommander);
+    lights.enabled(teleopCommander);
   }
 
   @Override
@@ -160,6 +166,7 @@ public class Robot extends TimedRobot {
     arm.disabled();
     feeder.disabled();
     intake.disabled();
+    lights.disabled();
   }
 
   @Override
