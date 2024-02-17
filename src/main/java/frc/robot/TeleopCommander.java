@@ -235,5 +235,14 @@ public class TeleopCommander implements RobotCommander {
         return operator.getLeftTriggerAxis() > .1;
     }
 
+    @Override
+    public boolean extend() {
+        if(operator.getAButton()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
 }

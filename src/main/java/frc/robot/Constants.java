@@ -226,4 +226,9 @@ public final class Constants {
         public static final double SHOOT = 118;
         
     }
+
+    public final class ExtensionConstants{
+        public static final int EXTENSION_CAN = 10;
+        public static final int SPITTER_CAN = 12;
+    }
 }

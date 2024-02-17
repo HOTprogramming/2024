@@ -62,23 +62,6 @@ StatusSignal<Double> cancoderPosition;
 StatusSignal<Double> cancoderVelocity;
 StatusSignal<Double> armRotorPos;
 
-// public enum armDesiredPos{
-
-//   shoot(127),
-//   zero(95);
-
-//   public final double armcpos;
-//   public double getcommmPosition(){
-//     return armcpos;
-//   }
-
-// armDesiredPos(double armcpos){
-// this.armcpos = armcpos;
-// }
-
-
-// }
-
 public boolean setArmDesPos;
 
 public double robotePosToSpeaker;
@@ -157,7 +140,7 @@ public Arm(RobotState robotState) {
 }  
 
     public void updateState(){
-        robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
+        robotState.setArmPos(armPosition.getValueAsDouble()*360.0);
     }
 
 
@@ -185,7 +168,13 @@ public Arm(RobotState robotState) {
          commandedPosition = 95.0/360;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
-      } else{
+      } 
+        else if(commander.extend()){
+        commandedPosition = 150.0/360;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+
+      }
+      else{
         armMotor.setVoltage(0);
       }
     

@@ -96,7 +96,13 @@ RobotState robotState;
             } else { 
                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }           
-            } else {
+            } 
+            
+            else if (commander.extend() && robotState.getExtendPos() > 4){
+                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+            }
+            
+            else {
                 Out.Output = 0;
                 feeder.setControl(Out);
             }

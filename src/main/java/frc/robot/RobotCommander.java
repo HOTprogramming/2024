@@ -38,7 +38,7 @@ public interface RobotCommander {
 
     public int getAngleSnapCommand();
     public abstract boolean getIntake();
-        public abstract boolean getFeeder();        
+    public abstract boolean getFeeder();        
     public abstract boolean getRunFeeder();
     public boolean getLockPoseCommand();
     public abstract boolean getRunShooter();
@@ -48,10 +48,10 @@ public interface RobotCommander {
     public abstract boolean decreaseRightTargetSpeed();
     public abstract double getTargetDriveSpeed();
     public boolean getLockSpeakerCommand();
-    //public abstract armDesiredPos armPosition();
     public abstract double getTargetArmSpeed();
-    public boolean runArm();
-    public boolean zeroArm();
-    public boolean setShoot();
+    public abstract boolean runArm();
+    public abstract boolean zeroArm();
+    public abstract boolean setShoot();
+    public abstract boolean extend();
 
 }

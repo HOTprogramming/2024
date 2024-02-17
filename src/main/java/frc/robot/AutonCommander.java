@@ -160,4 +160,11 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setShoot'");
     }
+
+    @Override
+    public boolean extend() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'extend'");
+    }
+
 }

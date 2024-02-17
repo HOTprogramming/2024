@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 
@@ -24,10 +25,17 @@ public class ShotMap {
     private double angleX2;
     private double angleX3;
     private double angleX4;
+    private double velocityY;
     
 
 public ShotMap(RobotState robotState) {
     this.robotState = robotState;
+}
+
+public double getVelocity(){
+    velocityY = robotState.getDriveVelocity().getY();
+    SmartDashboard.putNumber("VelocityY", velocityY);
+    return velocityY;
 }
 
 public double calculateSlope(double a2, double a1, double d2, double d1, double currentPos){
@@ -40,11 +48,12 @@ public double calculateSlope(double a2, double a1, double d2, double d1, double 
     SmartDashboard.putNumber("d1", d1);
     SmartDashboard.putNumber("d2", d2);
     SmartDashboard.putNumber("currentPos", currentPos);
+
     return angleX4;
 }
 
 public double calcShotMap(){
-    xPos = robotState.getPoseToSpeaker();
+    xPos = robotState.getPoseToSpeaker() + 0.1*this.getVelocity();
     //xPos = 4.5;
     SmartDashboard.putNumber("distancetotarget", xPos);
     if(xPos<distance1){
@@ -53,7 +62,7 @@ public double calcShotMap(){
     SmartDashboard.putNumber("first", 1);
     }
     else if(xPos>=distance1 && xPos<distance2){
-        //angleX = angle2 - (((angle2 - angle1)*(distance2 - xPos))/(distance2 - distance1));
+        //angleX = angle2 - (((angle2 - angle1)*(distance2 - xPos))/(distanc  e2 - distance1));
         angleX2 = this.calculateSlope(angle2, angle1, distance2, distance1, xPos);
         SmartDashboard.putNumber("first", 2);
     }
