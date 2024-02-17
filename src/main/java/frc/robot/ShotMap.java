@@ -25,7 +25,7 @@ public class ShotMap {
     private double angleX2;
     private double angleX3;
     private double angleX4;
-    private double velocityY;
+    private double velocityX;
     
 
 public ShotMap(RobotState robotState) {
@@ -33,9 +33,9 @@ public ShotMap(RobotState robotState) {
 }
 
 public double getVelocity(){
-    velocityY = robotState.getDriveVelocity().getY();
-    SmartDashboard.putNumber("VelocityY", velocityY);
-    return velocityY;
+    velocityX = robotState.getDriveVelocity().getX();
+    SmartDashboard.putNumber("VelocityY", velocityX);
+    return velocityX;
 }
 
 public double calculateSlope(double a2, double a1, double d2, double d1, double currentPos){
@@ -53,7 +53,7 @@ public double calculateSlope(double a2, double a1, double d2, double d1, double 
 }
 
 public double calcShotMap(){
-    xPos = robotState.getPoseToSpeaker() + 0.1*this.getVelocity();
+    xPos = robotState.getPoseToSpeaker() - 0.05*this.getVelocity();
     //xPos = 4.5;
     SmartDashboard.putNumber("distancetotarget", xPos);
     if(xPos<distance1){
@@ -82,6 +82,7 @@ public double calcShotMap(){
         SmartDashboard.putNumber("first", 5);
     }
     SmartDashboard.putNumber("second", angleX2);
+    SmartDashboard.putNumber("VelocityArmMap", this.getVelocity());
 
 
 return angleX2;

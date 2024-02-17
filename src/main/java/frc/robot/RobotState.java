@@ -29,6 +29,7 @@ public class RobotState {
     private boolean feederOn;
     private double armPos;
     private double extendPos;
+    private double shooterPos;
  
  //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
@@ -160,5 +161,13 @@ public class RobotState {
 
     public double getExtendPos(){
         return extendPos;
+    }
+
+    public void setShooterPos(double shooterPos){
+        this.shooterPos = shooterPos;
+    }
+
+    public double getShooterPos(){
+        return shooterPos;
     }
 }

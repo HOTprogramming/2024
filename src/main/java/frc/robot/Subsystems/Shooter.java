@@ -28,8 +28,8 @@ public class Shooter implements SubsystemBase {
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
     double leftTargetSpeed = 66.6;
     double rightTargetSpeed = 50;
-    double leftSlowSpeed = 10;
-    double rightSlowSpeed = 10;
+    double leftSlowSpeed = 5;
+    double rightSlowSpeed = 5;
     boolean isShooting = false;
     
     ConstantsBase.Shooter constants;
@@ -111,6 +111,8 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
+        robotState.setShooterPos((leftFlywheel.getRotorPosition().getValueAsDouble() + rightFlywheel.getRotorPosition().getValueAsDouble())/2);
+        
     }
 
     @Override
@@ -121,13 +123,13 @@ public class Shooter implements SubsystemBase {
             // rightFlywheel.setVoltage(7.5);
             // leftFlywheel.setVoltage(7.5);
         } else if (commander.extend() && robotState.getExtendPos() > 4){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(5));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(5));
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(25));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(25));
             
         }
         else if (commander.zeroArm()){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(5));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(5));
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(25));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(25));
         }
         else {
             leftFlywheel.setVoltage(0);

@@ -96,11 +96,29 @@ public Extension(RobotState robotState) {
         extendPosition.refresh(); 
         extendVelocity.refresh();
 
-        spitter.setVoltage(0.1);
-        
-        if(commander.extend()){
+       
+
+        if(commander.extend() && robotState.getExtendPos()<=4){
         extendMotor.setControl(extendMagic.withPosition(4).withSlot(0));
+        spitter.setVoltage(0);
         }
+        else if(commander.extend() && robotState.getExtendPos()>4 && robotState.getShooterPos()<50){
+        spitter.setVoltage(0.1);
+        }
+        else if (commander.extend() && robotState.getShooterPos()>=50){
+        extendMotor.setControl(extendMagic.withPosition(7).withSlot(0));
+        spitter.setVoltage(0);
+        }
+        else if(commander.extend() && robotState.getExtendPos()>=6.9){
+        extendMotor.setControl(extendMagic.withPosition(7).withSlot(0));
+        spitter.setVoltage(0.1);
+        }
+        else{
+        extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
+        spitter.setVoltage(0);
+        }
+
+
     }
 
     @Override
