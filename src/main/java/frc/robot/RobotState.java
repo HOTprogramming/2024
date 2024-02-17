@@ -6,21 +6,28 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.ConstantsFolder.ConstantsBase;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 
 public class RobotState {
     private ConstantsBase constants;
+    private Alliance alliance = Alliance.Red;
+
     private Pose2d drivePose;
     private boolean atTargetPose;
 
     private Pose2d[] visionMeasurements;
     private double[] visionTimestamps;
     private Matrix<N3, N4> visionStdevs;
-
+    private double poseToSpeaker;
 
     private boolean shooterOn;
+        private boolean intakeOn;
+            private boolean feederOn;
+
     private double armPos;
+    private double distanceToSpeaker;
  //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
@@ -28,6 +35,14 @@ public class RobotState {
 
     public ConstantsBase getConstants() {
         return this.constants;
+    }
+
+    public void setAlliance(Alliance alliance) {
+        this.alliance = alliance;
+    }
+
+    public Alliance getAlliance() {
+        return alliance;
     }
 
 
@@ -47,6 +62,14 @@ public class RobotState {
      */
     public Pose2d getDrivePose() {
         return drivePose;
+    }
+
+    public void setPoseToSpeaker(double poseToSpeaker){
+        this.poseToSpeaker = poseToSpeaker;
+    }
+
+    public double getPoseToSpeaker(){
+        return poseToSpeaker;
     }
 
     /**
@@ -78,6 +101,13 @@ public class RobotState {
     public void setShooterOn(boolean shooterOn) {
         this.shooterOn = shooterOn;
     }
+        public void setIntakeOn(boolean intakeOn) {
+        this.intakeOn = intakeOn;
+    }
+       public void setFeederOn(boolean feederOn) {
+        this.feederOn = feederOn;
+    }
+
 
     public void setVisionMeasurements(Pose2d[] visionMeasurements) {
         this.visionMeasurements = visionMeasurements;

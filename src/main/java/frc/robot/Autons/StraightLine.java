@@ -24,7 +24,7 @@ public class StraightLine extends AutonBase {
     public StraightLine(RobotState robotState) {
         super(robotState);
         // starting pos code here + any extra inits
-        startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
+        startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     }
 
 
@@ -33,7 +33,7 @@ public class StraightLine extends AutonBase {
         
         switch (step) {
             case start:
-                generateTrajectory(List.of(startPose, new Pose2d(1, 1, Rotation2d.fromDegrees(180))));
+                generateTrajectory(List.of(robotState.getDrivePose(), new Pose2d(3, 0, Rotation2d.fromDegrees(0))));
              
                 step = Step.driving;
                 break;

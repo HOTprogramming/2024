@@ -115,8 +115,6 @@ public class AutonCommander implements RobotCommander {
     //     return armDesiredPos.zero;
     // }
 
-    
-
     @Override
     public boolean getLockPoseCommand() {
         // TODO Auto-generated method stub
@@ -139,6 +137,12 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         return auto.runIntake;
     }
+    
+    @Override
+    public boolean getFeeder() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
     @Override
     public boolean runArm() {
@@ -153,8 +157,6 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean setShoot() {
-        // TODO Auto-generated method stub
         return auto.runShooter;
     }
-
 }

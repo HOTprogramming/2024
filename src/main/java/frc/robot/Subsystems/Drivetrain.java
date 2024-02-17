@@ -55,6 +55,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
+    private double currentRobotePos;
+
     // for velocity calcs
     private SwerveDriveState currentState;
     private Pose2d lastPose = new Pose2d();
@@ -62,15 +64,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(4.9, 0.1, .1);
-    private static final PIDController yController = new PIDController(4.9, 0.1, .1);
-    private static final PIDController thetaController = new PIDController(5, 0.1, .1);
+    private static final PIDController xController = new PIDController(6, 0.15, .2);
+    private static final PIDController yController = new PIDController(5.8, 0.13, .18);
+    private static final PIDController thetaController = new PIDController(10, 0.1, .35);
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
 
     // TEMP pose 2d for get angle snap command
     private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
         // call swervedriveDrivetrain constructor (parent class)
@@ -176,6 +179,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
+            if (robotState.getAlliance() == Alliance.Blue) {
+                robotState.setPoseToSpeaker(currentState.Pose.minus(blueSpeaker).getTranslation().getNorm());
+            }
+            else{
+                robotState.setPoseToSpeaker(currentState.Pose.minus(redSpeaker).getTranslation().getNorm());
+            }
+
+            
             robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
             double timeDifference = currentTime - lastTime;
@@ -255,7 +266,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
 
         if (commander.getPidgeonReset()) {
-            m_pigeon2.reset();
+            m_pigeon2.setYaw(0);
             
         }
 
@@ -264,9 +275,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            // TODO add driverstation get for speaker lock pose
             // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+            }
         }
 
         // if (commander.getLockRingCommand()) {
@@ -274,8 +288,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // }
 
         if (commander.getResetRobotPose()) {
-            if (robotState.getVisionMeasurements()[3] != null) {
-                seedFieldRelative(robotState.getVisionMeasurements()[3]);   
+            // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            if (robotState.getVisionTimestamps()[3] != -1) {
+                seedFieldRelative(robotState.getVisionMeasurements()[3]);
             }
         }
     }

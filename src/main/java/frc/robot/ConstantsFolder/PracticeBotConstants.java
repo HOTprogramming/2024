@@ -25,7 +25,7 @@ public class PracticeBotConstants extends ConstantsBase {
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
             //PracticeBot will have all 4 cameras, missing front right now
-            HAS_FRONT_CAMERA = false;
+            HAS_FRONT_CAMERA = true;
             HAS_REAR_CAMERA = true;
             HAS_LEFT_CAMERA = true;
             HAS_RIGHT_CAMERA = true;
@@ -36,12 +36,18 @@ public class PracticeBotConstants extends ConstantsBase {
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
          INTAKE_ENTER_CAN = 14;
-         INTAKE_TRANSFER_CAN = 13;
-         INTAKESTOP = 0;
-         INTAKESPEED = 91.6;
+         INTAKESPEED = 83;
          INTAKE_VELOCITY_ERROR = .01;
-         ENTER_SENSOR_CHANNEL = 0;
-         TRANSFER_SENSOR_CHANNEL = 1;
+        }
+    }
+    
+    public class Feeder extends ConstantsBase.Feeder {
+        public Feeder() {
+         FEEDER_CAN = 13;
+         FEEDERSPEED = 83;
+         DESIREDTIMER = 0;
+         FEEDER_VELOCITY_ERROR = .01;
+         FEEDER_SENSOR_CHANNEL = 0;
         }
     }
 
@@ -96,7 +102,7 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(100).withKI(0).withKD(0.2)
+            .withKP(400).withKI(0).withKD(8)
             .withKS(0).withKV(1.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
