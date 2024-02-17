@@ -51,6 +51,12 @@ public class PracticeBotConstants extends ConstantsBase {
         }
     }
 
+    public class Lights extends ConstantsBase.Lights {
+        public Lights() {
+         LIGHTS_CAN = 51;
+        }
+    }
+
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
             RIGHT_FLYWHEEL_CAN = 12;

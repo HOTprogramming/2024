@@ -24,6 +24,7 @@ public class ConstantsBase {
     private Shooter shooter;
     private Intake intake;
     private Feeder feeder;
+    private Lights lights;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -37,7 +38,8 @@ public class ConstantsBase {
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                                    this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
@@ -46,7 +48,8 @@ public class ConstantsBase {
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                        this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
 
         } else {
             this.auton = camBotConstants.new Auton();
@@ -54,7 +57,8 @@ public class ConstantsBase {
             this.drivetrain = camBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                        this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
         }
     }
 
@@ -81,6 +85,10 @@ public class ConstantsBase {
         return this.shooter;
     }
 
+    public Lights getLightsConstants() {
+        return this.lights;
+    }
+
 
     private enum RobotType {
         Comp,
@@ -96,6 +104,10 @@ public class ConstantsBase {
         public Auton getAuton() {
             return this;
         }
+    }
+
+    public abstract class Lights {
+        public int LIGHTS_CAN = 51;
     }
 
     public abstract class Intake {
