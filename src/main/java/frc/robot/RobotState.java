@@ -28,6 +28,7 @@ public class RobotState {
 
     private double armPos;
     private double distanceToSpeaker;
+    private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
@@ -144,5 +145,13 @@ public class RobotState {
 
     public boolean getShooterOn() {
         return shooterOn;
+    }
+
+    public void setFeederStopped(boolean feederStop) {
+        this.feederStop = feederStop;
+    }   
+
+    public boolean getFeederStopped() {
+        return feederStop;
     }
 }

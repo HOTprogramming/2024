@@ -67,8 +67,7 @@ public class Red3Right extends AutonBase {
             case ring1:
                 if (queuePath(4, 3, List.of(robotState.getDrivePose(), shoot1), true)) {
                     step = Step.driveshoot1;
-                    runIntake = false;
-                    runFeeder = false;
+                    
                     
                 } else {
                     step = Step.ring1;
@@ -96,6 +95,8 @@ public class Red3Right extends AutonBase {
                     step = Step.ring2; 
                     runShooter = false; 
                     runArm = false; 
+                    runIntake = false;
+                    runFeeder = false;
                     timer.reset();
                 }
                 else{ 

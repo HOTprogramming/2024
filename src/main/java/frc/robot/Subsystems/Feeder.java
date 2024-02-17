@@ -71,8 +71,10 @@ RobotState robotState;
     @Override
     public void enabled(RobotCommander commander){
        if (sensorFeeder.get()){
+            robotState.setFeederStopped(true);
             timer += 1;
         } else {
+            robotState.setFeederStopped(false);
             timer = 0;
         }
            SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
