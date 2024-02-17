@@ -24,7 +24,7 @@ public class Red3Right extends AutonBase {
         end
     }
 
-    public Step step;
+    public Step step = Step.start;
     public Pose2d ring1 = new Pose2d(8.272, 6.85, Rotation2d.fromDegrees(180));
     public Pose2d almostring1 = new Pose2d(10.73, 7, Rotation2d.fromDegrees(180));
     public Pose2d betweenrings = new Pose2d(14, 7.43, Rotation2d.fromDegrees(180));
@@ -43,10 +43,12 @@ public class Red3Right extends AutonBase {
     public Red3Right(RobotState robotState) {
         super(robotState);
         // startPose = new Pose2d(16.54, 5.55, Rotation2d.fromDegrees(180));
-        startPose = new Pose2d(15.15, 6.5, Rotation2d.fromDegrees(210));
+        startPose = new Pose2d(15.15, 6.5, Rotation2d.fromDegrees(210)); //15.15
 
         
         // startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
+        seedPose = true;
+
     }
 
     @Override
@@ -55,17 +57,31 @@ public class Red3Right extends AutonBase {
         switch (step) {
 
             case start:
-                if (robotState.getVisionTimestamps()[3] != -1) {
-                    startPose = robotState.getVisionMeasurements()[3];
-                }
-                seedPose = true;
-                generateTrajectory(4, 3, List.of(startPose, betweenrings, almostring1, ring1));
-                seedPose = false;
-                step = Step.ring1;
+                zeroArm = false;
+
+                
+                runArm = true;
+                step = Step.shoot0;
                 break;
 
+            case shoot0:
+                if (timer.get() >= 2) {
+                    generateTrajectory(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 3, List.of(startPose, betweenrings, almostring1, ring1));
+                    runArm = false;
+                    runShooter = false;
+                    autoAim = false;
+                    step = Step.ring1;
+                } else {
+                    if (robotState.getShooterOn()) {
+                        runShooter = true;
+                        autoAim = true;
+                    }
+                }
+                
+            break;
+
             case ring1:
-                if (queuePath(4, 3, List.of(robotState.getDrivePose(), shoot1), true)) {
+                if (queuePath(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 3, List.of(robotState.getDrivePose(), shoot1), true)) {
                     step = Step.driveshoot1;
                     
                     
@@ -91,7 +107,7 @@ public class Red3Right extends AutonBase {
                 break;
 
             case shoot1:
-                if(queuePath(4, 3, List.of(robotState.getDrivePose(), almostring2, ring2), true) && timer.get() >= 5){ 
+                if(queuePath(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 3, List.of(robotState.getDrivePose(), almostring2, ring2), true) && timer.get() >= 5){ 
                     step = Step.ring2; 
                     runShooter = false; 
                     runArm = false; 
@@ -110,7 +126,7 @@ public class Red3Right extends AutonBase {
                 break; 
 
             case ring2:
-                if (queuePath(4, 3, List.of(robotState.getDrivePose(), almostshoot2, shoot2), true)) {
+                if (queuePath(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 3, List.of(robotState.getDrivePose(), almostshoot2, shoot2), true)) {
                     step = Step.shoot2;
                    // runIntake = false;
                    // runArm = true; 
@@ -126,7 +142,7 @@ public class Red3Right extends AutonBase {
             break; 
 
             case shoot2:
-                if (queuePath (4,3, List.of(robotState.getDrivePose(), almostalmostshoot3, ringalmost3, ring3), true)) {
+                if (queuePath (constants.AUTON_DEFAULT_MAX_VELOCITY_METERS,3, List.of(robotState.getDrivePose(), almostalmostshoot3, ringalmost3, ring3), true)) {
                     step = Step.ring3;
                    // runShooter = false;
                 } else {
@@ -137,7 +153,7 @@ public class Red3Right extends AutonBase {
                 break;
 
             case ring3:
-                if (queuePath(4,1,List.of(robotState.getDrivePose(),  almostshoot3, shoot3), true)) {
+                if (queuePath(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS,1,List.of(robotState.getDrivePose(),  almostshoot3, shoot3), true)) {
                     step = Step.shoot3;
                    // runIntake = false;
                    // runArm = true; 
@@ -172,7 +188,7 @@ public class Red3Right extends AutonBase {
         SmartDashboard.putString("Step_AutoInfo", step.toString());
 
 
-        if (step != Step.end) {
+        if (step != Step.end && step != Step.shoot0 && step != Step.start) {
             holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());
             rotationState = trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get());
         } else {
@@ -188,5 +204,9 @@ public class Red3Right extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.start;
+        if (robotState.getVisionTimestamps()[3] != -1) {
+            startPose = robotState.getVisionMeasurements()[3];
+        }
+        seedPose = false;
     }
 }

@@ -19,7 +19,7 @@ public class ShotMap {
     private double angle3 = 126;
     private double angle4 = 122;
     private double angle5 = 120;
-    private double xPos;
+    private double xPos = 1.8;
     private double angleX;
     private double angleX2;
     private double angleX3;

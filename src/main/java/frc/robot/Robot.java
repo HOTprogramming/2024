@@ -139,6 +139,11 @@ public class Robot extends TimedRobot {
 
 
     drivetrain.init(autonCommander);
+    shooter.reset();
+    drivetrain.reset();
+    arm.reset();
+    intake.reset();
+    feeder.reset();
   }
 
   @Override

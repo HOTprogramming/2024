@@ -34,9 +34,12 @@ public abstract class AutonBase {
     public boolean runShooter = false;
     public double driveSpeed;
     public boolean runIntake = false; 
-    public boolean runArm = false; 
+    public boolean runArm = true; 
     public boolean seedPose = false;
     public boolean runFeeder = false;
+    public boolean autoAim = false;
+    public boolean zeroArm = false;
+    
 
 
     public AutonBase(RobotState robotState){
