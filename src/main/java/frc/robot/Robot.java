@@ -107,6 +107,7 @@ public class Robot extends TimedRobot {
 
     // shooter.updateState();
     arm.updateState();
+    
   }
 
   @Override

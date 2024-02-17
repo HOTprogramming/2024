@@ -33,9 +33,10 @@ public abstract class AutonBase {
     CustomTrajectoryGenerator trajectoryGenerator;
     public boolean runShooter = false;
     public double driveSpeed;
-    public double armPos;
     public boolean runIntake = false; 
     public boolean runArm = false; 
+    public boolean seedPose = false;
+    public boolean runFeeder = false;
 
 
     public AutonBase(RobotState robotState){

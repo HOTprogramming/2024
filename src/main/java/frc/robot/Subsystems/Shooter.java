@@ -109,11 +109,17 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
+        if (Math.abs(leftFlywheel.getVelocity().getValueAsDouble() - leftTargetSpeed) < 5) {
+            robotState.setShooterOn(true);
+        } else {
+            robotState.setShooterOn(false);
+
+        }
     }
 
     @Override
     public void enabled(RobotCommander commander) {
-        if (commander.setShoot()) {
+        if (commander.runArm()) {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftTargetSpeed).withFeedForward(25));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightTargetSpeed).withFeedForward(25));
             // rightFlywheel.setVoltage(7.5);

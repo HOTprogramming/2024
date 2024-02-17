@@ -85,7 +85,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getLockSpeakerCommand() {
-        return false;
+        return auto.runArm;
     }
     public double getRunArm() {
         // return auto.armPos;
@@ -123,7 +123,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getResetRobotPose() {
-        return false;
+        return auto.seedPose;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean getFeeder() {
         // TODO Auto-generated method stub
-        return false;
+        return auto.runFeeder;
     }
 
     @Override

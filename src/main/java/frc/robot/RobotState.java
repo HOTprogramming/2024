@@ -141,4 +141,8 @@ public class RobotState {
     public double getArmPos(){
         return armPos;
     }
+
+    public boolean getShooterOn() {
+        return shooterOn;
+    }
 }

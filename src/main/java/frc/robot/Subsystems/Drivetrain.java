@@ -64,9 +64,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(6, 0.15, .2);
-    private static final PIDController yController = new PIDController(5.8, 0.13, .18);
-    private static final PIDController thetaController = new PIDController(10, 0.1, .35);
+    private static final PIDController xController = new PIDController(9, 0.15, .35);
+    private static final PIDController yController = new PIDController(9, 0.13, .35);
+    private static final PIDController thetaController = new PIDController(11, 0.1, .35);
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
