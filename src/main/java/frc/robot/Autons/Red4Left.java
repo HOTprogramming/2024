@@ -65,64 +65,81 @@ public class Red4Left extends AutonBase {
             case ring1:
             if (queuePath(List.of(robotState.getDrivePose(), shoot1), true)) {
                 step = Step.shoot1;
+                runIntake = false; 
            } else {
                step = Step.ring1;
+               runIntake = true; 
            }
+
           break;
 
           case shoot1:
           if (queuePath(List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
             step = Step.ring2;
+            runShooter = false; 
        } else {
            step = Step.shoot1;
+           runShooter = true; 
        }
       break;
 
          case ring2:
          if (queuePath(List.of(robotState.getDrivePose(), almostring3, shoot2), true)) {
             step = Step.shoot2;
+            runIntake = false; 
        } else {
            step = Step.ring2;
+           runIntake = true; 
        }
       break;
 
        case shoot2:
         if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
             step = Step.ring3;
+            runShooter = false; 
        } else {
            step = Step.shoot2;
+           runShooter = true; 
        }
        break;
 
        case ring3:
         if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
             step = Step.shoot3;
+            runIntake = false; 
        } else {
            step = Step.ring3;
+           runIntake = true; 
        }
        break;
 
        case shoot3:
         if (queuePath(List.of(robotState.getDrivePose(), ringalmost4, ring4), true)) {
             step = Step.ring4;
+            runShooter= false; 
        } else {
            step = Step.shoot3;
+           runShooter = true; 
        }
        break;
 
         case ring4:
         if (queuePath(List.of(robotState.getDrivePose(),  almostshoot4, shoot4), true)) {
             step = Step.shoot4;
+            runIntake = false; 
        } else {
            step = Step.ring4;
+           runIntake = true; 
        }
        break;
 
        case shoot4:
         if (queuePath(List.of(robotState.getDrivePose(), almostshoot4, shoot4), true)) {
             step = Step.end;
+            runShooter = false; 
        } else {
            step = Step.shoot4;
+           runShooter = true; 
        }
        break;
 

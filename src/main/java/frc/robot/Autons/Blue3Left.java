@@ -54,50 +54,68 @@ public class Blue3Left extends AutonBase {
             break;
 
             case ring1:
-            if (queuePath(List.of(robotState.getDrivePose(), shoot1), true)) {
+            if (queuePath(2, 3, List.of(robotState.getDrivePose(), shoot1), true)) {
                 step = Step.shoot1;
+                runIntake = false; 
+                runArm = true; 
            } else {
                step = Step.ring1;
+               runIntake = true; 
+               runArm = false; 
            }
           break;
 
           case shoot1:
-          if (queuePath(List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
+          if (queuePath(2, 3, List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
             step = Step.ring2;
+            runShooter = false; 
        } else {
            step = Step.shoot1;
+           runShooter = true; 
        }
       break;
 
          case ring2:
-         if (queuePath(List.of(robotState.getDrivePose(), shoot2), true)) {
+         if (queuePath(2, 3, List.of(robotState.getDrivePose(), shoot2), true)) {
             step = Step.shoot2;
+            runIntake = false; 
+            runArm = true; 
        } else {
            step = Step.ring2;
+           runIntake = true; 
+           runArm = false; 
        }
       break;
 
        case shoot2:
-        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
+        if (queuePath(2, 3, List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
             step = Step.ring3;
+            runShooter = false; 
        } else {
            step = Step.shoot2;
+           runShooter = true; 
        }
        break;
 
        case ring3:
-        if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
+        if (queuePath(2, 3, List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
             step = Step.shoot3;
+            runIntake = false; 
+            runArm = true; 
        } else {
            step = Step.ring3;
+           runShooter = true; 
+           runArm = false; 
        }
        break;
 
        case shoot3:
-        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, shoot3), true)) {
+        if (checkTime() || robotState.getAtTargetPose()) {
             step = Step.end;
+            runShooter = false; 
        } else {
            step = Step.shoot3;
+           runShooter = true; 
        }
        break;
 

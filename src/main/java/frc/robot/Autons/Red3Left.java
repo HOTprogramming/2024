@@ -47,22 +47,24 @@ public class Red3Left extends AutonBase {
         switch (step) {
             
             case start:
-            generateTrajectory(List.of(startPose, ring1));
+            generateTrajectory(2, 3, List.of(startPose, ring1));
             step = Step.ring1;
             break;
 
             case ring1:
-            if (queuePath(List.of(robotState.getDrivePose(), shoot1), true)) {
+            if (queuePath(2, 3, List.of(robotState.getDrivePose(), shoot1), true)) {
                 step = Step.shoot1;
                 runIntake = false; 
+                runArm = true; 
            } else {
                step = Step.ring1;
                runIntake = true; 
+               runArm = false; 
            }
           break;
 
           case shoot1:
-          if (queuePath(List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
+          if (queuePath(2, 3, List.of(robotState.getDrivePose(),almostring2, ring2), true)) {
             step = Step.ring2;
        } else {
            step = Step.shoot1;
@@ -70,17 +72,19 @@ public class Red3Left extends AutonBase {
       break;
 
          case ring2:
-         if (queuePath(List.of(robotState.getDrivePose(), almostring3, shoot2), true)) {
+         if (queuePath(2, 3, List.of(robotState.getDrivePose(), almostring3, shoot2), true)) {
             step = Step.shoot2;
             runIntake = false; 
+            runArm = true; 
        } else {
            step = Step.ring2;
            runIntake = true; 
+           runArm = false;
        }
       break;
 
        case shoot2:
-        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
+        if (queuePath(2, 3, List.of(robotState.getDrivePose(), ringalmost3, ring3), true)) {
             step = Step.ring3;
             runShooter = false; 
        } else {
@@ -90,17 +94,19 @@ public class Red3Left extends AutonBase {
        break;
 
        case ring3:
-        if (queuePath(List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
+        if (queuePath(2, 3, List.of(robotState.getDrivePose(),  ringalmost3, shoot3), true)) {
             step = Step.shoot3;
             runIntake = false; 
+            runArm = true; 
        } else {
            step = Step.ring3;
            runIntake = true; 
+           runArm = false; 
        }
        break;
 
        case shoot3:
-        if (queuePath(List.of(robotState.getDrivePose(), ringalmost3, shoot3), true)) {
+        if (checkTime() || robotState.getAtTargetPose()) {
             step = Step.end;
             runShooter = false; 
        } else {
@@ -114,6 +120,7 @@ public class Red3Left extends AutonBase {
         break; 
 
         }
+
 
         if (step != Step.end) {
             holoDriveState = trajectoryGenerator.getDriveTrajectory().sample(timer.get());

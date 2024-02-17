@@ -80,6 +80,17 @@ public abstract class AutonBase {
         trajectoryGenerator.generate(trajectoryConfig, waypoints);
     }
 
+    public void generateTrajectory(double maxV, double maxAccel, List<Pose2d> points) {
+        trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel);
+        trajectoryGenerator = new CustomTrajectoryGenerator();
+        
+        List<Waypoint> waypoints = new ArrayList<Waypoint>();
+        for (Pose2d point:points) {
+            waypoints.add(Waypoint.fromHolonomicPose(point));
+        }
+        trajectoryGenerator.generate(trajectoryConfig, waypoints);
+    }
+
     /**
      * checks if you should be at the target pose
      * 
@@ -109,6 +120,20 @@ public abstract class AutonBase {
         }
     }
 
+    public boolean queuePath(double maxV, double maxAccel, List<Pose2d> points, boolean timed) {
+        if (trajectoryGenerator == null) {
+            generateTrajectory(maxV, maxAccel, points);
+            return true;
+        }
+        if ((!timed && robotState.getAtTargetPose()) || (timed && checkTime())) {
+            timer.reset();
+
+            generateTrajectory(maxV, maxAccel, points);
+            return true;
+        } else {
+            return false;
+        }
+    }
      /**
      * call to queue a path, and know if the current path is complete.
      * uses default trajectory configs
