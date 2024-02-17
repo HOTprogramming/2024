@@ -133,11 +133,22 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     }
 
+    private void autoTurnControl(State holoDriveState, RotationSequence.State rotationState, Rotation2d targetTheta) {
+        // Uses theta control to rotate (Rotation2d)
+            ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
+
+            setControl(robotCentric.withVelocityX(chassisSpeeds.vxMetersPerSecond)
+                                    .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+                                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        
+
+    }
+
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
         if (holoDriveState != null && rotationState != null) {
             // drive with target states from trajectory generator (auton)
             ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
-
             setControl(withChassisSpeeds.withSpeeds(chassisSpeeds));
         }
 
@@ -274,11 +285,18 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            if (robotState.getAlliance() == Alliance.Red) {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
-            } else {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+            if (commander.getDriveMode() == DriveMode.percent) {
+                if (robotState.getAlliance() == Alliance.Red) {
+                    autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
+                } else {
+                    autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+                }
+            } else if (commander.getDriveMode() == DriveMode.stateDrive) {
+                if (robotState.getAlliance() == Alliance.Red) {
+                    autoTurnControl(commander.getDriveState(), commander.getDriveRotationState(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)));
+                } else {
+                    autoTurnControl(commander.getDriveState(), commander.getDriveRotationState(), pointAt(blueSpeaker).plus(Rotation2d.fromDegrees(180)));
+                }
             }
         }
 
