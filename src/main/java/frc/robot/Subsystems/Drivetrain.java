@@ -227,9 +227,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
             if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
-                addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                        robotState.getVisionTimestamps()[i],
-                        robotState.getVisionStdevs().extractColumnVector(i));
+                if(currentState.Pose.getX() < 10 && i == 3){
+
+                } else {
+                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                                            robotState.getVisionTimestamps()[i],
+                                            robotState.getVisionStdevs().extractColumnVector(i));
+                }
+               
                 // assuming it wants rotation in radians
             }
         }
@@ -265,7 +270,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             percentDrive(commander.getDrivePercentCommand(), true);
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
-
         }
         
         if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
@@ -289,19 +293,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            if (commander.getDriveMode() == DriveMode.percent) {
-                if (robotState.getAlliance() == Alliance.Red) {
-                    autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
-                } else {
-                    autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
-                }
-            } else if (commander.getDriveMode() == DriveMode.stateDrive) {
-                if (robotState.getAlliance() == Alliance.Red) {
-                    autoTurnControl(commander.getDriveState(), commander.getDriveRotationState(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)));
-                } else {
-                    autoTurnControl(commander.getDriveState(), commander.getDriveRotationState(), pointAt(blueSpeaker));
-                }
-            }
+            
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+            } 
         }
 
         // if (commander.getLockRingCommand()) {

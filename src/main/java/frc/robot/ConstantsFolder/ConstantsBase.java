@@ -164,6 +164,7 @@ public class ConstantsBase {
         public String RIGHT_CAMERA_NAME = "right_camera";
 
         public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        // public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
         public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(120));
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 

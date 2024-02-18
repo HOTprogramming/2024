@@ -30,15 +30,15 @@ public abstract class AutonBase {
 
     
     TrajectoryConfig trajectoryConfig;
-    CustomTrajectoryGenerator trajectoryGenerator;
+    CustomTrajectoryGenerator trajectoryGenerator = new CustomTrajectoryGenerator();
     public boolean runShooter = false;
-    public double driveSpeed;
     public boolean runIntake = false; 
-    public boolean runArm = true; 
+    public boolean runArm = false; 
     public boolean seedPose = false;
     public boolean runFeeder = false;
     public boolean autoAim = false;
     public boolean zeroArm = false;
+    public boolean driving = false;
     
 
 
@@ -64,7 +64,6 @@ public abstract class AutonBase {
 
     public void generateTrajectory(double maxV, double maxAccel, double startV, double endV, List<Pose2d> points) {
         trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel).setStartVelocity(startV).setEndVelocity(endV);
-        trajectoryGenerator = new CustomTrajectoryGenerator();
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {
@@ -75,7 +74,6 @@ public abstract class AutonBase {
 
     public void generateTrajectory(List<Pose2d> points) {
         trajectoryConfig = new  TrajectoryConfig(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, constants.AUTON_DEFAULT_MAX_ACCEL_METERS);
-        trajectoryGenerator = new CustomTrajectoryGenerator();
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {
@@ -87,7 +85,6 @@ public abstract class AutonBase {
     public void generateTrajectory(double maxV, double maxAccel, List<Pose2d> points) {
         timer.reset();
         trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel);
-        trajectoryGenerator = new CustomTrajectoryGenerator();
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {
@@ -111,10 +108,6 @@ public abstract class AutonBase {
      * @return if the new path was queued
      */
     public boolean queuePath(double maxV, double maxAccel, double startV, double endV, List<Pose2d> points, boolean timed) {
-        if (trajectoryGenerator == null) {
-            generateTrajectory(maxV, maxAccel, startV, endV, points);
-            return true;
-        }
         if ((!timed && robotState.getAtTargetPose()) || (timed && checkTime())) {
             timer.reset();
 
@@ -126,10 +119,6 @@ public abstract class AutonBase {
     }
 
     public boolean queuePath(double maxV, double maxAccel, List<Pose2d> points, boolean timed) {
-        if (trajectoryGenerator == null) {
-            generateTrajectory(maxV, maxAccel, points);
-            return true;
-        }
         if ((!timed && robotState.getAtTargetPose()) || (timed && checkTime())) {
             timer.reset();
 
