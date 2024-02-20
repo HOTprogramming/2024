@@ -157,6 +157,8 @@ public Arm(RobotState robotState) {
 }  
 
     public void updateState(){
+        robotePosToSpeaker = robotState.getPoseToSpeaker();
+
         robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
     }
 
@@ -169,20 +171,17 @@ public Arm(RobotState robotState) {
       armVelocity.refresh();
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
-
-      //armDesiredPos thePos = commander.armPosition();
-
-      //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
     
-      robotePosToSpeaker = robotState.getPoseToSpeaker();
 
       if(commander.runArm()){
-        commandedPosition = shotMap.calcShotMap()/360;
-        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-      
+        commandedPosition = shotMap.calcShotMap();
+
+        if(commandedPosition > 95.0){
+        armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
+        }
       } 
        else if (commander.zeroArm()) {
-         commandedPosition = 95.0/360;
+         commandedPosition = 95.0/360.0;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
       } else{
@@ -193,7 +192,6 @@ public Arm(RobotState robotState) {
 
       SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
-      SmartDashboard.putNumber("Calced Arm Pose", mapArmPos);
       SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
       SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);

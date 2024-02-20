@@ -32,17 +32,9 @@ public class Robot extends TimedRobot {
   // define subsystem objects
 
   // define autons (alphabetical)
-  private AidenSquare aidenSquare;
-  private Blue3Park blue3Park;
-  private Blue3Ring blue3Ring;
-  private Blue3Under blue3Under;
-  private Blue4Ring blue4Ring;
-  private Red2Ring red2Ring;
-  private Red3Ring red3Ring;
-  private Triangle triangle;
-  private WillsSquare willsSquare;
 
-  private StraightLine straightLine;
+  private Red3Right red3Right; 
+  private NewAuto newAuto;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -64,17 +56,8 @@ public class Robot extends TimedRobot {
     intake = new Intake(robotState);
     lights = new Lights(robotState);
 
-    aidenSquare = new AidenSquare(robotState);
-    blue3Park = new Blue3Park(robotState);
-    blue3Ring = new Blue3Ring(robotState);
-    blue3Under = new Blue3Under(robotState);
-    blue4Ring = new Blue4Ring(robotState);
-    red2Ring = new Red2Ring(robotState);
-    red3Ring = new Red3Ring(robotState);
-    triangle = new Triangle(robotState);
-    willsSquare = new WillsSquare(robotState);
-
-    straightLine = new StraightLine(robotState);
+    red3Right = new Red3Right(robotState);
+    newAuto = new NewAuto(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");
     autoSelector.addOption("B3 Park", "blue3Park");
@@ -94,37 +77,25 @@ public class Robot extends TimedRobot {
 
     intake.updateState();
 
-    // shooter.updateState();
+    shooter.updateState();
     arm.updateState();
+    
   }
 
   @Override
   public void autonomousInit() {
+    robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
 
+    autonCommander.setAuto(newAuto);
 
-    // // auton selector base
-    // if (selectedAuto == "aidenSquare") {
-    //   autonCommander.setAuto(aidenSquare);
-    // } else if (selectedAuto == "blue3Park") {
-    //   autonCommander.setAuto(blue3Park);
-    // } else if (selectedAuto == "blue3Ring") {
-    //   autonCommander.setAuto(blue3Ring);
-    // } else if (selectedAuto == "blue3Under") {
-    //   autonCommander.setAuto(blue3Under);
-    // } else if (selectedAuto == "blue4Ring") {
-    //   autonCommander.setAuto(blue4Ring);
-    // } else if (selectedAuto == "red2Ring") {
-    //   autonCommander.setAuto(red2Ring);
-    // } else if (selectedAuto == "triangle") {
-    //   autonCommander.setAuto(triangle);
-    // } else if (selectedAuto == "willsSquare") {
-    //   autonCommander.setAuto(willsSquare);
-    // }
-
-    autonCommander.setAuto(straightLine);
 
     drivetrain.init(autonCommander);
+    shooter.reset();
+    drivetrain.reset();
+    arm.reset();
+    intake.reset();
+    feeder.reset();
   }
 
   @Override

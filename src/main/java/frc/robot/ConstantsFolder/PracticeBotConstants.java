@@ -16,8 +16,8 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Auton extends ConstantsBase.Auton {
         public Auton() {
-            AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-            AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+            AUTON_DEFAULT_MAX_VELOCITY_METERS = 2.0;
+            AUTON_DEFAULT_MAX_ACCEL_METERS = 2.0;
         }        
     }
   

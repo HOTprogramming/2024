@@ -19,7 +19,7 @@ public class ShotMap {
     private double angle3 = 126;
     private double angle4 = 122;
     private double angle5 = 120;
-    private double xPos;
+    private double xPos = 1.8;
     private double angleX;
     private double angleX2;
     private double angleX3;
@@ -71,8 +71,10 @@ public double calcShotMap(){
         //angleX = angle3 - (((angle3 - angle2)*(distance3 - xPos))/(distance3 - distance2));
         angleX2 = this.calculateSlope(angle5, angle4, distance5, distance4, xPos);
         SmartDashboard.putNumber("first", 5);
+    } else {
+        angleX2 = 95.0;
+    SmartDashboard.putNumber("Outside", angleX2);
     }
-    SmartDashboard.putNumber("second", angleX2);
 
 
 return angleX2;
