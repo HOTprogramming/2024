@@ -7,9 +7,6 @@ import frc.robot.RobotState;
 
 public class ShotMap {
     RobotState robotState; 
-    private double armAngle;
-    private double robotPosition;
-    double[] positionAngle = {armAngle,robotPosition};
     private double distance1 = 1.16;
     private double distance2 = 2.5;
     private double distance3 = 4;
@@ -39,7 +36,6 @@ public double getVelocity(){
 }
 
 public double calculateSlope(double a2, double a1, double d2, double d1, double currentPos){
-    //angleX = angle2 - (d2 - currentPos)*((a2 - a1)/(d2 - d1));
     angleX = (a2-a1)*(d2-currentPos);
     angleX3 = angleX /(d2-d1);
     angleX4 = a2-angleX3;
@@ -53,31 +49,26 @@ public double calculateSlope(double a2, double a1, double d2, double d1, double 
 }
 
 public double calcShotMap(){
-    xPos = robotState.getPoseToSpeaker() - 0.05*this.getVelocity();
-    //xPos = 4.5;
+    xPos = robotState.getPoseToSpeaker(); //+ 0.1*this.getVelocity();
     SmartDashboard.putNumber("distancetotarget", xPos);
+
     if(xPos<distance1){
-    //angleX = angle1 - (((angle1 - 95)*(distance1 - xPos))/(distance1 - 0));
-    angleX2 = this.calculateSlope(angle1, 150, distance1, 0, xPos);
-    SmartDashboard.putNumber("first", 1);
+        angleX2 = this.calculateSlope(angle1, 150, distance1, 0, xPos);
+        SmartDashboard.putNumber("first", 1);
     }
     else if(xPos>=distance1 && xPos<distance2){
-        //angleX = angle2 - (((angle2 - angle1)*(distance2 - xPos))/(distanc  e2 - distance1));
         angleX2 = this.calculateSlope(angle2, angle1, distance2, distance1, xPos);
         SmartDashboard.putNumber("first", 2);
     }
     else if(xPos>=distance2 && xPos<distance3){
-        //angleX = angle3 - (((angle3 - angle2)*(distance3 - xPos))/(distance3 - distance2));
         angleX2 = this.calculateSlope(angle3, angle2, distance3, distance2, xPos);
         SmartDashboard.putNumber("first", 3);
     }
     else if(xPos>=distance3 && xPos<distance4){
-        //angleX = angle3 - (((angle3 - angle2)*(distance3 - xPos))/(distance3 - distance2));
         angleX2 = this.calculateSlope(angle4, angle3, distance4, distance3, xPos);
         SmartDashboard.putNumber("first", 4);
     }
     else if(xPos>=distance4 && xPos<distance5){
-        //angleX = angle3 - (((angle3 - angle2)*(distance3 - xPos))/(distance3 - distance2));
         angleX2 = this.calculateSlope(angle5, angle4, distance5, distance4, xPos);
         SmartDashboard.putNumber("first", 5);
     }

@@ -237,14 +237,14 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean extend() {
-        if(operator.getAButton()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        // if(operator.getAButton()){
+        //     return true;
+        // }
+        // else{
+        //     return false;
+        // }
 
-        // return false;
+        return false;
     }
 
 }
