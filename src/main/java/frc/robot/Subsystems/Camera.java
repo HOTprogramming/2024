@@ -231,7 +231,6 @@ public class Camera implements SubsystemBase {
         }
 
         if (constants.HAS_FRONT_CAMERA) {
-            int balls = frontCamera.getLatestResult().getTargets().toArray().length;
             frontResult = frontCamera.getLatestResult();
             frontSampleTime = frontResult.getTimestampSeconds();
             
