@@ -53,25 +53,21 @@ public double calcShotMap(){
     SmartDashboard.putNumber("distancetotarget", xPos);
 
     if(xPos<distance1){
-        angleX2 = this.calculateSlope(angle1, 150, distance1, 0, xPos);
-        SmartDashboard.putNumber("first", 1);
+        angleX2 = this.calculateSlope(angle1, 152, distance1, 0, xPos);
     }
     else if(xPos>=distance1 && xPos<distance2){
         angleX2 = this.calculateSlope(angle2, angle1, distance2, distance1, xPos);
-        SmartDashboard.putNumber("first", 2);
     }
     else if(xPos>=distance2 && xPos<distance3){
         angleX2 = this.calculateSlope(angle3, angle2, distance3, distance2, xPos);
-        SmartDashboard.putNumber("first", 3);
     }
     else if(xPos>=distance3 && xPos<distance4){
         angleX2 = this.calculateSlope(angle4, angle3, distance4, distance3, xPos);
-        SmartDashboard.putNumber("first", 4);
     }
     else if(xPos>=distance4 && xPos<distance5){
         angleX2 = this.calculateSlope(angle5, angle4, distance5, distance4, xPos);
-        SmartDashboard.putNumber("first", 5);
-    } else {
+    } 
+    else {
         angleX2 = 95.0;
     SmartDashboard.putNumber("Outside", angleX2);
     }
@@ -80,9 +76,6 @@ public double calcShotMap(){
 
 
 return angleX2;
-
-
-
 }
 
 }

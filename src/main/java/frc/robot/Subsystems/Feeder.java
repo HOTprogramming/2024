@@ -4,20 +4,15 @@ import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.RobotCommander;
 import com.ctre.phoenix6.StatusCode;
-//import edu.wpi.first.wpilibj.TimedRobot;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-//import com.ctre.phoenix6.controls.Follower;
-//import edu.wpi.first.wpilibj.XboxController;
-//import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 
 public class Feeder implements SubsystemBase {
     ConstantsBase.Feeder constants;

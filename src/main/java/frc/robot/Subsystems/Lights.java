@@ -9,12 +9,13 @@ import com.ctre.phoenix.led.CANdle;
 public class Lights implements SubsystemBase {
     ConstantsBase.Lights constants;
     RobotState robotState;
-    CANdle leds = new CANdle(constants.LIGHTS_CAN, "drivetrain");
+    CANdle leds;
 
 
     public Lights(RobotState robotState) { 
         this.robotState = robotState;
         constants = robotState.getConstants().getLightsConstants();
+        leds = new CANdle(constants.LIGHTS_CAN, "drivetrain");
 
     }
 

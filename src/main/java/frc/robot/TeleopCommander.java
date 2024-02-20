@@ -237,7 +237,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean extend() {
-        // if(operator.getAButton()){
+        // if(operator.getXButton()){
         //     return true;
         // }
         // else{
@@ -245,6 +245,36 @@ public class TeleopCommander implements RobotCommander {
         // }
 
         return false;
+    }
+
+    @Override
+    public boolean closeShot() {
+        if (operator.getRightBumper() && operator.getAButton()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean protectedShot() {
+        if (operator.getRightBumper() && operator.getBButton()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean ampShot() {
+        if (operator.getRightBumper() && operator.getYButton()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }

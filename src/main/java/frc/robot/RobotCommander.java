@@ -53,5 +53,8 @@ public interface RobotCommander {
     public abstract boolean zeroArm();
     public abstract boolean setShoot();
     public abstract boolean extend();
+    public abstract boolean closeShot();
+    public abstract boolean protectedShot();
+    public abstract boolean ampShot();
 
 }
