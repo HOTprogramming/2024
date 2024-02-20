@@ -24,6 +24,7 @@ public class ConstantsBase {
     private Shooter shooter;
     private Intake intake;
     private Feeder feeder;
+    private Lights lights;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -37,7 +38,8 @@ public class ConstantsBase {
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                                    this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
@@ -46,7 +48,8 @@ public class ConstantsBase {
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                        this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
 
         } else {
             this.auton = camBotConstants.new Auton();
@@ -54,7 +57,8 @@ public class ConstantsBase {
             this.drivetrain = camBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                        this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
         }
     }
 
@@ -81,6 +85,10 @@ public class ConstantsBase {
         return this.shooter;
     }
 
+    public Lights getLightsConstants() {
+        return this.lights;
+    }
+
 
     private enum RobotType {
         Comp,
@@ -96,6 +104,10 @@ public class ConstantsBase {
         public Auton getAuton() {
             return this;
         }
+    }
+
+    public abstract class Lights {
+        public int LIGHTS_CAN = 51;
     }
 
     public abstract class Intake {
@@ -138,8 +150,7 @@ public class ConstantsBase {
         //Y: Left and right (Left +)
         //Z: Vertical distance from the floor to the camera (Up +)
 
-        public double[] STDEV_GAIN = new double[] {1, 1, 0.159};
-
+        public double[] STDEV_GAIN = new double[] {.7, .7, 0.1};
         //FRONT
         public boolean HAS_FRONT_CAMERA = false;
 
@@ -154,7 +165,7 @@ public class ConstantsBase {
 
         public String REAR_CAMERA_NAME = "back_camera";
 
-        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12.563), Units.inchesToMeters(0), Units.inchesToMeters(6.193)); // -12.563, 0, 6.193
+        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)); // -12.563, 0, 6.193
         public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)); // 0 20 180
         public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
 
@@ -163,8 +174,8 @@ public class ConstantsBase {
 
         public String RIGHT_CAMERA_NAME = "right_camera";
 
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(120));
+        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120));
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 
         //LEFT
@@ -172,8 +183,8 @@ public class ConstantsBase {
 
         public String LEFT_CAMERA_NAME = "left_camera";
 
-        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(-120));
+        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(-120));
         public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
     }

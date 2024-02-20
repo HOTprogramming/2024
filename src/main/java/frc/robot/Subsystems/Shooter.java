@@ -87,10 +87,10 @@ public class Shooter implements SubsystemBase {
         rightConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-        leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 80;
-        leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -80;
-        rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 80;
-        rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -80;
+        leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 60;
+        leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -60;
+        rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 60;
+        rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -60;
 
         for (int i = 0; i < 5; ++i) {
             leftStatus = leftFlywheel.getConfigurator().apply(leftConfigs);
@@ -111,8 +111,12 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
-        robotState.setShooterPos((leftFlywheel.getRotorPosition().getValueAsDouble() + rightFlywheel.getRotorPosition().getValueAsDouble())/2);
-        
+        if (Math.abs(leftFlywheel.getVelocity().getValueAsDouble() - leftTargetSpeed) < 5) {
+            robotState.setShooterOn(true);
+        } else {
+            robotState.setShooterOn(false);
+
+        }
     }
 
     @Override

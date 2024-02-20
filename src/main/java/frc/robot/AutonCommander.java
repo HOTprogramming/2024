@@ -85,7 +85,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getLockSpeakerCommand() {
-        return false;
+        return auto.autoAim;
     }
     public double getRunArm() {
         // return auto.armPos;
@@ -106,7 +106,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public double getTargetArmSpeed() {
-        return auto.armSpeed;
+        return 0; 
     }
     
     // @Override
@@ -123,7 +123,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getResetRobotPose() {
-        return false;
+        return auto.seedPose;
     }
 
     @Override
@@ -135,13 +135,13 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean getIntake() {
         // TODO Auto-generated method stub
-        return false;
+        return auto.runIntake;
     }
     
     @Override
     public boolean getFeeder() {
         // TODO Auto-generated method stub
-        return false;
+        return auto.runIntake;
     }
 
     @Override
@@ -152,13 +152,12 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean zeroArm() {
         // TODO Auto-generated method stub
-        return !auto.runArm;
+        return false;
     }
 
     @Override
     public boolean setShoot() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setShoot'");
+        return auto.runShooter;
     }
 
     @Override

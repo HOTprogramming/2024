@@ -15,6 +15,7 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.fasterxml.jackson.databind.node.POJONode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
@@ -63,9 +64,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(4.9, 0.1, .1);
-    private static final PIDController yController = new PIDController(4.9, 0.1, .1);
-    private static final PIDController thetaController = new PIDController(5, 0.1, .1);
+    private static final PIDController xController = new PIDController(8, 0.15, .45);
+    private static final PIDController yController = new PIDController(8, 0.13, .45);
+    private static final PIDController thetaController = new PIDController(10, 0.1, .35);
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -133,11 +134,25 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     }
 
-    private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
-        if (holoDriveState != null && rotationState != null) {
-            // drive with target states from trajectory generator (auton)
+    private void autoTurnControl(State holoDriveState, RotationSequence.State rotationState, Rotation2d targetTheta) {
+        // Uses theta control to rotate (Rotation2d)
             ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
 
+            setControl(robotCentric.withVelocityX(chassisSpeeds.vxMetersPerSecond)
+                                    .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+                                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        
+
+    }
+
+    private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
+        SmartDashboard.putBoolean("Step_Actuallydriving", false);
+
+        if (holoDriveState != null && rotationState != null) {
+            SmartDashboard.putBoolean("Step_Actuallydriving", true);
+            // drive with target states from trajectory generator (auton)
+            ChassisSpeeds chassisSpeeds = driveController.calculate(currentState.Pose, holoDriveState, rotationState);
             setControl(withChassisSpeeds.withSpeeds(chassisSpeeds));
         }
 
@@ -216,9 +231,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
             if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
-                addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                        robotState.getVisionTimestamps()[i],
-                        robotState.getVisionStdevs().extractColumnVector(i));
+                if(currentState.Pose.getX() < 10 && i == 3){
+
+                } else {
+                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                                            robotState.getVisionTimestamps()[i],
+                                            robotState.getVisionStdevs().extractColumnVector(i));
+                }
+               
                 // assuming it wants rotation in radians
             }
         }
@@ -255,8 +275,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
         }
-
-
+        
         if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
             desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
                                                 commander.getDriveState().poseMeters.getY(),
@@ -269,7 +288,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
 
         if (commander.getPidgeonReset()) {
-            m_pigeon2.reset();
+            m_pigeon2.setYaw(0);
             
         }
 
@@ -278,12 +297,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
+            
             if (robotState.getAlliance() == Alliance.Red) {
                 autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
             } else {
                 autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
-            }
+            } 
         }
 
         // if (commander.getLockRingCommand()) {

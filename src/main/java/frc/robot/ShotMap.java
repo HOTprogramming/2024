@@ -12,12 +12,12 @@ public class ShotMap {
     private double distance3 = 4;
     private double distance4 = 5.3;
     private double distance5 = 6.5;
-    private double angle1 = 152;
-    private double angle2 = 135;
-    private double angle3 = 127;
-    private double angle4 = 123;
-    private double angle5 = 121;
-    private double xPos;
+    private double angle1 = 151;
+    private double angle2 = 134;
+    private double angle3 = 126;
+    private double angle4 = 122;
+    private double angle5 = 120;
+    private double xPos = 1.8;
     private double angleX;
     private double angleX2;
     private double angleX3;
@@ -71,6 +71,9 @@ public double calcShotMap(){
     else if(xPos>=distance4 && xPos<distance5){
         angleX2 = this.calculateSlope(angle5, angle4, distance5, distance4, xPos);
         SmartDashboard.putNumber("first", 5);
+    } else {
+        angleX2 = 95.0;
+    SmartDashboard.putNumber("Outside", angleX2);
     }
     SmartDashboard.putNumber("second", angleX2);
     SmartDashboard.putNumber("VelocityArmMap", this.getVelocity());
