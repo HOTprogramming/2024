@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 
 public class TeleopCommander implements RobotCommander {
@@ -150,23 +151,28 @@ public class TeleopCommander implements RobotCommander {
 
     // }
 
-    @Override
-    public boolean runArm(){
-        if(operator.getRightBumper()){
-            return true;
+    public ArmCommanded armCommanded(){
+        if(operator.getRightBumper() && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
+            return ArmCommanded.shotMap;
+        }
+        else if(operator.getRightBumper() && operator.getXButton()){
+            return ArmCommanded.trap;
+        }
+        else if (operator.getRightBumper() && operator.getAButton()){
+            return ArmCommanded.close;
+        }
+        else if (operator.getRightBumper() && operator.getYButton()){
+            return ArmCommanded.none;
+            //needs to be ArmCommanded.extend when extension parts are implemented.
+        }
+        else if (operator.getRightBumper() && operator.getBButton()){
+            return ArmCommanded.amp;
+        }
+        else if (operator.getLeftBumper()){
+            return ArmCommanded.zero;
         }
         else{
-            return false;
-        }
-    }
-
-    @Override
-    public boolean zeroArm(){
-        if(operator.getLeftBumper()){
-            return true;
-        }
-        else{
-            return false;
+            return ArmCommanded.none;
         }
     }
 
@@ -235,46 +241,5 @@ public class TeleopCommander implements RobotCommander {
         return operator.getLeftTriggerAxis() > .1;
     }
 
-    @Override
-    public boolean extend() {
-        // if(operator.getXButton()){
-        //     return true;
-        // }
-        // else{
-        //     return false;
-        // }
-
-        return false;
-    }
-
-    @Override
-    public boolean closeShot() {
-        if (operator.getRightBumper() && operator.getAButton()){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    @Override
-    public boolean protectedShot() {
-        if (operator.getRightBumper() && operator.getBButton()){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    @Override
-    public boolean ampShot() {
-        if (operator.getRightBumper() && operator.getYButton()){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 
 }

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -145,43 +146,14 @@ public class AutonCommander implements RobotCommander {
     }
 
     @Override
-    public boolean runArm() {
-        return auto.runArm;
-    }
-
-    @Override
-    public boolean zeroArm() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public boolean setShoot() {
         return auto.runShooter;
     }
 
     @Override
-    public boolean extend() {
+    public ArmCommanded armCommanded() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'extend'");
-    }
-
-    @Override
-    public boolean closeShot() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'armCloseShot'");
-    }
-
-    @Override
-    public boolean protectedShot() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'armProtectedShot'");
-    }
-
-    @Override
-    public boolean ampShot() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ampShot'");
+        throw new UnsupportedOperationException("Unimplemented method 'armCommanded'");
     }
 
 }

@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.Subsystems.Arm.ArmCommanded;
+
 import static frc.robot.Constants.ExtensionConstants.*;
 
 public class Extension implements SubsystemBase{
@@ -98,18 +100,18 @@ public Extension(RobotState robotState) {
 
        
 
-        if(commander.extend() && robotState.getExtendPos()<=4){
+        if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()<=4){
         extendMotor.setControl(extendMagic.withPosition(4).withSlot(0));
         spitter.setVoltage(0);
         }
-        else if(commander.extend() && robotState.getExtendPos()>4 && robotState.getShooterPos()<50){
+        else if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()>4 && robotState.getShooterPos()<50){
         spitter.setVoltage(0.1);
         }
-        else if (commander.extend() && robotState.getShooterPos()>=50){
+        else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterPos()>=50){
         extendMotor.setControl(extendMagic.withPosition(7).withSlot(0));
         spitter.setVoltage(0);
         }
-        else if(commander.extend() && robotState.getExtendPos()>=6.9){
+        else if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()>=6.9){
         extendMotor.setControl(extendMagic.withPosition(7).withSlot(0));
         spitter.setVoltage(0.1);
         }

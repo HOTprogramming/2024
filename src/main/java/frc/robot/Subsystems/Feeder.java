@@ -2,6 +2,7 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.RobotCommander;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -95,7 +96,7 @@ RobotState robotState;
             }           
             } 
             
-            else if (commander.extend() && robotState.getExtendPos() > 4){
+            else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
                 feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }
             

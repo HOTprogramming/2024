@@ -64,6 +64,16 @@ public double commandedPosition;
 
 ShotMap shotMap;
 
+public enum ArmCommanded{
+  shotMap,
+  close,
+  protect,
+  amp,
+  trap,
+  zero,
+  none;
+}
+
 public Arm(RobotState robotState) {
 
     this.robotState = robotState;
@@ -145,34 +155,34 @@ public Arm(RobotState robotState) {
       cancoderVelocity.refresh();
     
 
-      if(commander.runArm()){
+      if(commander.armCommanded() == ArmCommanded.shotMap){
         commandedPosition = shotMap.calcShotMap();
 
         if(commandedPosition >= 95.0){
         armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
         }
       } 
-       else if (commander.zeroArm()) {
+       else if (commander.armCommanded() == ArmCommanded.zero) {
          commandedPosition = 95.0/360.0;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
       } 
-        else if(commander.extend()){
+        else if(commander.armCommanded() == ArmCommanded.trap){
         commandedPosition = 150.0/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
-      else if (commander.closeShot()){
+      else if (commander.armCommanded() == ArmCommanded.close){
         commandedPosition = 151.0/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
-      else if (commander.protectedShot()){
+      else if (commander.armCommanded() == ArmCommanded.protect){
         commandedPosition = 126.0/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
-      else if (commander.ampShot()){
+      else if (commander.armCommanded() == ArmCommanded.amp){
         commandedPosition = 151.0/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 

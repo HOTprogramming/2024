@@ -14,6 +14,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 
 public class Shooter implements SubsystemBase {
     RobotState robotState;
@@ -117,20 +118,20 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void enabled(RobotCommander commander) {
-        if (commander.runArm() || commander.closeShot() || commander.protectedShot()) {
+        if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect) {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftTargetSpeed).withFeedForward(25));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightTargetSpeed).withFeedForward(25));
 
-        } else if (commander.extend() && robotState.getExtendPos() > 4){
+        } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(25));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(25));
             
         }
-        else if (commander.zeroArm()){
+        else if (commander.armCommanded() == ArmCommanded.zero){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(25));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(25));
         }
-        else if (commander.ampShot()){
+        else if (commander.armCommanded() == ArmCommanded.amp){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed).withFeedForward(25));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed).withFeedForward(25));
         }
