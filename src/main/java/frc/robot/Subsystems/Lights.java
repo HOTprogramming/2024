@@ -11,12 +11,10 @@ public class Lights implements SubsystemBase {
     RobotState robotState;
     CANdle leds;
 
-
     public Lights(RobotState robotState) { 
         this.robotState = robotState;
         constants = robotState.getConstants().getLightsConstants();
         leds = new CANdle(constants.LIGHTS_CAN, "drivetrain");
-
     }
 
 
