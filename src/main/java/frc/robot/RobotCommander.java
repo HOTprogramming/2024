@@ -3,6 +3,7 @@ package frc.robot;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 public interface RobotCommander {
     public enum DriveMode {
@@ -38,7 +39,7 @@ public interface RobotCommander {
 
     public int getAngleSnapCommand();
     public abstract boolean getIntake();
-        public abstract boolean getFeeder();        
+    public abstract boolean getFeeder();        
     public abstract boolean getRunFeeder();
     public boolean getLockPoseCommand();
     public abstract boolean getRunShooter();
@@ -48,10 +49,8 @@ public interface RobotCommander {
     public abstract boolean decreaseRightTargetSpeed();
     public abstract double getTargetDriveSpeed();
     public boolean getLockSpeakerCommand();
-    //public abstract armDesiredPos armPosition();
     public abstract double getTargetArmSpeed();
-    public boolean runArm();
-    public boolean zeroArm();
-    public boolean setShoot();
+    public abstract boolean setShoot();
+    public abstract ArmCommanded armCommanded();
 
 }

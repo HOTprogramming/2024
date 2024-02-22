@@ -2,22 +2,18 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.RobotCommander;
 import com.ctre.phoenix6.StatusCode;
-//import edu.wpi.first.wpilibj.TimedRobot;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-//import com.ctre.phoenix6.controls.Follower;
-//import edu.wpi.first.wpilibj.XboxController;
-//import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 
 public class Feeder implements SubsystemBase {
     ConstantsBase.Feeder constants;
@@ -98,7 +94,13 @@ RobotState robotState;
             } else { 
                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }           
-            } else {
+            } 
+            
+            else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
+                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+            }
+            
+            else {
                 Out.Output = 0;
                 feeder.setControl(Out);
             }

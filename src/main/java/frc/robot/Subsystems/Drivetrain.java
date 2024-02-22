@@ -211,6 +211,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
             velocities = distanceDifference.div(timeDifference);
 
+            robotState.setDriveVelocity(velocities);
+
             // publishes pose to smartdashboard
             posePublisher.set(new double[] {
                     currentState.Pose.getX(),
@@ -224,6 +226,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                     velocities.getY(),
                     velocities.getAngle().getDegrees()
             });
+
+            
         }
 
         for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {

@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
     
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
-    shooter = new Shooter(robotState);
+    shooter = new Shooter(robotState, 9, 9);
     arm = new Arm(robotState);
     feeder = new Feeder(robotState);
     intake = new Intake(robotState);
@@ -84,11 +84,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    shooter = new Shooter(robotState, 60, 60);
     robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
 
     autonCommander.setAuto(newAuto);
-
 
     drivetrain.init(autonCommander);
     shooter.reset();
@@ -111,6 +111,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    shooter = new Shooter(robotState, 45, 45);
     robotState.setAlliance(DriverStation.getAlliance().get());
     shooter.reset();
     drivetrain.reset();

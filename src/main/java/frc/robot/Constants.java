@@ -216,8 +216,8 @@ public final class Constants {
         public static final int ARM_CAN = 9;
         public static final double CRUISEVELOCITY = 400;
         public static final double ACCELERATION = 400;
-        public static final double JERK = 2000;
-        public static final double ARMKP = 380;
+        public static final double JERK = 1500;
+        public static final double ARMKP = 250;
         public static final double ARMKI = 0;
         public static final double ARMKD = 0;
         public static final double ARMKV = 0.8;
@@ -225,5 +225,10 @@ public final class Constants {
         public static final double ZERO = 95;
         public static final double SHOOT = 118;
         
+    }
+
+    public final class ExtensionConstants{
+        public static final int EXTENSION_CAN = 10;
+        public static final int SPITTER_CAN = 12;
     }
 }
