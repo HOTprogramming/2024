@@ -183,20 +183,20 @@ public Arm(RobotState robotState) {
 
       }
       else if (commander.armCommanded() == ArmCommanded.amp){
-        commandedPosition = 151.0/360;
+        commandedPosition = 145.0/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
       else{
         armMotor.setVoltage(0);
       }
-      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360.0);
       SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
-      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360.0);
       SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
-      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
+      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
       SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
-      SmartDashboard.putNumber("commandedPosition", commandedPosition*360);
+      SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
     public void disabled(){
         armMotor.stopMotor();

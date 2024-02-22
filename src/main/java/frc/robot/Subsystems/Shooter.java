@@ -28,8 +28,8 @@ public class Shooter implements SubsystemBase {
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
     double leftTargetSpeed = 66.6;
     double rightTargetSpeed = 50;
-    double leftSlowSpeed = 5;
-    double rightSlowSpeed = 5;
+    double leftSlowSpeed = 18;
+    double rightSlowSpeed = 18;
     boolean isShooting = false;
     
     ConstantsBase.Shooter constants;
