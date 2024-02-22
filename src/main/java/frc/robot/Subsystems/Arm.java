@@ -5,6 +5,7 @@ import static frc.robot.Constants.ArmConstants.*;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ShotMap;
+import frc.robot.ConstantsFolder.ConstantsBase;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -40,6 +41,8 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm implements SubsystemBase {
+
+ConstantsBase.Arm constants;
 
 RobotState robotState;    
 TalonFX armMotor;
@@ -77,10 +80,11 @@ public enum ArmCommanded{
 public Arm(RobotState robotState) {
 
     this.robotState = robotState;
+    this.constants = robotState.getConstants().getArmConstants();
 
     shotMap = new ShotMap(robotState);
-    armMotor = new TalonFX(ARM_CAN, "drivetrain");
-    cancoder = new CANcoder(CANCODER_CAN, "drivetrain");               
+    armMotor = new TalonFX(constants.ARM_CAN, "drivetrain");
+    cancoder = new CANcoder(constants.CANCODER_CAN, "drivetrain");               
 
     armMagic = new MotionMagicVoltage(0);
 
@@ -94,22 +98,24 @@ public Arm(RobotState robotState) {
     cancoderPosition = cancoder.getPosition();
     cancoderVelocity = cancoder.getVelocity();
     armRotorPos = armMotor.getRotorPosition();
+
+
 }
 
   public void armInit(){
     TalonFXConfiguration cfg = new TalonFXConfiguration();
 
     MotionMagicConfigs mm = cfg.MotionMagic;
-    mm.MotionMagicCruiseVelocity = CRUISEVELOCITY; //rps
-    mm.MotionMagicAcceleration = ACCELERATION;
-    mm.MotionMagicJerk = JERK;
+    mm.MotionMagicCruiseVelocity = constants.CRUISEVELOCITY; //rps
+    mm.MotionMagicAcceleration = constants.ACCELERATION;
+    mm.MotionMagicJerk = constants.JERK;
 
     Slot0Configs slot0 = cfg.Slot0;
-    slot0.kP = ARMKP;
-    slot0.kI = ARMKI;
-    slot0.kD = ARMKD;
-    slot0.kV = ARMKV;
-    slot0.kS = ARMKS; // Approximately 0.25V to get the mechanism moving
+    slot0.kP = constants.ARMKP;
+    slot0.kI = constants.ARMKI;
+    slot0.kD = constants.ARMKD;
+    slot0.kV = constants.ARMKV;
+    slot0.kS = constants.ARMKS; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = cfg.Feedback;
     fdb.SensorToMechanismRatio = 1;
@@ -163,27 +169,27 @@ public Arm(RobotState robotState) {
         }
       } 
        else if (commander.armCommanded() == ArmCommanded.zero) {
-         commandedPosition = 95.0/360.0;
+         commandedPosition = constants.ZERO/360.0;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
       } 
         else if(commander.armCommanded() == ArmCommanded.trap){
-        commandedPosition = 150.0/360;
+        commandedPosition = constants.TRAP/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
       else if (commander.armCommanded() == ArmCommanded.close){
-        commandedPosition = 151.0/360;
+        commandedPosition = constants.CLOSE/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
       else if (commander.armCommanded() == ArmCommanded.protect){
-        commandedPosition = 126.0/360;
+        commandedPosition = constants.PROTECT/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
       else if (commander.armCommanded() == ArmCommanded.amp){
-        commandedPosition = 145.0/360;
+        commandedPosition = constants.AMP/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }

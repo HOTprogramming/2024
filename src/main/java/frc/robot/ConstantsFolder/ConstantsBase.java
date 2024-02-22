@@ -22,6 +22,7 @@ public class ConstantsBase {
     private Camera camera;
     private Drivetrain drivetrain;
     private Shooter shooter;
+    private Arm arm;
     private Intake intake;
     private Feeder feeder;
     private Lights lights;
@@ -83,6 +84,10 @@ public class ConstantsBase {
 
     public Shooter getShooterConstants() {
         return this.shooter;
+    }
+
+    public Arm getArmConstants(){
+        return this.arm;
     }
 
     public Lights getLightsConstants() {
@@ -219,6 +224,25 @@ public class ConstantsBase {
         public double RFLYWHEEL_KP = 0.25;
         public double RFLYWHEEL_KI = 0.5;
         public double RFLYWHEEL_KD = 0.0001;
+    }
+
+    public abstract class Arm{
+        public int CANCODER_CAN = 44;
+        public int ARM_CAN = 9;
+        public double CRUISEVELOCITY = 400;
+        public double ACCELERATION = 400;
+        public double JERK = 1500;
+        public double ARMKP = 250;
+        public double ARMKI = 0;
+        public double ARMKD = 0;
+        public double ARMKV = 0.8;
+        public double ARMKS = 0.1;
+        public double ZERO = 95.0;
+        public double SHOOT = 118.0;
+        public double TRAP = 150.0;
+        public double CLOSE = 151.0;
+        public double PROTECT = 126.0;
+        public double AMP = 145.0;
     }
 
     public abstract class Drivetrain {

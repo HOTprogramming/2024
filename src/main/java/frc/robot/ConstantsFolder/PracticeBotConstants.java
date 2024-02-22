@@ -93,6 +93,28 @@ public class PracticeBotConstants extends ConstantsBase {
 
     }
 
+    public class Arm extends ConstantsBase.Arm {
+       
+        public Arm(){
+         int CANCODER_CAN = 44;
+         int ARM_CAN = 9;
+         double CRUISEVELOCITY = 400;
+         double ACCELERATION = 400;
+         double JERK = 1500;
+         double ARMKP = 250;
+         double ARMKI = 0;
+         double ARMKD = 0;
+         double ARMKV = 0.8;
+         double ARMKS = 0.1;
+         double ZERO = 95.0;
+         double SHOOT = 118.0;
+         double TRAP = 150.0;
+         double CLOSE = 151.0;
+         double PROTECT = 126.0;
+         double AMP = 145.0;
+        }
+         }
+
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {
             AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
