@@ -85,6 +85,7 @@ public abstract class AutonBase {
     public void generateTrajectory(double maxV, double maxAccel, List<Pose2d> points) {
         timer.reset();
         trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel);
+
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {

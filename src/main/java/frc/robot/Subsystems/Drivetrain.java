@@ -64,9 +64,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(8, 0.15, .45);
-    private static final PIDController yController = new PIDController(8, 0.13, .45);
-    private static final PIDController thetaController = new PIDController(10, 0.1, .35);
+    private static final PIDController xController = new PIDController(9, 0.15, .5);
+    private static final PIDController yController = new PIDController(8.5, 0.13, .45);
+    private static final PIDController thetaController = new PIDController(15.5, 0.1, .5);
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -76,6 +76,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
+
         // call swervedriveDrivetrain constructor (parent class)
         super(robotState.getConstants().getDriveTrainConstants().DRIVETRAIN_CONSTANTS,
                 robotState.getConstants().getDriveTrainConstants().FRONT_LEFT_MODULE_CONSTANTS, 
@@ -231,13 +232,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
             if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
-                if(currentState.Pose.getX() < 10 && i == 3){
-
-                } else {
-                    addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                                            robotState.getVisionTimestamps()[i],
-                                            robotState.getVisionStdevs().extractColumnVector(i));
-                }
+                addVisionMeasurement(robotState.getVisionMeasurements()[i],
+                                        robotState.getVisionTimestamps()[i],
+                                        robotState.getVisionStdevs().extractColumnVector(i));
+            
                
                 // assuming it wants rotation in radians
             }

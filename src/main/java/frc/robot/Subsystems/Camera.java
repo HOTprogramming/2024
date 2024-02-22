@@ -244,6 +244,11 @@ public class Camera implements SubsystemBase {
                 }
                 stDevs.setColumn(0, frontDevs);
 
+                if (frontBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
+                    
+                    frontSampleTime = -1;
+                }
+
                 frontCameraPub.set(new double[] {
                     frontCamEstimation.getX(),
                     frontCamEstimation.getY(),
@@ -272,6 +277,10 @@ public class Camera implements SubsystemBase {
                     leftDevs.set(i, 0, leftBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
                 }
                 stDevs.setColumn(1, leftDevs);
+
+                if (leftBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
+                    leftSampleTime = -1;
+                }
 
                 leftCameraPub.set(new double[] {
                     leftCamEstimation.getX(),
@@ -302,6 +311,10 @@ public class Camera implements SubsystemBase {
                 }
                 stDevs.setColumn(2, rightDevs);
 
+                if (rightBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
+                    rightSampleTime = -1;
+                }
+
                 rightCameraPub.set(new double[] {
                     rightCamEstimation.getX(),
                     rightCamEstimation.getY(),
@@ -330,6 +343,15 @@ public class Camera implements SubsystemBase {
                     rearDevs.set(i, 0, rearBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
                 }
                 stDevs.setColumn(3, rearDevs);
+                SmartDashboard.putNumber("Vision_RearDist", rearBestTarget.getBestCameraToTarget().getTranslation().getNorm());
+
+                SmartDashboard.putBoolean("Seeingstuff", false);
+
+                if (rearBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
+                    rearSampleTime = -1;
+                    SmartDashboard.putBoolean("Seeingstuff", true);
+                }
+
 
                 rearCameraPub.set(new double[] {
                         rearCamEstimation.getX(),
