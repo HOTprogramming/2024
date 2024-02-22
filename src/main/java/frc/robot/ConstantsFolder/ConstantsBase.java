@@ -139,6 +139,7 @@ public class ConstantsBase {
         //Z: Vertical distance from the floor to the camera (Up +)
 
         public double[] STDEV_GAIN = new double[] {.7, .7, 0.1};
+        public double MAX_DISTANCE = 5.5;
         //FRONT
         public boolean HAS_FRONT_CAMERA = false;
 
@@ -162,7 +163,7 @@ public class ConstantsBase {
 
         public String RIGHT_CAMERA_NAME = "right_camera";
 
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
         public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120));
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 
@@ -172,7 +173,7 @@ public class ConstantsBase {
         public String LEFT_CAMERA_NAME = "left_camera";
 
         public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(-120));
+        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120));
         public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
     }

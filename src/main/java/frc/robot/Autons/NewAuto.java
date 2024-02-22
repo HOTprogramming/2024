@@ -25,23 +25,27 @@ public class NewAuto extends AutonBase {
     }
 
     public Step step = Step.start;
-    public Pose2d almostbetweenrings = new Pose2d(15.1, 7.4, Rotation2d.fromDegrees(170));
-    public Pose2d betweenrings = new Pose2d(14, 7.5, Rotation2d.fromDegrees(170));
+    public Pose2d almostbetweenrings = new Pose2d(15.1, 7.5, Rotation2d.fromDegrees(170));
+    public Pose2d betweenrings = new Pose2d(14, 7.6, Rotation2d.fromDegrees(170));
     public Pose2d almostring1 = new Pose2d(10.73, 7, Rotation2d.fromDegrees(180));
-    public Pose2d ring1 = new Pose2d(8.44, 6.85, Rotation2d.fromDegrees(180));
+    public Pose2d almostalmostring1 = new Pose2d(9.44, 7.05, Rotation2d.fromDegrees(180));
+
+    public Pose2d ring1 = new Pose2d(8.44, 7.05, Rotation2d.fromDegrees(180));
     public Pose2d almostshoot1 = new Pose2d(10.74, 7.3, Rotation2d.fromDegrees(180));
-    public Pose2d shoot1 = new Pose2d(12.5, 6.1, Rotation2d.fromDegrees(175));
+    public Pose2d shoot1 = new Pose2d(12, 7.1, Rotation2d.fromDegrees(175));
     public Pose2d almostring2 = new Pose2d(10.72, 6, Rotation2d.fromDegrees(180));
-    public Pose2d almostalmostring2 = new Pose2d(9.45, 5.27, Rotation2d.fromDegrees(180));
-    public Pose2d ring2 = new Pose2d(8.44, 5.26, Rotation2d.fromDegrees(180));
+    public Pose2d almostalmostring2 = new Pose2d(9.75, 5.89, Rotation2d.fromDegrees(180));
+    public Pose2d almostalmostalmostring2 = new Pose2d(9, 5.4, Rotation2d.fromDegrees(180));
+
+    public Pose2d ring2 = new Pose2d(8.44, 5.4, Rotation2d.fromDegrees(180));
     public Pose2d almostshoot2 = new Pose2d(10.73, 6.2, Rotation2d.fromDegrees(180));
-    public Pose2d shoot2 = new Pose2d(12, 6.4, Rotation2d.fromDegrees(175));
+    public Pose2d shoot2 = new Pose2d(11.6, 6, Rotation2d.fromDegrees(175));
     public Pose2d almostring3 = new Pose2d(10.72, 6, Rotation2d.fromDegrees(180));
     public Pose2d almostalmostring3 = new Pose2d(9.8, 4.8, Rotation2d.fromDegrees(180));
-    public Pose2d almostalmostalmostring3 = new Pose2d(9.45, 3.72, Rotation2d.fromDegrees(180));
-    public Pose2d ring3 = new Pose2d(8.44, 3.71, Rotation2d.fromDegrees(180));
+    public Pose2d almostalmostalmostring3 = new Pose2d(10, 3.75, Rotation2d.fromDegrees(180));
+    public Pose2d ring3 = new Pose2d(8.44, 3.74, Rotation2d.fromDegrees(180));
     public Pose2d almostshoot3 = new Pose2d(10.73, 6.2, Rotation2d.fromDegrees(180));
-    public Pose2d shoot3 = new Pose2d(12.4, 5.5, Rotation2d.fromDegrees(-175));
+    public Pose2d shoot3 = new Pose2d(12, 6, Rotation2d.fromDegrees(-175));
 
     public NewAuto(RobotState robotState) {
         super(robotState);
@@ -72,7 +76,7 @@ public class NewAuto extends AutonBase {
                 timer.reset();
                 step = Step.ring1;
 
-                generateTrajectory(List.of(startPose, betweenrings, almostring1, ring1));
+                generateTrajectory(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, 1, .8, 0, List.of(startPose, betweenrings, almostring1, almostalmostring1, ring1));
             }
         } else if(step == Step.ring1){
             driving = true;
@@ -95,12 +99,12 @@ public class NewAuto extends AutonBase {
             }
         } else if (step == Step.shoot1) {
             runShooter = true;
-            if (timer.get() > 2) {
+            if (timer.get() > 1.2) {
                 runShooter = false;
                 driving = true;
                 step = Step.ring2;
                 timer.reset();
-                generateTrajectory(List.of(robotState.getDrivePose(), almostring2, almostalmostring2, ring2));
+                generateTrajectory(List.of(robotState.getDrivePose(), almostring2, almostalmostring2, almostalmostalmostring2, ring2));
             }
 
         } else if (step == Step.ring2) {
@@ -117,7 +121,7 @@ public class NewAuto extends AutonBase {
             }
         } else if (step == Step.shoot2) {
             runShooter = true;
-            if (timer.get() > 2) {
+            if (timer.get() > 1.2) {
                 runShooter = false;
                 driving = true;
                 step = Step.ring3;
@@ -139,7 +143,7 @@ public class NewAuto extends AutonBase {
             }
         } else if (step == Step.shoot3) {
             runShooter = true;
-            if (timer.get() > 2) {
+            if (timer.get() > 1.2) {
                 runIntake = false;
                 runArm = false;
                 runShooter = false;
