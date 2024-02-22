@@ -111,6 +111,7 @@ public class ConstantsBase {
     }
 
     public abstract class Intake {
+        // intake
         public int INTAKE_ENTER_CAN = 14;
         public double INTAKESPEED = 83;
         public double INTAKE_VELOCITY_ERROR = .1;
@@ -121,6 +122,27 @@ public class ConstantsBase {
         public double P1IntakeEnter = 5;
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
+
+        // slurper
+        public int SLURPER_ARM_CAN = 19;
+        public int SLURPER_ROLLER_CAN = 15;
+        public int SLURPER_CANCODER_CAN = 0;
+
+        public double SLURPER_DOWN_ANGLE = -5;
+        public double SLURPER_UP_ANGLE = 0;
+        public double SLURPER_ROLLER_SPEED_RPS = 10;
+
+        public double SLURPER_ARM_CRUISE_VELOCITY = 5;
+        public double SLURPER_ARM_ACCELERATION = 10;
+        public double SLURPER_ARM_JERK = 50;
+
+        public Slot0Configs SLURPER_ARM_GAINS = new Slot0Configs()
+        .withKP(60).withKI(0).withKD(0.1)
+        .withKS(0.12).withKV(0.25).withKA(0);
+
+        public Slot0Configs SLURPER_ROLLER_GAINS = new Slot0Configs()
+        .withKP(100).withKI(0).withKD(0.2)
+        .withKS(0).withKV(1.5).withKA(0);
     }
 
     public abstract class Feeder {
