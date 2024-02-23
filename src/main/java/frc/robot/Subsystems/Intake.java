@@ -123,7 +123,8 @@ public class Intake implements SubsystemBase {
         slurperArm.configMotionAcceleration(100, 100);
 
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
-        slurperArm.configSelectedFeedbackCoefficient(0.087890625);
+        // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
+        slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
 
         this.intilizeOffset();
     }
@@ -186,7 +187,7 @@ public class Intake implements SubsystemBase {
     @Override
     public void reset() {
         intake.stopMotor();
-        slurperArm.setSelectedSensorPosition(slurperCancoder.getPosition() * 0.087890625);
+        // slurperArm.setSelectedSensorPosition(slurperCancoder.getPosition() * 0.087890625);
     }
 
 
