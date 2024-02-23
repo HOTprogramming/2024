@@ -132,7 +132,7 @@ public Arm(RobotState robotState) {
     cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     cfg.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .42;
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .5;
     cfg.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     cfg.SoftwareLimitSwitch.ReverseSoftLimitThreshold = .25;
 
@@ -202,7 +202,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
       SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
-      SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
+      SmartDashboard.putNumber("armCommandedPosition", commandedPosition*360);
     }
     public void disabled(){
         armMotor.stopMotor();

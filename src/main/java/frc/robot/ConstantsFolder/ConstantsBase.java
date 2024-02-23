@@ -47,7 +47,7 @@ public class ConstantsBase {
             
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
-            this.arm = compBotConstants.new Arm();
+            this.arm = practiceBotConstants.new Arm();
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
@@ -144,7 +144,7 @@ public class ConstantsBase {
         public int FEEDER_CAN = 13;
         public double FEEDERSPEED = 83;
         public double FEEDERSPEED2 = 83;
-        public int DESIREDENCODERED = 7;
+        public int DESIREDENCODERED = 3;
         public int FEEDER_SENSOR_CHANNEL = 0;
         public double FEEDER_VELOCITY_ERROR = .1;
         public double P0IntakeFeeder = 4.0;
@@ -255,7 +255,7 @@ public class ConstantsBase {
         public double TRAP = 150.0;
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
-        public double AMP = 145.0;
+        public double AMP = 139.0;
     }
 
     public abstract class Drivetrain {
