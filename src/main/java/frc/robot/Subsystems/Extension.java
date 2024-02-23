@@ -45,6 +45,7 @@ public Extension(RobotState robotState) {
 
     extendPosition = extendMotor.getPosition();
     extendVelocity = extendMotor.getVelocity();
+    //a
   
 
 }
