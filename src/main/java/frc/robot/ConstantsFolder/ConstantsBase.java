@@ -36,6 +36,7 @@ public class ConstantsBase {
 
             this.auton = compBotConstants.new Auton();
             this.camera = compBotConstants.new Camera();
+            this.arm = compBotConstants.new Arm();
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
@@ -46,6 +47,7 @@ public class ConstantsBase {
             
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
+            this.arm = compBotConstants.new Arm();
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
