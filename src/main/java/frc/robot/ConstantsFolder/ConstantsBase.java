@@ -124,9 +124,9 @@ public class ConstantsBase {
         public double D1IntakeEnter = 0.001;
 
         // slurper
-        public int SLURPER_ARM_CAN = 19;
+        public int SLURPER_ARM_CAN = 20;
         public int SLURPER_ROLLER_CAN = 15;
-        public int SLURPER_CANCODER_CAN = 0;
+        public int SLURPER_CANCODER_CAN = 46;
 
         public double SLURPER_DOWN_ANGLE = -5;
         public double SLURPER_UP_ANGLE = 0;

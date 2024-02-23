@@ -3,13 +3,23 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Constants;
 import frc.robot.RobotCommander;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.StatusSignal;
 //import edu.wpi.first.wpilibj.TimedRobot;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 
@@ -18,6 +28,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.XboxController;
 //import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -31,8 +42,12 @@ public class Intake implements SubsystemBase {
     RobotState robotState;
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX intake;
-    TalonFX slurperArm;
-    CANcoder cancoder;
+    VictorSPX slurperArm;
+    CANCoder slurperCancoder;
+    private double slurperArmOffset;
+
+    StatusSignal<Double> sCancoderPosition;
+    StatusSignal<Double> sCancoderVelocity;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
     private final MotionMagicVoltage slurperMotionMagic = new MotionMagicVoltage(0);
      static DigitalInput sensorFeeder;
@@ -48,16 +63,14 @@ public class Intake implements SubsystemBase {
         this.robotState = robotState;
         constants = robotState.getConstants().getIntakeConstants();
         intake = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
-        slurperArm = new TalonFX(constants.SLURPER_ARM_CAN, "rio");
-        cancoder = new CANcoder(constants.SLURPER_CANCODER_CAN, "drivetrain");
+        slurperArm = new VictorSPX(constants.SLURPER_ARM_CAN);
+        slurperArm.configFactoryDefault();
 
-        MotionMagicConfigs slurperMotionMagic = slurperArmConfigs.MotionMagic;
-        slurperMotionMagic.MotionMagicCruiseVelocity = constants.SLURPER_ARM_CRUISE_VELOCITY;
-        slurperMotionMagic.MotionMagicAcceleration = constants.SLURPER_ARM_ACCELERATION;
-        slurperMotionMagic.MotionMagicJerk = constants.SLURPER_ARM_JERK;
-
-        slurperArmConfigs.Slot0 = constants.SLURPER_ARM_GAINS;
-        slurperArmConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        slurperCancoder = new CANCoder(constants.SLURPER_CANCODER_CAN);
+        slurperCancoder.configFactoryDefault();
+        slurperCancoder.setPositionToAbsolute();
+        slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+        slurperCancoder.configMagnetOffset(1);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -72,18 +85,56 @@ public class Intake implements SubsystemBase {
         
         for (int i = 0; i < 5; ++i) {
             enterStatus = intake.getConfigurator().apply(enterConfigs);
-            slurperArmStatus = slurperArm.getConfigurator().apply(slurperArmConfigs);
-            if (enterStatus.isOK() && slurperArmStatus.isOK()) break;
+            if (enterStatus.isOK()) break;
           }
-          if(!enterStatus.isOK() && !slurperArmStatus.isOK()) {
+          if(!enterStatus.isOK()) {
             System.out.println("Could not apply configs, error code: " + enterStatus.toString());
           }
+
+        slurperArm.configRemoteFeedbackFilter(slurperCancoder, 0);
+        
+        slurperArm.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0,
+        200);
+
+        slurperArm.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+
+        //   slurperArm.config
+
+        slurperArm.setSensorPhase(true);
+        slurperArm.setInverted(true);
+
+        /* Set the peak and nominal outputs */
+        slurperArm.configNominalOutputForward(0, 100);
+        slurperArm.configNominalOutputReverse(0, 100);
+        slurperArm.configPeakOutputForward(1, 100);
+        slurperArm.configPeakOutputReverse(-1, 100);
+        
+        /* Set Motion Magic gains in slot0 - see documentation */
+        slurperArm.selectProfileSlot(0, 0);
+        slurperArm.config_kF(0, 0, 100);
+        slurperArm.config_kP(0, 0.1, 100);
+        slurperArm.config_kI(0, 0, 100);
+        slurperArm.config_kD(0, 0, 100);
+        //slurperArm.config_IntegralZone(0, this.convertToTicks(0.1));
+
+        /* Set acceleration and vcruise velocity - see documentation */
+        slurperArm.configMotionCruiseVelocity(100, 100);
+        slurperArm.configMotionAcceleration(100, 100);
+
+        this.intilizeOffset();
+    }
+
+    public void intilizeOffset() {
+        slurperArmOffset = slurperArm.getSelectedSensorPosition() - slurperCancoder.getAbsolutePosition()*4096/360;
     }
 
 
     @Override
     public void updateState() {
         SmartDashboard.putNumber("intake Speed", intake.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("slurperPos", slurperArm.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("slurperPosCancoder", slurperCancoder.getAbsolutePosition());
+
         if ((intake.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
             robotState.setIntakeOn(true);
         } else {
@@ -94,7 +145,7 @@ public class Intake implements SubsystemBase {
     @Override
     public void enabled(RobotCommander commander){
         SmartDashboard.putNumber("slurper target angle", constants.SLURPER_DOWN_ANGLE);
-        SmartDashboard.putNumber("slurper angle", slurperArm.getPosition().getValueAsDouble() * 360.0);
+      
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
@@ -106,9 +157,9 @@ public class Intake implements SubsystemBase {
         }
 
         if (commander.getRunSlurper()) {
-            slurperArm.setControl(slurperMotionMagic.withPosition(constants.SLURPER_DOWN_ANGLE/360.0).withSlot(0));
+            //slurperArm.set(ControlMode.MotionMagic, 190);
         } else {
-            slurperArm.setControl(slurperMotionMagic.withPosition(constants.SLURPER_UP_ANGLE).withSlot(0));
+            //slurperArm.set(ControlMode.PercentOutput, 87);
         }
     }
     
@@ -121,13 +172,12 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void reset() {
-        slurperArm.setPosition(0);
         intake.stopMotor();
     }
 
 
     @Override
     public void init(RobotCommander commander) {
-        slurperArm.setPosition(0);
+
     }
 }
