@@ -11,6 +11,7 @@ import frc.robot.Subsystems.Drivetrain;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Feeder;
+import frc.robot.Subsystems.Lights;
 
 public class Robot extends TimedRobot {
   private ConstantsBase constantsBase;
@@ -25,22 +26,15 @@ public class Robot extends TimedRobot {
   private Arm arm;
   private Feeder feeder;
   private Intake intake;
+  private Lights lights;
 
 
   // define subsystem objects
 
   // define autons (alphabetical)
-  private AidenSquare aidenSquare;
-  private Blue3Park blue3Park;
-  private Blue3Ring blue3Ring;
-  private Blue3Under blue3Under;
-  private Blue4Ring blue4Ring;
-  private Red2Ring red2Ring;
-  private Red3Ring red3Ring;
-  private Triangle triangle;
-  private WillsSquare willsSquare;
 
-  private StraightLine straightLine;
+  private Red3Right red3Right; 
+  private NewAuto newAuto;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -53,25 +47,17 @@ public class Robot extends TimedRobot {
     
     teleopCommander = new TeleopCommander(robotState);
     autonCommander = new AutonCommander(robotState);
-    shooter = new Shooter(robotState);
+    shooter = new Shooter(robotState, 9, 9);
     arm = new Arm(robotState);
     feeder = new Feeder(robotState);
     intake = new Intake(robotState);
     drivetrain = new Drivetrain(robotState);  
     camera = new Camera(robotState);
     intake = new Intake(robotState);
+    lights = new Lights(robotState);
 
-    aidenSquare = new AidenSquare(robotState);
-    blue3Park = new Blue3Park(robotState);
-    blue3Ring = new Blue3Ring(robotState);
-    blue3Under = new Blue3Under(robotState);
-    blue4Ring = new Blue4Ring(robotState);
-    red2Ring = new Red2Ring(robotState);
-    red3Ring = new Red3Ring(robotState);
-    triangle = new Triangle(robotState);
-    willsSquare = new WillsSquare(robotState);
-
-    straightLine = new StraightLine(robotState);
+    red3Right = new Red3Right(robotState);
+    newAuto = new NewAuto(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");
     autoSelector.addOption("B3 Park", "blue3Park");
@@ -91,37 +77,25 @@ public class Robot extends TimedRobot {
 
     intake.updateState();
 
-    // shooter.updateState();
+    shooter.updateState();
     arm.updateState();
+    
   }
 
   @Override
   public void autonomousInit() {
+    shooter = new Shooter(robotState, 60, 60);
+    robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
 
-
-    // // auton selector base
-    // if (selectedAuto == "aidenSquare") {
-    //   autonCommander.setAuto(aidenSquare);
-    // } else if (selectedAuto == "blue3Park") {
-    //   autonCommander.setAuto(blue3Park);
-    // } else if (selectedAuto == "blue3Ring") {
-    //   autonCommander.setAuto(blue3Ring);
-    // } else if (selectedAuto == "blue3Under") {
-    //   autonCommander.setAuto(blue3Under);
-    // } else if (selectedAuto == "blue4Ring") {
-    //   autonCommander.setAuto(blue4Ring);
-    // } else if (selectedAuto == "red2Ring") {
-    //   autonCommander.setAuto(red2Ring);
-    // } else if (selectedAuto == "triangle") {
-    //   autonCommander.setAuto(triangle);
-    // } else if (selectedAuto == "willsSquare") {
-    //   autonCommander.setAuto(willsSquare);
-    // }
-
-    autonCommander.setAuto(red3Ring);
+    autonCommander.setAuto(newAuto);
 
     drivetrain.init(autonCommander);
+    shooter.reset();
+    drivetrain.reset();
+    arm.reset();
+    intake.reset();
+    feeder.reset();
   }
 
   @Override
@@ -132,16 +106,19 @@ public class Robot extends TimedRobot {
     arm.enabled(autonCommander);
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
+    lights.enabled(autonCommander);
   }
 
   @Override
   public void teleopInit() {
+    shooter = new Shooter(robotState, 45, 45);
     robotState.setAlliance(DriverStation.getAlliance().get());
     shooter.reset();
     drivetrain.reset();
     arm.reset();
     intake.reset();
     feeder.reset();
+    lights.reset();
   }
 
   @Override
@@ -151,6 +128,7 @@ public class Robot extends TimedRobot {
     arm.enabled(teleopCommander);
     intake.enabled(teleopCommander);
     feeder.enabled(teleopCommander);
+    lights.enabled(teleopCommander);
   }
 
   @Override
@@ -160,6 +138,7 @@ public class Robot extends TimedRobot {
     arm.disabled();
     feeder.disabled();
     intake.disabled();
+    lights.disabled();
   }
 
   @Override

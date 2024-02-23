@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -85,7 +86,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getLockSpeakerCommand() {
-        return false;
+        return auto.autoAim;
     }
     public double getRunArm() {
         // return auto.armPos;
@@ -106,7 +107,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public double getTargetArmSpeed() {
-        return auto.armSpeed;
+        return 0; 
     }
     
     // @Override
@@ -123,7 +124,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getResetRobotPose() {
-        return false;
+        return auto.seedPose;
     }
 
     @Override
@@ -135,29 +136,24 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean getIntake() {
         // TODO Auto-generated method stub
-        return false;
+        return auto.runIntake;
     }
     
     @Override
     public boolean getFeeder() {
         // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean runArm() {
-        return auto.runArm;
-    }
-
-    @Override
-    public boolean zeroArm() {
-        // TODO Auto-generated method stub
-        return !auto.runArm;
+        return auto.runIntake;
     }
 
     @Override
     public boolean setShoot() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setShoot'");
+        return auto.runShooter;
     }
+
+    @Override
+    public ArmCommanded armCommanded() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'armCommanded'");
+    }
+
 }

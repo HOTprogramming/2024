@@ -100,7 +100,7 @@ public class Intake implements SubsystemBase {
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getIntake()) {
+        if (commander.getIntake() && !robotState.getFeederStopped()) {
           intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));      
             } else {
              Out.Output = 0;

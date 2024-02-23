@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
@@ -21,13 +22,16 @@ public class RobotState {
     private double[] visionTimestamps;
     private Matrix<N3, N4> visionStdevs;
     private double poseToSpeaker;
-
+    private Translation2d velocity;
+    
     private boolean shooterOn;
-        private boolean intakeOn;
-            private boolean feederOn;
-
+    private boolean intakeOn;
+    private boolean feederOn;
     private double armPos;
-    private double distanceToSpeaker;
+    private double extendPos;
+    private double shooterPos;
+ 
+    private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
@@ -64,6 +68,14 @@ public class RobotState {
         return drivePose;
     }
 
+    public void setDriveVelocity(Translation2d velocity){
+        this.velocity = velocity;
+    }
+
+    public Translation2d getDriveVelocity(){
+        return velocity;
+    }
+
     public void setPoseToSpeaker(double poseToSpeaker){
         this.poseToSpeaker = poseToSpeaker;
     }
@@ -80,6 +92,8 @@ public class RobotState {
     public void setAtTargetPose(Boolean atTargetPose) {
         this.atTargetPose = atTargetPose;
     }
+
+
 
     // public void encoderCounts(double position){
     //     this.position = position;
@@ -140,5 +154,33 @@ public class RobotState {
 
     public double getArmPos(){
         return armPos;
+    }
+
+    public boolean getShooterOn() {
+        return shooterOn;
+    }
+
+    public void setFeederStopped(boolean feederStop) {
+        this.feederStop = feederStop;
+    }   
+
+    public boolean getFeederStopped() {
+        return feederStop;
+    }
+
+    public void setExtendPos(double extendPos){
+        this.extendPos = extendPos;
+    }
+
+    public double getExtendPos(){
+        return extendPos;
+    }
+
+    public void setShooterPos(double shooterPos){
+        this.shooterPos = shooterPos;
+    }
+
+    public double getShooterPos(){
+        return shooterPos;
     }
 }

@@ -2,15 +2,14 @@ package frc.robot.Autons;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
-import frc.robot.Subsystems.Arm;
-import frc.robot.utils.trajectory.CustomTrajectoryGenerator;
-import frc.robot.utils.trajectory.RotationSequence;
-import frc.robot.utils.trajectory.Waypoint;
 
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.utils.trajectory.CustomTrajectoryGenerator;
+import frc.robot.utils.trajectory.RotationSequence;
+import frc.robot.utils.trajectory.Waypoint;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;
@@ -30,18 +29,22 @@ public abstract class AutonBase {
     public RotationSequence.State rotationState = new RotationSequence.State(Rotation2d.fromDegrees(0), 0);
 
     
-    // public Arm.armDesiredPos desiredArmPos = Arm.armDesiredPos.zero;
-
     TrajectoryConfig trajectoryConfig;
-    CustomTrajectoryGenerator trajectoryGenerator;
-    public boolean runShooter;
-    public double driveSpeed;
-    public double armSpeed;
-    public boolean runArm;
+    CustomTrajectoryGenerator trajectoryGenerator = new CustomTrajectoryGenerator();
+    public boolean runShooter = false;
+    public boolean runIntake = false; 
+    public boolean runArm = false; 
+    public boolean seedPose = false;
+    public boolean runFeeder = false;
+    public boolean autoAim = false;
+    public boolean zeroArm = false;
+    public boolean driving = false;
+    
 
 
     public AutonBase(RobotState robotState){
         this.robotState = robotState;
+    
 
         constants = robotState.getConstants().getAutonConstants();
     }
@@ -61,7 +64,6 @@ public abstract class AutonBase {
 
     public void generateTrajectory(double maxV, double maxAccel, double startV, double endV, List<Pose2d> points) {
         trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel).setStartVelocity(startV).setEndVelocity(endV);
-        trajectoryGenerator = new CustomTrajectoryGenerator();
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {
@@ -72,7 +74,18 @@ public abstract class AutonBase {
 
     public void generateTrajectory(List<Pose2d> points) {
         trajectoryConfig = new  TrajectoryConfig(constants.AUTON_DEFAULT_MAX_VELOCITY_METERS, constants.AUTON_DEFAULT_MAX_ACCEL_METERS);
-        trajectoryGenerator = new CustomTrajectoryGenerator();
+        
+        List<Waypoint> waypoints = new ArrayList<Waypoint>();
+        for (Pose2d point:points) {
+            waypoints.add(Waypoint.fromHolonomicPose(point));
+        }
+        trajectoryGenerator.generate(trajectoryConfig, waypoints);
+    }
+
+    public void generateTrajectory(double maxV, double maxAccel, List<Pose2d> points) {
+        timer.reset();
+        trajectoryConfig = new  TrajectoryConfig(maxV, maxAccel);
+
         
         List<Waypoint> waypoints = new ArrayList<Waypoint>();
         for (Pose2d point:points) {
@@ -96,10 +109,6 @@ public abstract class AutonBase {
      * @return if the new path was queued
      */
     public boolean queuePath(double maxV, double maxAccel, double startV, double endV, List<Pose2d> points, boolean timed) {
-        if (trajectoryGenerator == null) {
-            generateTrajectory(maxV, maxAccel, startV, endV, points);
-            return true;
-        }
         if ((!timed && robotState.getAtTargetPose()) || (timed && checkTime())) {
             timer.reset();
 
@@ -110,6 +119,16 @@ public abstract class AutonBase {
         }
     }
 
+    public boolean queuePath(double maxV, double maxAccel, List<Pose2d> points, boolean timed) {
+        if ((!timed && robotState.getAtTargetPose()) || (timed && checkTime())) {
+            timer.reset();
+
+            generateTrajectory(maxV, maxAccel, points);
+            return true;
+        } else {
+            return false;
+        }
+    }
      /**
      * call to queue a path, and know if the current path is complete.
      * uses default trajectory configs
