@@ -44,6 +44,7 @@ public class Intake implements SubsystemBase {
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX intake;
     VictorSPX slurperArm;
+    VictorSPX slurperSpin;
     CANCoder slurperCancoder;
     private double slurperArmOffset;
 
@@ -66,6 +67,8 @@ public class Intake implements SubsystemBase {
         intake = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
         slurperArm = new VictorSPX(constants.SLURPER_ARM_CAN);
         slurperArm.configFactoryDefault();
+
+        slurperSpin = new VictorSPX(constants.SLURPER_ROLLER_CAN);
 
         slurperCancoder = new CANCoder(constants.SLURPER_CANCODER_CAN);
         slurperCancoder.configFactoryDefault();
@@ -113,18 +116,18 @@ public class Intake implements SubsystemBase {
         /* Set Motion Magic gains in slot0 - see documentation */
         slurperArm.selectProfileSlot(0, 0);
         slurperArm.config_kF(0, 0, 100);
-        slurperArm.config_kP(0, 5, 100);
+        slurperArm.config_kP(0, 1, 100);
         slurperArm.config_kI(0, 0, 100);
         slurperArm.config_kD(0, 0, 100);
         //slurperArm.config_IntegralZone(0, this.convertToTicks(0.1));
 
         /* Set acceleration and vcruise velocity - see documentation */
-        slurperArm.configMotionCruiseVelocity(100, 100);
-        slurperArm.configMotionAcceleration(100, 100);
+        slurperArm.configMotionCruiseVelocity(5000, 100);
+        slurperArm.configMotionAcceleration(1500, 100);
 
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
-        slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
+        // slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
 
         this.intilizeOffset();
     }
@@ -137,7 +140,8 @@ public class Intake implements SubsystemBase {
     @Override
     public void updateState() {
         SmartDashboard.putNumber("intake Speed", intake.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("slurperPos", slurperArm.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("slurperPos", (slurperArm.getSelectedSensorPosition(0) - slurperArmOffset) * 360/4096);
+        SmartDashboard.putNumber("Real Slurper Pos", slurperArm.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("slurperPosCancoder", slurperCancoder.getAbsolutePosition());
 
 
@@ -158,20 +162,21 @@ public class Intake implements SubsystemBase {
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake() && !robotState.getFeederStopped()) {
-          intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
-        slurperArm.set(ControlMode.MotionMagic, -170); 
-        SmartDashboard.putNumber("SlurpDesiredPos", -170);
-        } else {
-           Out.Output = 0;
-           intake.setControl(Out);
-        slurperArm.set(ControlMode.PercentOutput, 0); 
-        }
-
-        if (commander.getRunSlurper()) {
-            slurperArm.set(ControlMode.MotionMagic, 73);
+            intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 42.0 / 360 * 4096); 
+            slurperSpin.set(ControlMode.PercentOutput, .8);
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 42.0 / 360 * 4096);
+        } else if (commander.getRunSlurper()) {
+            Out.Output = 0;
+            intake.setControl(Out);
+            slurperSpin.set(ControlMode.PercentOutput, 0);
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 319.0 / 360 * 4096);
             SmartDashboard.putNumber("SlurpDesiredPos", 73);
         } else {
             slurperArm.set(ControlMode.PercentOutput, 0);
+            Out.Output = 0;
+            intake.setControl(Out);
+            slurperSpin.set(ControlMode.PercentOutput, 0);
         }
         SmartDashboard.putNumber("slurperPosCommand", slurperArm.getClosedLoopTarget());
 
@@ -187,7 +192,7 @@ public class Intake implements SubsystemBase {
     @Override
     public void reset() {
         intake.stopMotor();
-        // slurperArm.setSelectedSensorPosition(slurperCancoder.getPosition() * 0.087890625);
+        // slurperArm.setSelectedSensorPosition(slurperCancoder.getAbsolutePosition() / 4096);
     }
 
 
