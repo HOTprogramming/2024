@@ -38,6 +38,9 @@ public class PracticeBotConstants extends ConstantsBase {
          INTAKE_ENTER_CAN = 14;
          INTAKESPEED = 83;
          INTAKE_VELOCITY_ERROR = .01;
+         GRABBER_ENTER_CAN = 50;
+         GRABBERSPEED = 83;
+         GRABBER_VELOCITY_ERROR = .01;
         }
     }
     
@@ -45,7 +48,8 @@ public class PracticeBotConstants extends ConstantsBase {
         public Feeder() {
          FEEDER_CAN = 13;
          FEEDERSPEED = 83;
-         DESIREDTIMER = 0;
+         FEEDERSPEED2 = 83;
+         DESIREDENCODERED = 7;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
         }
@@ -64,6 +68,28 @@ public class PracticeBotConstants extends ConstantsBase {
         }
 
     }
+
+    public class Arm extends ConstantsBase.Arm {
+       
+        public Arm(){
+         CANCODER_CAN = 44;
+         ARM_CAN = 9;
+         CRUISEVELOCITY = 400;
+         ACCELERATION = 400;
+         JERK = 1500;
+         ARMKP = 250;
+         ARMKI = 0;
+         ARMKD = 0;
+         ARMKV = 0.8;
+         ARMKS = 0.1;
+         ZERO = 95.0;
+         SHOOT = 118.0;
+         TRAP = 150.0;
+         CLOSE = 151.0;
+         PROTECT = 126.0;
+         AMP = 139.0;
+        }
+         }
 
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {

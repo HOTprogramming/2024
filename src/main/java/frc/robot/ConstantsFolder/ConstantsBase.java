@@ -22,6 +22,7 @@ public class ConstantsBase {
     private Camera camera;
     private Drivetrain drivetrain;
     private Shooter shooter;
+    private Arm arm;
     private Intake intake;
     private Feeder feeder;
     private Lights lights;
@@ -35,6 +36,7 @@ public class ConstantsBase {
 
             this.auton = compBotConstants.new Auton();
             this.camera = compBotConstants.new Camera();
+            this.arm = compBotConstants.new Arm();
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
@@ -45,6 +47,7 @@ public class ConstantsBase {
             
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
+            this.arm = practiceBotConstants.new Arm();
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
@@ -85,6 +88,10 @@ public class ConstantsBase {
         return this.shooter;
     }
 
+    public Arm getArmConstants(){
+        return this.arm;
+    }
+
     public Lights getLightsConstants() {
         return this.lights;
     }
@@ -111,6 +118,7 @@ public class ConstantsBase {
     }
 
     public abstract class Intake {
+        // intake
         public int INTAKE_ENTER_CAN = 14;
         public double INTAKESPEED = 83;
         public double INTAKE_VELOCITY_ERROR = .1;
@@ -121,12 +129,44 @@ public class ConstantsBase {
         public double P1IntakeEnter = 5;
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
+
+        // slurper
+        public int SLURPER_ARM_CAN = 15;
+        public int SLURPER_ROLLER_CAN = 20;
+        public int SLURPER_CANCODER_CAN = 46;
+
+        public double SLURPER_DOWN_ANGLE = -5;
+        public double SLURPER_UP_ANGLE = 0;
+        public double SLURPER_ROLLER_SPEED_RPS = 10;
+
+        public double SLURPER_ARM_CRUISE_VELOCITY = 5;
+        public double SLURPER_ARM_ACCELERATION = 10;
+        public double SLURPER_ARM_JERK = 50;
+
+        public Slot0Configs SLURPER_ARM_GAINS = new Slot0Configs()
+        .withKP(60).withKI(0).withKD(0.1)
+        .withKS(0.12).withKV(0.25).withKA(0);
+
+        public Slot0Configs SLURPER_ROLLER_GAINS = new Slot0Configs()
+        .withKP(100).withKI(0).withKD(0.2)
+        .withKS(0).withKV(1.5).withKA(0);
+        public int GRABBER_ENTER_CAN = 50;
+        public double GRABBERSPEED = 40;
+        public double GRABBER_VELOCITY_ERROR = .1;
+        public double P0GrabberEnter = 4.0;
+        public double I0GrabberEnter = 0.5;
+        public double D0GrabberEnter = 0.0001;
+        public double V0GrabberEnter = 0.12;
+        public double P1GrabberEnter = 5;
+        public double I1GrabberEnter = 1;
+        public double D1GrabberEnter = 0.001;
     }
 
     public abstract class Feeder {
         public int FEEDER_CAN = 13;
-        public double FEEDERSPEED = 40;
-        public int DESIREDTIMER = 0;
+        public double FEEDERSPEED = 83;
+        public double FEEDERSPEED2 = 83;
+        public int DESIREDENCODERED = 3;
         public int FEEDER_SENSOR_CHANNEL = 0;
         public double FEEDER_VELOCITY_ERROR = .1;
         public double P0IntakeFeeder = 4.0;
@@ -175,8 +215,8 @@ public class ConstantsBase {
 
         public String RIGHT_CAMERA_NAME = "right_camera";
 
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120));
+        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(30));
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 
         //LEFT
@@ -184,8 +224,8 @@ public class ConstantsBase {
 
         public String LEFT_CAMERA_NAME = "left_camera";
 
-        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120));
+        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(-30));
         public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
     }
@@ -219,6 +259,25 @@ public class ConstantsBase {
         public double RFLYWHEEL_KP = 16.0;
         public double RFLYWHEEL_KI = 0.0;
         public double RFLYWHEEL_KD = 4.0;
+    }
+
+    public abstract class Arm{
+        public int CANCODER_CAN = 44;
+        public int ARM_CAN = 9;
+        public double CRUISEVELOCITY = 400;
+        public double ACCELERATION = 400;
+        public double JERK = 1500;
+        public double ARMKP = 250;
+        public double ARMKI = 0;
+        public double ARMKD = 0;
+        public double ARMKV = 0.8;
+        public double ARMKS = 0.1;
+        public double ZERO = 95.0;
+        public double SHOOT = 118.0;
+        public double TRAP = 150.0;
+        public double CLOSE = 151.0;
+        public double PROTECT = 126.0;
+        public double AMP = 139.0;
     }
 
     public abstract class Drivetrain {

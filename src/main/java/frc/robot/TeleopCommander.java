@@ -233,6 +233,11 @@ public class TeleopCommander implements RobotCommander {
     }
 
     @Override
+    public boolean getRunSlurper() {
+        return operator.getAButton();
+    }
+
+    @Override
     public boolean setShoot() {
         return driver.getRightBumper();
     }

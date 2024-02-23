@@ -68,6 +68,8 @@ public class Robot extends TimedRobot {
     autoSelector.addOption("Triangle", "triangle");
     autoSelector.addOption("W. Square", "willsSquare");
     arm.armInit();
+
+    intake.reset();
   }
 
   @Override
