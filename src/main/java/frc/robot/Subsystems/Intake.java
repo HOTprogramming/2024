@@ -28,10 +28,12 @@ public class Intake implements SubsystemBase {
     RobotState robotState;
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX intake;
+        TalonFX intakeGrabber;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
      static DigitalInput sensorFeeder;
 
     TalonFXConfiguration enterConfigs = new TalonFXConfiguration();
+        TalonFXConfiguration grabberConfigs = new TalonFXConfiguration();
 
     public Intake(RobotState robotState) { 
         this.robotState = robotState;
@@ -44,10 +46,20 @@ public class Intake implements SubsystemBase {
         enterConfigs.Slot1.kI = constants.I1IntakeEnter;
         enterConfigs.Slot1.kD = constants.D1IntakeEnter;
         enterConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        grabberConfigs.Slot0.kP = constants.P0GrabberEnter;
+        grabberConfigs.Slot0.kI = constants.I0GrabberEnter;
+        grabberConfigs.Slot0.kD = constants.D0GrabberEnter;
+        grabberConfigs.Slot0.kV = constants.V0GrabberEnter;
+        grabberConfigs.Slot1.kP = constants.P1GrabberEnter;
+        grabberConfigs.Slot1.kI = constants.I1GrabberEnter;
+        grabberConfigs.Slot1.kD = constants.D1GrabberEnter;
+        grabberConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         intake = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
+        intakeGrabber = new TalonFX(constants.GRABBER_ENTER_CAN, "rio");
         enterConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        
+        grabberConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
         StatusCode enterStatus = StatusCode.StatusCodeNotInitialized;
         for (int i = 0; i < 5; ++i) {
             enterStatus = intake.getConfigurator().apply(enterConfigs);
@@ -56,6 +68,14 @@ public class Intake implements SubsystemBase {
           if(!enterStatus.isOK()) {
             System.out.println("Could not apply configs, error code: " + enterStatus.toString());
           }
+          StatusCode grabberStatus = StatusCode.StatusCodeNotInitialized;
+        for (int i = 0; i < 5; ++i) {
+            grabberStatus = intake.getConfigurator().apply(grabberConfigs);
+            if (grabberStatus.isOK()) break;
+          }
+          if(!grabberStatus.isOK()) {
+            System.out.println("Could not apply configs, error code: " + grabberStatus.toString());
+          }
     }
 
 
@@ -63,6 +83,12 @@ public class Intake implements SubsystemBase {
     public void updateState() {
         SmartDashboard.putNumber("intake Speed", intake.getVelocity().getValueAsDouble());
         if ((intake.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
+            robotState.setIntakeOn(true);
+        } else {
+            robotState.setIntakeOn(false);
+        }
+         SmartDashboard.putNumber("Grabber Speed", intakeGrabber.getVelocity().getValueAsDouble());
+        if ((intakeGrabber.getVelocity().getValueAsDouble()) >= (constants.GRABBERSPEED - constants.GRABBER_VELOCITY_ERROR) ){
             robotState.setIntakeOn(true);
         } else {
             robotState.setIntakeOn(false);
@@ -81,6 +107,15 @@ public class Intake implements SubsystemBase {
                intake.setControl(Out);
            }
         }
+          //  if (commander.getIntake()) {
+         // intakeGrabber.setControl(m_voltageVelocity.withVelocity(constants.GRABBERSPEED));      
+         //   } else {
+         //    Out.Output = 0;
+         //      intakeGrabber.setControl(Out);
+         //  }
+      //  }
+        
+        
     
 
     @Override
