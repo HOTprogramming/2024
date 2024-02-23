@@ -128,12 +128,23 @@ public class ConstantsBase {
         public double P1IntakeEnter = 5;
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
+        public int GRABBER_ENTER_CAN = 50;
+        public double GRABBERSPEED = 40;
+        public double GRABBER_VELOCITY_ERROR = .1;
+        public double P0GrabberEnter = 4.0;
+        public double I0GrabberEnter = 0.5;
+        public double D0GrabberEnter = 0.0001;
+        public double V0GrabberEnter = 0.12;
+        public double P1GrabberEnter = 5;
+        public double I1GrabberEnter = 1;
+        public double D1GrabberEnter = 0.001;
     }
 
     public abstract class Feeder {
         public int FEEDER_CAN = 13;
-        public double FEEDERSPEED = 40;
-        public int DESIREDTIMER = 0;
+        public double FEEDERSPEED = 83;
+        public double FEEDERSPEED2 = 83;
+        public int DESIREDENCODERED = 7;
         public int FEEDER_SENSOR_CHANNEL = 0;
         public double FEEDER_VELOCITY_ERROR = .1;
         public double P0IntakeFeeder = 4.0;

@@ -32,7 +32,26 @@ public class CompBotConstants extends ConstantsBase {
             HAS_RIGHT_CAMERA = false;
         }
     }
-
+    public class Intake extends ConstantsBase.Intake {
+        public Intake() {
+            INTAKE_ENTER_CAN = 14;
+            INTAKESPEED = 83;
+            INTAKE_VELOCITY_ERROR = .01;
+            GRABBER_ENTER_CAN = 50;
+            GRABBERSPEED = 83;
+            GRABBER_VELOCITY_ERROR = .01;
+        }
+    }
+    public class Feeder extends ConstantsBase.Feeder {
+        public Feeder() {
+         FEEDER_CAN = 13;
+         FEEDERSPEED = 83;
+         FEEDERSPEED2 = 83;
+         DESIREDENCODERED = 7;
+         FEEDER_VELOCITY_ERROR = .01;
+         FEEDER_SENSOR_CHANNEL = 0;
+        }
+    }
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {
             ROBOT_LENGTH_INCHES = 20.25;
