@@ -38,6 +38,9 @@ public class PracticeBotConstants extends ConstantsBase {
          INTAKE_ENTER_CAN = 14;
          INTAKESPEED = 83;
          INTAKE_VELOCITY_ERROR = .01;
+         GRABBER_ENTER_CAN = 50;
+         GRABBERSPEED = 83;
+         GRABBER_VELOCITY_ERROR = .01;
         }
     }
     
@@ -45,7 +48,8 @@ public class PracticeBotConstants extends ConstantsBase {
         public Feeder() {
          FEEDER_CAN = 13;
          FEEDERSPEED = 83;
-         DESIREDTIMER = 0;
+         FEEDERSPEED2 = 83;
+         DESIREDENCODERED = 7;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
         }

@@ -143,6 +143,12 @@ public class Intake implements SubsystemBase {
         } else {
             robotState.setIntakeOn(false);
         }
+         SmartDashboard.putNumber("Grabber Speed", intakeGrabber.getVelocity().getValueAsDouble());
+        if ((intakeGrabber.getVelocity().getValueAsDouble()) >= (constants.GRABBERSPEED - constants.GRABBER_VELOCITY_ERROR) ){
+            robotState.setIntakeOn(true);
+        } else {
+            robotState.setIntakeOn(false);
+        }
     }
     
     @Override
