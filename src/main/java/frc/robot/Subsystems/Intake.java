@@ -14,6 +14,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.CANcoder;
 //import edu.wpi.first.wpilibj.TimedRobot;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -101,7 +102,7 @@ public class Intake implements SubsystemBase {
         //   slurperArm.config
 
         slurperArm.setSensorPhase(true);
-        slurperArm.setInverted(true);
+        slurperArm.setInverted(false);
 
         /* Set the peak and nominal outputs */
         slurperArm.configNominalOutputForward(0, 100);
@@ -120,6 +121,8 @@ public class Intake implements SubsystemBase {
         /* Set acceleration and vcruise velocity - see documentation */
         slurperArm.configMotionCruiseVelocity(100, 100);
         slurperArm.configMotionAcceleration(100, 100);
+
+        slurperArm.configSelectedFeedbackCoefficient();
 
         this.intilizeOffset();
     }
