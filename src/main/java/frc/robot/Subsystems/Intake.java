@@ -71,7 +71,7 @@ public class Intake implements SubsystemBase {
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-        slurperCancoder.configMagnetOffset(1);
+        slurperCancoder.configMagnetOffset(-145);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -102,7 +102,7 @@ public class Intake implements SubsystemBase {
         //   slurperArm.config
 
         slurperArm.setSensorPhase(true);
-        slurperArm.setInverted(false);
+        slurperArm.setInverted(true);
 
         /* Set the peak and nominal outputs */
         slurperArm.configNominalOutputForward(0, 100);
@@ -113,7 +113,7 @@ public class Intake implements SubsystemBase {
         /* Set Motion Magic gains in slot0 - see documentation */
         slurperArm.selectProfileSlot(0, 0);
         slurperArm.config_kF(0, 0, 100);
-        slurperArm.config_kP(0, 0.1, 100);
+        slurperArm.config_kP(0, 5, 100);
         slurperArm.config_kI(0, 0, 100);
         slurperArm.config_kD(0, 0, 100);
         //slurperArm.config_IntegralZone(0, this.convertToTicks(0.1));
@@ -122,7 +122,8 @@ public class Intake implements SubsystemBase {
         slurperArm.configMotionCruiseVelocity(100, 100);
         slurperArm.configMotionAcceleration(100, 100);
 
-        slurperArm.configSelectedFeedbackCoefficient();
+        // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
+        slurperArm.configSelectedFeedbackCoefficient(0.087890625);
 
         this.intilizeOffset();
     }
@@ -138,38 +139,41 @@ public class Intake implements SubsystemBase {
         SmartDashboard.putNumber("slurperPos", slurperArm.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("slurperPosCancoder", slurperCancoder.getAbsolutePosition());
 
+
         if ((intake.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
             robotState.setIntakeOn(true);
         } else {
             robotState.setIntakeOn(false);
         }
-         SmartDashboard.putNumber("Grabber Speed", intakeGrabber.getVelocity().getValueAsDouble());
-        if ((intakeGrabber.getVelocity().getValueAsDouble()) >= (constants.GRABBERSPEED - constants.GRABBER_VELOCITY_ERROR) ){
-            robotState.setIntakeOn(true);
-        } else {
-            robotState.setIntakeOn(false);
-        }
+
     }
     
     @Override
     public void enabled(RobotCommander commander){
         SmartDashboard.putNumber("slurper target angle", constants.SLURPER_DOWN_ANGLE);
+        // SmartDashboard.putNumber("SlurpDesired", );
       
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake() && !robotState.getFeederStopped()) {
-          intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));      
+          intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
+        slurperArm.set(ControlMode.MotionMagic, -170); 
+        SmartDashboard.putNumber("SlurpDesiredPos", -170);
         } else {
            Out.Output = 0;
            intake.setControl(Out);
+        slurperArm.set(ControlMode.PercentOutput, 0); 
         }
 
         if (commander.getRunSlurper()) {
-            //slurperArm.set(ControlMode.MotionMagic, 190);
+            slurperArm.set(ControlMode.MotionMagic, 73);
+            SmartDashboard.putNumber("SlurpDesiredPos", 73);
         } else {
-            //slurperArm.set(ControlMode.PercentOutput, 87);
+            slurperArm.set(ControlMode.PercentOutput, 0);
         }
+        SmartDashboard.putNumber("slurperPosCommand", slurperArm.getClosedLoopTarget());
+
     }
     
 
@@ -182,6 +186,7 @@ public class Intake implements SubsystemBase {
     @Override
     public void reset() {
         intake.stopMotor();
+        slurperArm.setSelectedSensorPosition(slurperCancoder.getPosition() * 0.087890625);
     }
 
 

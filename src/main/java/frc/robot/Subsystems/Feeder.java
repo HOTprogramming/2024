@@ -42,7 +42,7 @@ RobotState robotState;
 
         feeder = new TalonFX(constants.FEEDER_CAN, "drivetrain");
 
-        feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
    
          StatusCode feederStatus = StatusCode.StatusCodeNotInitialized;
@@ -118,6 +118,7 @@ RobotState robotState;
     @Override
     public void disabled() {
         feeder.stopMotor();
+        feeder.setNeutralMode(NeutralModeValue.Coast);
     }
 
     @Override
