@@ -39,6 +39,7 @@ public interface RobotCommander {
 
     public int getAngleSnapCommand();
     public abstract boolean getIntake();
+    public abstract boolean getRunSlurper();
     public abstract boolean getFeeder();        
     public abstract boolean getRunFeeder();
     public boolean getLockPoseCommand();

@@ -138,6 +138,11 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         return auto.runIntake;
     }
+
+    @Override
+    public boolean getRunSlurper() {
+        return false;
+    }
     
     @Override
     public boolean getFeeder() {
