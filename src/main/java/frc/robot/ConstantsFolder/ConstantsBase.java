@@ -204,11 +204,11 @@ public class ConstantsBase {
         public double FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
         public double FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
 
-        public double FLYWHEEL_KP = 0.25;
-        public double FLYWHEEL_KI = 0.5;
-        public double FLYWHEEL_KD = 0.0001;
+        public double FLYWHEEL_KP = 22.0;
+        public double FLYWHEEL_KI = 0.0;
+        public double FLYWHEEL_KD = 2.0;
         public double LEFT_FLYWHEEL_KV = .130; //.133
-        public double RIGHT_FLYWHEEL_KV = .130; //.138
+        public double RIGHT_FLYWHEEL_KV = .138; //.138
         public double LEFT_FLYWHEEL_KS = 0.8; //.384
         public double RIGHT_FLYWHEEL_KS = 0.8; //38
         public double FLYWHEEL_PEAK_VOLTAGE = 12;
@@ -216,9 +216,9 @@ public class ConstantsBase {
         public double FEEDER_KI = 0.5;
         public double FEEDER_KD = 0.0001;
 
-        public double RFLYWHEEL_KP = 0.25;
-        public double RFLYWHEEL_KI = 0.5;
-        public double RFLYWHEEL_KD = 0.0001;
+        public double RFLYWHEEL_KP = 16.0;
+        public double RFLYWHEEL_KI = 0.0;
+        public double RFLYWHEEL_KD = 4.0;
     }
 
     public abstract class Drivetrain {
