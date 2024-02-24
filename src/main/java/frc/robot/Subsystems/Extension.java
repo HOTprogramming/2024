@@ -1,5 +1,8 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -37,15 +40,15 @@ double extendedCommanded;
 StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
-Victor spitter;
+VictorSPX spitter;
 
 public Extension(RobotState robotState) {
 
     this.robotState = robotState;
     this.constants = robotState.getConstants().getExtensionConstants();
 
-    extendMotor = new TalonFX(EXTENSION_CAN, "drivetrain");
-    spitter = new Victor(SPITTER_CAN);
+    extendMotor = new TalonFX(constants.EXTENSIONCAN, "drivetrain");
+    spitter = new VictorSPX(constants.SPITTERCAN);
 
     extendMagic = new MotionMagicVoltage(0);
 
@@ -86,6 +89,7 @@ public Extension(RobotState robotState) {
       System.out.println("Could not configure device. Error: " + status.toString());
     }
     extendMotor.setPosition(0);
+    spitter.setNeutralMode(NeutralMode.Brake);
     }
 
 
@@ -148,6 +152,7 @@ public Extension(RobotState robotState) {
         }
         else{
         extendMotor.setVoltage(0);
+        spitter.set(ControlMode.PercentOutput, 0.1);
         }
 
 
