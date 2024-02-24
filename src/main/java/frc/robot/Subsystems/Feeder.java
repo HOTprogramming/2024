@@ -64,6 +64,9 @@ RobotState robotState;
         } else {
             robotState.setFeederOn(false);
         }
+
+        robotState.setBeamBreak(sensorFeeder.get());
+
     }
     
     @Override
@@ -88,7 +91,7 @@ RobotState robotState;
             }
         if (commander.getFeeder() ||  commander.setShoot()) {
      
-             if (sensorFeeder.get()){
+             if (sensorFeeder.get()){//always false true if it detects an object       
 
 
                 if (goal >= constants.DESIREDENCODERED){ 

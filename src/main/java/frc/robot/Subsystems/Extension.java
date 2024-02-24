@@ -41,6 +41,44 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
+double fullyExtended = 2.25;
+double fullyExtendedAmp = 2;
+double middlePoint = 1.11;
+double extensionZero = 0;
+double initialShooterPos;
+double currentShooterPos;
+
+
+public enum ExtensionPhaseTrap{
+    one,
+    two,
+    three,
+    four,
+    five,
+    six,
+    seven,
+    eight,
+    nine,
+    ten,
+    none;
+}
+
+public enum ExtensionPhaseAmp{
+    one,
+    two,
+    three,
+    four,
+    five,
+    six,
+    seven,
+    eight,
+    nine,
+    ten,
+    none;
+}
+
+ExtensionPhaseTrap extendTrapPhase;
+ExtensionPhaseAmp extendAmpPhase;
 
 public Extension(RobotState robotState) {
 
@@ -54,7 +92,6 @@ public Extension(RobotState robotState) {
 
     extendPosition = extendMotor.getPosition();
     extendVelocity = extendMotor.getVelocity();
-    //a
   
 
 }
@@ -109,32 +146,136 @@ public Extension(RobotState robotState) {
         throw new UnsupportedOperationException("Unimplemented method 'init'");
     }
 
+    public ExtensionPhaseTrap returnExtensionPhaseTrap(ExtensionPhaseTrap phaseTrap){
+        extendTrapPhase = phaseTrap;
+        return extendTrapPhase;
+    }
+
+    public ExtensionPhaseTrap getExtensionPhaseTrap(){
+        return extendTrapPhase;
+    }
+
+    public ExtensionPhaseAmp returnExtensionPhaseAmp(ExtensionPhaseAmp phaseAmp){
+        extendAmpPhase = phaseAmp;
+        return extendAmpPhase;
+    }
+
+    public ExtensionPhaseAmp getExtensionPhaseAmp(){
+        return extendAmpPhase;
+    }
+
     @Override
     public void enabled(RobotCommander commander) {
         extendPosition.refresh(); 
         extendVelocity.refresh();
 
-        // if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()<=1.11){
-        // extendMotor.setControl(extendMagic.withPosition(1.11).withSlot(0));
-        // spitter.setVoltage(0);
-        // }
-        // else if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()>4 && robotState.getShooterPos()<50){
-        // spitter.setVoltage(0.1);
-        // }
-        // else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterPos()>=50){
-        // extendMotor.setControl(extendMagic.withPosition(2.43).withSlot(0));
-        // spitter.setVoltage(0);
-        // }
-        // else if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()>=2.42){
-        // extendMotor.setControl(extendMagic.withPosition(2.43).withSlot(0));
-        // spitter.setVoltage(0.1);
-        // }
-        // else{
-        // extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
-        // spitter.setVoltage(0);
-        // }
-        SmartDashboard.putString("armCommanded", commander.armCommanded().toString());
 
+        if(commander.armCommanded() == ArmCommanded.trap){
+            if(robotState.getExtendPos()<=middlePoint){
+            returnExtensionPhaseAmp(ExtensionPhaseAmp.one);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one && robotState.getExtendPos()>(middlePoint - 0.1)){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
+            initialShooterPos = robotState.getShooterPos();
+            } 
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos>50){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.four);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four && robotState.getExtendPos() > (fullyExtended - 0.1)){
+                returnExtensionPhaseTrap(ExtensionPhaseTrap.five);
+            }
+
+
+
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
+                //command extension to middle position
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two){
+                //spin shooter until beambreak is false, hold extension position
+                robotState.setShooterOnAmpTrap(true);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three){
+                //start encoder counts and keep spinning shooter, spin spitter, hold extension position
+                currentShooterPos = robotState.getShooterPos() - initialShooterPos;
+                robotState.setShooterOnAmpTrap(true);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0.1);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four){
+                //move extension to fully extended position
+                extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.five){
+                //spin spitter out, hold extension position
+                extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, -0.1);
+            }
+    
+        }
+
+        else if(commander.armCommanded() == ArmCommanded.amp){
+            if(robotState.getExtendPos()<=middlePoint){
+                returnExtensionPhaseAmp(ExtensionPhaseAmp.one);
+                }
+                else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.one && robotState.getExtendPos()>(middlePoint - 0.1)){
+                returnExtensionPhaseAmp(ExtensionPhaseAmp.two);
+                }
+                else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.two && robotState.getBeamBreak() == false){
+                returnExtensionPhaseAmp(ExtensionPhaseAmp.three);
+                } 
+                else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.three && robotState.getShooterPos() > 50){
+                returnExtensionPhaseAmp(ExtensionPhaseAmp.four);
+                }
+                else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.four && robotState.getExtendPos() > (fullyExtendedAmp - 0.1)){
+                    returnExtensionPhaseAmp(ExtensionPhaseAmp.five);
+                }
+    
+    
+                if(getExtensionPhaseAmp() == ExtensionPhaseAmp.one){
+                    //command extension to middle position
+                    extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                    spitter.set(ControlMode.PercentOutput, 0);
+                }
+                if(getExtensionPhaseAmp() == ExtensionPhaseAmp.two){
+                    //spin shooter until beambreak is false, hold extension position
+                    robotState.setShooterOnAmpTrap(true);
+                    extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                    spitter.set(ControlMode.PercentOutput, 0);
+                }
+                if(getExtensionPhaseAmp() == ExtensionPhaseAmp.three){
+                    //start encoder counts and keep spinning shooter, spin spitter, hold extension position
+                    currentShooterPos = robotState.getShooterPos() - initialShooterPos;
+                    robotState.setShooterOnAmpTrap(true);
+                    extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                    spitter.set(ControlMode.PercentOutput, 0.1);
+                }
+                if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four){
+                    //move extension to fully extended position
+                    extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
+                }
+                if(getExtensionPhaseTrap() == ExtensionPhaseTrap.five){
+                    //spin spitter out, hold extension position
+                    extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
+                    spitter.set(ControlMode.PercentOutput, -0.1);
+                }
+        }
+
+        else{
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+            returnExtensionPhaseAmp(ExtensionPhaseAmp.none);
+            extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
+            spitter.set(ControlMode.PercentOutput, 0);
+        }
+
+
+        
         if(commander.armCommanded() == ArmCommanded.trap){
             extendedCommanded = 0.36;
             extendMotor.setControl(extendMagic.withPosition(extendedCommanded));

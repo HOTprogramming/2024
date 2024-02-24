@@ -30,6 +30,8 @@ public class RobotState {
     private double armPos;
     private double extendPos;
     private double shooterPos;
+    private boolean beambreak;
+    private boolean shooterAmpTrap;
  
     private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
@@ -182,5 +184,21 @@ public class RobotState {
 
     public double getShooterPos(){
         return shooterPos;
+    }
+
+    public void setBeamBreak(boolean beambreak){
+        this.beambreak = beambreak;
+    }
+
+    public boolean getBeamBreak(){
+        return beambreak;
+    }
+
+    public void setShooterOnAmpTrap(boolean shooterAmpTrap){
+        this.shooterAmpTrap = shooterAmpTrap;
+    }
+
+    public boolean getShooterOnAmpTrap(){
+        return shooterAmpTrap;
     }
 }
