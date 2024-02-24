@@ -74,12 +74,12 @@ public class PracticeBotConstants extends ConstantsBase {
         public Arm(){
          CANCODER_CAN = 44;
          ARM_CAN = 9;
-         CRUISEVELOCITY = 400;
-         ACCELERATION = 400;
-         JERK = 1500;
+         CRUISEVELOCITY = 500;
+         ACCELERATION = 300;
+         JERK = 800;
          ARMKP = 250;
          ARMKI = 0;
-         ARMKD = 0;
+         ARMKD = 2;
          ARMKV = 0.8;
          ARMKS = 0.1;
          ZERO = 95.0;

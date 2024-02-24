@@ -26,7 +26,7 @@ public abstract class AutonBase {
     public Pose2d startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     public State holoDriveState = new State(0, 0, 0, new Pose2d(0, 0, Rotation2d.fromDegrees(0)), 0);
     public boolean swerveBrake = false;
-    public Pose2d refrenceTolerances = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    public Pose2d refrenceTolerances = new Pose2d(0.1, 0.1, Rotation2d.fromDegrees(15));
     public RotationSequence.State rotationState = new RotationSequence.State(Rotation2d.fromDegrees(0), 0);
 
     

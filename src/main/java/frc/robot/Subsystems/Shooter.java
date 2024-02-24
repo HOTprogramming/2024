@@ -106,10 +106,16 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
-        if (Math.abs(leftFlywheel.getVelocity().getValueAsDouble() - leftHighSpeed) < 4) {
+        if (Math.abs(leftTorqueCurrentFOC.Velocity - leftFlywheel.getVelocity().getValue()) < 10 && 
+                leftTorqueCurrentFOC.Velocity > leftSlowSpeed && 
+                Math.abs(rightTorqueCurrentFOC.Velocity - rightFlywheel.getVelocity().getValue()) < 10 && 
+                rightTorqueCurrentFOC.Velocity > rightIdleSpeed) {
+
             robotState.setShooterOn(true);
+            SmartDashboard.putBoolean("Shooter_on", true);
         } else {
             robotState.setShooterOn(false);
+            SmartDashboard.putBoolean("Shooter_on", false);
 
         }
 

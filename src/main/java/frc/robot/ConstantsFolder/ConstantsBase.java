@@ -269,7 +269,7 @@ public class ConstantsBase {
         public double JERK = 1500;
         public double ARMKP = 250;
         public double ARMKI = 0;
-        public double ARMKD = 0;
+        public double ARMKD = 200;
         public double ARMKV = 0.8;
         public double ARMKS = 0.1;
         public double ZERO = 95.0;

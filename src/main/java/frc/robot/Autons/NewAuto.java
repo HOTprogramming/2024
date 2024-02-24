@@ -34,20 +34,20 @@ public class NewAuto extends AutonBase {
 
     public Pose2d ring1 = new Pose2d(8.44, 7.05, Rotation2d.fromDegrees(180));
     public Pose2d almostshoot1 = new Pose2d(10.74, 7.3, Rotation2d.fromDegrees(180));
-    public Pose2d shoot1 = new Pose2d(12, 7.1, Rotation2d.fromDegrees(175));
-    public Pose2d almostring2 = new Pose2d(10.72, 6, Rotation2d.fromDegrees(180));
+    public Pose2d shoot1 = new Pose2d(12, 7.1, Rotation2d.fromDegrees(170));
+    public Pose2d almostring2 = new Pose2d(10.32, 6.7, Rotation2d.fromDegrees(180));
     public Pose2d almostalmostring2 = new Pose2d(9.75, 5.89, Rotation2d.fromDegrees(180));
     public Pose2d almostalmostalmostring2 = new Pose2d(9, 5.4, Rotation2d.fromDegrees(180));
 
     public Pose2d ring2 = new Pose2d(8.44, 5.4, Rotation2d.fromDegrees(180));
-    public Pose2d almostshoot2 = new Pose2d(10.73, 6.2, Rotation2d.fromDegrees(180));
-    public Pose2d shoot2 = new Pose2d(11.6, 6, Rotation2d.fromDegrees(175));
-    public Pose2d almostring3 = new Pose2d(10.72, 6, Rotation2d.fromDegrees(180));
-    public Pose2d almostalmostring3 = new Pose2d(9.8, 4.8, Rotation2d.fromDegrees(180));
+    public Pose2d almostshoot2 = new Pose2d(10.73, 6.8, Rotation2d.fromDegrees(180));
+    public Pose2d shoot2 = new Pose2d(11.6, 7, Rotation2d.fromDegrees(165));
+    public Pose2d almostring3 = new Pose2d(10.72, 6.5, Rotation2d.fromDegrees(180));
+    public Pose2d almostalmostring3 = new Pose2d(9.4, 4.8, Rotation2d.fromDegrees(180));
     public Pose2d almostalmostalmostring3 = new Pose2d(10, 3.75, Rotation2d.fromDegrees(180));
     public Pose2d ring3 = new Pose2d(8.44, 3.74, Rotation2d.fromDegrees(180));
-    public Pose2d almostshoot3 = new Pose2d(10.73, 6.2, Rotation2d.fromDegrees(180));
-    public Pose2d shoot3 = new Pose2d(12, 6, Rotation2d.fromDegrees(-175));
+    public Pose2d almostshoot3 = new Pose2d(9.73, 6.5, Rotation2d.fromDegrees(180));
+    public Pose2d shoot3 = new Pose2d(12, 7, Rotation2d.fromDegrees(155));
 
     public NewAuto(RobotState robotState) {
         super(robotState);
@@ -122,7 +122,7 @@ public class NewAuto extends AutonBase {
                 step = Step.driveshoot2;
             }
         } else if (step == Step.driveshoot2) {
-            if (checkTime()) {
+            if (checkTime() || robotState.getAtTargetPose()) {
                 driving = false;
                 step = Step.shoot2;
                 timer.reset();
@@ -182,7 +182,7 @@ public class NewAuto extends AutonBase {
     public void reset() {
         super.reset();
         swerveBrake = false;
-        step = Step.start;
+        step = Step.unpackage;
         if (robotState.getVisionTimestamps()[3] != -1) {
             startPose = robotState.getVisionMeasurements()[3];
         }
