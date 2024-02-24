@@ -15,7 +15,7 @@ import edu.wpi.first.math.util.Units;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Practice;
+    public RobotType ROBOT_TYPE = RobotType.Comp;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;

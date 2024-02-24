@@ -63,11 +63,11 @@ public class CompBotConstants extends ConstantsBase {
 
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
-            Slot0Configs SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(100).withKI(0).withKD(0.2)
+            SWERVE_STEER_GAINS = new Slot0Configs()
+            .withKP(400).withKI(0).withKD(8)
             .withKS(0).withKV(1.5).withKA(0);
 
-            Slot0Configs SWERVE_DRIVE_GAINS = new Slot0Configs()
+            SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
             .withKS(0).withKV(0).withKA(0);
             
@@ -147,7 +147,7 @@ public class CompBotConstants extends ConstantsBase {
             kFrontLeftDriveMotorId = 1;
             kFrontLeftSteerMotorId = 2;
             kFrontLeftEncoderId = 43;
-            kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
+            kFrontLeftEncoderOffset = 0.3193359375 * Math.PI;
 
             kFrontLeftXPosInches = 10.125;
             kFrontLeftYPosInches = 10.125;
@@ -158,7 +158,7 @@ public class CompBotConstants extends ConstantsBase {
             kFrontRightDriveMotorId = 3;
             kFrontRightSteerMotorId = 4;
             kFrontRightEncoderId = 41;
-            kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
+            kFrontRightEncoderOffset = -0.149169921875 * Math.PI;
 
             kFrontRightXPosInches = 10.125;
             kFrontRightYPosInches = -10.125;
@@ -169,7 +169,7 @@ public class CompBotConstants extends ConstantsBase {
             kBackLeftDriveMotorId = 5;
             kBackLeftSteerMotorId = 6;
             kBackLeftEncoderId = 42;
-            kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
+            kBackLeftEncoderOffset = -0.04150390625 * Math.PI;
 
             kBackLeftXPosInches = -10.125;
             kBackLeftYPosInches = 10.125;
@@ -181,7 +181,7 @@ public class CompBotConstants extends ConstantsBase {
             kBackRightDriveMotorId = 7;
             kBackRightSteerMotorId = 8;
             kBackRightEncoderId = 40;
-            kBackRightEncoderOffset = -0.44140625 * Math.PI;
+            kBackRightEncoderOffset = -0.279296875 * Math.PI;
 
             kBackRightXPosInches = -10.125;
             kBackRightYPosInches = -10.125;
