@@ -104,7 +104,7 @@ public class Feeder implements SubsystemBase {
             }           
         } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
             feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
-        } else if (commander.setShoot() && robotState.getShooterOn()) {
+        } else if (commander.setShoot()) {
             feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
         } else {
                 Out.Output = 0;
