@@ -74,6 +74,8 @@ public enum ArmCommanded{
   amp,
   trap,
   zero,
+  auton,
+  preload,
   none;
 }
 
@@ -163,7 +165,7 @@ public Arm(RobotState robotState) {
 
       if(commander.armCommanded() == ArmCommanded.shotMap){
         commandedPosition = shotMap.calcShotMap();
-
+        SmartDashboard.putNumber("Arm_ShotmapPose", commandedPosition);
         if(commandedPosition >= 95.0){
         armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
         }
@@ -179,7 +181,7 @@ public Arm(RobotState robotState) {
 
       }
       else if (commander.armCommanded() == ArmCommanded.close){
-        commandedPosition = constants.CLOSE/360;
+        commandedPosition = constants.CLOSE/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
@@ -189,9 +191,16 @@ public Arm(RobotState robotState) {
 
       }
       else if (commander.armCommanded() == ArmCommanded.amp){
-        commandedPosition = constants.AMP/360;
+        commandedPosition = constants.AMP/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-
+      }
+      else if (commander.armCommanded() == ArmCommanded.auton){
+        commandedPosition = 121.5/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.preload){
+        commandedPosition = 143/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else{
         armMotor.setVoltage(0);

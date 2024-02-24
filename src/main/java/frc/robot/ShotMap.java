@@ -14,9 +14,9 @@ public class ShotMap {
     private double distance5 = 6.5;
     private double angle1 = 151;
     private double angle2 = 134;
-    private double angle3 = 123;
-    private double angle4 = 119;
-    private double angle5 = 118;
+    private double angle3 = 124;
+    private double angle4 = 120.8;
+    private double angle5 = 120;
     private double xPos = 1.8;
     private double angleX;
     private double angleX2;

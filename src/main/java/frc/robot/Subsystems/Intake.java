@@ -163,7 +163,7 @@ public class Intake implements SubsystemBase {
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake() && !robotState.getFeederStopped()) {
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 42.0 / 360 * 4096); 
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 38.0 / 360 * 4096); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 42.0 / 360 * 4096);
         } else if (commander.getRunSlurper()) {

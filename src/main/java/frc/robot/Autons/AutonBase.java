@@ -34,7 +34,7 @@ public abstract class AutonBase {
     CustomTrajectoryGenerator trajectoryGenerator = new CustomTrajectoryGenerator();
     public boolean runShooter = false;
     public boolean runIntake = false; 
-    public ArmCommanded armCommand = ArmCommanded.shotMap; 
+    public ArmCommanded armCommand = ArmCommanded.zero; 
     public boolean seedPose = false;
     public boolean runFeeder = false;
     public boolean autoAim = false;

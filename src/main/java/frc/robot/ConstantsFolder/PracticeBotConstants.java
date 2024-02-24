@@ -78,8 +78,8 @@ public class PracticeBotConstants extends ConstantsBase {
          ACCELERATION = 300;
          JERK = 800;
          ARMKP = 250;
-         ARMKI = 0;
-         ARMKD = 2;
+         ARMKI = 20;
+         ARMKD = 4;
          ARMKV = 0.8;
          ARMKS = 0.1;
          ZERO = 95.0;
@@ -106,8 +106,8 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(400).withKI(0).withKD(8)
-            .withKS(0).withKV(1.5).withKA(0);
+            .withKP(600).withKI(0).withKD(8)
+            .withKS(0).withKV(.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
@@ -130,7 +130,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
 
 
-            WHEEL_SLIP_CURRENT = 300.0; // *tune later
+            WHEEL_SLIP_CURRENT = 600.0; //300
 
             // Meters per second theroretical max speed at 12 volts
             FREE_SPEED_12V = 6.37032;
