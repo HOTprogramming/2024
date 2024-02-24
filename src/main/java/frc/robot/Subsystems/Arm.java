@@ -73,6 +73,8 @@ public enum ArmCommanded{
   protect,
   amp,
   trap,
+  trap2,
+  trapZero,
   zero,
   none;
 }
@@ -173,7 +175,7 @@ public Arm(RobotState robotState) {
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
       } 
-        else if(commander.armCommanded() == ArmCommanded.trap){
+        else if(commander.armCommanded() == ArmCommanded.trap || commander.armCommanded() == ArmCommanded.trap2){
         commandedPosition = constants.TRAP/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 

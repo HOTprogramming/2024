@@ -155,18 +155,20 @@ public class TeleopCommander implements RobotCommander {
         if(operator.getRightBumper() && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
             return ArmCommanded.shotMap;
         }
-        else if(operator.getRightBumper() && operator.getXButton()){
+        else if(operator.getXButton()){
             return ArmCommanded.trap;
         }
         else if (operator.getRightBumper() && operator.getAButton()){
             return ArmCommanded.close;
         }
-        else if (operator.getRightBumper() && operator.getYButton()){
-            return ArmCommanded.none;
-            //needs to be ArmCommanded.extend when extension parts are implemented.
+        else if (operator.getYButton()){
+            return ArmCommanded.trap2;
         }
-        else if (operator.getRightBumper() && operator.getBButton()){
+        else if (operator.getBButton()){
             return ArmCommanded.amp;
+        }
+        else if (operator.getRightStickButton()){
+            return ArmCommanded.trapZero;
         }
         else if (operator.getLeftBumper()){
             return ArmCommanded.zero;

@@ -8,6 +8,7 @@ import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Camera;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Drivetrain;
+import frc.robot.Subsystems.Extension;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Feeder;
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
   private Feeder feeder;
   private Intake intake;
   private Lights lights;
+  private Extension extension;
 
 
   // define subsystem objects
@@ -55,6 +57,7 @@ public class Robot extends TimedRobot {
     camera = new Camera(robotState);
     intake = new Intake(robotState);
     lights = new Lights(robotState);
+    extension = new Extension(robotState);
 
     red3Right = new Red3Right(robotState);
     newAuto = new NewAuto(robotState);
@@ -68,7 +71,7 @@ public class Robot extends TimedRobot {
     autoSelector.addOption("Triangle", "triangle");
     autoSelector.addOption("W. Square", "willsSquare");
     arm.armInit();
-
+    extension.extensionInit();
     intake.reset();
   }
 
@@ -81,6 +84,7 @@ public class Robot extends TimedRobot {
 
     shooter.updateState();
     arm.updateState();
+    extension.updateState();
     
   }
 
@@ -98,6 +102,7 @@ public class Robot extends TimedRobot {
     arm.reset();
     intake.reset();
     feeder.reset();
+    extension.reset();
   }
 
   @Override
@@ -109,6 +114,7 @@ public class Robot extends TimedRobot {
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
     lights.enabled(autonCommander);
+    extension.enabled(autonCommander);
   }
 
   @Override
@@ -121,6 +127,7 @@ public class Robot extends TimedRobot {
     intake.reset();
     feeder.reset();
     lights.reset();
+    extension.reset();
   }
 
   @Override
@@ -131,6 +138,7 @@ public class Robot extends TimedRobot {
     intake.enabled(teleopCommander);
     feeder.enabled(teleopCommander);
     lights.enabled(teleopCommander);
+    extension.enabled(teleopCommander);
   }
 
   @Override
@@ -141,6 +149,7 @@ public class Robot extends TimedRobot {
     feeder.disabled();
     intake.disabled();
     lights.disabled();
+    extension.disabled();
   }
 
   @Override
