@@ -162,7 +162,7 @@ public class TeleopCommander implements RobotCommander {
             return ArmCommanded.close;
         }
         else if (operator.getRightBumper() && operator.getYButton()){
-            return ArmCommanded.none;
+            return ArmCommanded.protect;
             //needs to be ArmCommanded.extend when extension parts are implemented.
         }
         else if (operator.getRightBumper() && operator.getBButton()){

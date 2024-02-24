@@ -116,14 +116,14 @@ public class Intake implements SubsystemBase {
         /* Set Motion Magic gains in slot0 - see documentation */
         slurperArm.selectProfileSlot(0, 0);
         slurperArm.config_kF(0, 0, 100);
-        slurperArm.config_kP(0, 1, 100);
+        slurperArm.config_kP(0, 0.8, 100);
         slurperArm.config_kI(0, 0, 100);
         slurperArm.config_kD(0, 0, 100);
         //slurperArm.config_IntegralZone(0, this.convertToTicks(0.1));
 
         /* Set acceleration and vcruise velocity - see documentation */
-        slurperArm.configMotionCruiseVelocity(5000, 100);
-        slurperArm.configMotionAcceleration(1500, 100);
+        slurperArm.configMotionCruiseVelocity(28000, 100);
+        slurperArm.configMotionAcceleration(12000, 100);
 
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
@@ -165,19 +165,20 @@ public class Intake implements SubsystemBase {
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
             slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 38.0 / 360 * 4096); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 42.0 / 360 * 4096);
-        } else if (commander.getRunSlurper()) {
-            Out.Output = 0;
-            intake.setControl(Out);
-            slurperSpin.set(ControlMode.PercentOutput, 0);
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 319.0 / 360 * 4096);
-            SmartDashboard.putNumber("SlurpDesiredPos", 73);
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 38.0 / 360 * 4096);
         } else {
-            slurperArm.set(ControlMode.PercentOutput, 0);
             Out.Output = 0;
             intake.setControl(Out);
             slurperSpin.set(ControlMode.PercentOutput, 0);
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 303.0 / 360 * 4096);
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 303.0 / 360 * 4096);
         }
+        // } else {
+        //     slurperArm.set(ControlMode.PercentOutput, 0);
+        //     Out.Output = 0;
+        //     intake.setControl(Out);
+        //     slurperSpin.set(ControlMode.PercentOutput, 0);
+        // }
         SmartDashboard.putNumber("slurperPosCommand", slurperArm.getClosedLoopTarget());
 
     }

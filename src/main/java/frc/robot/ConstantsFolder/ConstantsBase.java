@@ -266,7 +266,7 @@ public class ConstantsBase {
         public int ARM_CAN = 9;
         public double CRUISEVELOCITY = 400;
         public double ACCELERATION = 400;
-        public double JERK = 1500;
+        public double JERK = 1000;
         public double ARMKP = 250;
         public double ARMKI = 0;
         public double ARMKD = 200;

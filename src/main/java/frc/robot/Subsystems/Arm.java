@@ -211,7 +211,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
       SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
-      SmartDashboard.putNumber("armCommandedPosition", commandedPosition*360);
+      SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
     public void disabled(){
         armMotor.stopMotor();
