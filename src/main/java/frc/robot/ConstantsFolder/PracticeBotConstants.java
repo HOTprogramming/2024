@@ -89,7 +89,20 @@ public class PracticeBotConstants extends ConstantsBase {
          PROTECT = 126.0;
          AMP = 139.0;
         }
-         }
+    }
+
+    public class Extension extends ConstantsBase.Extension{
+        public Extension(){
+        ECRUISEVELOCITY = 15;
+        EACCELERATION = 15;
+        EJERK = 50;
+        EKP = 20;
+        EKI = 0.5;
+        EKD = 0;
+        EKV = 0.12;
+        EKS = 0.25;
+        }
+    }
 
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {

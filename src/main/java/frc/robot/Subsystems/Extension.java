@@ -20,12 +20,14 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 
 import static frc.robot.Constants.ExtensionConstants.*;
 
 public class Extension implements SubsystemBase{
 
+ConstantsBase.Extension constants;
 RobotState robotState;  
 TalonFX extendMotor;
 
@@ -40,6 +42,8 @@ Victor spitter;
 public Extension(RobotState robotState) {
 
     this.robotState = robotState;
+    this.constants = robotState.getConstants().getExtensionConstants();
+
     extendMotor = new TalonFX(EXTENSION_CAN, "drivetrain");
     spitter = new Victor(SPITTER_CAN);
 
@@ -57,17 +61,17 @@ public Extension(RobotState robotState) {
 
     /* Configure current limits */
     MotionMagicConfigs emm = ecfg.MotionMagic;
-    emm.MotionMagicCruiseVelocity = 15; // 5 rotations per second cruise
-    emm.MotionMagicAcceleration = 15; // Take approximately 0.5 seconds to reach max vel
+    emm.MotionMagicCruiseVelocity = constants.ECRUISEVELOCITY; // 5 rotations per second cruise
+    emm.MotionMagicAcceleration = constants.EACCELERATION; // Take approximately 0.5 seconds to reach max vel
     // Take approximately 0.2 seconds to reach max accel 
-    emm.MotionMagicJerk = 50;
+    emm.MotionMagicJerk = constants.EJERK;
 
     Slot0Configs eSlot0 = ecfg.Slot0;
-    eSlot0.kP = 20;
-    eSlot0.kI = 0.5;
-    eSlot0.kD = 0;
-    eSlot0.kV = 0.12;
-    eSlot0.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+    eSlot0.kP = constants.EKP;
+    eSlot0.kI = constants.EKI;
+    eSlot0.kD = constants.EKD;
+    eSlot0.kV = constants.EKV;
+    eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
