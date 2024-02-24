@@ -105,8 +105,8 @@ public class ConstantsBase {
 
 
     public abstract class Auton {
-        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 4;
+        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 3;
         
         public Auton getAuton() {
             return this;
@@ -269,7 +269,7 @@ public class ConstantsBase {
         public double JERK = 1500;
         public double ARMKP = 250;
         public double ARMKI = 0;
-        public double ARMKD = 0;
+        public double ARMKD = 200;
         public double ARMKV = 0.8;
         public double ARMKS = 0.1;
         public double ZERO = 95.0;

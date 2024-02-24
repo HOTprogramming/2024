@@ -106,10 +106,16 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
-        if (Math.abs(leftFlywheel.getVelocity().getValueAsDouble() - leftHighSpeed) < 4) {
+        if (Math.abs(leftTorqueCurrentFOC.Velocity - leftFlywheel.getVelocity().getValue()) < 10 && 
+                leftTorqueCurrentFOC.Velocity > leftSlowSpeed && 
+                Math.abs(rightTorqueCurrentFOC.Velocity - rightFlywheel.getVelocity().getValue()) < 10 && 
+                rightTorqueCurrentFOC.Velocity > rightSlowSpeed) {
+
             robotState.setShooterOn(true);
+            SmartDashboard.putBoolean("Shooter_on", true);
         } else {
             robotState.setShooterOn(false);
+            SmartDashboard.putBoolean("Shooter_on", false);
 
         }
 
@@ -124,7 +130,7 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void enabled(RobotCommander commander) {
-        if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect) {
+        if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton) {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
 
@@ -140,6 +146,10 @@ public class Shooter implements SubsystemBase {
         else if (commander.armCommanded() == ArmCommanded.amp){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
+        }
+        else if (commander.armCommanded() == ArmCommanded.preload){
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(42));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(42));
         }
         else {
             leftFlywheel.setVoltage(0);
