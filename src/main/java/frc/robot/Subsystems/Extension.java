@@ -187,6 +187,9 @@ public Extension(RobotState robotState) {
             else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four && robotState.getExtendPos() > (fullyExtended - 0.1)){
                 returnExtensionPhaseTrap(ExtensionPhaseTrap.five);
             }
+            else{
+                returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+            }
 
 
 
@@ -235,6 +238,9 @@ public Extension(RobotState robotState) {
                 }
                 else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.four && robotState.getExtendPos() > (fullyExtendedAmp - 0.1)){
                     returnExtensionPhaseAmp(ExtensionPhaseAmp.five);
+                }
+                else{
+                    returnExtensionPhaseAmp(ExtensionPhaseAmp.none);
                 }
     
     
