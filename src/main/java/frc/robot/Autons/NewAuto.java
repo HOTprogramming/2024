@@ -6,10 +6,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 
 public class NewAuto extends AutonBase {
 
     enum Step {
+        unpackage,
         start,
         shoot0,
         ring1,
@@ -50,7 +52,7 @@ public class NewAuto extends AutonBase {
     public NewAuto(RobotState robotState) {
         super(robotState);
         // startPose = new Pose2d(16.54, 5.55, Rotation2d.fromDegrees(180));
-        startPose = new Pose2d(15.15, 6.5, Rotation2d.fromDegrees(150)); //15.15
+        startPose = new Pose2d(15.15, 6.75, Rotation2d.fromDegrees(140)); //15.15
 
         
         // startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
@@ -61,8 +63,14 @@ public class NewAuto extends AutonBase {
     @Override
     public void runAuto() {
 
-        if(step == Step.start){
-            runArm = true;
+        if (step == Step.unpackage) {
+            if (timer.get() > .2) {
+                step = Step.start;
+            }
+            runIntake = true;
+
+        } else if(step == Step.start){
+            armCommand = ArmCommanded.shotMap;
             driving = false;
 
             if(robotState.getShooterOn()){
@@ -145,7 +153,7 @@ public class NewAuto extends AutonBase {
             runShooter = true;
             if (timer.get() > 1.2) {
                 runIntake = false;
-                runArm = false;
+                armCommand = ArmCommanded.none;
                 runShooter = false;
                 step = Step.end;
             }

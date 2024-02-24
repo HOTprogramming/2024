@@ -2,6 +2,7 @@ package frc.robot.Autons;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public abstract class AutonBase {
     CustomTrajectoryGenerator trajectoryGenerator = new CustomTrajectoryGenerator();
     public boolean runShooter = false;
     public boolean runIntake = false; 
-    public boolean runArm = false; 
+    public ArmCommanded armCommand = ArmCommanded.shotMap; 
     public boolean seedPose = false;
     public boolean runFeeder = false;
     public boolean autoAim = false;

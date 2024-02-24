@@ -105,8 +105,8 @@ public class ConstantsBase {
 
 
     public abstract class Auton {
-        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 4;
+        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 3;
         
         public Auton getAuton() {
             return this;

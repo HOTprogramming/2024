@@ -174,7 +174,7 @@ public Arm(RobotState robotState) {
          
       } 
         else if(commander.armCommanded() == ArmCommanded.trap){
-        commandedPosition = constants.TRAP/360;
+        commandedPosition = constants.TRAP/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
@@ -184,7 +184,7 @@ public Arm(RobotState robotState) {
 
       }
       else if (commander.armCommanded() == ArmCommanded.protect){
-        commandedPosition = constants.PROTECT/360;
+        commandedPosition = constants.PROTECT/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
