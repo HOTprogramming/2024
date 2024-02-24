@@ -63,8 +63,34 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
-
-
+            RIGHT_FLYWHEEL_CAN = 12;
+            LEFT_FLYWHEEL_CAN = 11;
+            FEEDER_CAN = 13;
+    
+            TARGET_SPEED_INCREMENT = 5;
+            START_TARGET_SPEED = 70;
+    
+            FEEDER_SPEED = 10;
+            FEEDER_REVOLUTIONS = 25;
+    
+            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
+    
+            FLYWHEEL_KP = 22.0;
+            FLYWHEEL_KI = 0.0;
+            FLYWHEEL_KD = 2.0;
+            LEFT_FLYWHEEL_KV = .130; //.133
+            RIGHT_FLYWHEEL_KV = .138; //.138
+            LEFT_FLYWHEEL_KS = 0.8; //.384
+            RIGHT_FLYWHEEL_KS = 0.8; //38
+            FLYWHEEL_PEAK_VOLTAGE = 12;
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+    
+            RFLYWHEEL_KP = 16.0;
+            RFLYWHEEL_KI = 0.0;
+            RFLYWHEEL_KD = 4.0;
         }
 
     }
@@ -88,6 +114,7 @@ public class PracticeBotConstants extends ConstantsBase {
          CLOSE = 151.0;
          PROTECT = 126.0;
          AMP = 139.0;
+         ARMOFFSET = 0.4;
         }
          }
 

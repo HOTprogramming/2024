@@ -38,10 +38,10 @@ public class ConstantsBase {
             this.camera = compBotConstants.new Camera();
             this.arm = compBotConstants.new Arm();
             this.drivetrain = compBotConstants.new Drivetrain();
-            this.shooter = practiceBotConstants.new Shooter();
-            this.intake = practiceBotConstants.new Intake();
-            this.feeder = practiceBotConstants.new Feeder();
-            this.lights = practiceBotConstants.new Lights();
+            this.shooter = compBotConstants.new Shooter();
+            this.intake = compBotConstants.new Intake();
+            this.feeder = compBotConstants.new Feeder();
+            this.lights = compBotConstants.new Lights();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
@@ -267,7 +267,7 @@ public class ConstantsBase {
         public double CRUISEVELOCITY = 400;
         public double ACCELERATION = 400;
         public double JERK = 1500;
-        public double ARMKP = 250;
+        public double ARMKP = 200;
         public double ARMKI = 0;
         public double ARMKD = 0;
         public double ARMKV = 0.8;
@@ -278,6 +278,7 @@ public class ConstantsBase {
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
         public double AMP = 139.0;
+        public double ARMOFFSET = 0.4;
     }
 
     public abstract class Drivetrain {
