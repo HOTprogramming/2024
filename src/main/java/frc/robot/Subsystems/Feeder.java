@@ -65,6 +65,10 @@ public class Feeder implements SubsystemBase {
         } else {
             robotState.setFeederOn(false);
         }
+
+        robotState.setBeamBreak(sensorFeeder.get());
+        SmartDashboard.putBoolean("beambreak", sensorFeeder.get());
+
     }
     
     @Override
@@ -102,11 +106,13 @@ public class Feeder implements SubsystemBase {
             } else { 
                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }           
-        } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
-            feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
-        } else if (commander.setShoot()) {
-            feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
-        } else {
+            } 
+            
+            else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
+                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+            }
+            
+            else {
                 Out.Output = 0;
                 feeder.setControl(Out);
                 feeder.setPosition(0);

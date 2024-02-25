@@ -1,5 +1,8 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -17,29 +20,78 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 
 import static frc.robot.Constants.ExtensionConstants.*;
 
 public class Extension implements SubsystemBase{
 
+ConstantsBase.Extension constants;
 RobotState robotState;  
 TalonFX extendMotor;
 
 MotionMagicVoltage extendMagic;
+double extendedCommanded;
 
 StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
-Victor spitter;
+VictorSPX spitter;
+double fullyExtended = 2;
+double fullyExtendedAmp = 1.2;
+double middlePoint = 0.6;
+double extensionZero = 0;
+double initialShooterPos;
+double currentShooterPos;
+double extensionTimer;
+double extendedCommandedPosition;
+
+
+public enum ExtensionPhaseTrap{
+    one,
+    two,
+    three,
+    four,
+    five,
+    six,
+    seven,
+    eight,
+    nine,
+    ten,
+    none,
+    timer,
+    driver,
+    stop;
+}
+
+public enum ExtensionPhaseAmp{
+    one,
+    two,
+    three,
+    four,
+    five,
+    six,
+    seven,
+    eight,
+    nine,
+    ten,
+    none;
+}
+
+ExtensionPhaseTrap extendTrapPhase;
+ExtensionPhaseAmp extendAmpPhase;
 
 public Extension(RobotState robotState) {
 
     this.robotState = robotState;
-    extendMotor = new TalonFX(EXTENSION_CAN, "drivetrain");
-    spitter = new Victor(SPITTER_CAN);
+    this.constants = robotState.getConstants().getExtensionConstants();
+
+    extendMotor = new TalonFX(constants.EXTENSIONCAN, "drivetrain");
+    spitter = new VictorSPX(constants.SPITTERCAN);
 
     extendMagic = new MotionMagicVoltage(0);
 
@@ -54,20 +106,21 @@ public Extension(RobotState robotState) {
 
     /* Configure current limits */
     MotionMagicConfigs emm = ecfg.MotionMagic;
-    emm.MotionMagicCruiseVelocity = 5; // 5 rotations per second cruise
-    emm.MotionMagicAcceleration = 10; // Take approximately 0.5 seconds to reach max vel
+    emm.MotionMagicCruiseVelocity = constants.ECRUISEVELOCITY; // 5 rotations per second cruise
+    emm.MotionMagicAcceleration = constants.EACCELERATION; // Take approximately 0.5 seconds to reach max vel
     // Take approximately 0.2 seconds to reach max accel 
-    emm.MotionMagicJerk = 50;
+    emm.MotionMagicJerk = constants.EJERK;
 
     Slot0Configs eSlot0 = ecfg.Slot0;
-    eSlot0.kP = 60;
-    eSlot0.kI = 0;
-    eSlot0.kD = 0.1;
-    eSlot0.kV = 0.12;
-    eSlot0.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+    eSlot0.kP = constants.EKP;
+    eSlot0.kI = constants.EKI;
+    eSlot0.kD = constants.EKD;
+    eSlot0.kV = constants.EKV;
+    eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
+    ecfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     StatusCode status = StatusCode.StatusCodeNotInitialized;
     for(int i = 0; i < 5; ++i) {
@@ -77,14 +130,22 @@ public Extension(RobotState robotState) {
     if (!status.isOK()) {
       System.out.println("Could not configure device. Error: " + status.toString());
     }
+    extendMotor.setPosition(0);
+    spitter.setNeutralMode(NeutralMode.Brake);
+    returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+    extensionTimer = 0;
     }
 
 
 
     @Override
     public void updateState() {
-        
-        robotState.setExtendPos(extendPosition.getValueAsDouble()*360);
+        extendPosition.refresh(); 
+        extendVelocity.refresh();
+
+        robotState.setExtendPos(extendPosition.getValueAsDouble());
+        SmartDashboard.putNumber("extensionPos", extendPosition.getValueAsDouble());
+        SmartDashboard.putString("extensionenum", getExtensionPhaseTrap().toString());
     }
 
     @Override
@@ -93,31 +154,104 @@ public Extension(RobotState robotState) {
         throw new UnsupportedOperationException("Unimplemented method 'init'");
     }
 
+    public void returnExtensionPhaseTrap(ExtensionPhaseTrap phaseTrap){
+        this.extendTrapPhase = phaseTrap;
+    }
+
+    public ExtensionPhaseTrap getExtensionPhaseTrap(){
+        return this.extendTrapPhase;
+    }
+
+
     @Override
     public void enabled(RobotCommander commander) {
         extendPosition.refresh(); 
         extendVelocity.refresh();
+        
+        if(commander.armCommanded() == ArmCommanded.handoff){
+            SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
+            if(extensionTimer < 75){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
+            SmartDashboard.putNumber("firststage", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one && extendPosition.getValueAsDouble() > (middlePoint - 0.05)){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
+            SmartDashboard.putNumber("thirdstage", 1);
+            }
+        
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
+            SmartDashboard.putNumber("initialshooterpos", initialShooterPos);
+            SmartDashboard.putNumber("fifthstage", 1);
+            } 
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos < 7){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
+            SmartDashboard.putNumber("seventhstage", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos > 7){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
+            SmartDashboard.putNumber("andreas", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
+            SmartDashboard.putNumber("ninthstage", 1);
+            }
+            else{
+                returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+                SmartDashboard.putNumber("ended", 1);
+            }
 
-       
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
+                //command extension to middle position
+                robotState.setShooterOnAmpTrap(true);
+                robotState.setFeederOnAmpTrap(false);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("secondstage", 1);
+                extensionTimer++;
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two){
+                //spin shooter until beambreak is false, hold extension position
+                robotState.setShooterOnAmpTrap(true);
+                robotState.setFeederOnAmpTrap(true);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                initialShooterPos = robotState.getShooterPos();
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("fourthstage", 1);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three){
+                //start encoder counts and keep spinning shooter, spin spitter, hold extension position
+                currentShooterPos = robotState.getShooterPos() - initialShooterPos;
+                robotState.setShooterOnAmpTrap(true);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("sixthstage", 1);
+                SmartDashboard.putNumber("currentshooterpos", currentShooterPos);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
+                //move extension to fully extended position
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0);
+                SmartDashboard.putNumber("driverstage", 1);
+            }
+        }
 
-        if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()<=4){
-        extendMotor.setControl(extendMagic.withPosition(4).withSlot(0));
-        spitter.setVoltage(0);
+        else if(commander.armCommanded() == ArmCommanded.amp){
+            SmartDashboard.putNumber("here", 1);
+            extendedCommandedPosition = fullyExtended;
+            extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
+            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
-        else if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()>4 && robotState.getShooterPos()<50){
-        spitter.setVoltage(0.1);
-        }
-        else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterPos()>=50){
-        extendMotor.setControl(extendMagic.withPosition(7).withSlot(0));
-        spitter.setVoltage(0);
-        }
-        else if(commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos()>=6.9){
-        extendMotor.setControl(extendMagic.withPosition(7).withSlot(0));
-        spitter.setVoltage(0.1);
-        }
+
         else{
-        extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
-        spitter.setVoltage(0);
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+            extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
+            spitter.set(ControlMode.PercentOutput, 0);
+            extensionTimer = 0;
+        }
+
+        if(commander.setShoot()){
+            spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
 
@@ -125,14 +259,12 @@ public Extension(RobotState robotState) {
 
     @Override
     public void disabled() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'disabled'");
+       extendMotor.stopMotor();
     }
 
     @Override
     public void reset() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reset'");
+        extendMotor.stopMotor();
     }
     
 }

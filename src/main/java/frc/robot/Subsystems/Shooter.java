@@ -4,6 +4,7 @@ import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
@@ -27,13 +28,14 @@ public class Shooter implements SubsystemBase {
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
     double leftHighSpeed = 69;
     double rightHighSpeed = 54;
-    double leftSlowSpeed = 18;
-    double rightSlowSpeed = 18;
+    double leftSlowSpeed = 24;
+    double rightSlowSpeed = 24;
     double leftIdleSpeed = 33;
     double rightIdleSpeed = 33;
     boolean isShooting = false;
     
     ConstantsBase.Shooter constants;
+    StatusSignal<Double> shooterPosition;
 
 
     public Shooter(RobotState robotState, double leftCurrentLimit, double rightCurrentLimit) {
@@ -102,6 +104,8 @@ public class Shooter implements SubsystemBase {
             System.out.println("Could not apply configs, error code: " + rightStatus.toString());
         }
 
+        shooterPosition = leftFlywheel.getPosition();
+
     }
 
     @Override
@@ -119,6 +123,9 @@ public class Shooter implements SubsystemBase {
 
         }
 
+        shooterPosition.refresh();
+        robotState.setShooterPos(leftFlywheel.getPosition().getValueAsDouble());
+
         SmartDashboard.putNumber("Shooter_Left target speed", leftHighSpeed * 60);
         SmartDashboard.putNumber("Shooter_right target speed", rightHighSpeed * 60);
         SmartDashboard.putNumber("Shooter_Left speed RPM", leftFlywheel.getVelocity().getValueAsDouble() * 60);
@@ -130,20 +137,24 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void enabled(RobotCommander commander) {
+
+        shooterPosition.refresh();
+
         if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton) {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
-
-        } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
-            
         }
+
+        // } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterOnAmpTrap()){
+        //     leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
+        //     rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
+            
+        // }
         else if (commander.armCommanded() == ArmCommanded.zero){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftIdleSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightIdleSpeed));
         }
-        else if (commander.armCommanded() == ArmCommanded.amp){
+        else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getShooterOnAmpTrap()){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
         }

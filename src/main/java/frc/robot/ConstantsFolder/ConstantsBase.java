@@ -23,6 +23,7 @@ public class ConstantsBase {
     private Drivetrain drivetrain;
     private Shooter shooter;
     private Arm arm;
+    private Extension extension;
     private Intake intake;
     private Feeder feeder;
     private Lights lights;
@@ -37,6 +38,7 @@ public class ConstantsBase {
             this.auton = compBotConstants.new Auton();
             this.camera = compBotConstants.new Camera();
             this.arm = compBotConstants.new Arm();
+            this.extension = compBotConstants.new Extension();
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = compBotConstants.new Shooter();
             this.intake = compBotConstants.new Intake();
@@ -48,6 +50,7 @@ public class ConstantsBase {
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
             this.arm = practiceBotConstants.new Arm();
+            this.extension = practiceBotConstants.new Extension();
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
@@ -90,6 +93,10 @@ public class ConstantsBase {
 
     public Arm getArmConstants(){
         return this.arm;
+    }
+
+    public Extension getExtensionConstants(){
+        return this.extension;
     }
 
     public Lights getLightsConstants() {
@@ -274,11 +281,26 @@ public class ConstantsBase {
         public double ARMKS = 0.1;
         public double ZERO = 95.0;
         public double SHOOT = 118.0;
-        public double TRAP = 150.0;
+        public double TRAP = 138.0;
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
         public double AMP = 139.0;
         public double ARMOFFSET = 0.4;
+        public double HANDOFF = 160;
+    }
+
+    public abstract class Extension{
+        public double ECRUISEVELOCITY = 15;
+        public double EACCELERATION = 15;
+        public double EJERK = 50;
+        public double EKP = 30;
+        public double EKI = 0.5;
+        public double EKD = 0;
+        public double EKV = 0.12;
+        public double EKS = 0.25;
+        public int EXTENSIONCAN = 10;
+        public int SPITTERCAN = 20;
+
     }
 
     public abstract class Drivetrain {

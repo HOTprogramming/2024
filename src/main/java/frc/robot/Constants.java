@@ -228,7 +228,7 @@ public final class Constants {
     }
 
     public final class ExtensionConstants{
-        public static final int EXTENSION_CAN = 0;
+        public static final int EXTENSION_CAN = 10;
         public static final int SPITTER_CAN = 19;
     }
 }
