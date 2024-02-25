@@ -125,7 +125,7 @@ public Arm(RobotState robotState) {
     CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
     cancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     cancoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-    cancoderConfig.MagnetSensor.MagnetOffset = 0.4;
+    cancoderConfig.MagnetSensor.MagnetOffset = constants.ARMOFFSET;
     cancoder.getConfigurator().apply(cancoderConfig);
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
@@ -150,9 +150,21 @@ public Arm(RobotState robotState) {
 }  
 
     public void updateState(){
-        robotePosToSpeaker = robotState.getPoseToSpeaker();
+      robotePosToSpeaker = robotState.getPoseToSpeaker();
 
-        robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
+      robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
+
+      armPosition.refresh(); 
+      armVelocity.refresh();
+      cancoderPosition.refresh(); 
+      cancoderVelocity.refresh();
+      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360.0);
+      SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
+      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360.0);
+      SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
+      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
+      SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
+      SmartDashboard.putNumber("armCommandedPosition", commandedPosition*360);
     }
 
     public void enabled(RobotCommander commander){

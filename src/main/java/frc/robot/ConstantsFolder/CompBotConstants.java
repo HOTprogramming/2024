@@ -45,9 +45,9 @@ public class CompBotConstants extends ConstantsBase {
     public class Feeder extends ConstantsBase.Feeder {
         public Feeder() {
          FEEDER_CAN = 13;
-         FEEDERSPEED = 83;
-         FEEDERSPEED2 = 83;
-         DESIREDENCODERED = 7;
+         FEEDERSPEED = 95;
+         FEEDERSPEED2 = 95;
+         DESIREDENCODERED = 2;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
         }
@@ -63,11 +63,11 @@ public class CompBotConstants extends ConstantsBase {
 
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
-            Slot0Configs SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(100).withKI(0).withKD(0.2)
+            SWERVE_STEER_GAINS = new Slot0Configs()
+            .withKP(400).withKI(0).withKD(8)
             .withKS(0).withKV(1.5).withKA(0);
 
-            Slot0Configs SWERVE_DRIVE_GAINS = new Slot0Configs()
+            SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
             .withKS(0).withKV(0).withKA(0);
             
@@ -147,7 +147,7 @@ public class CompBotConstants extends ConstantsBase {
             kFrontLeftDriveMotorId = 1;
             kFrontLeftSteerMotorId = 2;
             kFrontLeftEncoderId = 43;
-            kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
+            kFrontLeftEncoderOffset = 0.3193359375 * Math.PI;
 
             kFrontLeftXPosInches = 10.125;
             kFrontLeftYPosInches = 10.125;
@@ -158,7 +158,7 @@ public class CompBotConstants extends ConstantsBase {
             kFrontRightDriveMotorId = 3;
             kFrontRightSteerMotorId = 4;
             kFrontRightEncoderId = 41;
-            kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
+            kFrontRightEncoderOffset = -0.149169921875 * Math.PI;
 
             kFrontRightXPosInches = 10.125;
             kFrontRightYPosInches = -10.125;
@@ -169,7 +169,7 @@ public class CompBotConstants extends ConstantsBase {
             kBackLeftDriveMotorId = 5;
             kBackLeftSteerMotorId = 6;
             kBackLeftEncoderId = 42;
-            kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
+            kBackLeftEncoderOffset = -0.04150390625 * Math.PI;
 
             kBackLeftXPosInches = -10.125;
             kBackLeftYPosInches = 10.125;
@@ -181,7 +181,7 @@ public class CompBotConstants extends ConstantsBase {
             kBackRightDriveMotorId = 7;
             kBackRightSteerMotorId = 8;
             kBackRightEncoderId = 40;
-            kBackRightEncoderOffset = -0.44140625 * Math.PI;
+            kBackRightEncoderOffset = -0.279296875 * Math.PI;
 
             kBackRightXPosInches = -10.125;
             kBackRightYPosInches = -10.125;
@@ -204,6 +204,46 @@ public class CompBotConstants extends ConstantsBase {
         
     }
 
+    public class Shooter extends ConstantsBase.Shooter {
+        public Shooter() {
+            RIGHT_FLYWHEEL_CAN = 12;
+            LEFT_FLYWHEEL_CAN = 11;
+            FEEDER_CAN = 13;
+    
+            TARGET_SPEED_INCREMENT = 5;
+            START_TARGET_SPEED = 70;
+    
+            FEEDER_SPEED = 10;
+            FEEDER_REVOLUTIONS = 25;
+    
+            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
+    
+            FLYWHEEL_KP = 22.0;
+            FLYWHEEL_KI = 0.0;
+            FLYWHEEL_KD = 2.0;
+            LEFT_FLYWHEEL_KV = .130; //.133
+            RIGHT_FLYWHEEL_KV = .138; //.138
+            LEFT_FLYWHEEL_KS = 0.8; //.384
+            RIGHT_FLYWHEEL_KS = 0.8; //38
+            FLYWHEEL_PEAK_VOLTAGE = 12;
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+    
+            RFLYWHEEL_KP = 16.0;
+            RFLYWHEEL_KI = 0.0;
+            RFLYWHEEL_KD = 4.0;
+        }
+
+    }
+
+    public class Lights extends ConstantsBase.Lights {
+        public Lights() {
+         LIGHTS_CAN = 51;
+        }
+    }
+
     public class Arm extends ConstantsBase.Arm {
         public Arm(){
             CANCODER_CAN = 44;
@@ -222,6 +262,7 @@ public class CompBotConstants extends ConstantsBase {
             CLOSE = 151.0;
             PROTECT = 126.0;
             AMP = 145.0;
+            ARMOFFSET = 0.098;
         }
     }
 }
