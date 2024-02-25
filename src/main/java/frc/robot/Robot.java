@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
 
   // define autons (alphabetical)
 
-  private Red3Right red3Right; 
   private NewAuto newAuto;
 
   // creates autonSelector
@@ -56,7 +55,6 @@ public class Robot extends TimedRobot {
     intake = new Intake(robotState);
     lights = new Lights(robotState);
 
-    red3Right = new Red3Right(robotState);
     newAuto = new NewAuto(robotState);
 
     autoSelector.setDefaultOption("A. Square", "aidenSquare");

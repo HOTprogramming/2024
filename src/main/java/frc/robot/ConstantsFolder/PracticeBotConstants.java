@@ -16,8 +16,8 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Auton extends ConstantsBase.Auton {
         public Auton() {
-            AUTON_DEFAULT_MAX_VELOCITY_METERS = 5.0;
-            AUTON_DEFAULT_MAX_ACCEL_METERS = 3.5;
+            AUTON_DEFAULT_MAX_VELOCITY_METERS = 4.0;
+            AUTON_DEFAULT_MAX_ACCEL_METERS = 3.0;
         }        
     }
   
@@ -100,14 +100,14 @@ public class PracticeBotConstants extends ConstantsBase {
         public Arm(){
          CANCODER_CAN = 44;
          ARM_CAN = 9;
-         CRUISEVELOCITY = 400;
-         ACCELERATION = 400;
-         JERK = 1500;
-         ARMKP = 250;
-         ARMKI = 0;
-         ARMKD = 0;
+         CRUISEVELOCITY = 500;
+         ACCELERATION = 420;//350
+         JERK = 1000;
+         ARMKP = 200;
+         ARMKI = 20;
+         ARMKD = 0;//4
          ARMKV = 0.8;
-         ARMKS = 0.1;
+         ARMKS = 0.4;
          ZERO = 95.0;
          SHOOT = 118.0;
          TRAP = 150.0;
@@ -133,8 +133,8 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(400).withKI(0).withKD(8)
-            .withKS(0).withKV(1.5).withKA(0);
+            .withKP(600).withKI(0).withKD(8)
+            .withKS(0).withKV(.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
@@ -157,7 +157,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
 
 
-            WHEEL_SLIP_CURRENT = 300.0; // *tune later
+            WHEEL_SLIP_CURRENT = 600.0; //300
 
             // Meters per second theroretical max speed at 12 volts
             FREE_SPEED_12V = 6.37032;
