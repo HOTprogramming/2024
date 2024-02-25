@@ -32,6 +32,7 @@ public class RobotState {
     private double shooterPos;
     private boolean beambreak;
     private boolean shooterAmpTrap;
+    private boolean feederAmpTrap;
  
     private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
@@ -200,5 +201,13 @@ public class RobotState {
 
     public boolean getShooterOnAmpTrap(){
         return shooterAmpTrap;
+    }
+
+    public void setFeederOnAmpTrap(boolean feederAmpTrap){
+        this.feederAmpTrap = feederAmpTrap;
+    }
+
+    public boolean getFeederOnAmpTrap(){
+        return feederAmpTrap;
     }
 }

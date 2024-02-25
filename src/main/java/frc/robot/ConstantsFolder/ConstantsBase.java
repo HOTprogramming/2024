@@ -281,7 +281,7 @@ public class ConstantsBase {
         public double ARMKS = 0.1;
         public double ZERO = 95.0;
         public double SHOOT = 118.0;
-        public double TRAP = 150.0;
+        public double TRAP = 138.0;
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
         public double AMP = 139.0;
@@ -291,13 +291,13 @@ public class ConstantsBase {
         public double ECRUISEVELOCITY = 15;
         public double EACCELERATION = 15;
         public double EJERK = 50;
-        public double EKP = 20;
+        public double EKP = 30;
         public double EKI = 0.5;
         public double EKD = 0;
         public double EKV = 0.12;
         public double EKS = 0.25;
         public int EXTENSIONCAN = 10;
-        public int SPITTERCAN = 19;
+        public int SPITTERCAN = 20;
     }
 
     public abstract class Drivetrain {

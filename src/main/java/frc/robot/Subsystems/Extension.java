@@ -41,12 +41,13 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
-double fullyExtended = 2.25;
+double fullyExtended = 0.9;
 double fullyExtendedAmp = 2;
-double middlePoint = 1.11;
+double middlePoint = 0.6;
 double extensionZero = 0;
 double initialShooterPos;
 double currentShooterPos;
+double extensionTimer;
 
 
 public enum ExtensionPhaseTrap{
@@ -60,7 +61,8 @@ public enum ExtensionPhaseTrap{
     eight,
     nine,
     ten,
-    none;
+    none,
+    timer;
 }
 
 public enum ExtensionPhaseAmp{
@@ -115,7 +117,7 @@ public Extension(RobotState robotState) {
 
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
-    ecfg.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    ecfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     StatusCode status = StatusCode.StatusCodeNotInitialized;
     for(int i = 0; i < 5; ++i) {
@@ -127,6 +129,8 @@ public Extension(RobotState robotState) {
     }
     extendMotor.setPosition(0);
     spitter.setNeutralMode(NeutralMode.Brake);
+    returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+    extensionTimer = 0;
     }
 
 
@@ -138,6 +142,7 @@ public Extension(RobotState robotState) {
 
         robotState.setExtendPos(extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionPos", extendPosition.getValueAsDouble());
+        SmartDashboard.putString("extensionenum", getExtensionPhaseTrap().toString());
     }
 
     @Override
@@ -146,20 +151,18 @@ public Extension(RobotState robotState) {
         throw new UnsupportedOperationException("Unimplemented method 'init'");
     }
 
-    public ExtensionPhaseTrap returnExtensionPhaseTrap(ExtensionPhaseTrap phaseTrap){
-        extendTrapPhase = phaseTrap;
-        return extendTrapPhase;
+    public void returnExtensionPhaseTrap(ExtensionPhaseTrap phaseTrap){
+        this.extendTrapPhase = phaseTrap;
     }
 
     public ExtensionPhaseTrap getExtensionPhaseTrap(){
-        return extendTrapPhase;
+        return this.extendTrapPhase;
     }
 
     public ExtensionPhaseAmp returnExtensionPhaseAmp(ExtensionPhaseAmp phaseAmp){
         extendAmpPhase = phaseAmp;
         return extendAmpPhase;
     }
-
     public ExtensionPhaseAmp getExtensionPhaseAmp(){
         return extendAmpPhase;
     }
@@ -169,61 +172,99 @@ public Extension(RobotState robotState) {
         extendPosition.refresh(); 
         extendVelocity.refresh();
 
-
-        if(commander.armCommanded() == ArmCommanded.trap){
-            if(robotState.getExtendPos()<=middlePoint){
-            returnExtensionPhaseAmp(ExtensionPhaseAmp.one);
+        //amp and trap are swapped in the code.
+        if(commander.armCommanded() == ArmCommanded.amp){
+            SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
+            // if(extensionTimer < 50){
+            // returnExtensionPhaseTrap(ExtensionPhaseTrap.timer);
+            // }
+            // else if(robotState.getExtendPos()<=(middlePoint - 0.05)){
+            // returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
+            // SmartDashboard.putNumber("firststage", 1);
+            // }
+            if(extensionTimer < 75){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
+            SmartDashboard.putNumber("firststage", 1);
             }
-            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one && robotState.getExtendPos()>(middlePoint - 0.1)){
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one && extendPosition.getValueAsDouble() > (middlePoint - 0.05)){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
+            SmartDashboard.putNumber("thirdstage", 1);
             }
             else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
-            initialShooterPos = robotState.getShooterPos();
+            SmartDashboard.putNumber("initialshooterpos", initialShooterPos);
+            SmartDashboard.putNumber("fifthstage", 1);
             } 
-            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos>50){
-            returnExtensionPhaseTrap(ExtensionPhaseTrap.four);
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos < 7){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
+            SmartDashboard.putNumber("seventhstage", 1);
             }
-            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four && robotState.getExtendPos() > (fullyExtended - 0.1)){
-                returnExtensionPhaseTrap(ExtensionPhaseTrap.five);
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos > 7){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.four);
+            SmartDashboard.putNumber("andreas", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.four);
+            SmartDashboard.putNumber("ninthstage", 1);
             }
             else{
                 returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+                SmartDashboard.putNumber("ended", 1);
+            }
+
+            if(commander.armCommanded() == ArmCommanded.trap && commander.setShoot()){
+                spitter.set(ControlMode.PercentOutput, -0.8);
             }
 
 
-
+            // if(getExtensionPhaseTrap() == ExtensionPhaseTrap.timer){
+            //     robotState.setShooterOnAmpTrap(true);
+            //     robotState.setFeederOnAmpTrap(false);
+            //     extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+            //     extensionTimer++;
+            // }
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
                 //command extension to middle position
+                robotState.setShooterOnAmpTrap(true);
+                robotState.setFeederOnAmpTrap(false);
                 extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-                spitter.set(ControlMode.PercentOutput, 0);
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("secondstage", 1);
+                extensionTimer++;
             }
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two){
                 //spin shooter until beambreak is false, hold extension position
                 robotState.setShooterOnAmpTrap(true);
+                robotState.setFeederOnAmpTrap(true);
                 extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-                spitter.set(ControlMode.PercentOutput, 0);
+                initialShooterPos = robotState.getShooterPos();
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("fourthstage", 1);
             }
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three){
                 //start encoder counts and keep spinning shooter, spin spitter, hold extension position
                 currentShooterPos = robotState.getShooterPos() - initialShooterPos;
                 robotState.setShooterOnAmpTrap(true);
                 extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-                spitter.set(ControlMode.PercentOutput, 0.1);
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("sixthstage", 1);
+                SmartDashboard.putNumber("currentshooterpos", currentShooterPos);
             }
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.four){
                 //move extension to fully extended position
                 extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
+                SmartDashboard.putNumber("eigthstage", 1);
             }
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.five){
                 //spin spitter out, hold extension position
                 extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
-                spitter.set(ControlMode.PercentOutput, -0.1);
+                spitter.set(ControlMode.PercentOutput, -0.8);
+                SmartDashboard.putNumber("tenthstage", 1);
             }
     
         }
 
-        else if(commander.armCommanded() == ArmCommanded.amp){
+        else if(commander.armCommanded() == ArmCommanded.trap){
             if(robotState.getExtendPos()<=middlePoint){
                 returnExtensionPhaseAmp(ExtensionPhaseAmp.one);
                 }
@@ -236,7 +277,7 @@ public Extension(RobotState robotState) {
                 else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.three && robotState.getShooterPos() > 50){
                 returnExtensionPhaseAmp(ExtensionPhaseAmp.four);
                 }
-                else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.four && robotState.getExtendPos() > (fullyExtendedAmp - 0.1)){
+                else if(getExtensionPhaseAmp() == ExtensionPhaseAmp.four && robotState.getExtendPos() > (fullyExtendedAmp - 0.1) && commander.setShoot()){
                     returnExtensionPhaseAmp(ExtensionPhaseAmp.five);
                 }
                 else{
@@ -271,36 +312,35 @@ public Extension(RobotState robotState) {
                     extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
                     spitter.set(ControlMode.PercentOutput, -0.1);
                 }
-        }
-
-        else{
+        } else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
             returnExtensionPhaseAmp(ExtensionPhaseAmp.none);
             extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
             spitter.set(ControlMode.PercentOutput, 0);
+            extensionTimer = 0;
         }
 
 
         
-        if(commander.armCommanded() == ArmCommanded.trap){
-            extendedCommanded = 0.36;
-            extendMotor.setControl(extendMagic.withPosition(extendedCommanded));
-            SmartDashboard.putNumber("extendedCommanded", extendedCommanded);
-        }
-        else if(commander.armCommanded() == ArmCommanded.trap2){
-            extendedCommanded = 2.25;
-            extendMotor.setControl(extendMagic.withPosition(extendedCommanded));
-            SmartDashboard.putNumber("extendedCommanded", extendedCommanded);
-        }
-        else if(commander.armCommanded() == ArmCommanded.trapZero){
-            extendedCommanded = 0;
-            extendMotor.setControl(extendMagic.withPosition(extendedCommanded));
-            SmartDashboard.putNumber("extendedCommanded", extendedCommanded);
-        }
-        else{
-        extendMotor.setVoltage(0);
-        spitter.set(ControlMode.PercentOutput, 0.1);
-        }
+        // if(commander.armCommanded() == ArmCommanded.trap){
+        //     extendedCommanded = 0.36;
+        //     extendMotor.setControl(extendMagic.withPosition(extendedCommanded));
+        //     SmartDashboard.putNumber("extendedCommanded", extendedCommanded);
+        // }
+        // else if(commander.armCommanded() == ArmCommanded.trap2){
+        //     extendedCommanded = 2.25;
+        //     extendMotor.setControl(extendMagic.withPosition(extendedCommanded));
+        //     SmartDashboard.putNumber("extendedCommanded", extendedCommanded);
+        // }
+        // else if(commander.armCommanded() == ArmCommanded.trapZero){
+        //     extendedCommanded = 0;
+        //     extendMotor.setControl(extendMagic.withPosition(extendedCommanded));
+        //     SmartDashboard.putNumber("extendedCommanded", extendedCommanded);
+        // }
+        // else{
+        // extendMotor.setVoltage(0);
+        // spitter.set(ControlMode.PercentOutput, 0.1);
+        // }
 
 
     }

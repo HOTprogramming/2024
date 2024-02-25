@@ -66,6 +66,7 @@ RobotState robotState;
         }
 
         robotState.setBeamBreak(sensorFeeder.get());
+        SmartDashboard.putBoolean("beambreak", sensorFeeder.get());
 
     }
     
@@ -91,7 +92,7 @@ RobotState robotState;
             }
         if (commander.getFeeder() ||  commander.setShoot()) {
      
-             if (sensorFeeder.get()){//always false true if it detects an object       
+             if (sensorFeeder.get()){     
 
 
                 if (goal >= constants.DESIREDENCODERED){ 
@@ -106,7 +107,7 @@ RobotState robotState;
             }           
             } 
             
-            else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
+            else if (commander.armCommanded() == ArmCommanded.trap && robotState.getFeederOnAmpTrap()){
                 feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }
             

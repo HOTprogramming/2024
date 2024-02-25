@@ -74,17 +74,17 @@ public class PracticeBotConstants extends ConstantsBase {
         public Arm(){
          CANCODER_CAN = 44;
          ARM_CAN = 9;
-         CRUISEVELOCITY = 400;
-         ACCELERATION = 400;
-         JERK = 1500;
-         ARMKP = 250;
-         ARMKI = 0;
-         ARMKD = 0;
+         CRUISEVELOCITY = 500;
+         ACCELERATION = 420;//350
+         JERK = 1000;
+         ARMKP = 200;
+         ARMKI = 20;
+         ARMKD = 0;//4
          ARMKV = 0.8;
-         ARMKS = 0.1;
+         ARMKS = 0.4;
          ZERO = 95.0;
          SHOOT = 118.0;
-         TRAP = 150.0;
+         TRAP = 138.0;
          CLOSE = 151.0;
          PROTECT = 126.0;
          AMP = 139.0;
@@ -96,7 +96,7 @@ public class PracticeBotConstants extends ConstantsBase {
         ECRUISEVELOCITY = 15;
         EACCELERATION = 15;
         EJERK = 50;
-        EKP = 20;
+        EKP = 30;
         EKI = 0.5;
         EKD = 0;
         EKV = 0.12;

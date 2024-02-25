@@ -28,8 +28,8 @@ public class Shooter implements SubsystemBase {
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
     double leftHighSpeed = 69;
     double rightHighSpeed = 54;
-    double leftSlowSpeed = 18;
-    double rightSlowSpeed = 18;
+    double leftSlowSpeed = 24;
+    double rightSlowSpeed = 24;
     double leftIdleSpeed = 33;
     double rightIdleSpeed = 33;
     boolean isShooting = false;
@@ -138,7 +138,7 @@ public class Shooter implements SubsystemBase {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
 
-        } else if (robotState.getShooterOnAmpTrap()){
+        } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterOnAmpTrap()){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
             

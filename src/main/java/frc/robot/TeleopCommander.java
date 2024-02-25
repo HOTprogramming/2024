@@ -155,8 +155,8 @@ public class TeleopCommander implements RobotCommander {
         if(operator.getRightBumper() && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
             return ArmCommanded.shotMap;
         }
-        else if(operator.getXButton()){
-            return ArmCommanded.trap;
+        else if(operator.getAButton()){
+            return ArmCommanded.amp;
         }
         else if (operator.getRightBumper() && operator.getAButton()){
             return ArmCommanded.close;
@@ -165,7 +165,7 @@ public class TeleopCommander implements RobotCommander {
             return ArmCommanded.trap2;
         }
         else if (operator.getBButton()){
-            return ArmCommanded.amp;
+            return ArmCommanded.trap;
         }
         else if (operator.getRightStickButton()){
             return ArmCommanded.trapZero;
