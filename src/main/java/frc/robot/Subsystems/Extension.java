@@ -41,7 +41,7 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
-double fullyExtended = 0.9;
+double fullyExtended = 2;
 double fullyExtendedAmp = 2;
 double middlePoint = 0.6;
 double extensionZero = 0;
@@ -175,13 +175,6 @@ public Extension(RobotState robotState) {
         //amp and trap are swapped in the code.
         if(commander.armCommanded() == ArmCommanded.amp){
             SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
-            // if(extensionTimer < 50){
-            // returnExtensionPhaseTrap(ExtensionPhaseTrap.timer);
-            // }
-            // else if(robotState.getExtendPos()<=(middlePoint - 0.05)){
-            // returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
-            // SmartDashboard.putNumber("firststage", 1);
-            // }
             if(extensionTimer < 75){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
             SmartDashboard.putNumber("firststage", 1);
@@ -190,6 +183,7 @@ public Extension(RobotState robotState) {
             returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
             SmartDashboard.putNumber("thirdstage", 1);
             }
+        
             else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
             SmartDashboard.putNumber("initialshooterpos", initialShooterPos);

@@ -74,6 +74,7 @@ public enum ArmCommanded{
   amp,
   trap,
   trap2,
+  handoff,
   trapZero,
   zero,
   none;

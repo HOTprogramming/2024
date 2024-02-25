@@ -92,7 +92,7 @@ RobotState robotState;
             }
         if (commander.getFeeder() ||  commander.setShoot()) {
      
-             if (sensorFeeder.get()){     
+             if (sensorFeeder.get()){     //always false true if it detects an object.
 
 
                 if (goal >= constants.DESIREDENCODERED){ 
@@ -107,7 +107,7 @@ RobotState robotState;
             }           
             } 
             
-            else if (commander.armCommanded() == ArmCommanded.trap && robotState.getFeederOnAmpTrap()){
+            else if (commander.armCommanded() == ArmCommanded.amp && robotState.getFeederOnAmpTrap()){
                 feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }
             
