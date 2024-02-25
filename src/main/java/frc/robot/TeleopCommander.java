@@ -156,7 +156,12 @@ public class TeleopCommander implements RobotCommander {
             return ArmCommanded.shotMap;
         }
         else if(operator.getXButton()){
-            return ArmCommanded.amp;
+            if (operator.getAButton()){
+                return ArmCommanded.amp;
+            }
+            else{
+            return ArmCommanded.handoff;
+            }
         }
         else if (operator.getRightBumper() && operator.getAButton()){
             return ArmCommanded.close;
@@ -232,11 +237,6 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public boolean getIntake() {
         return operator.getLeftTriggerAxis() > .1;
-    }
-
-    @Override
-    public boolean getRunSlurper() {
-        return operator.getAButton();
     }
 
     @Override

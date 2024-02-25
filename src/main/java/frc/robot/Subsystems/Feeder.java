@@ -107,7 +107,7 @@ RobotState robotState;
             }           
             } 
             
-            else if (commander.armCommanded() == ArmCommanded.amp && robotState.getFeederOnAmpTrap()){
+            else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
                 feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }
             

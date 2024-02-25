@@ -284,7 +284,8 @@ public class ConstantsBase {
         public double TRAP = 138.0;
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
-        public double AMP = 139.0;
+        public double AMP = 140.3;
+        public double HANDOFF = 160;
     }
 
     public abstract class Extension{

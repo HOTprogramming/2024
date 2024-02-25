@@ -137,17 +137,18 @@ public class Shooter implements SubsystemBase {
         if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect) {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
-
-        } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterOnAmpTrap()){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
-            
         }
+
+        // } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterOnAmpTrap()){
+        //     leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
+        //     rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
+            
+        // }
         else if (commander.armCommanded() == ArmCommanded.zero){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftIdleSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightIdleSpeed));
         }
-        else if (commander.armCommanded() == ArmCommanded.amp){
+        else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getShooterOnAmpTrap()){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
         }

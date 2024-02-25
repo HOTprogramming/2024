@@ -168,12 +168,6 @@ public class Intake implements SubsystemBase {
             slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 42.0 / 360 * 4096); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 42.0 / 360 * 4096);
-        } else if (commander.getRunSlurper()) { // A button
-            Out.Output = 0;
-            intake.setControl(Out);
-            slurperSpin.set(ControlMode.PercentOutput, 0);
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 319.0 / 360 * 4096);
-            SmartDashboard.putNumber("SlurpDesiredPos", 73);
         } else {
             slurperArm.set(ControlMode.PercentOutput, 0);
             Out.Output = 0;

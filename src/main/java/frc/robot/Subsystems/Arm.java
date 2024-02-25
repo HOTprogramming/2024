@@ -199,6 +199,11 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
 
       }
+      else if (commander.armCommanded() == ArmCommanded.handoff){
+        commandedPosition = constants.HANDOFF/360;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+
+      }
       else if (commander.armCommanded() == ArmCommanded.amp){
         commandedPosition = constants.AMP/360;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
