@@ -26,7 +26,8 @@ public class Feeder implements SubsystemBase {
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
      static DigitalInput sensorFeeder;
     TalonFXConfiguration feederConfigs = new TalonFXConfiguration();
-RobotState robotState;
+    RobotState robotState;
+
     public Feeder(RobotState robotState) { 
         this.robotState = robotState;
         constants = robotState.getConstants().getFeederConstants();
@@ -49,7 +50,7 @@ RobotState robotState;
          for (int i = 0; i < 5; ++i) {
              feederStatus = feeder.getConfigurator().apply(feederConfigs);
              if (feederStatus.isOK()) break;
-       }
+        }
            if(!feederStatus.isOK()) {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
@@ -75,24 +76,24 @@ RobotState robotState;
         boolean getFeeder = commander.getFeeder();
         boolean setShoot = commander.setShoot();
         feeder.setControl(Out);
-           SmartDashboard.putBoolean("Feeder getFeeder", commander.getFeeder());
-                      SmartDashboard.putBoolean("Feeder SetShoot", commander.setShoot());
-           SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-                  SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
-            SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
-            SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
-            SmartDashboard.putNumber("feeder position", feeder.getPosition().getValueAsDouble());
-                        SmartDashboard.putNumber("feeder goal", goal);
+        SmartDashboard.putBoolean("Feeder getFeeder", commander.getFeeder());
+        SmartDashboard.putBoolean("Feeder SetShoot", commander.setShoot());
+        SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
+        SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
+        SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
+        SmartDashboard.putNumber("feeder position", feeder.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("feeder goal", goal);
 
-            if ( encoder != -1 && sensorFeeder.get()){
-                
-                goal = feeder.getPosition().getValueAsDouble() - encoder;
-            }else{
-                encoder = feeder.getPosition().getValueAsDouble();
-            }
-        if (commander.getFeeder() ||  commander.setShoot()) {
-     
-             if (sensorFeeder.get()){     //always false true if it detects an object.
+        if ( encoder != -1 && sensorFeeder.get()){
+            
+            goal = feeder.getPosition().getValueAsDouble() - encoder;
+        }else{
+            encoder = feeder.getPosition().getValueAsDouble();
+        }
+        if (commander.getFeeder() && !commander.setShoot()) {
+            
+            if (sensorFeeder.get()){
 
 
                 if (goal >= constants.DESIREDENCODERED){ 
@@ -116,13 +117,13 @@ RobotState robotState;
                 feeder.setControl(Out);
                 feeder.setPosition(0);
 
-            }
         }
+    }
         
     @Override
     public void disabled() {
         feeder.stopMotor();
-        feeder.setNeutralMode(NeutralModeValue.Coast);
+        feeder.setNeutralMode(NeutralModeValue.Brake);
     }
 
     @Override

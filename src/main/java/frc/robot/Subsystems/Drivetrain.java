@@ -56,8 +56,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
-    private double currentRobotePos;
-
     // for velocity calcs
     private SwerveDriveState currentState;
     private Pose2d lastPose = new Pose2d();
@@ -232,7 +230,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-            if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
+            if (robotState.getVisionTimestamps()[i] != -1 && 
+            robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR && 
+            currentState.Pose.getX() > 10) {
                 addVisionMeasurement(robotState.getVisionMeasurements()[i],
                                         robotState.getVisionTimestamps()[i],
                                         robotState.getVisionStdevs().extractColumnVector(i));
@@ -284,10 +284,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
         }
         
-        if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
-            desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
+        try{
+      desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
                                                 commander.getDriveState().poseMeters.getY(),
-                                                commander.getDriveRotationState().position));         
+                                                commander.getDriveRotationState().position));    
+        } catch(Exception e){
+
         }
 
         if (commander.getBrakeCommand()) {

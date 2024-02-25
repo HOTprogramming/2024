@@ -2,6 +2,7 @@ package frc.robot.Autons;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public abstract class AutonBase {
     public Pose2d startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     public State holoDriveState = new State(0, 0, 0, new Pose2d(0, 0, Rotation2d.fromDegrees(0)), 0);
     public boolean swerveBrake = false;
-    public Pose2d refrenceTolerances = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    public Pose2d refrenceTolerances = new Pose2d(0.1, 0.1, Rotation2d.fromDegrees(15));
     public RotationSequence.State rotationState = new RotationSequence.State(Rotation2d.fromDegrees(0), 0);
 
     
@@ -33,7 +34,7 @@ public abstract class AutonBase {
     CustomTrajectoryGenerator trajectoryGenerator = new CustomTrajectoryGenerator();
     public boolean runShooter = false;
     public boolean runIntake = false; 
-    public boolean runArm = false; 
+    public ArmCommanded armCommand = ArmCommanded.zero; 
     public boolean seedPose = false;
     public boolean runFeeder = false;
     public boolean autoAim = false;

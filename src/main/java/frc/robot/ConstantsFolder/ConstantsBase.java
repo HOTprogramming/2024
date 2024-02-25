@@ -40,10 +40,10 @@ public class ConstantsBase {
             this.arm = compBotConstants.new Arm();
             this.extension = compBotConstants.new Extension();
             this.drivetrain = compBotConstants.new Drivetrain();
-            this.shooter = practiceBotConstants.new Shooter();
-            this.intake = practiceBotConstants.new Intake();
-            this.feeder = practiceBotConstants.new Feeder();
-            this.lights = practiceBotConstants.new Lights();
+            this.shooter = compBotConstants.new Shooter();
+            this.intake = compBotConstants.new Intake();
+            this.feeder = compBotConstants.new Feeder();
+            this.lights = compBotConstants.new Lights();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
@@ -112,8 +112,8 @@ public class ConstantsBase {
 
 
     public abstract class Auton {
-        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 4;
+        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 3;
         
         public Auton getAuton() {
             return this;
@@ -222,8 +222,8 @@ public class ConstantsBase {
 
         public String RIGHT_CAMERA_NAME = "right_camera";
 
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(30));
+        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120));
         public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
 
         //LEFT
@@ -231,8 +231,8 @@ public class ConstantsBase {
 
         public String LEFT_CAMERA_NAME = "left_camera";
 
-        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(-30));
+        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
+        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120));
         public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
 
     }
@@ -273,10 +273,10 @@ public class ConstantsBase {
         public int ARM_CAN = 9;
         public double CRUISEVELOCITY = 400;
         public double ACCELERATION = 400;
-        public double JERK = 1500;
+        public double JERK = 1000;
         public double ARMKP = 250;
         public double ARMKI = 0;
-        public double ARMKD = 0;
+        public double ARMKD = 200;
         public double ARMKV = 0.8;
         public double ARMKS = 0.1;
         public double ZERO = 95.0;
@@ -284,7 +284,8 @@ public class ConstantsBase {
         public double TRAP = 138.0;
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
-        public double AMP = 140.3;
+        public double AMP = 139.0;
+        public double ARMOFFSET = 0.4;
         public double HANDOFF = 160;
     }
 
@@ -299,6 +300,7 @@ public class ConstantsBase {
         public double EKS = 0.25;
         public int EXTENSIONCAN = 10;
         public int SPITTERCAN = 20;
+
     }
 
     public abstract class Drivetrain {

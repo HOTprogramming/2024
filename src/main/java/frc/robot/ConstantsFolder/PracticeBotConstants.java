@@ -16,8 +16,8 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Auton extends ConstantsBase.Auton {
         public Auton() {
-            AUTON_DEFAULT_MAX_VELOCITY_METERS = 5.0;
-            AUTON_DEFAULT_MAX_ACCEL_METERS = 3.5;
+            AUTON_DEFAULT_MAX_VELOCITY_METERS = 4.0;
+            AUTON_DEFAULT_MAX_ACCEL_METERS = 3.0;
         }        
     }
   
@@ -63,8 +63,34 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
-
-
+            RIGHT_FLYWHEEL_CAN = 12;
+            LEFT_FLYWHEEL_CAN = 11;
+            FEEDER_CAN = 13;
+    
+            TARGET_SPEED_INCREMENT = 5;
+            START_TARGET_SPEED = 70;
+    
+            FEEDER_SPEED = 10;
+            FEEDER_REVOLUTIONS = 25;
+    
+            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
+    
+            FLYWHEEL_KP = 22.0;
+            FLYWHEEL_KI = 0.0;
+            FLYWHEEL_KD = 2.0;
+            LEFT_FLYWHEEL_KV = .130; //.133
+            RIGHT_FLYWHEEL_KV = .138; //.138
+            LEFT_FLYWHEEL_KS = 0.8; //.384
+            RIGHT_FLYWHEEL_KS = 0.8; //38
+            FLYWHEEL_PEAK_VOLTAGE = 12;
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+    
+            RFLYWHEEL_KP = 16.0;
+            RFLYWHEEL_KI = 0.0;
+            RFLYWHEEL_KD = 4.0;
         }
 
     }
@@ -102,6 +128,7 @@ public class PracticeBotConstants extends ConstantsBase {
         EKD = 0;
         EKV = 0.12;
         EKS = 0.25;
+         ARMOFFSET = 0.4;
         }
     }
 
@@ -120,8 +147,8 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(400).withKI(0).withKD(8)
-            .withKS(0).withKV(1.5).withKA(0);
+            .withKP(600).withKI(0).withKD(8)
+            .withKS(0).withKV(.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
@@ -144,7 +171,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
 
 
-            WHEEL_SLIP_CURRENT = 300.0; // *tune later
+            WHEEL_SLIP_CURRENT = 600.0; //300
 
             // Meters per second theroretical max speed at 12 volts
             FREE_SPEED_12V = 6.37032;

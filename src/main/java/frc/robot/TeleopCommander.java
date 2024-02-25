@@ -166,11 +166,9 @@ public class TeleopCommander implements RobotCommander {
         else if (operator.getRightBumper() && operator.getAButton()){
             return ArmCommanded.close;
         }
-        else if (operator.getYButton()){
-            return ArmCommanded.trap2;
-        }
-        else if (operator.getBButton()){
-            return ArmCommanded.trap;
+        else if (operator.getRightBumper() && operator.getYButton()){
+            return ArmCommanded.protect;
+            //needs to be ArmCommanded.extend when extension parts are implemented.
         }
         else if (operator.getRightStickButton()){
             return ArmCommanded.trapZero;
@@ -243,6 +241,7 @@ public class TeleopCommander implements RobotCommander {
     public boolean setShoot() {
         return driver.getRightBumper();
     }
+    
      @Override
     public boolean getFeeder() {
         return operator.getLeftTriggerAxis() > .1;

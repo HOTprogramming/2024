@@ -152,8 +152,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public ArmCommanded armCommanded() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'armCommanded'");
+        return auto.armCommand;
     }
 
 }
