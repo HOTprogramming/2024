@@ -115,6 +115,7 @@ public class PracticeBotConstants extends ConstantsBase {
          PROTECT = 126.0;
          AMP = 140.3;
          HANDOFF = 160;
+         ARMOFFSET = 0.4;
         }
     }
 
@@ -128,7 +129,6 @@ public class PracticeBotConstants extends ConstantsBase {
         EKD = 0;
         EKV = 0.12;
         EKS = 0.25;
-         ARMOFFSET = 0.4;
         }
     }
 
