@@ -25,11 +25,7 @@ public class CompBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //All are false right now, once we start using the compbot, set each camera you have to true :D
-            HAS_FRONT_CAMERA = false;
-            HAS_REAR_CAMERA = false;
-            HAS_LEFT_CAMERA = false;
-            HAS_RIGHT_CAMERA = false;
+            super();
         }
     }
     public class Intake extends ConstantsBase.Intake {

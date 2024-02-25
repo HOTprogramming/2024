@@ -4,11 +4,14 @@ package frc.robot.Subsystems;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.utils.trajectory.CustomHolonomicDriveController;
 import frc.robot.utils.trajectory.RotationSequence;
 
 import java.sql.Driver;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Utils;
@@ -32,6 +35,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,6 +77,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     // TEMP pose 2d for get angle snap command
     private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
     private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
+
+    Map<CameraPositions, Double> perviousTimeStamp = new EnumMap<>(CameraPositions.class);
 
     public Drivetrain(RobotState robotState) {
 
@@ -229,27 +235,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             
         }
 
-        for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-            if (robotState.getVisionTimestamps()[i] != -1 && 
-            robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR && 
-            currentState.Pose.getX() > 10) {
-                addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                                        robotState.getVisionTimestamps()[i],
-                                        robotState.getVisionStdevs().extractColumnVector(i));
+
+        robotState.getVisionMeasurements().forEach((key,measurement) -> {
+            if (measurement != null) {
+                double fpgaTimeStamp = Timer.getFPGATimestamp();
+                double imageTimeStamp = fpgaTimeStamp + (measurement.getTimestamp() - perviousTimeStamp.get(key));
+                addVisionMeasurement(measurement.getPose(), imageTimeStamp, measurement.getSdtDeviation());
             
-               
-                // assuming it wants rotation in radians
+                perviousTimeStamp.put(key,measurement.getTimestamp());
             }
-
-            if(robotState.getVisionMeasurements()[i] != null){
-                SmartDashboard.putNumber("X Camera Pose " + i, robotState.getVisionMeasurements()[i].getX());
-                SmartDashboard.putNumber("Y Camera Pose " + i, robotState.getVisionMeasurements()[i].getY());
-                SmartDashboard.putNumber("Angle Camera Pose " + i, robotState.getVisionMeasurements()[i].getRotation().getDegrees());
-
-            } 
-        
-
-        }
+        });
 
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
@@ -321,9 +316,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getResetRobotPose()) {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            if (robotState.getVisionTimestamps()[3] != -1) {
-                seedFieldRelative(robotState.getVisionMeasurements()[3]);
-            }
+            // if (robotState.getVisionTimestamps()[3] != -1) {
+            //     seedFieldRelative(robotState.getVisionMeasurements()[3]);
+            // }
         }
     }
 

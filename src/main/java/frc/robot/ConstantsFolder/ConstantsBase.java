@@ -1,6 +1,9 @@
 package frc.robot.ConstantsFolder;
 
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
@@ -11,6 +14,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
+import frc.robot.Subsystems.CameraMeasurment;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -178,6 +183,23 @@ public class ConstantsBase {
         public double D1IntakeFeeder = 0.001;
         }
 
+    public class CameraConstant{
+
+        public CameraConstant(String name, Translation3d relativeTranslation, Rotation3d relativeRotation) {
+            this.name = name;
+            this.transform = new Transform3d(relativeTranslation, relativeRotation);
+        }
+
+        private String name;
+        public String getName() {
+            return name;
+        }
+        private Transform3d transform;
+        public Transform3d getTransform() {
+            return transform;
+        }
+    }
+
     public abstract class Camera {
         //DEFAULT VALUES ARE PRACTICE BOT VALUES
 
@@ -192,42 +214,28 @@ public class ConstantsBase {
 
         public double[] STDEV_GAIN = new double[] {.7, .7, 0.1};
         public double MAX_DISTANCE = 5.5;
-        //FRONT
-        public boolean HAS_FRONT_CAMERA = false;
 
-        public String FRONT_CAMERA_NAME = "front_camera";
+        public Map<CameraPositions, CameraConstant> cameraConstants = null;
         
-        public Translation3d FRONT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625));
-        public Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, 0, 0);
-        public Transform3d FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_RELATIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+        public Camera(){
+            cameraConstants = new EnumMap<>(CameraPositions.class);         
+            cameraConstants.put(CameraPositions.FRONT, new CameraConstant("front_camera",
+                                                                          new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625)),
+                                                                          new Rotation3d(0, 0, 0)));
 
-        //REAR
-        public boolean HAS_REAR_CAMERA = false;
+                                                                          
+            cameraConstants.put(CameraPositions.BACK, new CameraConstant("back_camera",
+                                                                         new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)),
+                                                                         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180))));
 
-        public String REAR_CAMERA_NAME = "back_camera";
+            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+                                                                          new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)),
+                                                                          new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120))));
 
-        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)); // -12.563, 0, 6.193
-        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)); // 0 20 180
-        public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
-
-        //RIGHT
-        public boolean HAS_RIGHT_CAMERA = false;
-
-        public String RIGHT_CAMERA_NAME = "right_camera";
-
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120));
-        public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
-
-        //LEFT
-        public boolean HAS_LEFT_CAMERA = false;
-
-        public String LEFT_CAMERA_NAME = "left_camera";
-
-        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120));
-        public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
-
+            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
+                                                                          new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)),
+                                                                          new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120))));
+        }
     }
  
     public abstract class Shooter {  

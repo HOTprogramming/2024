@@ -24,12 +24,7 @@ public class PracticeBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //PracticeBot will have all 4 cameras, missing front right now
-            HAS_FRONT_CAMERA = true;
-            HAS_REAR_CAMERA = true;
-            HAS_LEFT_CAMERA = true;
-            HAS_RIGHT_CAMERA = true;
-            
+            super();  
         }
     }
 

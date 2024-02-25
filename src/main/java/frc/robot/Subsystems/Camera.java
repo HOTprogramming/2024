@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
 import org.photonvision.proto.Photon.ProtobufPhotonTrackedTarget;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -37,13 +38,27 @@ import edu.wpi.first.networktables.StringPublisher;
 
 import java.beans.VetoableChangeListener;
 import java.io.IOException;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
+
+import javax.xml.crypto.Data;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.ConstantsFolder.ConstantsBase.CameraConstant;
 
 public class Camera implements SubsystemBase {
+
+    public enum CameraPositions {
+        FRONT,
+        BACK,
+        LEFT,
+        RIGHT
+    }
+
     ConstantsBase.Camera constants;
     RobotState robotState;
 
@@ -142,7 +157,11 @@ public class Camera implements SubsystemBase {
 
 
     double currentTime;
-    
+
+    Map<CameraPositions, CameraMeasurment> cameraMeasurements = new EnumMap<>(CameraPositions.class);
+
+    Map<CameraPositions, PhotonCamera> cameras = new EnumMap<>(CameraPositions.class);
+    Map<CameraPositions, DoubleArrayPublisher> publishers = new EnumMap<>(CameraPositions.class);
 
     // docs https://docs.photonvision.org/ 
 
@@ -158,60 +177,62 @@ public class Camera implements SubsystemBase {
             e.printStackTrace();
         }
 
-
-        if (constants.HAS_FRONT_CAMERA) {
-            frontCamera = new PhotonCamera(constants.FRONT_CAMERA_NAME);
-            frontCameraPub = table.getDoubleArrayTopic("Front_Camera").publish();
-        }
-        if (constants.HAS_LEFT_CAMERA) {
-            leftCamera = new PhotonCamera(constants.LEFT_CAMERA_NAME);
-            leftCameraPub = table.getDoubleArrayTopic("Left_Camera").publish();
-        }
-        if (constants.HAS_RIGHT_CAMERA) {
-            rightCamera = new PhotonCamera(constants.RIGHT_CAMERA_NAME);
-            rightCameraPub = table.getDoubleArrayTopic("Right_Camera").publish();
-        }
-        if (constants.HAS_REAR_CAMERA) {
-            rearCamera = new PhotonCamera(constants.REAR_CAMERA_NAME);
-            rearCameraPub = table.getDoubleArrayTopic("Rear_Camera").publish();
-        }
-
         // simulation setup
-        if (tempSimBool) {
-            globalShutterProperties = new SimCameraProperties();
-            globalShutterProperties.setFPS(60);
-            globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
-            simVision = new VisionSystemSim("SimVision");
-            simVision.addAprilTags(tags);
+        globalShutterProperties = new SimCameraProperties();
+        globalShutterProperties.setFPS(60);
+        globalShutterProperties.setCalibration(1920, 1080, Rotation2d.fromDegrees(70));
+        simVision = new VisionSystemSim("SimVision");
+        simVision.addAprilTags(tags);
 
-
-            if (constants.HAS_FRONT_CAMERA) {
+        CameraConstant cameraConstant = constants.cameraConstants.get(CameraPositions.FRONT);
+        if (cameraConstant != null) {
+                cameras.put(CameraPositions.FRONT, new PhotonCamera(cameraConstant.getName()));
+                publishers.put(CameraPositions.FRONT, table.getDoubleArrayTopic("Front_Camera").publish());
+            if (tempSimBool) {
                 simFrontCam = new PhotonCameraSim(frontCamera, globalShutterProperties);
-                simVision.addCamera(simFrontCam, constants.FRONT_CAMERA_TRANSFORM);
+                simVision.addCamera(simFrontCam, cameraConstant.getTransform());
 
                 simFrontCam.enableRawStream(true); // localhost:1181
                 simFrontCam.enableProcessedStream(true); // localhost:1182
                 simFrontCam.enableDrawWireframe(drawWireframes);
             }
-            if (constants.HAS_LEFT_CAMERA) {
+        }
+
+        cameraConstant = constants.cameraConstants.get(CameraPositions.LEFT);
+        if (cameraConstant != null) {
+            cameras.put(CameraPositions.LEFT, new PhotonCamera(cameraConstant.getName()));
+            publishers.put(CameraPositions.LEFT, table.getDoubleArrayTopic("Left_Camera").publish());
+            if (tempSimBool) {
                 simLeftCam = new PhotonCameraSim(leftCamera, globalShutterProperties);
-                simVision.addCamera(simLeftCam, constants.LEFT_CAMERA_TRANSFORM);
+                simVision.addCamera(simLeftCam, cameraConstant.getTransform());
 
                 simLeftCam.enableRawStream(true);
                 simLeftCam.enableProcessedStream(true);
                 simLeftCam.enableDrawWireframe(drawWireframes);
             }
-            if (constants.HAS_RIGHT_CAMERA) {
+        }
+        
+        cameraConstant = constants.cameraConstants.get(CameraPositions.RIGHT);
+        if (cameraConstant != null) {
+            cameras.put(CameraPositions.RIGHT, new PhotonCamera(cameraConstant.getName()));
+            publishers.put(CameraPositions.RIGHT, table.getDoubleArrayTopic("Right_Camera").publish());
+            if (tempSimBool) {
                 simRightCam = new PhotonCameraSim(rightCamera, globalShutterProperties);
-                simVision.addCamera(simRightCam, constants.RIGHT_CAMERA_TRANSFORM);
+                simVision.addCamera(simRightCam, cameraConstant.getTransform());
 
                 simRightCam.enableRawStream(true);
                 simRightCam.enableProcessedStream(true);
                 simRightCam.enableDrawWireframe(drawWireframes);
             }
-            if (constants.HAS_REAR_CAMERA) {
+        }
+        
+        cameraConstant = constants.cameraConstants.get(CameraPositions.BACK);
+        if (cameraConstant != null) {
+            cameras.put(CameraPositions.BACK, new PhotonCamera(cameraConstant.getName()));
+            publishers.put(CameraPositions.BACK, table.getDoubleArrayTopic("Rear_Camera").publish());
+            if (tempSimBool) {
                 simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
-                simVision.addCamera(simRearCam, constants.REAR_CAMERA_TRANSFORM);
+                simVision.addCamera(simRearCam, cameraConstant.getTransform());
 
                 simRearCam.enableRawStream(true);
                 simRearCam.enableProcessedStream(true);
@@ -219,6 +240,25 @@ public class Camera implements SubsystemBase {
             }
         }
     }
+
+    private CameraMeasurment updateCameraMeasurment(CameraConstant constant, PhotonCamera camera, double[]STDEV_GAIN) {
+                
+                CameraMeasurment measurement = new CameraMeasurment("front");
+                frontResult = camera.getLatestResult();
+                measurement.setTimestamp(frontResult.getTimestampSeconds());
+                measurement.setAmbiguity(frontResult.getBestTarget().getPoseAmbiguity());
+                
+                if (frontResult.hasTargets()) {
+                    frontBestTarget = frontResult.getBestTarget();
+                    measurement.setPose(PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
+                                                                                tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
+                                                                                constant.getTransform()).toPose2d());
+                    for (int i = 0; i < 3; i++) {
+                        measurement.setSdtDeviation(i, 0, frontBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
+                    }
+                }
+                return measurement;
+     }
 
     @Override
     public void updateState() {
@@ -230,147 +270,14 @@ public class Camera implements SubsystemBase {
             }
         }
 
-        if (constants.HAS_FRONT_CAMERA) {
-            frontResult = frontCamera.getLatestResult();
-            frontSampleTime = frontResult.getTimestampSeconds();
-            
-            if (frontResult.hasTargets()) {
-                frontBestTarget = frontResult.getBestTarget();
-                frontCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
-                                                                            tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
-                                                                            constants.FRONT_CAMERA_TRANSFORM).toPose2d();
-                for (int i = 0; i < 3; i++) {
-                    frontDevs.set(i, 0, frontBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
-                }
-                stDevs.setColumn(0, frontDevs);
-
-                if (frontBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
-                    
-                    frontSampleTime = -1;
-                }
-
-                frontCameraPub.set(new double[] {
-                    frontCamEstimation.getX(),
-                    frontCamEstimation.getY(),
-                    frontCamEstimation.getRotation().getDegrees()
-                });
-            } else {
-                frontCamEstimation = null;
-                frontSampleTime = -1;
-                // frontCameraPub.set(null);
+        cameraMeasurements.forEach((key,measurement) -> {
+            CameraConstant constant = constants.cameraConstants.get(key);
+            if (constant != null) {
+                measurement = updateCameraMeasurment(constant, cameras.get(key), timestamps);
             }
-            timestamps[0] = frontSampleTime;
-            poses[0] = frontCamEstimation;
-        }
-        if (constants.HAS_LEFT_CAMERA) {
-            leftResult = leftCamera.getLatestResult();
-            leftSampleTime = leftResult.getTimestampSeconds();
+        });
 
-            if (leftResult.hasTargets()) {
-                leftBestTarget = leftResult.getBestTarget();
-                leftCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(leftBestTarget.getBestCameraToTarget(),
-                                                                        tags.getTagPose(leftBestTarget.getFiducialId()).get(),
-                                                                        constants.LEFT_CAMERA_TRANSFORM).toPose2d();
-                
-                
-                for (int i = 0; i < 3; i++) {
-                    leftDevs.set(i, 0, leftBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
-                }
-                stDevs.setColumn(1, leftDevs);
-
-                if (leftBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
-                    leftSampleTime = -1;
-                }
-
-                leftCameraPub.set(new double[] {
-                    leftCamEstimation.getX(),
-                    leftCamEstimation.getY(),
-                    leftCamEstimation.getRotation().getDegrees()
-                });
-            } else {
-                leftCamEstimation = null;
-                leftSampleTime = -1;
-                // leftCameraPub.set(null);
-            }
-            timestamps[1] = leftSampleTime;
-            poses[1] = leftCamEstimation;
-
-        }
-        if (constants.HAS_RIGHT_CAMERA) {
-            rightResult = rightCamera.getLatestResult();
-            rightSampleTime = rightResult.getTimestampSeconds();
-
-            if (rightResult.hasTargets()) {
-                rightBestTarget = rightResult.getBestTarget();
-                rightCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(rightBestTarget.getBestCameraToTarget(),
-                                                                            tags.getTagPose(rightBestTarget.getFiducialId()).get(),
-                                                                            constants.RIGHT_CAMERA_TRANSFORM).toPose2d();
-
-                for (int i = 0; i < 3; i++) {
-                    rightDevs.set(i, 0, rightBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
-                }
-                stDevs.setColumn(2, rightDevs);
-
-                if (rightBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
-                    rightSampleTime = -1;
-                }
-
-                rightCameraPub.set(new double[] {
-                    rightCamEstimation.getX(),
-                    rightCamEstimation.getY(),
-                    rightCamEstimation.getRotation().getDegrees()
-                });
-            } else {
-                rightCamEstimation = null;
-                rightSampleTime = -1;
-                // rightCameraPub.set(null);
-            }
-            timestamps[2] = rightSampleTime;
-            poses[2] = rightCamEstimation;
-
-        }
-        if (constants.HAS_REAR_CAMERA) {
-            rearResult = rearCamera.getLatestResult();
-            rearSampleTime = rearResult.getTimestampSeconds();
-
-            if (rearResult.hasTargets()) {
-                rearBestTarget = rearResult.getBestTarget();
-                rearCamEstimation = PhotonUtils.estimateFieldToRobotAprilTag(rearBestTarget.getBestCameraToTarget(),
-                                                                            tags.getTagPose(rearBestTarget.getFiducialId()).get(),
-                                                                            constants.REAR_CAMERA_TRANSFORM).toPose2d();
-                
-                for (int i = 0; i < 3; i++) {
-                    rearDevs.set(i, 0, rearBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
-                }
-                stDevs.setColumn(3, rearDevs);
-                SmartDashboard.putNumber("Vision_RearDist", rearBestTarget.getBestCameraToTarget().getTranslation().getNorm());
-
-                SmartDashboard.putBoolean("Seeingstuff", false);
-
-                if (rearBestTarget.getBestCameraToTarget().getTranslation().getNorm() > constants.MAX_DISTANCE) {
-                    rearSampleTime = -1;
-                    SmartDashboard.putBoolean("Seeingstuff", true);
-                }
-
-
-                rearCameraPub.set(new double[] {
-                        rearCamEstimation.getX(),
-                        rearCamEstimation.getY(),
-                        rearCamEstimation.getRotation().getDegrees()
-                });
-            } else {
-                rearCamEstimation = null;
-                rearSampleTime = -1;
-                // rearCameraPub.set(null);
-            }
-            timestamps[3] = rearSampleTime;
-            poses[3] = rearCamEstimation;
-
-        }
-
-        robotState.setVisionStdevs(stDevs);
-        robotState.setVisionTimestamps(timestamps);
-        robotState.setVisionMeasurements(poses);
+        robotState.setVisionMeasurements(cameraMeasurements);
     }
 
     @Override

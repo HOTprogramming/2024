@@ -1,15 +1,17 @@
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.ConstantsFolder.ConstantsBase;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
+import frc.robot.Subsystems.Camera.CameraPositions;
+import frc.robot.Subsystems.CameraMeasurment;
 
 public class RobotState {
     private ConstantsBase constants;
@@ -18,9 +20,7 @@ public class RobotState {
     private Pose2d drivePose;
     private boolean atTargetPose;
 
-    private Pose2d[] visionMeasurements;
-    private double[] visionTimestamps;
-    private Matrix<N3, N4> visionStdevs;
+    private Map<CameraPositions, CameraMeasurment> visionMeasurements;
     private double poseToSpeaker;
     private Translation2d velocity;
     
@@ -123,29 +123,13 @@ public class RobotState {
     }
 
 
-    public void setVisionMeasurements(Pose2d[] visionMeasurements) {
+    public void setVisionMeasurements(Map<CameraPositions, CameraMeasurment> visionMeasurements) {
         this.visionMeasurements = visionMeasurements;
     }
 
 
-    public Pose2d[] getVisionMeasurements() {
+    public Map<CameraPositions, CameraMeasurment> getVisionMeasurements() {
         return visionMeasurements;
-    }
-
-    public void setVisionTimestamps(double[] visionTimestamps) {
-        this.visionTimestamps = visionTimestamps;
-    }
-
-    public double[] getVisionTimestamps() {
-        return visionTimestamps;
-    }
-
-    public void setVisionStdevs(Matrix<N3, N4> visionStdevs) {
-        this.visionStdevs = visionStdevs;
-    }
-
-    public Matrix<N3, N4> getVisionStdevs() {
-        return visionStdevs;
     }
 
     public void setArmPos(double armPos){
