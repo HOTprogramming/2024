@@ -134,7 +134,7 @@ public class Shooter implements SubsystemBase {
              leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
 
-        } else if (commander.armCommanded() == ArmCommanded.trap){
+        } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getExtendPos() > 4){
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
             
