@@ -247,5 +247,23 @@ public class TeleopCommander implements RobotCommander {
         return operator.getLeftTriggerAxis() > .1;
     }
 
+    @Override
+    public boolean climberUp() {
+        if(  operator.getPOV() >= 315 || (operator.getPOV() <= 45 && 0 <= operator.getPOV()) ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean climberDown() {
+        if(135 <= operator.getPOV() && operator.getPOV() <= 225){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 }

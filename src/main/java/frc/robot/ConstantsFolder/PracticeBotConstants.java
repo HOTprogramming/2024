@@ -61,6 +61,14 @@ public class PracticeBotConstants extends ConstantsBase {
         }
     }
 
+
+    public class Climber extends ConstantsBase.Climber {
+        public Climber() {
+            CLIMBER_CAN = 18;
+            CLIMBER_SPEED = 0.1;
+        }
+    } 
+
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
             RIGHT_FLYWHEEL_CAN = 12;

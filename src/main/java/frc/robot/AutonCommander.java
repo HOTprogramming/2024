@@ -155,4 +155,14 @@ public class AutonCommander implements RobotCommander {
         return auto.armCommand;
     }
 
+    @Override
+    public boolean climberUp() {
+        return false;
+    }
+
+    @Override
+    public boolean climberDown() {
+        return false;
+    }
+
 }

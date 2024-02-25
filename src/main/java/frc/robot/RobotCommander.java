@@ -52,5 +52,6 @@ public interface RobotCommander {
     public abstract double getTargetArmSpeed();
     public abstract boolean setShoot();
     public abstract ArmCommanded armCommanded();
-
+    public abstract boolean climberUp();
+    public abstract boolean climberDown();
 }
