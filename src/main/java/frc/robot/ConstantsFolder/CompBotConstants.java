@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -26,6 +27,13 @@ public class CompBotConstants extends ConstantsBase {
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
             super();
+            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+                                                       new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-11.75), Units.inchesToMeters(16.838)),
+                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120))));
+
+            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
+                                                       new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11.75), Units.inchesToMeters(16.838)),
+                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120))));
         }
     }
     public class Intake extends ConstantsBase.Intake {

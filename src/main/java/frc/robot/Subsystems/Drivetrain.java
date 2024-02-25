@@ -20,6 +20,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.fasterxml.jackson.databind.node.POJONode;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -27,6 +30,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
@@ -78,7 +83,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
     private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
 
-    Map<CameraPositions, Double> perviousTimeStamp = new EnumMap<>(CameraPositions.class);
+    Map<CameraPositions, Double> perviousTimeStamps = new EnumMap<>(CameraPositions.class);
 
     public Drivetrain(RobotState robotState) {
 
@@ -239,10 +244,27 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         robotState.getVisionMeasurements().forEach((key,measurement) -> {
             if (measurement != null) {
                 double fpgaTimeStamp = Timer.getFPGATimestamp();
-                double imageTimeStamp = fpgaTimeStamp + (measurement.getTimestamp() - perviousTimeStamp.get(key));
-                addVisionMeasurement(measurement.getPose(), imageTimeStamp, measurement.getSdtDeviation());
+                double imageTimeStamp = 0;
+                if (perviousTimeStamps.containsKey(key)) {
+                 imageTimeStamp = fpgaTimeStamp + (measurement.getTimestamp() - perviousTimeStamps.get(key));
+                } else {
+                    imageTimeStamp = fpgaTimeStamp;
+                }
+                if (measurement.getAmbiguity() < .2) {
+                    double xDiff = Math.abs(currentState.Pose.getX() - measurement.getPose().getX());
+                    double yDiff = Math.abs(currentState.Pose.getY() - measurement.getPose().getY());
+                    double thetaDiff = Math.abs(currentState.Pose.getRotation().getDegrees() - measurement.getPose().getRotation().getDegrees());
+                    // System.out.println(String.format("Key: %s:\n\t x: %f <= %f\n\t y: %f <= %f\n\t theta: %f <= %f ", 
+                    // key.name(),xDiff,(imageTimeStamp * velocities.getX()),yDiff,(imageTimeStamp * velocities.getY()),thetaDiff,(imageTimeStamp * velocities.getAngle().getDegrees())));
+                    // if (xDiff <= (imageTimeStamp * velocities.getX()) && 
+                    //     yDiff <= (imageTimeStamp * velocities.getY()) &&
+                    //     thetaDiff <= (imageTimeStamp * velocities.getAngle().getDegrees())) {
+                        Matrix<N3,N1> stdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), .7,.7,.5);
+                        addVisionMeasurement(measurement.getPose(), imageTimeStamp, stdDev); //robotState.getConstants().getCameraConstants().STDEV_GAIN);
+                    // }
+                }
             
-                perviousTimeStamp.put(key,measurement.getTimestamp());
+                perviousTimeStamps.put(key,measurement.getTimestamp());
             }
         });
 
@@ -316,9 +338,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getResetRobotPose()) {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            // if (robotState.getVisionTimestamps()[3] != -1) {
-            //     seedFieldRelative(robotState.getVisionMeasurements()[3]);
-            // }
+            CameraMeasurment measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
+            if (measurment != null) {
+                seedFieldRelative(measurment.getPose());
+            }
         }
     }
 

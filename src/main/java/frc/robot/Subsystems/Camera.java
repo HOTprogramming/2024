@@ -1,7 +1,9 @@
 package frc.robot.Subsystems;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.proto.Photon.ProtobufPhotonTrackedTarget;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -42,6 +44,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.xml.crypto.Data;
 
@@ -64,7 +67,7 @@ public class Camera implements SubsystemBase {
 
     // front
     PhotonCamera frontCamera;
-    PhotonPipelineResult frontResult;
+    PhotonPipelineResult result;
     PhotonTrackedTarget frontBestTarget;
     double frontSampleTime;
     Pose2d frontCamEstimation;
@@ -162,6 +165,7 @@ public class Camera implements SubsystemBase {
 
     Map<CameraPositions, PhotonCamera> cameras = new EnumMap<>(CameraPositions.class);
     Map<CameraPositions, DoubleArrayPublisher> publishers = new EnumMap<>(CameraPositions.class);
+    Map<CameraPositions, PhotonPoseEstimator> photonPoseEstimators = new EnumMap<>(CameraPositions.class); 
 
     // docs https://docs.photonvision.org/ 
 
@@ -188,6 +192,7 @@ public class Camera implements SubsystemBase {
         if (cameraConstant != null) {
                 cameras.put(CameraPositions.FRONT, new PhotonCamera(cameraConstant.getName()));
                 publishers.put(CameraPositions.FRONT, table.getDoubleArrayTopic("Front_Camera").publish());
+                photonPoseEstimators.put(CameraPositions.FRONT, new PhotonPoseEstimator(tags, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras.get(CameraPositions.FRONT), cameraConstant.getTransform()));
             if (tempSimBool) {
                 simFrontCam = new PhotonCameraSim(frontCamera, globalShutterProperties);
                 simVision.addCamera(simFrontCam, cameraConstant.getTransform());
@@ -202,6 +207,7 @@ public class Camera implements SubsystemBase {
         if (cameraConstant != null) {
             cameras.put(CameraPositions.LEFT, new PhotonCamera(cameraConstant.getName()));
             publishers.put(CameraPositions.LEFT, table.getDoubleArrayTopic("Left_Camera").publish());
+            photonPoseEstimators.put(CameraPositions.LEFT, new PhotonPoseEstimator(tags, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras.get(CameraPositions.LEFT), cameraConstant.getTransform()));
             if (tempSimBool) {
                 simLeftCam = new PhotonCameraSim(leftCamera, globalShutterProperties);
                 simVision.addCamera(simLeftCam, cameraConstant.getTransform());
@@ -216,6 +222,8 @@ public class Camera implements SubsystemBase {
         if (cameraConstant != null) {
             cameras.put(CameraPositions.RIGHT, new PhotonCamera(cameraConstant.getName()));
             publishers.put(CameraPositions.RIGHT, table.getDoubleArrayTopic("Right_Camera").publish());
+            photonPoseEstimators.put(CameraPositions.RIGHT, new PhotonPoseEstimator(tags, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras.get(CameraPositions.RIGHT), cameraConstant.getTransform()));
+
             if (tempSimBool) {
                 simRightCam = new PhotonCameraSim(rightCamera, globalShutterProperties);
                 simVision.addCamera(simRightCam, cameraConstant.getTransform());
@@ -230,6 +238,7 @@ public class Camera implements SubsystemBase {
         if (cameraConstant != null) {
             cameras.put(CameraPositions.BACK, new PhotonCamera(cameraConstant.getName()));
             publishers.put(CameraPositions.BACK, table.getDoubleArrayTopic("Rear_Camera").publish());
+            photonPoseEstimators.put(CameraPositions.BACK, new PhotonPoseEstimator(tags, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras.get(CameraPositions.BACK), cameraConstant.getTransform()));
             if (tempSimBool) {
                 simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
                 simVision.addCamera(simRearCam, cameraConstant.getTransform());
@@ -241,21 +250,51 @@ public class Camera implements SubsystemBase {
         }
     }
 
-    private CameraMeasurment updateCameraMeasurment(CameraConstant constant, PhotonCamera camera, double[]STDEV_GAIN) {
+    private CameraMeasurment updateCameraMeasurment(CameraPositions key, CameraConstant constant, PhotonCamera camera, DoubleArrayPublisher publisher, PhotonPoseEstimator estimator, double[]STDEV_GAIN) {
                 
-                CameraMeasurment measurement = new CameraMeasurment("front");
-                frontResult = camera.getLatestResult();
-                measurement.setTimestamp(frontResult.getTimestampSeconds());
-                measurement.setAmbiguity(frontResult.getBestTarget().getPoseAmbiguity());
+                CameraMeasurment measurement = null;
+                result = camera.getLatestResult();
                 
-                if (frontResult.hasTargets()) {
-                    frontBestTarget = frontResult.getBestTarget();
-                    measurement.setPose(PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
-                                                                                tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
-                                                                                constant.getTransform()).toPose2d());
-                    for (int i = 0; i < 3; i++) {
-                        measurement.setSdtDeviation(i, 0, frontBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
+                if (robotState.getDrivePose() != null){
+                    estimator.setReferencePose(robotState.getDrivePose());
+                }
+                Optional<EstimatedRobotPose> pose = estimator.update();
+                if (result.hasTargets()) {
+                    measurement = new CameraMeasurment(key.name());
+                    measurement.setTimestamp(result.getTimestampSeconds());
+                    measurement.setAmbiguity(result.getBestTarget().getPoseAmbiguity());
+                    frontBestTarget = result.getBestTarget();
+                    // if (pose.isPresent()) {
+                    //     measurement.setPose(pose.get().estimatedPose.toPose2d());
+                    // }
+                    if (result.getMultiTagResult().estimatedPose.isPresent) {
+                        Transform3d fieldToRobot = result.getMultiTagResult().estimatedPose.best.plus(constant.getTransform());
+                        measurement.setPose(new Pose2d(fieldToRobot.getTranslation().getX(), fieldToRobot.getTranslation().getY(), new Rotation2d(fieldToRobot.getRotation().getZ())));
+                        System.out.println("MultiTagFor: "+ key.name());
+                    } else {
+                        measurement.setPose(PhotonUtils.estimateFieldToRobotAprilTag(frontBestTarget.getBestCameraToTarget(), 
+                                                                                    tags.getTagPose(frontBestTarget.getFiducialId()).get(), 
+                                                                                    constant.getTransform()).toPose2d());
+                        System.out.println("SingleTag: "+ key.name() + "ID: " + frontBestTarget.getFiducialId());
                     }
+
+
+
+                    // for (int i = 0; i < 3; i++) {
+                    //     measurement.setSdtDeviation(i, 0, frontBestTarget.getBestCameraToTarget().getTranslation().getNorm() * constants.STDEV_GAIN[i]);
+                    // }
+
+                    publisher.set(new double[] {
+                        measurement.getPose().getX(),
+                        measurement.getPose().getY(),
+                        measurement.getPose().getRotation().getDegrees()
+                    });
+                } else {
+                publisher.set(new double[] {
+                        -10,
+                        -10,
+                        0
+                    });
                 }
                 return measurement;
      }
@@ -270,10 +309,14 @@ public class Camera implements SubsystemBase {
             }
         }
 
-        cameraMeasurements.forEach((key,measurement) -> {
-            CameraConstant constant = constants.cameraConstants.get(key);
+        constants.cameraConstants.forEach((key,constant) -> {
             if (constant != null) {
-                measurement = updateCameraMeasurment(constant, cameras.get(key), timestamps);
+                CameraMeasurment measurment = updateCameraMeasurment(key, constant, cameras.get(key), publishers.get(key), photonPoseEstimators.get(key), timestamps);
+                if (measurment != null) {
+                    cameraMeasurements.put(key,measurment);
+                } else {
+                    cameraMeasurements.remove(key);
+                }
             }
         });
 

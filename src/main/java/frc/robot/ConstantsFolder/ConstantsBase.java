@@ -20,7 +20,7 @@ import frc.robot.Subsystems.CameraMeasurment;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Practice;
+    public RobotType ROBOT_TYPE = RobotType.Comp;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;
@@ -212,7 +212,7 @@ public class ConstantsBase {
         //Y: Left and right (Left +)
         //Z: Vertical distance from the floor to the camera (Up +)
 
-        public double[] STDEV_GAIN = new double[] {.7, .7, 0.1};
+        public double[] STDEV_GAIN = new double[] {.7, .7, .5};
         public double MAX_DISTANCE = 5.5;
 
         public Map<CameraPositions, CameraConstant> cameraConstants = null;
@@ -228,13 +228,6 @@ public class ConstantsBase {
                                                                          new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)),
                                                                          new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180))));
 
-            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
-                                                                          new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)),
-                                                                          new Rotation3d(Units.degreesToRadians(-5), 0, Units.degreesToRadians(120))));
-
-            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
-                                                                          new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)),
-                                                                          new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120))));
         }
     }
  
