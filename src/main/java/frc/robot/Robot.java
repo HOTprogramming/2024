@@ -14,6 +14,7 @@ import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Feeder;
 import frc.robot.Subsystems.Lights;
+import frc.robot.Subsystems.Climber;
 
 public class Robot extends TimedRobot {
   private ConstantsBase constantsBase;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   private Feeder feeder;
   private Intake intake;
   private Lights lights;
+  private Climber climber;
   private Extension extension;
 
 
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
     camera = new Camera(robotState);
     intake = new Intake(robotState);
     lights = new Lights(robotState);
+    climber = new Climber(robotState);
     extension = new Extension(robotState);
 
     newAuto = new NewAuto(robotState);
@@ -86,8 +89,8 @@ public class Robot extends TimedRobot {
 
     shooter.updateState();
     arm.updateState();
+    climber.updateState();
     extension.updateState();
-    
   }
 
   @Override
@@ -104,6 +107,7 @@ public class Robot extends TimedRobot {
     arm.reset();
     intake.reset();
     feeder.reset();
+    climber.reset();
     extension.reset();
   }
 
@@ -116,6 +120,7 @@ public class Robot extends TimedRobot {
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
     lights.enabled(autonCommander);
+    climber.enabled(autonCommander);
     extension.enabled(autonCommander);
   }
 
@@ -129,6 +134,8 @@ public class Robot extends TimedRobot {
     intake.reset();
     feeder.reset();
     lights.reset();
+    climber.reset();
+    climber.init(teleopCommander);
     extension.reset();
   }
 
@@ -140,6 +147,7 @@ public class Robot extends TimedRobot {
     intake.enabled(teleopCommander);
     feeder.enabled(teleopCommander);
     lights.enabled(teleopCommander);
+    climber.enabled(teleopCommander);
     extension.enabled(teleopCommander);
   }
 
@@ -151,6 +159,7 @@ public class Robot extends TimedRobot {
     feeder.disabled();
     intake.disabled();
     lights.disabled();
+    climber.disabled();
     extension.disabled();
   }
 

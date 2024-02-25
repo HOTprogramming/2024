@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Climber;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -27,6 +28,7 @@ public class ConstantsBase {
     private Intake intake;
     private Feeder feeder;
     private Lights lights;
+    private Climber climber;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -44,6 +46,7 @@ public class ConstantsBase {
             this.intake = compBotConstants.new Intake();
             this.feeder = compBotConstants.new Feeder();
             this.lights = compBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
@@ -56,6 +59,7 @@ public class ConstantsBase {
             this.intake = practiceBotConstants.new Intake();
             this.feeder = practiceBotConstants.new Feeder();
             this.lights = practiceBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
 
         } else {
             this.auton = camBotConstants.new Auton();
@@ -65,6 +69,7 @@ public class ConstantsBase {
             this.intake = practiceBotConstants.new Intake();
             this.feeder = practiceBotConstants.new Feeder();
             this.lights = practiceBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
         }
     }
 
@@ -103,6 +108,9 @@ public class ConstantsBase {
         return this.lights;
     }
 
+    public Climber getClimberConstants(){
+        return this.climber;
+    }
 
     private enum RobotType {
         Comp,
@@ -122,6 +130,11 @@ public class ConstantsBase {
 
     public abstract class Lights {
         public int LIGHTS_CAN = 51;
+    }
+
+    public abstract class Climber {
+        public int CLIMBER_CAN = 18;
+        public double CLIMBER_SPEED = 0.1;
     }
 
     public abstract class Intake {
