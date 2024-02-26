@@ -14,6 +14,8 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -242,30 +244,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
 
         robotState.getVisionMeasurements().forEach((key,measurement) -> {
-            if (measurement != null) {
-                double fpgaTimeStamp = Timer.getFPGATimestamp();
-                double imageTimeStamp = 0;
-                if (perviousTimeStamps.containsKey(key)) {
-                 imageTimeStamp = fpgaTimeStamp + (measurement.getTimestamp() - perviousTimeStamps.get(key));
-                } else {
-                    imageTimeStamp = fpgaTimeStamp;
-                }
-                if (measurement.getAmbiguity() < .2) {
-                    double xDiff = Math.abs(currentState.Pose.getX() - measurement.getPose().getX());
-                    double yDiff = Math.abs(currentState.Pose.getY() - measurement.getPose().getY());
-                    double thetaDiff = Math.abs(currentState.Pose.getRotation().getDegrees() - measurement.getPose().getRotation().getDegrees());
-                    // System.out.println(String.format("Key: %s:\n\t x: %f <= %f\n\t y: %f <= %f\n\t theta: %f <= %f ", 
-                    // key.name(),xDiff,(imageTimeStamp * velocities.getX()),yDiff,(imageTimeStamp * velocities.getY()),thetaDiff,(imageTimeStamp * velocities.getAngle().getDegrees())));
-                    // if (xDiff <= (imageTimeStamp * velocities.getX()) && 
-                    //     yDiff <= (imageTimeStamp * velocities.getY()) &&
-                    //     thetaDiff <= (imageTimeStamp * velocities.getAngle().getDegrees())) {
-                        Matrix<N3,N1> stdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), .7,.7,.5);
-                        addVisionMeasurement(measurement.getPose(), imageTimeStamp, stdDev); //robotState.getConstants().getCameraConstants().STDEV_GAIN);
-                    // }
-                }
-            
-                perviousTimeStamps.put(key,measurement.getTimestamp());
-            }
+            measurement.ifPresent(
+                est -> {
+                    // Change our trust in the measurement based on the tags we can see
+                    var estStdDevs = robotState.getCameraStdDeviations().get(key);
+
+                    addVisionMeasurement(
+                            est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                });
         });
 
         // updates module states for finding encoder offsets
@@ -338,9 +324,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getResetRobotPose()) {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            CameraMeasurment measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
-            if (measurment != null) {
-                seedFieldRelative(measurment.getPose());
+            Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
+            if (measurment.isPresent()) {
+                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
             }
         }
     }

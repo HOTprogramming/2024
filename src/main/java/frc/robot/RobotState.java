@@ -1,10 +1,17 @@
 package frc.robot;
 
+import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
+import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -20,7 +27,10 @@ public class RobotState {
     private Pose2d drivePose;
     private boolean atTargetPose;
 
-    private Map<CameraPositions, CameraMeasurment> visionMeasurements;
+    private Map<CameraPositions, Optional<EstimatedRobotPose>> visionMeasurements;
+    
+    private Map<CameraPositions, Matrix<N3, N1>> cameraStdDeviations;
+
     private double poseToSpeaker;
     private Translation2d velocity;
     
@@ -122,13 +132,20 @@ public class RobotState {
         this.feederOn = feederOn;
     }
 
+    public Map<CameraPositions, Matrix<N3, N1>> getCameraStdDeviations() {
+        return cameraStdDeviations;
+    }
 
-    public void setVisionMeasurements(Map<CameraPositions, CameraMeasurment> visionMeasurements) {
+    public void setCameraStdDeviations(Map<CameraPositions, Matrix<N3, N1>> cameraStdDeviations) {
+        this.cameraStdDeviations = cameraStdDeviations;
+    }
+
+    public void setVisionMeasurements(Map<CameraPositions, Optional<EstimatedRobotPose>> visionMeasurements) {
         this.visionMeasurements = visionMeasurements;
     }
 
 
-    public Map<CameraPositions, CameraMeasurment> getVisionMeasurements() {
+    public Map<CameraPositions, Optional<EstimatedRobotPose>> getVisionMeasurements() {
         return visionMeasurements;
     }
 

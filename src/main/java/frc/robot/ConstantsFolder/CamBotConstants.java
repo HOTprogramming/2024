@@ -6,6 +6,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -29,12 +30,16 @@ public class CamBotConstants extends ConstantsBase {
             super();            
             cameraConstants.put(CameraPositions.FRONT, new CameraConstant("front_camera",
                                                                           new Translation3d(0.27, -0.2, 0.175),
-                                                                          new Rotation3d(0, Units.degreesToRadians(-8), 0)));
+                                                                          new Rotation3d(0, Units.degreesToRadians(-8), 0),
+                                                                          VecBuilder.fill(4, 4, 8),
+                                                                          VecBuilder.fill(0.5, 0.5, 1)));
 
                                                                           
             cameraConstants.put(CameraPositions.BACK, new CameraConstant("back_camera",
                                                                           new Translation3d(0, -0.28, 0.14),
-                                                                          new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180))));
+                                                                          new Rotation3d(0, Units.degreesToRadians(-45), Units.degreesToRadians(180)),
+                                                                          VecBuilder.fill(4, 4, 8),
+                                                                          VecBuilder.fill(0.5, 0.5, 1)));
 
             cameraConstants.put(CameraPositions.LEFT, null);
             cameraConstants.put(CameraPositions.RIGHT, null);

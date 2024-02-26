@@ -10,9 +10,13 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.Subsystems.CameraMeasurment;
@@ -20,7 +24,7 @@ import frc.robot.Subsystems.CameraMeasurment;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Comp;
+    public RobotType ROBOT_TYPE = RobotType.Practice;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;
@@ -185,9 +189,25 @@ public class ConstantsBase {
 
     public class CameraConstant{
 
-        public CameraConstant(String name, Translation3d relativeTranslation, Rotation3d relativeRotation) {
+        public CameraConstant(String name, 
+                              Translation3d relativeTranslation, 
+                              Rotation3d relativeRotation, 
+                              Matrix<N3, N1> singleTagStdDevs,
+                              Matrix<N3, N1> multiTagStdDevs) {
             this.name = name;
             this.transform = new Transform3d(relativeTranslation, relativeRotation);
+            this.singleTagStdDevs = singleTagStdDevs;
+            this.multiTagStdDevs = multiTagStdDevs;
+        }
+
+        private Matrix<N3, N1> singleTagStdDevs;
+        public Matrix<N3, N1> getSingleTagStdDevs() {
+            return singleTagStdDevs;
+        }
+
+        private Matrix<N3, N1> multiTagStdDevs;
+        public Matrix<N3, N1> getMultiTagStdDevs() {
+            return multiTagStdDevs;
         }
 
         private String name;
@@ -214,19 +234,23 @@ public class ConstantsBase {
 
         public double[] STDEV_GAIN = new double[] {.7, .7, .5};
         public double MAX_DISTANCE = 5.5;
-
+        
         public Map<CameraPositions, CameraConstant> cameraConstants = null;
         
         public Camera(){
             cameraConstants = new EnumMap<>(CameraPositions.class);         
             cameraConstants.put(CameraPositions.FRONT, new CameraConstant("front_camera",
                                                                           new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625)),
-                                                                          new Rotation3d(0, 0, 0)));
+                                                                          new Rotation3d(0, 0, 0),
+                                                                          VecBuilder.fill(4, 4, 8),
+                                                                          VecBuilder.fill(0.5, 0.5, 1)));
 
                                                                           
             cameraConstants.put(CameraPositions.BACK, new CameraConstant("back_camera",
                                                                          new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)),
-                                                                         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180))));
+                                                                         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)),
+                                                                         VecBuilder.fill(4, 4, 8),
+                                                                         VecBuilder.fill(0.5, 0.5, 1)));
 
         }
     }

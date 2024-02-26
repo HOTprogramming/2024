@@ -6,6 +6,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -29,11 +30,15 @@ public class CompBotConstants extends ConstantsBase {
             super();
             cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
                                                        new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-11.75), Units.inchesToMeters(16.838)),
-                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120))));
+                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
 
             cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
                                                        new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11.75), Units.inchesToMeters(16.838)),
-                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120))));
+                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
         }
     }
     public class Intake extends ConstantsBase.Intake {
