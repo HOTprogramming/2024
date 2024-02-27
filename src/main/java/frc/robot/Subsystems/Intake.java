@@ -169,6 +169,7 @@ public class Intake implements SubsystemBase {
             slurperSpin.set(ControlMode.PercentOutput, .8);
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 75.5 / 360 * 4096);
         } else {
+            SmartDashboard.putBoolean("Pulse_check", false); 
 
             Out.Output = 0;
             intake.setControl(Out);

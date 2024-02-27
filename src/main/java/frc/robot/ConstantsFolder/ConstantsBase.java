@@ -188,7 +188,7 @@ public class ConstantsBase {
         public double FEEDERSPEED2 = 83;
         public int DESIREDENCODERED = 3;
         public int FEEDER_SENSOR_CHANNEL = 0;
-        public double FEEDER_VELOCITY_ERROR = .1;
+        public double FEEDER_VELOCITY_ERROR = .3;
         public double P0IntakeFeeder = 4.0;
         public double I0IntakeFeeder = 0.5;
         public double D0IntakeFeeder = 0.0001;

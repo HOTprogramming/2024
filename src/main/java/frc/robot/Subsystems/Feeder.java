@@ -21,8 +21,7 @@ public class Feeder implements SubsystemBase {
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX feeder;
     int timer = 0;
-    double encoder;
-    double goal;
+    boolean hasRing = false;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
      static DigitalInput sensorFeeder;
     TalonFXConfiguration feederConfigs = new TalonFXConfiguration();
@@ -61,8 +60,11 @@ public class Feeder implements SubsystemBase {
     public void updateState() {
         SmartDashboard.putNumber("intake Speed", feeder.getVelocity().getValueAsDouble());                                              
         if ((feeder.getVelocity().getValueAsDouble()) >= (constants.FEEDERSPEED - constants.FEEDER_VELOCITY_ERROR) ){
+            SmartDashboard.putBoolean("Feeder_RSon", true);
             robotState.setFeederOn(true);
         } else {
+            SmartDashboard.putBoolean("Feeder_RSon", false);
+
             robotState.setFeederOn(false);
         }
 
@@ -78,27 +80,25 @@ public class Feeder implements SubsystemBase {
         // feeder.setControl(Out);
         SmartDashboard.putBoolean("Feeder getFeeder", commander.getFeeder());
         SmartDashboard.putBoolean("Feeder SetShoot", commander.setShoot());
-        SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
+        SmartDashboard.putBoolean("Feeder_detection", sensorFeeder.get());
         SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
         SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
-        SmartDashboard.putNumber("feeder position", feeder.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("feeder goal", goal);
+        SmartDashboard.putNumber("Feeder_position", feeder.getPosition().getValueAsDouble());
 
-        if ( encoder != -1 && sensorFeeder.get()){
-            
-            goal = feeder.getPosition().getValueAsDouble() - encoder;
-        }else{
-            encoder = feeder.getPosition().getValueAsDouble();
+        if (!hasRing && sensorFeeder.get()) {
+            hasRing = true;
+            feeder.setPosition(0);
+        } else if (hasRing && !sensorFeeder.get()) {
+            hasRing = false;
         }
-
 
         if (commander.getFeeder() && !commander.setShoot()) {
             
             if (sensorFeeder.get()){
 
 
-                if (goal >= constants.DESIREDENCODERED){ 
+                if (feeder.getPosition().getValueAsDouble() >= constants.DESIREDENCODERED){ 
                 
                     feeder.setControl(Out);
 
@@ -108,19 +108,13 @@ public class Feeder implements SubsystemBase {
             } else { 
                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }           
-            } 
-            
-            else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
-                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
-            }
-            else if (commander.setShoot()) {
-                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
-            }
-            
-            else {
-                Out.Output = 0;
-                feeder.setControl(Out);
-                feeder.setPosition(0);
+        } else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
+            feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+        } else if (commander.setShoot()) {
+            feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+        } else {
+            Out.Output = 0;
+            feeder.setControl(Out);
 
         }
     }
