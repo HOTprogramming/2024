@@ -40,6 +40,12 @@ public class RobotState {
     private double armPos;
     private double extendPos;
     private double shooterPos;
+    private boolean beambreak;
+    private boolean shooterAmpTrap;
+    private boolean feederAmpTrap;
+    private boolean twoTags;
+    private boolean oneTag;
+    private boolean noTag;
  
     private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
@@ -183,5 +189,49 @@ public class RobotState {
 
     public double getShooterPos(){
         return shooterPos;
+    }
+
+    public void setBeamBreak(boolean beambreak){
+        this.beambreak = beambreak;
+    }
+
+    public boolean getBeamBreak(){
+        return beambreak;
+    }
+
+    public void setShooterOnAmpTrap(boolean shooterAmpTrap){
+        this.shooterAmpTrap = shooterAmpTrap;
+    }
+
+    public boolean getShooterOnAmpTrap(){
+        return shooterAmpTrap;
+    }
+
+    public void setFeederOnAmpTrap(boolean feederAmpTrap){
+        this.feederAmpTrap = feederAmpTrap;
+    }
+
+    public boolean getFeederOnAmpTrap(){
+        return feederAmpTrap;
+    }
+
+    public void setTwoTags(boolean twoTags){
+        this.twoTags = twoTags;
+    }
+    public void setOneTag(boolean oneTag){
+        this.oneTag = oneTag;
+    }
+    public void setNoTag(boolean noTag){
+        this.noTag = noTag;
+    }
+
+    public boolean getTwoTags(){
+        return twoTags;
+    }
+    public boolean getOneTag(){
+        return oneTag;
+    }
+    public boolean getNoTag(){
+        return noTag;
     }
 }

@@ -20,6 +20,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.Subsystems.CameraMeasurment;
+import frc.robot.Subsystems.Climber;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -32,9 +33,11 @@ public class ConstantsBase {
     private Drivetrain drivetrain;
     private Shooter shooter;
     private Arm arm;
+    private Extension extension;
     private Intake intake;
     private Feeder feeder;
     private Lights lights;
+    private Climber climber;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -46,22 +49,26 @@ public class ConstantsBase {
             this.auton = compBotConstants.new Auton();
             this.camera = compBotConstants.new Camera();
             this.arm = compBotConstants.new Arm();
+            this.extension = compBotConstants.new Extension();
             this.drivetrain = compBotConstants.new Drivetrain();
             this.shooter = compBotConstants.new Shooter();
             this.intake = compBotConstants.new Intake();
             this.feeder = compBotConstants.new Feeder();
             this.lights = compBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
             this.arm = practiceBotConstants.new Arm();
+            this.extension = practiceBotConstants.new Extension();
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
             this.feeder = practiceBotConstants.new Feeder();
             this.lights = practiceBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
 
         } else {
             this.auton = camBotConstants.new Auton();
@@ -71,6 +78,7 @@ public class ConstantsBase {
             this.intake = practiceBotConstants.new Intake();
             this.feeder = practiceBotConstants.new Feeder();
             this.lights = practiceBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
         }
     }
 
@@ -101,10 +109,17 @@ public class ConstantsBase {
         return this.arm;
     }
 
+    public Extension getExtensionConstants(){
+        return this.extension;
+    }
+
     public Lights getLightsConstants() {
         return this.lights;
     }
 
+    public Climber getClimberConstants(){
+        return this.climber;
+    }
 
     private enum RobotType {
         Comp,
@@ -124,6 +139,11 @@ public class ConstantsBase {
 
     public abstract class Lights {
         public int LIGHTS_CAN = 51;
+    }
+
+    public abstract class Climber {
+        public int CLIMBER_CAN = 18;
+        public double CLIMBER_SPEED = 0.1;
     }
 
     public abstract class Intake {
@@ -299,11 +319,26 @@ public class ConstantsBase {
         public double ARMKS = 0.1;
         public double ZERO = 95.0;
         public double SHOOT = 118.0;
-        public double TRAP = 150.0;
+        public double TRAP = 138.0;
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
         public double AMP = 139.0;
         public double ARMOFFSET = 0.4;
+        public double HANDOFF = 160;
+    }
+
+    public abstract class Extension{
+        public double ECRUISEVELOCITY = 15;
+        public double EACCELERATION = 15;
+        public double EJERK = 50;
+        public double EKP = 30;
+        public double EKI = 0.5;
+        public double EKD = 0;
+        public double EKV = 0.12;
+        public double EKS = 0.25;
+        public int EXTENSIONCAN = 10;
+        public int SPITTERCAN = 20;
+
     }
 
     public abstract class Drivetrain {

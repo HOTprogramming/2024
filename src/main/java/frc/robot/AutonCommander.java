@@ -138,11 +138,6 @@ public class AutonCommander implements RobotCommander {
         // TODO Auto-generated method stub
         return auto.runIntake;
     }
-
-    @Override
-    public boolean getRunSlurper() {
-        return false;
-    }
     
     @Override
     public boolean getFeeder() {
@@ -158,6 +153,16 @@ public class AutonCommander implements RobotCommander {
     @Override
     public ArmCommanded armCommanded() {
         return auto.armCommand;
+    }
+
+    @Override
+    public boolean climberUp() {
+        return false;
+    }
+
+    @Override
+    public boolean climberDown() {
+        return false;
     }
 
 }

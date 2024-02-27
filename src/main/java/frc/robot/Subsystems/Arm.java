@@ -73,6 +73,9 @@ public enum ArmCommanded{
   protect,
   amp,
   trap,
+  trap2,
+  handoff,
+  trapZero,
   zero,
   auton,
   preload,
@@ -204,6 +207,10 @@ public Arm(RobotState robotState) {
       }
       else if (commander.armCommanded() == ArmCommanded.amp){
         commandedPosition = constants.AMP/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.handoff){
+        commandedPosition = constants.HANDOFF/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.auton){

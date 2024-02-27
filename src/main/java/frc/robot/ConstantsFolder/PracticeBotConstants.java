@@ -69,6 +69,14 @@ public class PracticeBotConstants extends ConstantsBase {
         }
     }
 
+
+    public class Climber extends ConstantsBase.Climber {
+        public Climber() {
+            CLIMBER_CAN = 18;
+            CLIMBER_SPEED = 0.1;
+        }
+    } 
+
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
             RIGHT_FLYWHEEL_CAN = 12;
@@ -118,13 +126,27 @@ public class PracticeBotConstants extends ConstantsBase {
          ARMKS = 0.4;
          ZERO = 95.0;
          SHOOT = 118.0;
-         TRAP = 150.0;
+         TRAP = 138.0;
          CLOSE = 151.0;
          PROTECT = 126.0;
-         AMP = 139.0;
+         AMP = 140.3;
+         HANDOFF = 160;
          ARMOFFSET = 0.4;
         }
-         }
+    }
+
+    public class Extension extends ConstantsBase.Extension{
+        public Extension(){
+        ECRUISEVELOCITY = 15;
+        EACCELERATION = 15;
+        EJERK = 50;
+        EKP = 30;
+        EKI = 0.5;
+        EKD = 0;
+        EKV = 0.12;
+        EKS = 0.25;
+        }
+    }
 
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {

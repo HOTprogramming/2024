@@ -155,8 +155,13 @@ public class TeleopCommander implements RobotCommander {
         if(operator.getRightBumper() && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
             return ArmCommanded.shotMap;
         }
-        else if(operator.getRightBumper() && operator.getXButton()){
-            return ArmCommanded.trap;
+        else if(operator.getXButton()){
+            if (operator.getAButton()){
+                return ArmCommanded.amp;
+            }
+            else{
+            return ArmCommanded.handoff;
+            }
         }
         else if (operator.getRightBumper() && operator.getAButton()){
             return ArmCommanded.close;
@@ -165,8 +170,8 @@ public class TeleopCommander implements RobotCommander {
             return ArmCommanded.protect;
             //needs to be ArmCommanded.extend when extension parts are implemented.
         }
-        else if (operator.getRightBumper() && operator.getBButton()){
-            return ArmCommanded.amp;
+        else if (operator.getRightStickButton()){
+            return ArmCommanded.trapZero;
         }
         else if (operator.getLeftBumper()){
             return ArmCommanded.zero;
@@ -233,11 +238,6 @@ public class TeleopCommander implements RobotCommander {
     }
 
     @Override
-    public boolean getRunSlurper() {
-        return operator.getAButton();
-    }
-
-    @Override
     public boolean setShoot() {
         return driver.getRightBumper();
     }
@@ -245,6 +245,24 @@ public class TeleopCommander implements RobotCommander {
      @Override
     public boolean getFeeder() {
         return operator.getLeftTriggerAxis() > .1;
+    }
+
+    @Override
+    public boolean climberUp() {
+        if(  operator.getPOV() >= 315 || (operator.getPOV() <= 45 && 0 <= operator.getPOV()) ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean climberDown() {
+        if(135 <= operator.getPOV() && operator.getPOV() <= 225){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

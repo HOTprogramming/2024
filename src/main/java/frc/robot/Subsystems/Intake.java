@@ -9,6 +9,7 @@ import frc.robot.RobotCommander;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -130,6 +131,7 @@ public class Intake implements SubsystemBase {
         // slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
 
         this.intilizeOffset();
+        slurperArm.setNeutralMode(NeutralMode.Brake);
     }
 
     public void intilizeOffset() {
@@ -161,7 +163,7 @@ public class Intake implements SubsystemBase {
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getIntake() && !robotState.getFeederStopped()) {
+        if (commander.getIntake() && !robotState.getFeederStopped()) { // left trigger
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
             slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 38.0 / 360 * 4096); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
