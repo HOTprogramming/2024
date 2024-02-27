@@ -26,20 +26,22 @@ public class CompBotConstants extends ConstantsBase {
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
             //All are false right now, once we start using the compbot, set each camera you have to true :D
-            HAS_FRONT_CAMERA = false;
-            HAS_REAR_CAMERA = false;
-            HAS_LEFT_CAMERA = false;
-            HAS_RIGHT_CAMERA = false;
+            HAS_FRONT_CAMERA = true;
+            HAS_REAR_CAMERA = true;
+            HAS_LEFT_CAMERA = true;
+            HAS_RIGHT_CAMERA = true;
         }
     }
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
+            SLURPER_ARM_CANCODER_OFFSET = -44;
             INTAKE_ENTER_CAN = 14;
             INTAKESPEED = 83;
             INTAKE_VELOCITY_ERROR = .01;
             GRABBER_ENTER_CAN = 50;
             GRABBERSPEED = 83;
             GRABBER_VELOCITY_ERROR = .01;
+            SLURPER_ROLLER_CAN = 16;
         }
     }
     public class Feeder extends ConstantsBase.Feeder {
