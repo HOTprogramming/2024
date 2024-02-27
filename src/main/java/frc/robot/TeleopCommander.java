@@ -239,7 +239,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean setShoot() {
-        return driver.getRightBumper();
+        return driver.getRightTriggerAxis() >= .1;
     }
     
      @Override

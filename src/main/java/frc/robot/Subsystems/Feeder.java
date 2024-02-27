@@ -75,7 +75,7 @@ public class Feeder implements SubsystemBase {
     public void enabled(RobotCommander commander){
         boolean getFeeder = commander.getFeeder();
         boolean setShoot = commander.setShoot();
-        feeder.setControl(Out);
+        // feeder.setControl(Out);
         SmartDashboard.putBoolean("Feeder getFeeder", commander.getFeeder());
         SmartDashboard.putBoolean("Feeder SetShoot", commander.setShoot());
         SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
@@ -91,6 +91,8 @@ public class Feeder implements SubsystemBase {
         }else{
             encoder = feeder.getPosition().getValueAsDouble();
         }
+
+
         if (commander.getFeeder() && !commander.setShoot()) {
             
             if (sensorFeeder.get()){
@@ -109,6 +111,9 @@ public class Feeder implements SubsystemBase {
             } 
             
             else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
+                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+            }
+            else if (commander.setShoot()) {
                 feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }
             
