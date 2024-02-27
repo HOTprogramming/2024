@@ -35,6 +35,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
+         SLURPER_ARM_CANCODER_OFFSET = -145;
          INTAKE_ENTER_CAN = 14;
          INTAKESPEED = 83;
          INTAKE_VELOCITY_ERROR = .01;

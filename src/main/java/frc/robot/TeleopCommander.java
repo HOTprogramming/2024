@@ -106,10 +106,10 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getRunShooter() {
-        return operator.getRightTriggerAxis() > .1;
+        return operator.getLeftTriggerAxis() > .1;
     }
     public boolean getRunFeeder() {
-        return (operator.getRightTriggerAxis() > 0.01);
+        return (operator.getLeftTriggerAxis() > 0.01);
     }
 
     public boolean increaseLeftTargetSpeed() {
@@ -152,7 +152,7 @@ public class TeleopCommander implements RobotCommander {
     // }
 
     public ArmCommanded armCommanded(){
-        if(operator.getRightBumper() && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
+        if(operator.getLeftTriggerAxis() >= .1 && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
             return ArmCommanded.shotMap;
         }
         else if(operator.getXButton()){
@@ -163,10 +163,10 @@ public class TeleopCommander implements RobotCommander {
             return ArmCommanded.handoff;
             }
         }
-        else if (operator.getRightBumper() && operator.getAButton()){
+        else if (operator.getLeftTriggerAxis() >= .1 && operator.getAButton()){
             return ArmCommanded.close;
         }
-        else if (operator.getRightBumper() && operator.getYButton()){
+        else if (operator.getLeftTriggerAxis() >= .1 && operator.getYButton()){
             return ArmCommanded.protect;
             //needs to be ArmCommanded.extend when extension parts are implemented.
         }
@@ -234,17 +234,17 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getIntake() {
-        return operator.getLeftTriggerAxis() > .1;
+        return operator.getRightTriggerAxis() > .1;
     }
 
     @Override
     public boolean setShoot() {
-        return driver.getRightBumper();
+        return driver.getRightTriggerAxis() >= .1;
     }
     
      @Override
     public boolean getFeeder() {
-        return operator.getLeftTriggerAxis() > .1;
+        return operator.getRightTriggerAxis() > .1;
     }
 
     @Override

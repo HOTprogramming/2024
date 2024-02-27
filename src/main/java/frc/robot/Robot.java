@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
     drivetrain.updateState(); // drivetrain AFTER camera
 
     intake.updateState();
-
+    feeder.updateState();
     shooter.updateState();
     arm.updateState();
     climber.updateState();
