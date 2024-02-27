@@ -13,12 +13,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.ConstantsFolder.ConstantsBase;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import frc.robot.Subsystems.Camera.CameraPositions;
-import frc.robot.Subsystems.CameraMeasurment;
 
 public class RobotState {
     private ConstantsBase constants;

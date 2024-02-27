@@ -19,7 +19,6 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Subsystems.Camera.CameraPositions;
-import frc.robot.Subsystems.CameraMeasurment;
 import frc.robot.Subsystems.Climber;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;

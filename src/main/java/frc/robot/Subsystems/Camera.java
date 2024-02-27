@@ -158,10 +158,6 @@ public class Camera implements SubsystemBase {
     DoubleArrayPublisher rearCameraPub;
 
 
-
-
-    double currentTime;
-
     Map<CameraPositions, Optional<EstimatedRobotPose>> cameraMeasurements = new EnumMap<>(CameraPositions.class);
     Map<CameraPositions, Matrix<N3, N1>> cameraStdDeviations = new EnumMap<>(CameraPositions.class);
 
@@ -285,8 +281,6 @@ public class Camera implements SubsystemBase {
 
     @Override
     public void updateState() {
-        currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-
         if (tempSimBool) {
             if (robotState.getDrivePose() != null) {
                 simVision.update(robotState.getDrivePose());
