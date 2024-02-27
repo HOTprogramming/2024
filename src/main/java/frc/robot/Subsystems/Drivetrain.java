@@ -4,12 +4,16 @@ package frc.robot.Subsystems;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.utils.trajectory.CustomHolonomicDriveController;
 import frc.robot.utils.trajectory.RotationSequence;
 
-import java.sql.Driver;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -17,21 +21,20 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.fasterxml.jackson.databind.node.POJONode;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -229,27 +232,17 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             
         }
 
-        for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-            if (robotState.getVisionTimestamps()[i] != -1 && 
-            robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR && 
-            currentState.Pose.getX() > 10) {
-                addVisionMeasurement(robotState.getVisionMeasurements()[i],
-                                        robotState.getVisionTimestamps()[i],
-                                        robotState.getVisionStdevs().extractColumnVector(i));
-            
-               
-                // assuming it wants rotation in radians
-            }
 
-            if(robotState.getVisionMeasurements()[i] != null){
-                SmartDashboard.putNumber("X Camera Pose " + i, robotState.getVisionMeasurements()[i].getX());
-                SmartDashboard.putNumber("Y Camera Pose " + i, robotState.getVisionMeasurements()[i].getY());
-                SmartDashboard.putNumber("Angle Camera Pose " + i, robotState.getVisionMeasurements()[i].getRotation().getDegrees());
+        robotState.getVisionMeasurements().forEach((key,measurement) -> {
+            measurement.ifPresent(
+                est -> {
+                    // Change our trust in the measurement based on the tags we can see
+                    var estStdDevs = robotState.getCameraStdDeviations().get(key);
 
-            } 
-        
-
-        }
+                    addVisionMeasurement(
+                            est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                });
+        });
 
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
@@ -321,8 +314,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getResetRobotPose()) {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            if (robotState.getVisionTimestamps()[3] != -1) {
-                seedFieldRelative(robotState.getVisionMeasurements()[3]);
+            Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
+            if (measurment.isPresent()) {
+                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
             }
         }
     }
