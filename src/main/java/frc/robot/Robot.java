@@ -33,11 +33,12 @@ public class Robot extends TimedRobot {
   private Climber climber;
   private Extension extension;
 
-
   // define subsystem objects
 
   // define autons (alphabetical)
 
+  private Center4Note center4Note;
+  private Center4NoteOther center4NoteOther;
   private NewAuto newAuto;
 
   // creates autonSelector
@@ -65,16 +66,15 @@ public class Robot extends TimedRobot {
     climber = new Climber(robotState);
     extension = new Extension(robotState);
 
+    center4Note = new Center4Note(robotState);
+    center4NoteOther = new Center4NoteOther(robotState);
+
     newAuto = new NewAuto(robotState);
 
-    autoSelector.setDefaultOption("A. Square", "aidenSquare");
-    autoSelector.addOption("B3 Park", "blue3Park");
-    autoSelector.addOption("B3", "blue3Ring");
-    autoSelector.addOption("B3 Under", "blue3Under");
-    autoSelector.addOption("B4", "blue4Ring");
-    autoSelector.addOption("R2", "red2Ring");
-    autoSelector.addOption("Triangle", "triangle");
-    autoSelector.addOption("W. Square", "willsSquare");
+    autoSelector.setDefaultOption("Right Auto", "right");
+    autoSelector.addOption("Center 4 (Left First)", "centerLeft");
+    autoSelector.addOption("Center 4 (Right First)", "centerRight");
+
     arm.armInit();
     extension.extensionInit();
     intake.reset();
@@ -99,7 +99,13 @@ public class Robot extends TimedRobot {
     robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
 
-    autonCommander.setAuto(newAuto);
+    if(selectedAuto.equals("right")){
+      autonCommander.setAuto(newAuto);
+    } else if(selectedAuto.equals("centerLeft")){
+      autonCommander.setAuto(center4Note);
+    } else if(selectedAuto.equals("centerRight")){
+      autonCommander.setAuto(center4NoteOther);
+    }
 
     drivetrain.init(autonCommander);
     shooter.reset();
