@@ -75,7 +75,7 @@ public class Intake implements SubsystemBase {
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-        slurperCancoder.configMagnetOffset(-145);
+        slurperCancoder.configMagnetOffset(constants.SLURPER_ARM_CANCODER_OFFSET);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -108,6 +108,8 @@ public class Intake implements SubsystemBase {
         slurperArm.setSensorPhase(true);
         slurperArm.setInverted(true);
 
+        // slurperCancoder.configSensorDirection(true);
+
         /* Set the peak and nominal outputs */
         slurperArm.configNominalOutputForward(0, 100);
         slurperArm.configNominalOutputReverse(0, 100);
@@ -130,6 +132,7 @@ public class Intake implements SubsystemBase {
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
 
+        this.reset();
         this.intilizeOffset();
         slurperArm.setNeutralMode(NeutralMode.Brake);
     }
@@ -153,6 +156,8 @@ public class Intake implements SubsystemBase {
             robotState.setIntakeOn(false);
         }
 
+        SmartDashboard.putNumber("Slurper Offset", slurperArmOffset);
+
     }
     
     @Override
@@ -163,18 +168,20 @@ public class Intake implements SubsystemBase {
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getIntake() && !robotState.getFeederStopped()) { // left trigger
+        if (commander.getIntake()) { // left trigger
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 38.0 / 360 * 4096); 
+            slurperArm.set(ControlMode.MotionMagic, 1000); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 38.0 / 360 * 4096);
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 75.5 / 360 * 4096);
         } else {
+            SmartDashboard.putBoolean("Pulse_check", false); 
+
             Out.Output = 0;
             intake.setControl(Out);
             slurperSpin.set(ControlMode.PercentOutput, 0);
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 303.0 / 360 * 4096);
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 303.0 / 360 * 4096);
-        }
+            slurperArm.set(ControlMode.MotionMagic, 4000); //335.5
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArm.getClosedLoopTarget());
+        }   
         // } else {
         //     slurperArm.set(ControlMode.PercentOutput, 0);
         //     Out.Output = 0;
@@ -182,7 +189,6 @@ public class Intake implements SubsystemBase {
         //     slurperSpin.set(ControlMode.PercentOutput, 0);
         // }
         SmartDashboard.putNumber("slurperPosCommand", slurperArm.getClosedLoopTarget());
-
     }
     
 
@@ -194,8 +200,10 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void reset() {
+        slurperArm.setSelectedSensorPosition(0);
         intake.stopMotor();
         // slurperArm.setSelectedSensorPosition(slurperCancoder.getAbsolutePosition() / 4096);
+        this.intilizeOffset();
     }
 
 

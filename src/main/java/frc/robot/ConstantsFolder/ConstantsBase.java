@@ -24,7 +24,7 @@ import frc.robot.Subsystems.Climber;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Practice;
+    public RobotType ROBOT_TYPE = RobotType.Comp;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;
@@ -159,6 +159,7 @@ public class ConstantsBase {
         public double D1IntakeEnter = 0.001;
 
         // slurper
+        public double SLURPER_ARM_CANCODER_OFFSET = -44;
         public int SLURPER_ARM_CAN = 15;
         public int SLURPER_ROLLER_CAN = 20;
         public int SLURPER_CANCODER_CAN = 46;
@@ -196,7 +197,7 @@ public class ConstantsBase {
         public double FEEDERSPEED2 = 83;
         public int DESIREDENCODERED = 3;
         public int FEEDER_SENSOR_CHANNEL = 0;
-        public double FEEDER_VELOCITY_ERROR = .1;
+        public double FEEDER_VELOCITY_ERROR = .3;
         public double P0IntakeFeeder = 4.0;
         public double I0IntakeFeeder = 0.5;
         public double D0IntakeFeeder = 0.0001;

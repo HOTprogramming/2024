@@ -246,7 +246,10 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
             extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
-            spitter.set(ControlMode.PercentOutput, 0);
+            if (!commander.getIntake()) {
+                spitter.set(ControlMode.PercentOutput, 0);
+
+            }
             extensionTimer = 0;
         }
 

@@ -43,12 +43,14 @@ public class CompBotConstants extends ConstantsBase {
     }
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
+            SLURPER_ARM_CANCODER_OFFSET = -44;
             INTAKE_ENTER_CAN = 14;
             INTAKESPEED = 83;
             INTAKE_VELOCITY_ERROR = .01;
             GRABBER_ENTER_CAN = 50;
             GRABBERSPEED = 83;
             GRABBER_VELOCITY_ERROR = .01;
+            SLURPER_ROLLER_CAN = 16;
         }
     }
     public class Feeder extends ConstantsBase.Feeder {
