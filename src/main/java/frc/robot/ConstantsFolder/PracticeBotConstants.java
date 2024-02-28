@@ -92,7 +92,6 @@ public class PracticeBotConstants extends ConstantsBase {
             RIGHT_FLYWHEEL_KV = .138; //.138
             LEFT_FLYWHEEL_KS = 0.8; //.384
             RIGHT_FLYWHEEL_KS = 0.8; //38
-            FLYWHEEL_PEAK_VOLTAGE = 12;
             FEEDER_KP = 0.25;
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;

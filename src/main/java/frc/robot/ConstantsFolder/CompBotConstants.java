@@ -207,7 +207,12 @@ public class CompBotConstants extends ConstantsBase {
     }
 
     public class Shooter extends ConstantsBase.Shooter {
-        public Shooter() {
+        public Shooter() {            
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+    
+
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
             FEEDER_CAN = 13;
@@ -221,21 +226,20 @@ public class CompBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
     
-            FLYWHEEL_KP = 22.0;
-            FLYWHEEL_KI = 0.0;
-            FLYWHEEL_KD = 2.0;
+            FLYWHEEL_KP = 35.0; // 22.0
+            FLYWHEEL_KI = 0.1; // 0.0
+            FLYWHEEL_KD = 0.0; // 2.0
             LEFT_FLYWHEEL_KV = .130; //.133
+            LEFT_FLYWHEEL_KS = 0.8; // .8 | .384
+
+
+            RFLYWHEEL_KP = 30.0; // 16.0
+            RFLYWHEEL_KI = 0.1; // 0.0
+            RFLYWHEEL_KD = 0.0; // 4.0
             RIGHT_FLYWHEEL_KV = .138; //.138
-            LEFT_FLYWHEEL_KS = 0.8; //.384
-            RIGHT_FLYWHEEL_KS = 0.8; //38
-            FLYWHEEL_PEAK_VOLTAGE = 12;
-            FEEDER_KP = 0.25;
-            FEEDER_KI = 0.5;
-            FEEDER_KD = 0.0001;
-    
-            RFLYWHEEL_KP = 16.0;
-            RFLYWHEEL_KI = 0.0;
-            RFLYWHEEL_KD = 4.0;
+            RIGHT_FLYWHEEL_KS = 0.8; // 0.8 | .38
+
+
         }
 
     }

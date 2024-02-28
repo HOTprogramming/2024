@@ -37,25 +37,10 @@ public class Shooter implements SubsystemBase {
     ConstantsBase.Shooter constants;
     StatusSignal<Double> shooterPosition;
 
-    TalonFXConfiguration leftConfigs = new TalonFXConfiguration();
-    TalonFXConfiguration rightConfigs = new TalonFXConfiguration();
-
 
     public Shooter(RobotState robotState, double leftCurrentLimit, double rightCurrentLimit) {
-        
 
-        this.constants = robotState.getConstants().getShooterConstants();
-        SmartDashboard.putNumber("LP", constants.FLYWHEEL_KP);
-        SmartDashboard.putNumber("LI", constants.FLYWHEEL_KI);
-        SmartDashboard.putNumber("LD", constants.FLYWHEEL_KD);
-        SmartDashboard.putNumber("LV", constants.LEFT_FLYWHEEL_KV);
-        SmartDashboard.putNumber("LI", constants.LEFT_FLYWHEEL_KS);
-        
-        SmartDashboard.putNumber("RP", constants.RFLYWHEEL_KP);
-        SmartDashboard.putNumber("RI", constants.RFLYWHEEL_KI);
-        SmartDashboard.putNumber("RD", constants.RFLYWHEEL_KD);
-        SmartDashboard.putNumber("RV", constants.RIGHT_FLYWHEEL_KV);
-        SmartDashboard.putNumber("RI", constants.RIGHT_FLYWHEEL_KS);
+        constants = robotState.getConstants().getShooterConstants();
 
         this.robotState = robotState;
         leftFlywheel = new TalonFX(constants.LEFT_FLYWHEEL_CAN, "drivetrain");
@@ -67,26 +52,28 @@ public class Shooter implements SubsystemBase {
         rightTorqueCurrentFOC = new VelocityTorqueCurrentFOC(0,0,0,0,false,false,false);
 
 
-        
-        
 
-        leftConfigs.Slot0.kP = SmartDashboard.getNumber("LP", constants.FLYWHEEL_KP);
-        leftConfigs.Slot0.kI = SmartDashboard.getNumber("LI", constants.FLYWHEEL_KI);
-        leftConfigs.Slot0.kD = SmartDashboard.getNumber("LD", constants.FLYWHEEL_KD);
-        leftConfigs.Slot0.kV = SmartDashboard.getNumber("LV", constants.LEFT_FLYWHEEL_KV);
-        leftConfigs.Slot0.kS = SmartDashboard.getNumber("LI", constants.LEFT_FLYWHEEL_KS);
+        TalonFXConfiguration leftConfigs = new TalonFXConfiguration();
+        TalonFXConfiguration rightConfigs = new TalonFXConfiguration();
+
+        leftConfigs.Slot0.kP = constants.FLYWHEEL_KP;
+        leftConfigs.Slot0.kI = constants.FLYWHEEL_KI;
+        leftConfigs.Slot0.kD = constants.FLYWHEEL_KD;
+        leftConfigs.Slot0.kV = constants.LEFT_FLYWHEEL_KV;
+        leftConfigs.Slot0.kS = constants.LEFT_FLYWHEEL_KS;
         
-        rightConfigs.Slot0.kP =  SmartDashboard.getNumber("RP", constants.RFLYWHEEL_KP);
-        rightConfigs.Slot0.kI = SmartDashboard.getNumber("RI", constants.RFLYWHEEL_KI);
-        rightConfigs.Slot0.kD = SmartDashboard.getNumber("RD", constants.RFLYWHEEL_KD);
-        rightConfigs.Slot0.kV = SmartDashboard.getNumber("RV", constants.RIGHT_FLYWHEEL_KV);
-        rightConfigs.Slot0.kS = SmartDashboard.getNumber("RI", constants.RIGHT_FLYWHEEL_KS);
+        rightConfigs.Slot0.kP = constants.RFLYWHEEL_KP;
+        rightConfigs.Slot0.kI = constants.RFLYWHEEL_KI;
+        rightConfigs.Slot0.kD = constants.RFLYWHEEL_KD;
+        rightConfigs.Slot0.kV = constants.RIGHT_FLYWHEEL_KV;
+        rightConfigs.Slot0.kS = constants.RIGHT_FLYWHEEL_KS;
 
 
-        leftConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
-        leftConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
-        rightConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
-        rightConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
+
+        // leftConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
+        // leftConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
+        // rightConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
+        // rightConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
 
         leftConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         rightConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -124,9 +111,6 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void updateState() {
-
-
-
         if (Math.abs(leftTorqueCurrentFOC.Velocity - leftFlywheel.getVelocity().getValue()) < 10 && 
                 leftTorqueCurrentFOC.Velocity > leftSlowSpeed && 
                 Math.abs(rightTorqueCurrentFOC.Velocity - rightFlywheel.getVelocity().getValue()) < 10 && 
@@ -202,37 +186,7 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void init(RobotCommander commander) {
-        leftConfigs.Slot0.kP = SmartDashboard.getNumber("LP", constants.FLYWHEEL_KP);
-        leftConfigs.Slot0.kI = SmartDashboard.getNumber("LI", constants.FLYWHEEL_KI);
-        leftConfigs.Slot0.kD = SmartDashboard.getNumber("LD", constants.FLYWHEEL_KD);
-        leftConfigs.Slot0.kV = SmartDashboard.getNumber("LV", constants.LEFT_FLYWHEEL_KV);
-        leftConfigs.Slot0.kS = SmartDashboard.getNumber("LI", constants.LEFT_FLYWHEEL_KS);
-        
-        rightConfigs.Slot0.kP =  SmartDashboard.getNumber("RP", constants.RFLYWHEEL_KP);
-        rightConfigs.Slot0.kI = SmartDashboard.getNumber("RI", constants.RFLYWHEEL_KI);
-        rightConfigs.Slot0.kD = SmartDashboard.getNumber("RD", constants.RFLYWHEEL_KD);
-        rightConfigs.Slot0.kV = SmartDashboard.getNumber("RV", constants.RIGHT_FLYWHEEL_KV);
-        rightConfigs.Slot0.kS = SmartDashboard.getNumber("RI", constants.RIGHT_FLYWHEEL_KS);
-
-        StatusCode rightStatus = StatusCode.StatusCodeNotInitialized;
-        StatusCode leftStatus = StatusCode.StatusCodeNotInitialized;
-
-        
-        for (int i = 0; i < 5; ++i) {
-            leftStatus = leftFlywheel.getConfigurator().apply(leftConfigs);
-            if (leftStatus.isOK()) break;
-        }
-        if(!leftStatus.isOK()) {
-            System.out.println("Could not apply configs, error code: " + leftStatus.toString());
-        }
-
-        for (int i = 0; i < 5; ++i) {
-            rightStatus = rightFlywheel.getConfigurator().apply(rightConfigs);
-            if (rightStatus.isOK()) break;
-        }
-        if(!rightStatus.isOK()) {
-            System.out.println("Could not apply configs, error code: " + rightStatus.toString());
-        }
+        throw new UnsupportedOperationException("Unimplemented method 'init'");
     }
 
     public TalonFX getLeftShooter(){
