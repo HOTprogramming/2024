@@ -259,18 +259,18 @@ public class ConstantsBase {
         
         public Camera(){
             cameraConstants = new EnumMap<>(CameraPositions.class);         
-            cameraConstants.put(CameraPositions.FRONT, new CameraConstant("front_camera",
-                                                                          new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625)),
-                                                                          new Rotation3d(0, 0, 0),
-                                                                          VecBuilder.fill(4, 4, 8),
-                                                                          VecBuilder.fill(0.5, 0.5, 1)));
+                cameraConstants.put(CameraPositions.FRONT, new CameraConstant("front_camera",
+                new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625)),
+                new Rotation3d(0, 0, 0),
+                VecBuilder.fill(4, 4, 8),
+                VecBuilder.fill(0.5, 0.5, 1)));
 
-                                                                          
+            
             cameraConstants.put(CameraPositions.BACK, new CameraConstant("back_camera",
-                                                                         new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)),
-                                                                         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)),
-                                                                         VecBuilder.fill(4, 4, 8),
-                                                                         VecBuilder.fill(0.5, 0.5, 1)));
+                    new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)),
+                    new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)),
+                    VecBuilder.fill(4, 4, 8),
+                    VecBuilder.fill(0.5, 0.5, 1)));
 
         }
     }

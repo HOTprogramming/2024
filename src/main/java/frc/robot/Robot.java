@@ -101,13 +101,13 @@ public class Robot extends TimedRobot {
     robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
 
-    if(selectedAuto.equals("right")){
-      autonCommander.setAuto(newAuto);
-    } else if(selectedAuto.equals("centerLeft")){
+    // if(selectedAuto.equals("right")){
+      // autonCommander.setAuto(newAuto);
+    // } else if(selectedAuto.equals("centerLeft")){
       autonCommander.setAuto(center4Note);
-    } else if(selectedAuto.equals("centerRight")){
-      autonCommander.setAuto(center4NoteOther);
-    }
+    // } else if(selectedAuto.equals("centerRight")){
+      // autonCommander.setAuto(center4NoteOther);
+    // }
 
     drivetrain.init(autonCommander);
     shooter.reset();

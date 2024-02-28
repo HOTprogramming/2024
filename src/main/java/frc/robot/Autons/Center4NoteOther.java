@@ -27,7 +27,7 @@ public class Center4NoteOther extends AutonBase {
         end
     }
 
-    public Step step = Step.start;   
+    public Step step = Step.start;
 
     public Center4NoteOther(RobotState robotState) {
         super(robotState);
@@ -39,8 +39,8 @@ public class Center4NoteOther extends AutonBase {
 
 
     Pose2d ring1 = new Pose2d(13.6, 5.6, Rotation2d.fromDegrees(180));
-    Pose2d ring2 = new Pose2d(13.8, 4.3, Rotation2d.fromDegrees(200));
-    Pose2d ring3 = new Pose2d(13.8, 6.89, Rotation2d.fromDegrees(155));
+    Pose2d ring2 = new Pose2d(13.7, 4.3, Rotation2d.fromDegrees(200));
+    Pose2d ring3 = new Pose2d(13.7, 6.95, Rotation2d.fromDegrees(155));
 
     @Override
     public void runAuto() {
@@ -94,6 +94,8 @@ public class Center4NoteOther extends AutonBase {
                 runShooter = false;
             }
         } else if(step == Step.driveto2){
+            armCommand = ArmCommanded.protect;
+
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 step = Step.shoot2;
                 driving = false;
@@ -111,7 +113,7 @@ public class Center4NoteOther extends AutonBase {
                 trajectoryConfig = new TrajectoryConfig(3, 2);
                 trajectoryGenerator.generate(trajectoryConfig,
                     List.of(Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(-45)),
-                            Waypoint.fromHolonomicPose(new Pose2d(15, 5.6, Rotation2d.fromDegrees(200))),
+                            Waypoint.fromHolonomicPose(new Pose2d(15, 5.6, Rotation2d.fromDegrees(155))),
                             Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-135))));
                 
                 runShooter = false;

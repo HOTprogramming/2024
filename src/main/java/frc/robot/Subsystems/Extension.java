@@ -257,14 +257,15 @@ public Extension(RobotState robotState) {
 
             if (!commander.getIntake()) {
                 spitter.set(ControlMode.PercentOutput, 0);
-
             }
+
             extensionTimer = 0;
         }
 
         if(commander.setShoot()){
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
+
 
 
     }

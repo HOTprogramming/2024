@@ -37,10 +37,9 @@ public class Center4Note extends AutonBase {
         seedPose = true;
     }
 
-
     Pose2d ring1 = new Pose2d(13.6, 5.6, Rotation2d.fromDegrees(180));
-    Pose2d ring2 = new Pose2d(13.8, 4.4, Rotation2d.fromDegrees(200));
-    Pose2d ring3 = new Pose2d(13.8, 6.8, Rotation2d.fromDegrees(155));
+    Pose2d ring2 = new Pose2d(13.4, 4.3, Rotation2d.fromDegrees(200));
+    Pose2d ring3 = new Pose2d(13.3, 7.2, Rotation2d.fromDegrees(150));
 
     @Override
     public void runAuto() {
@@ -94,6 +93,8 @@ public class Center4Note extends AutonBase {
                 runShooter = false;
             }
         } else if(step == Step.driveto2){
+            armCommand = ArmCommanded.protect;
+
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 step = Step.shoot2;
                 driving = false;
@@ -111,8 +112,8 @@ public class Center4Note extends AutonBase {
                 trajectoryConfig = new TrajectoryConfig(3, 2);
                 trajectoryGenerator.generate(trajectoryConfig,
                     List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(45)),
-                            Waypoint.fromHolonomicPose(new Pose2d(15, 5.6, Rotation2d.fromDegrees(180))),
-                            Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(-45))));
+                            Waypoint.fromHolonomicPose(new Pose2d(14, 6, Rotation2d.fromDegrees(150))),
+                            Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(135))));
                 
                 runShooter = false;
             }
@@ -151,6 +152,19 @@ public class Center4Note extends AutonBase {
         } else {
             swerveBrake = true;
         }
+
+        // driving = false;
+
+        // if(step == Step.start){
+        //     runShooter = true;
+
+        //     if(timer.get() > 1){
+        //         step = Step.driveto2;
+        //         runShooter = false;
+        //     }
+        // } else {
+        //     runIntake = true;
+        // }
 
 
         visualizePath();
