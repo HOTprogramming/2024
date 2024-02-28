@@ -91,7 +91,7 @@ public Extension(RobotState robotState) {
     this.constants = robotState.getConstants().getExtensionConstants();
 
     extendMotor = new TalonFX(constants.EXTENSIONCAN, "drivetrain");
-    spitter = new VictorSPX(constants.SPITTERCAN);
+    spitter = new VictorSPX(robotState.getConstants().getIntakeConstants().SLURPER_ROLLER_CAN);
 
     extendMagic = new MotionMagicVoltage(0);
 
@@ -178,27 +178,22 @@ public Extension(RobotState robotState) {
             returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
             SmartDashboard.putNumber("thirdstage", 1);
             }
-        
             else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
             SmartDashboard.putNumber("initialshooterpos", initialShooterPos);
             SmartDashboard.putNumber("fifthstage", 1);
             } 
-            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos < 7){
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos < constants.SHOOTERENCODER){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
             SmartDashboard.putNumber("seventhstage", 1);
             }
-            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos > 7){
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos > constants.SHOOTERENCODER){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
             SmartDashboard.putNumber("andreas", 1);
             }
             else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
             SmartDashboard.putNumber("ninthstage", 1);
-            }
-            else{
-                returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
-                SmartDashboard.putNumber("ended", 1);
             }
 
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
@@ -243,9 +238,23 @@ public Extension(RobotState robotState) {
             SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
 
+        else if(commander.armCommanded() == ArmCommanded.trap){
+            SmartDashboard.putNumber("here", 1);
+            extendedCommandedPosition = fullyExtended;
+            extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
+            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
+        }
+
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
-            extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
+
+            if(extendPosition.getValueAsDouble() > 0.15)
+            extendMotor.setControl(extendMagic.withPosition(0.14).withSlot(0));
+
+            else{
+            extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));    
+            }
+
             if (!commander.getIntake()) {
                 spitter.set(ControlMode.PercentOutput, 0);
 

@@ -146,6 +146,7 @@ public class PracticeBotConstants extends ConstantsBase {
         EKD = 0;
         EKV = 0.12;
         EKS = 0.25;
+        SHOOTERENCODER = 7;
         }
     }
 
