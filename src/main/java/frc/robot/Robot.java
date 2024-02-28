@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autons.*;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    RobotController.setBrownoutVoltage(5);
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
 
@@ -126,7 +128,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    shooter = new Shooter(robotState, 45, 45);
+    shooter = new Shooter(robotState, 55, 55);
     robotState.setAlliance(DriverStation.getAlliance().get());
     shooter.reset();
     drivetrain.reset();

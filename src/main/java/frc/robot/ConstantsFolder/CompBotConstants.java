@@ -6,10 +6,12 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -25,11 +27,18 @@ public class CompBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //All are false right now, once we start using the compbot, set each camera you have to true :D
-            HAS_FRONT_CAMERA = true;
-            HAS_REAR_CAMERA = true;
-            HAS_LEFT_CAMERA = true;
-            HAS_RIGHT_CAMERA = true;
+            super();
+            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
+                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120.38)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
+
+            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
+                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120.38)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
         }
     }
     public class Intake extends ConstantsBase.Intake {
@@ -207,7 +216,12 @@ public class CompBotConstants extends ConstantsBase {
     }
 
     public class Shooter extends ConstantsBase.Shooter {
-        public Shooter() {
+        public Shooter() {            
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+    
+
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
             FEEDER_CAN = 13;
@@ -221,21 +235,20 @@ public class CompBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
     
-            FLYWHEEL_KP = 22.0;
-            FLYWHEEL_KI = 0.0;
-            FLYWHEEL_KD = 2.0;
+            FLYWHEEL_KP = 35.0; // 22.0
+            FLYWHEEL_KI = 0.15; // 0.0
+            FLYWHEEL_KD = 0.0; // 2.0
             LEFT_FLYWHEEL_KV = .130; //.133
+            LEFT_FLYWHEEL_KS = 0.8; // .8 | .384
+
+
+            RFLYWHEEL_KP = 30.0; // 16.0
+            RFLYWHEEL_KI = 0.1; // 0.0
+            RFLYWHEEL_KD = 0.0; // 4.0
             RIGHT_FLYWHEEL_KV = .138; //.138
-            LEFT_FLYWHEEL_KS = 0.8; //.384
-            RIGHT_FLYWHEEL_KS = 0.8; //38
-            FLYWHEEL_PEAK_VOLTAGE = 12;
-            FEEDER_KP = 0.25;
-            FEEDER_KI = 0.5;
-            FEEDER_KD = 0.0001;
-    
-            RFLYWHEEL_KP = 16.0;
-            RFLYWHEEL_KI = 0.0;
-            RFLYWHEEL_KD = 4.0;
+            RIGHT_FLYWHEEL_KS = 0.8; // 0.8 | .38
+
+
         }
 
     }
@@ -250,21 +263,32 @@ public class CompBotConstants extends ConstantsBase {
         public Arm(){
             CANCODER_CAN = 44;
             ARM_CAN = 9;
-            CRUISEVELOCITY = 400;
-            ACCELERATION = 400;
-            JERK = 1500;
-            ARMKP = 250;
-            ARMKI = 0;
-            ARMKD = 0;
+            CRUISEVELOCITY = 500;
+            ACCELERATION = 420;//350
+            JERK = 1000;
+            ARMKP = 200;
+            ARMKI = 20;
+            ARMKD = 0;//4
             ARMKV = 0.8;
-            ARMKS = 0.1;
+            ARMKS = 0.4;
             ZERO = 95.0;
             SHOOT = 118.0;
-            TRAP = 150.0;
-            CLOSE = 151.0;
-            PROTECT = 126.0;
-            AMP = 145.0;
+            TRAP = 138.0;
+            CLOSE = 150.0;
+            PROTECT = 124.0;
+            AMP = 140.3;
+            HANDOFF = 160;
             ARMOFFSET = 0.098;
+            DISTANCE1 = 1.16;
+            DISTANCE2 = 2.5;
+            DISTANCE3 = 4;
+            DISTANCE4 = 5.3;
+            DISTANCE5 = 6.5;
+            ANGLE1 = 150.0;
+            ANGLE2 = 129.0;
+            ANGLE3 = 119.0;
+            ANGLE4 = 115.5;   
+            ANGLE5 = 114.5;
         }
     }
 
@@ -273,11 +297,12 @@ public class CompBotConstants extends ConstantsBase {
             ECRUISEVELOCITY = 15;
             EACCELERATION = 15;
             EJERK = 50;
-            EKP = 20;
+            EKP = 30;
             EKI = 0.5;
             EKD = 0;
             EKV = 0.12;
             EKS = 0.25;
+            SHOOTERENCODER = 2.8;
         }
     }
 }
