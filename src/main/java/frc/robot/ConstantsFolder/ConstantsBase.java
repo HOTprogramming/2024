@@ -296,7 +296,7 @@ public class ConstantsBase {
         public double RIGHT_FLYWHEEL_KV = .138; //.138
         public double LEFT_FLYWHEEL_KS = 0.8; //.384
         public double RIGHT_FLYWHEEL_KS = 0.8; //38
-        public double FLYWHEEL_PEAK_VOLTAGE = 12;
+        // public double FLYWHEEL_PEAK_VOLTAGE = 12;
         public double FEEDER_KP = 0.25;
         public double FEEDER_KI = 0.5;
         public double FEEDER_KD = 0.0001;
