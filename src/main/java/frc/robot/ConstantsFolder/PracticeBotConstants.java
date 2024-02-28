@@ -129,7 +129,7 @@ public class PracticeBotConstants extends ConstantsBase {
          TRAP = 138.0;
          CLOSE = 151.0;
          PROTECT = 126.0;
-         AMP = 140.3;
+         AMP = 120.3; //was 143.3; 133.3
          HANDOFF = 160;
          ARMOFFSET = 0.4;
          DISTANCE1 = 1.16;
