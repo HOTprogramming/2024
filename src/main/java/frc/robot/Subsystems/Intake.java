@@ -3,6 +3,7 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.Constants;
 import frc.robot.RobotCommander;
 
@@ -170,15 +171,21 @@ public class Intake implements SubsystemBase {
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake()) { // left trigger
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
-            slurperArm.set(ControlMode.MotionMagic, 1000); 
+            slurperArm.set(ControlMode.MotionMagic, 950); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 75.5 / 360 * 4096);
         } else {
             SmartDashboard.putBoolean("Pulse_check", false); 
 
+
+            if(commander.armCommanded() != ArmCommanded.handoff && commander.armCommanded() != ArmCommanded.amp && commander.armCommanded() != ArmCommanded.trap){
+                slurperSpin.set(ControlMode.PercentOutput, 0); 
+            }
+
             Out.Output = 0;
             intake.setControl(Out);
-            slurperSpin.set(ControlMode.PercentOutput, 0);
+
+            
             slurperArm.set(ControlMode.MotionMagic, 4000); //335.5
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArm.getClosedLoopTarget());
         }   
