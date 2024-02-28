@@ -170,7 +170,7 @@ public Extension(RobotState robotState) {
         
         if(commander.armCommanded() == ArmCommanded.handoff){
             SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
-            if(extensionTimer < 55){
+            if(extensionTimer < 75){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
             SmartDashboard.putNumber("firststage", 1);
             }
