@@ -337,7 +337,7 @@ public class ConstantsBase {
         public double EKV = 0.12;
         public double EKS = 0.25;
         public int EXTENSIONCAN = 10;
-        public int SPITTERCAN = 20;
+        public double SHOOTERENCODER = 5;
 
     }
 
