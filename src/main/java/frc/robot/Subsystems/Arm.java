@@ -167,7 +167,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
       SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
       SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
-      SmartDashboard.putNumber("armCommandedPosition", commandedPosition*360);
+      SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
 
     public void enabled(RobotCommander commander){
@@ -224,13 +224,6 @@ public Arm(RobotState robotState) {
       else{
         armMotor.setVoltage(0);
       }
-      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360.0);
-      SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
-      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360.0);
-      SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
-      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
-      SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
-      SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
     public void disabled(){
         armMotor.stopMotor();

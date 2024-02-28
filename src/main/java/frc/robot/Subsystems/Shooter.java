@@ -26,8 +26,8 @@ public class Shooter implements SubsystemBase {
     VelocityVoltage rightVoltageVelocity;
     VelocityTorqueCurrentFOC leftTorqueCurrentFOC;
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
-    double leftHighSpeed = 69;
-    double rightHighSpeed = 54;
+    double leftHighSpeed = 61.6;
+    double rightHighSpeed = 50;
     double leftSlowSpeed = 24;
     double rightSlowSpeed = 24;
     double leftIdleSpeed = 33;
@@ -69,10 +69,11 @@ public class Shooter implements SubsystemBase {
         rightConfigs.Slot0.kS = constants.RIGHT_FLYWHEEL_KS;
 
 
-        leftConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
-        leftConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
-        rightConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
-        rightConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
+
+        // leftConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
+        // leftConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
+        // rightConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
+        // rightConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
 
         leftConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         rightConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
