@@ -236,7 +236,7 @@ public class CompBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
     
             FLYWHEEL_KP = 35.0; // 22.0
-            FLYWHEEL_KI = 0.1; // 0.0
+            FLYWHEEL_KI = 0.15; // 0.0
             FLYWHEEL_KD = 0.0; // 2.0
             LEFT_FLYWHEEL_KV = .130; //.133
             LEFT_FLYWHEEL_KS = 0.8; // .8 | .384
@@ -274,11 +274,21 @@ public class CompBotConstants extends ConstantsBase {
             ZERO = 95.0;
             SHOOT = 118.0;
             TRAP = 138.0;
-            CLOSE = 151.0;
-            PROTECT = 126.0;
+            CLOSE = 150.0;
+            PROTECT = 124.0;
             AMP = 140.3;
             HANDOFF = 160;
             ARMOFFSET = 0.098;
+            DISTANCE1 = 1.16;
+            DISTANCE2 = 2.5;
+            DISTANCE3 = 4;
+            DISTANCE4 = 5.3;
+            DISTANCE5 = 6.5;
+            ANGLE1 = 150.0;
+            ANGLE2 = 129.0;
+            ANGLE3 = 119.0;
+            ANGLE4 = 115.5;   
+            ANGLE5 = 114.5;
         }
     }
 

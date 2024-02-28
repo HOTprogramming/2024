@@ -3,20 +3,23 @@ package frc.robot;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
+import frc.robot.ConstantsFolder.ConstantsBase;
 
 
 public class ShotMap {
+    ConstantsBase.Arm constants;
+
     RobotState robotState; 
-    private double distance1 = 1.16;
-    private double distance2 = 2.5;
-    private double distance3 = 4;
-    private double distance4 = 5.3;
-    private double distance5 = 6.5;
-    private double angle1 = 151;
-    private double angle2 = 134;
-    private double angle3 = 124;
-    private double angle4 = 119;
-    private double angle5 = 118;
+    private double distance1;
+    private double distance2;
+    private double distance3;
+    private double distance4;
+    private double distance5;
+    private double angle1;
+    private double angle2;
+    private double angle3;
+    private double angle4;
+    private double angle5;
     private double xPos = 1.8;
     private double angleX;
     private double angleX2;
@@ -26,7 +29,19 @@ public class ShotMap {
     
 
 public ShotMap(RobotState robotState) {
+    this.constants = robotState.getConstants().getArmConstants();
     this.robotState = robotState;
+
+    distance1 = constants.DISTANCE1;
+    distance2 = constants.DISTANCE2;
+    distance3 = constants.DISTANCE3;
+    distance4 = constants.DISTANCE4;
+    distance5 = constants.DISTANCE5;
+    angle1 = constants.ANGLE1;//-1
+    angle2 = constants.ANGLE2;
+    angle3 = constants.ANGLE3;
+    angle4 = constants.ANGLE4;
+    angle5 = constants.ANGLE5;
 }
 
 public double getVelocity(){

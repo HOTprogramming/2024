@@ -132,6 +132,16 @@ public class PracticeBotConstants extends ConstantsBase {
          AMP = 140.3;
          HANDOFF = 160;
          ARMOFFSET = 0.4;
+         DISTANCE1 = 1.16;
+         DISTANCE2 = 2.5;
+         DISTANCE3 = 4;
+         DISTANCE4 = 5.3;
+         DISTANCE5 = 6.5;
+         ANGLE1 = 151;
+         ANGLE2 = 134;
+         ANGLE3 = 124;
+         ANGLE4 = 119;
+         ANGLE5 = 118;
         }
     }
 
