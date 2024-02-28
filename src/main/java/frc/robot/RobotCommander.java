@@ -54,4 +54,5 @@ public interface RobotCommander {
     public abstract ArmCommanded armCommanded();
     public abstract boolean climberUp();
     public abstract boolean climberDown();
+    public abstract double trapArmFineControl();
 }

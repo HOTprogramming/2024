@@ -257,6 +257,11 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
+        if (commander.trapArmFineControl() == 1) {
+            spitter.set(ControlMode.PercentOutput, 0.3);
+        } else if (commander.trapArmFineControl() == -1) {
+            spitter.set(ControlMode.PercentOutput, -0.3);
+        } 
 
     }
 
