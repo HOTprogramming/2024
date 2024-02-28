@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autons.*;
 import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Camera;
@@ -41,6 +45,9 @@ public class Robot extends TimedRobot {
   private Center4Note center4Note;
   private Center4NoteOther center4NoteOther;
   private NewAuto newAuto;
+  private Right4Note right4Note;
+  private Center4NoteBlue center4NoteBlue;
+  private Right4NoteBlue right4NoteBlue;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -70,12 +77,22 @@ public class Robot extends TimedRobot {
 
     center4Note = new Center4Note(robotState);
     center4NoteOther = new Center4NoteOther(robotState);
+    right4Note = new Right4Note(robotState);
+    center4NoteBlue = new Center4NoteBlue(robotState);
+    right4NoteBlue = new Right4NoteBlue(robotState);
 
     newAuto = new NewAuto(robotState);
 
-    autoSelector.setDefaultOption("Right Auto", "right");
-    autoSelector.addOption("Center 4 (Left First)", "centerLeft");
-    autoSelector.addOption("Center 4 (Right First)", "centerRight");
+    autoSelector.setDefaultOption("Right Auto Blue", "rightBlue");
+    autoSelector.addOption("Center Blue", "centerBlue");
+    autoSelector.setDefaultOption("Right Auto Red", "rightRed");
+    autoSelector.addOption("Center Red", "centerRed");
+
+
+      Shuffleboard.getTab("Competition")
+      .add("Auto Selector", autoSelector)
+      .withWidget(BuiltInWidgets.kComboBoxChooser)
+      .withSize(2, 2);
 
     arm.armInit();
     extension.extensionInit();
@@ -98,16 +115,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     shooter = new Shooter(robotState, 60, 60);
-    robotState.setAlliance(DriverStation.getAlliance().get());
+    // robotState.setAlliance(DriverStation.getAlliance().get());
+    robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
-    // if(selectedAuto.equals("right")){
-      // autonCommander.setAuto(newAuto);
-    // } else if(selectedAuto.equals("centerLeft")){
+    if(selectedAuto.equals("rightBlue")){
+      autonCommander.setAuto(right4NoteBlue);
+    } else if(selectedAuto.equals("centerBlue")){
+      autonCommander.setAuto(center4NoteBlue);
+    } else if(selectedAuto.equals("rightRed")){
+      autonCommander.setAuto(right4Note);
+    } else if(selectedAuto.equals("centerRed")){
       autonCommander.setAuto(center4Note);
-    // } else if(selectedAuto.equals("centerRight")){
-      // autonCommander.setAuto(center4NoteOther);
-    // }
+    }
 
     drivetrain.init(autonCommander);
     shooter.reset();

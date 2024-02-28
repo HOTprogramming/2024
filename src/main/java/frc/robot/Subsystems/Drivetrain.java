@@ -3,6 +3,9 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.Autons.Center4Note;
+import frc.robot.Autons.Center4NoteBlue;
+import frc.robot.Autons.Right4NoteBlue;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.RobotCommander.DriveMode;
@@ -93,8 +96,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         configNeutralMode(NeutralModeValue.Brake);
         fieldTypePublisher.set("Field2d");
-
-        seedFieldRelative(new Pose2d(15.27, 5.6, Rotation2d.fromDegrees(180))); //15.15);
 
 
         // this.m_odometry.
@@ -264,7 +265,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // sets start pose to auton start pose
         seedFieldRelative(commander.getOdomretryOverride());
 
-        seedFieldRelative(new Pose2d(15.27, 5.6, Rotation2d.fromDegrees(180))); //15.15);
+        if(commander.getAuto() != null){
+            seedFieldRelative(commander.getAuto().startPose); //15.15);
+        }
 
         // seedFieldRelative(new Pose2d(15.3, 6.7, Rotation2d.fromDegrees(155))); //15.15
          //15.15);

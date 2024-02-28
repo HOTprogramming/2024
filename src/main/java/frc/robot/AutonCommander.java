@@ -22,6 +22,10 @@ public class AutonCommander implements RobotCommander {
         this.auto.reset();
     }
 
+    public AutonBase getAuto(){
+        return this.auto;
+    }
+
     @Override
     public double[] getDrivePercentCommand() {
         return new double[] {0, 0 ,0};

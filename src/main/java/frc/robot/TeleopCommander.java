@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Autons.AutonBase;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 
@@ -33,6 +34,10 @@ public class TeleopCommander implements RobotCommander {
         driver = new XboxController(0);
         operator = new XboxController(1);
 
+    }
+
+    public AutonBase getAuto(){
+        return null;
     }
 
    @Override

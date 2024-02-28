@@ -3,6 +3,7 @@ package frc.robot;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import frc.robot.Autons.AutonBase;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 public interface RobotCommander {
@@ -54,4 +55,5 @@ public interface RobotCommander {
     public abstract ArmCommanded armCommanded();
     public abstract boolean climberUp();
     public abstract boolean climberDown();
+    public abstract AutonBase getAuto();
 }
