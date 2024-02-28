@@ -6,10 +6,12 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -25,11 +27,18 @@ public class CompBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //All are false right now, once we start using the compbot, set each camera you have to true :D
-            HAS_FRONT_CAMERA = true;
-            HAS_REAR_CAMERA = true;
-            HAS_LEFT_CAMERA = true;
-            HAS_RIGHT_CAMERA = true;
+            super();
+            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
+                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120.38)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
+
+            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
+                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120.38)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
         }
     }
     public class Intake extends ConstantsBase.Intake {

@@ -1,15 +1,22 @@
 package frc.robot;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
+import org.photonvision.EstimatedRobotPose;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.ConstantsFolder.ConstantsBase;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
+import frc.robot.Subsystems.Camera.CameraPositions;
 
 public class RobotState {
     private ConstantsBase constants;
@@ -18,9 +25,10 @@ public class RobotState {
     private Pose2d drivePose;
     private boolean atTargetPose;
 
-    private Pose2d[] visionMeasurements;
-    private double[] visionTimestamps;
-    private Matrix<N3, N4> visionStdevs;
+    private Map<CameraPositions, Optional<EstimatedRobotPose>> visionMeasurements;
+    
+    private Map<CameraPositions, Matrix<N3, N1>> cameraStdDeviations;
+
     private double poseToSpeaker;
     private Translation2d velocity;
     
@@ -128,30 +136,21 @@ public class RobotState {
         this.feederOn = feederOn;
     }
 
+    public Map<CameraPositions, Matrix<N3, N1>> getCameraStdDeviations() {
+        return cameraStdDeviations;
+    }
 
-    public void setVisionMeasurements(Pose2d[] visionMeasurements) {
+    public void setCameraStdDeviations(Map<CameraPositions, Matrix<N3, N1>> cameraStdDeviations) {
+        this.cameraStdDeviations = cameraStdDeviations;
+    }
+
+    public void setVisionMeasurements(Map<CameraPositions, Optional<EstimatedRobotPose>> visionMeasurements) {
         this.visionMeasurements = visionMeasurements;
     }
 
 
-    public Pose2d[] getVisionMeasurements() {
+    public Map<CameraPositions, Optional<EstimatedRobotPose>> getVisionMeasurements() {
         return visionMeasurements;
-    }
-
-    public void setVisionTimestamps(double[] visionTimestamps) {
-        this.visionTimestamps = visionTimestamps;
-    }
-
-    public double[] getVisionTimestamps() {
-        return visionTimestamps;
-    }
-
-    public void setVisionStdevs(Matrix<N3, N4> visionStdevs) {
-        this.visionStdevs = visionStdevs;
-    }
-
-    public Matrix<N3, N4> getVisionStdevs() {
-        return visionStdevs;
     }
 
     public void setArmPos(double armPos){
