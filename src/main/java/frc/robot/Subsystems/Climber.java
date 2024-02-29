@@ -39,17 +39,32 @@ public class Climber implements SubsystemBase {
 
     @Override
     public void updateState() {
+        climberPosition.refresh();
+        SmartDashboard.putNumber("climberposition", climberPosition.getValueAsDouble());
     }
     
     @Override
     public void enabled(RobotCommander commander) {
-        if (commander.climberUp()) {
-            climberMotor.set(constants.CLIMBER_SPEED);
-        } else if (commander.climberDown()) {
-            climberMotor.set(-constants.CLIMBER_SPEED);
+        // if (commander.climberUp()) {
+        //     climberMotor.setControl(climberMagic.withPosition(constants.CLIMBERPOS).withSlot(0)); //125   
+        // } else if (commander.climberDown() && climberPosition.getValueAsDouble() > 0) {
+        //     climberMotor.setVoltage(-constants.CLIMBER_SPEED);
+        // } else {
+        //     climberMotor.setVoltage(0);
+        // }
+
+
+
+        if ((commander.climberUp() && climberPosition.getValueAsDouble() < 250) || (commander.climberUp() && commander.climberOverride()) ) {
+            climberMotor.setVoltage(8);    
+        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() > 0) || (commander.climberDown() && commander.climberOverride())) {
+            climberMotor.setVoltage(-8);
         } else {
-            climberMotor.set(0);
+            climberMotor.setVoltage(0);
         }
+
+
+  
         SmartDashboard.putBoolean("ClimbUp", commander.climberUp());
         SmartDashboard.putBoolean("ClimbDown", commander.climberDown());
     }
@@ -83,7 +98,7 @@ public class Climber implements SubsystemBase {
         cSlot0.kS = 2; // Approximately 0.25V to get the mechanism moving
     
         FeedbackConfigs cfdb = ccfg.Feedback;
-        cfdb.SensorToMechanismRatio = 12.8;
+        cfdb.SensorToMechanismRatio = 1;
         ccfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     
         StatusCode status = StatusCode.StatusCodeNotInitialized;
@@ -94,5 +109,7 @@ public class Climber implements SubsystemBase {
         if (!status.isOK()) {
           System.out.println("Could not configure device. Error: " + status.toString());
         }
+
+        climberMotor.setPosition(0);
     }
 }

@@ -279,5 +279,15 @@ public class TeleopCommander implements RobotCommander {
         }
     }
 
+    @Override
+    public boolean climberOverride() {
+     if(operator.getRightBumper()){
+        return true;
+     }
+     else{
+        return false;
+     }
+    }
+
 
 }

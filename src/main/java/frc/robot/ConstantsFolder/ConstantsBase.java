@@ -143,6 +143,7 @@ public class ConstantsBase {
     public abstract class Climber {
         public int CLIMBER_CAN = 18;
         public double CLIMBER_SPEED = 0.1;
+        public double CLIMBERPOS = 5;
     }
 
     public abstract class Intake {
@@ -324,7 +325,7 @@ public class ConstantsBase {
         public double PROTECT = 126.0;
         public double AMP = 139.0;
         public double ARMOFFSET = 0.4;
-        public double HANDOFF = 160;
+        public double HANDOFF = 168;
         public double DISTANCE1 = 1.16;
         public double DISTANCE2 = 2.5;
         public double DISTANCE3 = 4;
