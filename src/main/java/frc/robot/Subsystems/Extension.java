@@ -266,8 +266,6 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
-
-
     }
 
     @Override

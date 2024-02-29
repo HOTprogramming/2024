@@ -159,6 +159,9 @@ public class TeleopCommander implements RobotCommander {
             if (operator.getAButton()){
                 return ArmCommanded.amp;
             }
+            else if(operator.getBButton()){
+                return ArmCommanded.trap;
+            }
             else{
             return ArmCommanded.handoff;
             }
