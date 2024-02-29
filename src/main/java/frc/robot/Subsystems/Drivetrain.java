@@ -66,9 +66,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(9, 0.15, .5);
-    private static final PIDController yController = new PIDController(8.5, 0.13, .45);
-    private static final PIDController thetaController = new PIDController(15.5, 0.1, .5);
+    private static final PIDController xController = new PIDController(15.0, 0.15, 0.15); // 9 .15 .5
+    private static final PIDController yController = new PIDController(13, 0.13, 0.15); // 8.5 .13 .45
+    private static final PIDController thetaController = new PIDController(10, 0.1, .15);
 
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -94,6 +94,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         configNeutralMode(NeutralModeValue.Brake);
         fieldTypePublisher.set("Field2d");
 
+        seedFieldRelative(new Pose2d(15.27, 5.6, Rotation2d.fromDegrees(180))); //15.15);
+
+
+        // this.m_odometry.
     }
 
     /**
@@ -228,9 +232,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                     velocities.getY(),
                     velocities.getAngle().getDegrees()
             });
-
-            
         }
+
 
 
         robotState.getVisionMeasurements().forEach((key,measurement) -> {
@@ -260,6 +263,11 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     public void init(RobotCommander commander) {
         // sets start pose to auton start pose
         seedFieldRelative(commander.getOdomretryOverride());
+
+        seedFieldRelative(new Pose2d(15.27, 5.6, Rotation2d.fromDegrees(180))); //15.15);
+
+        // seedFieldRelative(new Pose2d(15.3, 6.7, Rotation2d.fromDegrees(155))); //15.15
+         //15.15);
 
         // sets boolean tolerances for auton refrence poses
         driveController.setTolerance(commander.getRefrenceTolerances());

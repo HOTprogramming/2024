@@ -134,12 +134,12 @@ public class Intake implements SubsystemBase {
         // slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
 
         this.reset();
-        this.intilizeOffset();
         slurperArm.setNeutralMode(NeutralMode.Brake);
     }
 
     public void intilizeOffset() {
         slurperArmOffset = slurperArm.getSelectedSensorPosition() - slurperCancoder.getAbsolutePosition()*4096/360;
+        slurperArm.setSelectedSensorPosition(slurperArmOffset);
     }
 
 
@@ -186,7 +186,7 @@ public class Intake implements SubsystemBase {
             intake.setControl(Out);
 
             
-            slurperArm.set(ControlMode.MotionMagic, 4000); //335.5
+            slurperArm.set(ControlMode.MotionMagic, 3800); //335.5
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArm.getClosedLoopTarget());
         }   
         // } else {

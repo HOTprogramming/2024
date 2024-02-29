@@ -259,8 +259,8 @@ public Extension(RobotState robotState) {
 
             if (!commander.getIntake()) {
                 spitter.set(ControlMode.PercentOutput, 0);
-
             }
+
             extensionTimer = 0;
         }
 
@@ -273,6 +273,7 @@ public Extension(RobotState robotState) {
         } else if (commander.trapArmFineControl() == -1) {
             spitter.set(ControlMode.PercentOutput, -0.3);
         } 
+
 
     }
 
