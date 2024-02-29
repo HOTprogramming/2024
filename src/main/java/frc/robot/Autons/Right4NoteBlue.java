@@ -37,13 +37,13 @@ public class Right4NoteBlue extends AutonBase {
 
 
 
-    public Pose2d ring1 = new Pose2d(8.4, 6.9, Rotation2d.fromDegrees(0));
-    public Pose2d shoot1 = new Pose2d(4.8, 6.33, Rotation2d.fromDegrees(8.5));
+    public Pose2d ring1 = new Pose2d(8.5, 6.8, Rotation2d.fromDegrees(0));
+    public Pose2d shoot1 = new Pose2d(4.7, 5.8, Rotation2d.fromDegrees(3));
 
-    public Pose2d ring2 = new Pose2d(8.65, 5.5, Rotation2d.fromDegrees(-10));
+    public Pose2d ring2 = new Pose2d(8.2, 5.8, Rotation2d.fromDegrees(-10));
     public Pose2d ring3 = new Pose2d(8.8, 3.74, Rotation2d.fromDegrees(0));
 
-    public Pose2d firstShot = new Pose2d(3.5, 7.2, Rotation2d.fromDegrees(30));
+    public Pose2d firstShot = new Pose2d(3, 6.7, Rotation2d.fromDegrees(30));
 
     public Right4NoteBlue(RobotState robotState) {
         super(robotState);
@@ -179,7 +179,7 @@ public class Right4NoteBlue extends AutonBase {
                 timer.reset();
             }
         } else if(step == Step.shoot2){
-            
+            runShooter = true;
         } else {
             driving = false;
             runShooter = false;

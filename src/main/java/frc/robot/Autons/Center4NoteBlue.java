@@ -39,7 +39,7 @@ public class Center4NoteBlue extends AutonBase {
 
     Pose2d ring1 = new Pose2d(3, 5.6, Rotation2d.fromDegrees(0));
     Pose2d ring2 = new Pose2d(3, 4.3, Rotation2d.fromDegrees(-20));
-    Pose2d ring3 = new Pose2d(3, 7.2, Rotation2d.fromDegrees(30));
+    Pose2d ring3 = new Pose2d(3, 7.1, Rotation2d.fromDegrees(30));
 
     @Override
     public void runAuto() {

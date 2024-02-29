@@ -69,10 +69,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(15.0, 0.15, 0.15); // 9 .15 .5
-    private static final PIDController yController = new PIDController(13, 0.13, 0.15); // 8.5 .13 .45
-    private static final PIDController thetaController = new PIDController(10, 0.1, .15);
-
+    private static final PIDController xController = new PIDController(15.0, 0.15, 0.3); // 9 .15 .5
+    private static final PIDController yController = new PIDController(15, 0.13, 0.3); // 8.5 .13 .45
+    private static final PIDController thetaController = new PIDController(12.5, 0.1, .1);
+    
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
 
@@ -339,6 +339,26 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void reset() {
+    }
+
+    public void teleLimits(){
+        for (int i = 0; i < ModuleCount; i++) {
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_SWERVE_STEER_GAINS);
+
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_DRIVE_CURRENT);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_STEER_CURRENT);
+        }
+    }
+
+    public void autoLimits(){
+        for (int i = 0; i < ModuleCount; i++) {
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.SWERVE_DRIVE_GAINS);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.SWERVE_STEER_GAINS);
+
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.AUTON_DRIVE_CURRENT);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.AUTON_STEER_CURRENT);
+        }
     }
 
 }

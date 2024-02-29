@@ -12,12 +12,14 @@ import com.ctre.phoenix.led.CANdleConfiguration;
 public class Lights implements SubsystemBase {
     ConstantsBase.Lights constants;
     RobotState robotState;
-    CANdle candle;
+    CANdle candleRight;
+    CANdle candleLeft;
 
     public Lights(RobotState robotState) { 
         this.robotState = robotState;
         constants = robotState.getConstants().getLightsConstants();
-        candle = new CANdle(constants.LIGHTS_CAN, "rio");
+        candleRight = new CANdle(constants.LIGHTS_CAN_RIGHT, "rio");
+        candleLeft = new CANdle(constants.LIGHTS_CAN_LEFT, "rio");
 
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
@@ -25,21 +27,27 @@ public class Lights implements SubsystemBase {
         configAll.stripType = LEDStripType.RGB;
         configAll.brightnessScalar = 0.5;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
-        candle.configAllSettings(configAll);
+        candleRight.configAllSettings(configAll);
+        candleLeft.configAllSettings(configAll);
     }
 
 
     @Override
     public void updateState() {
     }
+
+    private void setLEDs(int r, int g, int b) {
+        candleRight.setLEDs(r, g, b);
+        candleLeft.setLEDs(r, g, b);
+    }
     
     @Override
     public void enabled(RobotCommander commander){
         if (robotState.getBeamBreak()) {
-            candle.setLEDs(255, 165, 0);  // orange
+            setLEDs(255, 165, 0);  // orange
         } 
         else {
-            candle.setLEDs(0, 0, 0);  // off
+            setLEDs(0, 0, 0);  // off
         }
     }
     
@@ -47,16 +55,16 @@ public class Lights implements SubsystemBase {
     @Override
     public void disabled() {
         if (robotState.getTwoTags()) {
-            candle.setLEDs(0, 255, 0);  // green
+            setLEDs(0, 255, 0);  // green
         } 
         else if (robotState.getOneTag()) {
-            candle.setLEDs(255, 255, 0);  // yellow
+            setLEDs(255, 255, 0);  // yellow
         }
         else if (robotState.getNoTag()){
-            candle.setLEDs(255, 0, 0);  // red
+            setLEDs(255, 0, 0);  // red
         }
         else {
-            candle.setLEDs(255, 255, 255);  // white
+            setLEDs(255, 255, 255);  // white
         }
     }
 

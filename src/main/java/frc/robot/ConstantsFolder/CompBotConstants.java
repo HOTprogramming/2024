@@ -255,7 +255,7 @@ public class CompBotConstants extends ConstantsBase {
 
     public class Lights extends ConstantsBase.Lights {
         public Lights() {
-         LIGHTS_CAN = 51;
+         LIGHTS_CAN_RIGHT = 51;
         }
     }
 

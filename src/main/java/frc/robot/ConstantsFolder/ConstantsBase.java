@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
@@ -24,7 +25,7 @@ import frc.robot.Subsystems.Climber;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Comp;
+    public RobotType ROBOT_TYPE = RobotType.Practice;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;
@@ -137,7 +138,8 @@ public class ConstantsBase {
     }
 
     public abstract class Lights {
-        public int LIGHTS_CAN = 51;
+        public int LIGHTS_CAN_RIGHT = 51;
+        public int LIGHTS_CAN_LEFT = 52;
     }
 
     public abstract class Climber {
@@ -378,12 +380,34 @@ public class ConstantsBase {
 
         // private ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
+
         
         public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
         public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
 
+        public Slot0Configs TELEOP_SWERVE_STEER_GAINS = new Slot0Configs()
+        .withKP(100).withKI(0).withKD(0.2)
+        .withKS(0).withKV(1.5).withKA(0);
+
+        public Slot0Configs TELEOP_SWERVE_DRIVE_GAINS = new Slot0Configs()
+        .withKP(3).withKI(0).withKD(0)
+        .withKS(0).withKV(0).withKA(0);
+
+        public TorqueCurrentConfigs AUTON_STEER_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(300)
+                                    .withPeakReverseTorqueCurrent(-300);
+        public TorqueCurrentConfigs AUTON_DRIVE_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(300)
+                                    .withPeakReverseTorqueCurrent(-300);
+
+        public TorqueCurrentConfigs TELEOP_STEER_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(50)
+                                    .withPeakReverseTorqueCurrent(-50);
+        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(100)
+                                    .withPeakReverseTorqueCurrent(-100);
 
         public double WHEEL_SLIP_CURRENT = 300.0; // *tune later
 

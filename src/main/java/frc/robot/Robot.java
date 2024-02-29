@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    RobotController.setBrownoutVoltage(5);
+    RobotController.setBrownoutVoltage(5.5);
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
 
@@ -115,8 +115,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     shooter = new Shooter(robotState, 60, 60);
-    // robotState.setAlliance(DriverStation.getAlliance().get());
-    robotState.setAlliance(Alliance.Blue);
+    robotState.setAlliance(DriverStation.getAlliance().get());
+    // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
     if(selectedAuto.equals("rightBlue")){
@@ -137,6 +137,8 @@ public class Robot extends TimedRobot {
     feeder.reset();
     climber.reset();
     extension.reset();
+
+    // drivetrain.autoLimits();
   }
 
   @Override
@@ -148,7 +150,7 @@ public class Robot extends TimedRobot {
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
     lights.enabled(autonCommander);
-    climber.enabled(autonCommander);
+    climber.enabled(autonCommander);   
     extension.enabled(autonCommander);
   }
 
@@ -165,6 +167,7 @@ public class Robot extends TimedRobot {
     climber.reset();
     climber.init(teleopCommander);
     extension.reset();
+    // drivetrain.teleLimits();
   }
 
   @Override
