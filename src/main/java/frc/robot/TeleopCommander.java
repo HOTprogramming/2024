@@ -159,6 +159,9 @@ public class TeleopCommander implements RobotCommander {
             if (operator.getAButton()){
                 return ArmCommanded.amp;
             }
+            else if(operator.getBButton()){
+                return ArmCommanded.trap;
+            }
             else{
             return ArmCommanded.handoff;
             }
@@ -274,6 +277,16 @@ public class TeleopCommander implements RobotCommander {
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public boolean climberOverride() {
+     if(operator.getRightBumper()){
+        return true;
+     }
+     else{
+        return false;
+     }
     }
 
 
