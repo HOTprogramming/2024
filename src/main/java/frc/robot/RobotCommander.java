@@ -57,4 +57,5 @@ public interface RobotCommander {
     public abstract boolean climberDown();
     public abstract AutonBase getAuto();
     public abstract double trapArmFineControl();
+    public abstract boolean climberOverride();
 }

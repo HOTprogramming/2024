@@ -273,11 +273,11 @@ public class CompBotConstants extends ConstantsBase {
             ARMKS = 0.4;
             ZERO = 95.0;
             SHOOT = 118.0;
-            TRAP = 138.0;
+            TRAP = 141.0;
             CLOSE = 150.0;
             PROTECT = 124.0;
             AMP = 133.3; //was 140.3;
-            HANDOFF = 160;
+            HANDOFF = 168;
             ARMOFFSET = 0.098;
             DISTANCE1 = 1.16;
             DISTANCE2 = 2.5;

@@ -209,9 +209,19 @@ public Arm(RobotState robotState) {
         commandedPosition = constants.AMP/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
+      else if(commander.climberUp()){
+        commandedPosition = 164/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
       else if (commander.armCommanded() == ArmCommanded.handoff){
+        if(commander.climberUp()){
+          commandedPosition = 164/360.0;
+          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        }
+        else{
         commandedPosition = constants.HANDOFF/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        }
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
         commandedPosition = 119/360.0;
