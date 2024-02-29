@@ -234,6 +234,7 @@ public Extension(RobotState robotState) {
         else if(commander.armCommanded() == ArmCommanded.amp){
             SmartDashboard.putNumber("here", 1);
             extendedCommandedPosition = fullyExtended;
+
             extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
             SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
@@ -241,6 +242,7 @@ public Extension(RobotState robotState) {
         else if(commander.armCommanded() == ArmCommanded.trap){
             SmartDashboard.putNumber("here", 1);
             extendedCommandedPosition = fullyExtended;
+            spitter.set(ControlMode.PercentOutput, 0);
             extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
             SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
