@@ -302,10 +302,11 @@ public class Camera implements SubsystemBase {
                     if (tagsUsed.size() > minimumTagsSeenByAnyCamera) {
                         minimumTagsSeenByAnyCamera = tagsUsed.size();
                     }
+                    SmartDashboard.putNumber("Seen by " + key.name(), tagsUsed.size());
                 }
             }
         });
-
+        SmartDashboard.putNumber("minimumTagsSeenByAnyCamera",minimumTagsSeenByAnyCamera);
         if (minimumTagsSeenByAnyCamera >=2 ) {
             robotState.setOneTag(false);
             robotState.setTwoTags(true);

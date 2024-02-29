@@ -172,13 +172,13 @@ public class AutonCommander implements RobotCommander {
     @Override
     public double trapArmFineControl() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'trapArmFineControl'");
+        return 0;
     }
 
     @Override
     public boolean climberOverride() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'climberOverride'");
+        return false;
     }
 
 }
