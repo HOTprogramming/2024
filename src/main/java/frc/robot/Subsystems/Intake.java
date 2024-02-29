@@ -50,6 +50,9 @@ public class Intake implements SubsystemBase {
     CANCoder slurperCancoder;
     private double slurperArmOffset;
 
+    // up = 135.6
+    // down = -174
+
     StatusSignal<Double> sCancoderPosition;
     StatusSignal<Double> sCancoderVelocity;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
@@ -75,8 +78,8 @@ public class Intake implements SubsystemBase {
         slurperCancoder = new CANCoder(constants.SLURPER_CANCODER_CAN);
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
-        slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-        slurperCancoder.configMagnetOffset(constants.SLURPER_ARM_CANCODER_OFFSET);
+        slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        slurperCancoder.configMagnetOffset(96.0);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -101,8 +104,6 @@ public class Intake implements SubsystemBase {
         
         slurperArm.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0,
         200);
-
-        slurperArm.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
 
         //   slurperArm.config
 
@@ -138,8 +139,9 @@ public class Intake implements SubsystemBase {
     }
 
     public void intilizeOffset() {
-        slurperArmOffset = slurperArm.getSelectedSensorPosition() - slurperCancoder.getAbsolutePosition()*4096/360;
-        slurperArm.setSelectedSensorPosition(slurperArmOffset);
+        SmartDashboard.putNumber("Init selectedSensorPosition", slurperArm.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Init slurperCancoder", slurperCancoder.getAbsolutePosition()*4096/360);
+        slurperArmOffset = slurperArm.getSelectedSensorPosition(0) - slurperCancoder.getAbsolutePosition()*4096/360;
     }
 
 
@@ -171,9 +173,11 @@ public class Intake implements SubsystemBase {
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
         if (commander.getIntake()) { // left trigger
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
-            // slurperArm.set(ControlMode.MotionMagic, 950); 
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset - 174.0 / 360.0 * 4096.0); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 75.5 / 360 * 4096);
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 174.0 / 360.0 * 4096.0);
+
+            SmartDashboard.putString("Test If running", "running");
         } else {
             SmartDashboard.putBoolean("Pulse_check", false); 
 
@@ -185,9 +189,8 @@ public class Intake implements SubsystemBase {
             Out.Output = 0;
             intake.setControl(Out);
 
-            
-            // slurperArm.set(ControlMode.MotionMagic, 3800); //335.5
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArm.getClosedLoopTarget());
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 100.0 / 360.0 * 4096.0); //335.5
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 100.0 / 360.0 * 4096.0);
         }   
         // } else {
         //     slurperArm.set(ControlMode.PercentOutput, 0);
@@ -207,7 +210,7 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void reset() {
-        slurperArm.setSelectedSensorPosition(0);
+        slurperArm.setSelectedSensorPosition(-slurperCancoder.getAbsolutePosition()*4096/360);
         intake.stopMotor();
         // slurperArm.setSelectedSensorPosition(slurperCancoder.getAbsolutePosition() / 4096);
         this.intilizeOffset();

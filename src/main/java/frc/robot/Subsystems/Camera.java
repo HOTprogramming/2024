@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -166,6 +167,8 @@ public class Camera implements SubsystemBase {
     Map<CameraPositions, PhotonPoseEstimator> photonPoseEstimators = new EnumMap<>(CameraPositions.class); 
     Map<CameraPositions, Double> lastEstTimestamps = new EnumMap<>(CameraPositions.class); 
 
+    private int minimumTagsSeenByAnyCamera;
+
     // docs https://docs.photonvision.org/ 
 
     public Camera(RobotState robotState) {
@@ -281,6 +284,9 @@ public class Camera implements SubsystemBase {
 
     @Override
     public void updateState() {
+
+        minimumTagsSeenByAnyCamera = 0;
+
         if (tempSimBool) {
             if (robotState.getDrivePose() != null) {
                 simVision.update(robotState.getDrivePose());
@@ -292,10 +298,28 @@ public class Camera implements SubsystemBase {
                 cameraMeasurements.put(key,updateCameraMeasurment(key, constant, cameras.get(key), publishers.get(key), photonPoseEstimators.get(key), lastEstTimestamps.get(key)));
                 if (cameraMeasurements.get(key).isPresent()) {
                     cameraStdDeviations.put(key,getEstimationStdDevs(cameraMeasurements.get(key).get().estimatedPose.toPose2d(), cameras.get(key), constant, photonPoseEstimators.get(key)));
+                    List<PhotonTrackedTarget> tagsUsed = cameraMeasurements.get(key).get().targetsUsed;
+                    if (tagsUsed.size() > minimumTagsSeenByAnyCamera) {
+                        minimumTagsSeenByAnyCamera = tagsUsed.size();
+                    }
+                    SmartDashboard.putNumber("Seen by " + key.name(), tagsUsed.size());
                 }
             }
         });
-
+        SmartDashboard.putNumber("minimumTagsSeenByAnyCamera",minimumTagsSeenByAnyCamera);
+        if (minimumTagsSeenByAnyCamera >=2 ) {
+            robotState.setOneTag(false);
+            robotState.setTwoTags(true);
+            robotState.setNoTag(false);
+        } else if (minimumTagsSeenByAnyCamera == 1) {
+            robotState.setOneTag(true);
+            robotState.setTwoTags(false);
+            robotState.setNoTag(false);
+        } else {
+            robotState.setOneTag(false);
+            robotState.setTwoTags(false);
+            robotState.setNoTag(true);
+        }
         robotState.setVisionMeasurements(cameraMeasurements);
         robotState.setCameraStdDeviations(cameraStdDeviations);
     }

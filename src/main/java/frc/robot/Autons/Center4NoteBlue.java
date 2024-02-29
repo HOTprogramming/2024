@@ -14,7 +14,7 @@ import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.Waypoint;
 
 
-public class Center4Note extends AutonBase {
+public class Center4NoteBlue extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -29,17 +29,17 @@ public class Center4Note extends AutonBase {
 
     public Step step = Step.start;   
 
-    public Center4Note(RobotState robotState) {
+    public Center4NoteBlue(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(15.27, 5.6, Rotation2d.fromDegrees(180)); //15.15
+        startPose = new Pose2d(1.4, 5.6, Rotation2d.fromDegrees(0)); //15.15
 
         seedPose = true;
     }
 
-    Pose2d ring1 = new Pose2d(13.6, 5.6, Rotation2d.fromDegrees(180));
-    Pose2d ring2 = new Pose2d(13.4, 4.3, Rotation2d.fromDegrees(200));
-    Pose2d ring3 = new Pose2d(13.3, 7.2, Rotation2d.fromDegrees(150));
+    Pose2d ring1 = new Pose2d(3, 5.6, Rotation2d.fromDegrees(0));
+    Pose2d ring2 = new Pose2d(3, 4.3, Rotation2d.fromDegrees(-20));
+    Pose2d ring3 = new Pose2d(3, 7.1, Rotation2d.fromDegrees(30));
 
     @Override
     public void runAuto() {
@@ -86,9 +86,9 @@ public class Center4Note extends AutonBase {
                             
                 trajectoryConfig = new TrajectoryConfig(3, 2);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(-45)),
-                            Waypoint.fromHolonomicPose(new Pose2d(14.5, 5, Rotation2d.fromDegrees(200))),
-                            Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(135))));
+                    List.of(Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(-135)),
+                            Waypoint.fromHolonomicPose(new Pose2d(2, 5, Rotation2d.fromDegrees(-20))),
+                            Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-45))));
                 
                 runShooter = false;
             }
@@ -111,9 +111,9 @@ public class Center4Note extends AutonBase {
                             
                 trajectoryConfig = new TrajectoryConfig(3, 2);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(45)),
-                            Waypoint.fromHolonomicPose(new Pose2d(14, 6, Rotation2d.fromDegrees(150))),
-                            Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(135))));
+                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(135)),
+                            Waypoint.fromHolonomicPose(new Pose2d(1.75, 6, Rotation2d.fromDegrees(30))),
+                            Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(45))));
                 
                 runShooter = false;
             }

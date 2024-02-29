@@ -22,6 +22,10 @@ public class AutonCommander implements RobotCommander {
         this.auto.reset();
     }
 
+    public AutonBase getAuto(){
+        return this.auto;
+    }
+
     @Override
     public double[] getDrivePercentCommand() {
         return new double[] {0, 0 ,0};
@@ -168,13 +172,13 @@ public class AutonCommander implements RobotCommander {
     @Override
     public double trapArmFineControl() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'trapArmFineControl'");
+        return 0;
     }
 
     @Override
     public boolean climberOverride() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'climberOverride'");
+        return false;
     }
 
 }
