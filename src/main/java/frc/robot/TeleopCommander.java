@@ -265,5 +265,16 @@ public class TeleopCommander implements RobotCommander {
         }
     }
 
+    @Override
+    public double trapArmFineControl() {
+        if (driver.getLeftBumper())  {
+            return 1;
+        } else if (driver.getRightBumper())  {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
 
 }

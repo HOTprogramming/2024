@@ -41,7 +41,7 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
-double fullyExtended = 2;
+double fullyExtended = 2.2;
 double fullyExtendedAmp = 1.2;
 double middlePoint = 0.6;
 double extensionZero = 0;
@@ -234,6 +234,7 @@ public Extension(RobotState robotState) {
         else if(commander.armCommanded() == ArmCommanded.amp){
             SmartDashboard.putNumber("here", 1);
             extendedCommandedPosition = fullyExtended;
+            spitter.set(ControlMode.PercentOutput, 0);
             extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
             SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
@@ -241,6 +242,7 @@ public Extension(RobotState robotState) {
         else if(commander.armCommanded() == ArmCommanded.trap){
             SmartDashboard.putNumber("here", 1);
             extendedCommandedPosition = fullyExtended;
+            spitter.set(ControlMode.PercentOutput, 0);
             extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
             SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
@@ -248,8 +250,8 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
 
-            if(extendPosition.getValueAsDouble() > 0.15)
-            extendMotor.setControl(extendMagic.withPosition(0.14).withSlot(0));
+            if(extendPosition.getValueAsDouble() > 0.18)
+            extendMotor.setControl(extendMagic.withPosition(0.17).withSlot(0));
 
             else{
             extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));    
@@ -266,6 +268,11 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
+        if (commander.trapArmFineControl() == 1) {
+            spitter.set(ControlMode.PercentOutput, 0.3);
+        } else if (commander.trapArmFineControl() == -1) {
+            spitter.set(ControlMode.PercentOutput, -0.3);
+        } 
 
 
     }
