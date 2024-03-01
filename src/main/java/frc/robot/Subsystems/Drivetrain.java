@@ -77,7 +77,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             xController, yController, thetaController);
 
     // TEMP pose 2d for get angle snap command
-    private Pose2d blueSpeaker = new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d blueSpeaker = new Pose2d(0.1, 5.55, Rotation2d.fromDegrees(0));
     private Pose2d redSpeaker = new Pose2d(16.579, 5.688, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
