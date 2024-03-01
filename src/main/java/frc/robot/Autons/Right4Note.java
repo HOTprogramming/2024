@@ -44,7 +44,7 @@ public class Right4Note extends AutonBase {
 
     public Pose2d underStageShot = new Pose2d(11.8,4.75,Rotation2d.fromDegrees(188));
 
-    public Right4Note(RobotState robotState) 
+    public Right4Note(RobotState robotState){
         super(robotState);
 
         startPose = new Pose2d(15.3, 6.5, Rotation2d.fromDegrees(150)); //15.15
