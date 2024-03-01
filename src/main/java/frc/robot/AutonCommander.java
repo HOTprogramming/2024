@@ -103,11 +103,6 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
-    @Override
-    public double getTargetDriveSpeed() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
     @Override
     public double getTargetArmSpeed() {
