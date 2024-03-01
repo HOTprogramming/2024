@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
     arm.enabled(autonCommander);
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
+    
     lights.enabled(autonCommander);
     climber.enabled(autonCommander);   
     extension.enabled(autonCommander);
