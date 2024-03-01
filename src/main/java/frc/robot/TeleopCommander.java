@@ -294,5 +294,16 @@ public class TeleopCommander implements RobotCommander {
      }
     }
 
+    @Override
+    public boolean intakeOut() {
+       if(operator.getBButton()){
+        return true;
+     }
+     else{
+        return false;
+     }
+    }
+    }
 
-}
+
+

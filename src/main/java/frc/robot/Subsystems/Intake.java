@@ -178,7 +178,10 @@ public class Intake implements SubsystemBase {
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 166.0 / 360.0 * 4096.0);
 
             SmartDashboard.putString("Test If running", "running");
-        } else {
+        } else if(commander.intakeOut()){
+            intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+            
+        }else {
             SmartDashboard.putBoolean("Pulse_check", false); 
 
 

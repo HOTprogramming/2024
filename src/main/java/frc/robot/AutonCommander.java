@@ -181,4 +181,10 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public boolean intakeOut() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'intakeOut'");
+    }
+
 }
