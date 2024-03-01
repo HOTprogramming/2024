@@ -4,13 +4,21 @@ import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.RobotCommander;
+
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,6 +61,12 @@ public class Feeder implements SubsystemBase {
            if(!feederStatus.isOK()) {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
+        // NetworkTableInstance instance = NetworkTableInstance.getDefault(); // almost done with boolean publisher
+        // NetworkTable table = instance.getTable("Feeder");
+        // BooleanSupplier beam = t
+        // BooleanPublisher beamBreak = table.getBooleanTopic("Beam Break").publish();
+        // Shuffleboard.getTab("Competition").addBoolean("Has Ring", beamBreak);
+
     }
 
 

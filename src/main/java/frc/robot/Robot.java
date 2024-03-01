@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
     RobotController.setBrownoutVoltage(5.5);
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
+    CameraServer.startAutomaticCapture();
+    
 
     constantsBase = new ConstantsBase();
     constantsBase.setAllConstants();
@@ -93,6 +96,7 @@ public class Robot extends TimedRobot {
       .add("Auto Selector", autoSelector)
       .withWidget(BuiltInWidgets.kComboBoxChooser)
       .withSize(2, 2);
+
 
     arm.armInit();
     extension.extensionInit();
