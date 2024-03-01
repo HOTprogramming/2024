@@ -168,6 +168,9 @@ public class Camera implements SubsystemBase {
     Map<CameraPositions, Double> lastEstTimestamps = new EnumMap<>(CameraPositions.class); 
 
     private int minimumTagsSeenByAnyCamera;
+    private int lastMinimumTagsSeenByAnyCamera = 0;
+
+    private int loopsPast;
 
     // docs https://docs.photonvision.org/ 
 
@@ -306,20 +309,30 @@ public class Camera implements SubsystemBase {
                 }
             }
         });
-        SmartDashboard.putNumber("minimumTagsSeenByAnyCamera",minimumTagsSeenByAnyCamera);
-        if (minimumTagsSeenByAnyCamera >=2 ) {
-            robotState.setOneTag(false);
-            robotState.setTwoTags(true);
-            robotState.setNoTag(false);
-        } else if (minimumTagsSeenByAnyCamera == 1) {
-            robotState.setOneTag(true);
-            robotState.setTwoTags(false);
-            robotState.setNoTag(false);
-        } else {
-            robotState.setOneTag(false);
-            robotState.setTwoTags(false);
-            robotState.setNoTag(true);
+
+        if(lastMinimumTagsSeenByAnyCamera != minimumTagsSeenByAnyCamera && loopsPast > 50){
+            SmartDashboard.putNumber("minimumTagsSeenByAnyCamera",minimumTagsSeenByAnyCamera);
+            if (minimumTagsSeenByAnyCamera >=2 ) {
+                robotState.setOneTag(false);
+                robotState.setTwoTags(true);
+                robotState.setNoTag(false);
+            } else if (minimumTagsSeenByAnyCamera == 1) {
+                robotState.setOneTag(true);
+                robotState.setTwoTags(false);
+                robotState.setNoTag(false);
+            } else {
+                robotState.setOneTag(false);
+                robotState.setTwoTags(false);
+                robotState.setNoTag(true);
+            }
+            loopsPast = 0;
+        } else{
+            loopsPast++;
         }
+
+        lastMinimumTagsSeenByAnyCamera = minimumTagsSeenByAnyCamera;
+
+
         robotState.setVisionMeasurements(cameraMeasurements);
         robotState.setCameraStdDeviations(cameraStdDeviations);
     }

@@ -35,13 +35,10 @@ public class Right4Note extends AutonBase {
 
     public Step step = Step.start;
 
-
-
-    public Pose2d ring1 = new Pose2d(8, 6.8, Rotation2d.fromDegrees(180));
+    public Pose2d ring1 = new Pose2d(8.15, 6.8, Rotation2d.fromDegrees(180));
     public Pose2d shoot1 = new Pose2d(11.9, 6, Rotation2d.fromDegrees(171.5));
 
-    public Pose2d ring2 = new Pose2d(8, 4.9, Rotation2d.fromDegrees(190));
-    public Pose2d ring3 = new Pose2d(8.8, 3.74, Rotation2d.fromDegrees(180));
+    public Pose2d ring2 = new Pose2d(8.15, 5.48, Rotation2d.fromDegrees(190));
 
     public Pose2d firstShot = new Pose2d(13.7, 6.7, Rotation2d.fromDegrees(155));
 
@@ -153,7 +150,7 @@ public class Right4Note extends AutonBase {
                 timer.reset();
 
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
-                    Waypoint.fromHolonomicPose(shoot1),
+                    Waypoint.fromHolonomicPose(shoot1, Rotation2d.fromDegrees(160)),
                     Waypoint.fromHolonomicPose(ring2)
                 ));
             }

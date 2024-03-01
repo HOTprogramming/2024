@@ -37,9 +37,9 @@ public class Center4Note extends AutonBase {
         seedPose = true;
     }
 
-    Pose2d ring1 = new Pose2d(13.6, 5.6, Rotation2d.fromDegrees(180));
-    Pose2d ring2 = new Pose2d(13.4, 4.3, Rotation2d.fromDegrees(200));
-    Pose2d ring3 = new Pose2d(13.3, 7.2, Rotation2d.fromDegrees(150));
+    Pose2d ring1 = new Pose2d(13.75, 5.6, Rotation2d.fromDegrees(180));
+    Pose2d ring2 = new Pose2d(13.75, 4.12, Rotation2d.fromDegrees(200));
+    Pose2d ring3 = new Pose2d(13.84, 6.84, Rotation2d.fromDegrees(150));
 
     @Override
     public void runAuto() {
