@@ -36,13 +36,12 @@ public class Right4NoteBlue extends AutonBase {
     public Step step = Step.start;
 
 
-
-    public Pose2d ring1 = new Pose2d(8.15, 6.8, Rotation2d.fromDegrees(0));
+    public Pose2d firstShot = new Pose2d(3, 6.55, Rotation2d.fromDegrees(30));
+    public Pose2d ring1 = new Pose2d(8.35, 6.87, Rotation2d.fromDegrees(0));
     public Pose2d shoot1 = new Pose2d(4.7, 5.8, Rotation2d.fromDegrees(3));
 
-    public Pose2d ring2 = new Pose2d(8.15, 5.8, Rotation2d.fromDegrees(-10));
+    public Pose2d ring2 = new Pose2d(8.25, 5.65, Rotation2d.fromDegrees(-10));
 
-    public Pose2d firstShot = new Pose2d(3, 6.7, Rotation2d.fromDegrees(30));
 
     public Right4NoteBlue(RobotState robotState) {
         super(robotState);
