@@ -133,7 +133,7 @@ public class Right4Note extends AutonBase {
                 ));
             }
         } else if(step == Step.driveshoot1){
-            armCommand = ArmCommanded.auton;
+            armCommand = ArmCommanded.shotMap;
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 driving = false;
@@ -170,7 +170,7 @@ public class Right4Note extends AutonBase {
                 ));
             }
         } else if(step == Step.driveshoot2){
-            armCommand = ArmCommanded.auton;
+            armCommand = ArmCommanded.shotMap;
             
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 driving = false;
