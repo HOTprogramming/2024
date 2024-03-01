@@ -61,12 +61,6 @@ public class Feeder implements SubsystemBase {
            if(!feederStatus.isOK()) {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
-        // NetworkTableInstance instance = NetworkTableInstance.getDefault(); // almost done with boolean publisher
-        // NetworkTable table = instance.getTable("Feeder");
-        // BooleanSupplier beam = t
-        // BooleanPublisher beamBreak = table.getBooleanTopic("Beam Break").publish();
-        // Shuffleboard.getTab("Competition").addBoolean("Has Ring", beamBreak);
-
     }
 
 

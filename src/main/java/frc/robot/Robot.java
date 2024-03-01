@@ -58,7 +58,6 @@ public class Robot extends TimedRobot {
     RobotController.setBrownoutVoltage(5.5);
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
-    CameraServer.startAutomaticCapture();
     
 
     constantsBase = new ConstantsBase();
