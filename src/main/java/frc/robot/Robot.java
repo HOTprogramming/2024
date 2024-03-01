@@ -85,10 +85,8 @@ public class Robot extends TimedRobot {
 
     newAuto = new NewAuto(robotState);
 
-    autoSelector.setDefaultOption("Right Auto Blue", "rightBlue");
-    autoSelector.addOption("Center Blue", "centerBlue");
-    autoSelector.setDefaultOption("Right Auto Red", "rightRed");
-    autoSelector.addOption("Center Red", "centerRed");
+    autoSelector.setDefaultOption("Center", "center");
+    autoSelector.addOption("Amp", "amp");
 
 
       Shuffleboard.getTab("Competition")
@@ -122,13 +120,13 @@ public class Robot extends TimedRobot {
     // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
-    if(selectedAuto.equals("rightBlue")){
+    if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(right4NoteBlue);
-    } else if(selectedAuto.equals("centerBlue")){
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(center4NoteBlue);
-    } else if(selectedAuto.equals("rightRed")){
+    } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(right4Note);
-    } else if(selectedAuto.equals("centerRed")){
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(center4Note);
     }
 
