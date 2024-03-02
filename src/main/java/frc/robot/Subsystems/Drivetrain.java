@@ -306,6 +306,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             
         }
 
+        if (commander.getLockParallel()) {
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
+
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
+
+            }
+        }
+
         if (commander.getAngleSnapCommand() != -1) {
             autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
         }

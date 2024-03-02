@@ -181,4 +181,9 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public boolean getLockParallel() {
+        return false;
+    }
+
 }

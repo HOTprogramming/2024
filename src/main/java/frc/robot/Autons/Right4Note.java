@@ -70,9 +70,10 @@ public class Right4Note extends AutonBase {
 
             if(timer.get() > 1){
                 runShooter = true;
+                runIntake = true;
+
             }
 
-            runIntake = true;
 
             if(timer.get() > 1.5){
                 timer.reset();
