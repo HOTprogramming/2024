@@ -40,7 +40,7 @@ public class Right4Note extends AutonBase {
 
     public Pose2d ring2 = new Pose2d(8.15, 5.25, Rotation2d.fromDegrees(200));
 
-    public Pose2d firstShot = new Pose2d(13.7, 6.5, Rotation2d.fromDegrees(150));
+    public Pose2d firstShot = new Pose2d(13.7, 6.5, Rotation2d.fromDegrees(165));
 
     public Pose2d underStageShot = new Pose2d(11.8,4.75,Rotation2d.fromDegrees(188));
 

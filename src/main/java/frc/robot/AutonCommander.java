@@ -144,7 +144,7 @@ public class AutonCommander implements RobotCommander {
         return auto.runIntake;
     }
 
-    @Override
+    @Override                        
     public boolean setShoot() {
         return auto.runShooter;
     }
