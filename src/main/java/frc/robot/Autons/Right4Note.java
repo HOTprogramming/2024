@@ -36,7 +36,7 @@ public class Right4Note extends AutonBase {
     public Step step = Step.start;
 
     public Pose2d ring1 = new Pose2d(8.15, 6.55, Rotation2d.fromDegrees(180));
-    public Pose2d shoot1 = new Pose2d(11.9, 6, Rotation2d.fromDegrees(175));
+    public Pose2d shoot1 = new Pose2d(12.4, 6, Rotation2d.fromDegrees(175));
 
     public Pose2d ring2 = new Pose2d(8.15, 5.25, Rotation2d.fromDegrees(200));
 
@@ -72,6 +72,7 @@ public class Right4Note extends AutonBase {
                 runShooter = true;
             }
 
+            runIntake = true;
 
             if(timer.get() > 1.5){
                 timer.reset();
