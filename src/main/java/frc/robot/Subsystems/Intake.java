@@ -79,7 +79,7 @@ public class Intake implements SubsystemBase {
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        slurperCancoder.configMagnetOffset(-276.5);
+        slurperCancoder.configMagnetOffset(-278);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
