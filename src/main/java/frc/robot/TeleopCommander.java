@@ -301,7 +301,12 @@ public class TeleopCommander implements RobotCommander {
         return false;
      }
     }
+
+    @Override
+    public boolean getLockParallel() {
+        return driver.getBButton();    
     }
+}
 
 
 

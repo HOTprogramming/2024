@@ -101,7 +101,7 @@ public class Feeder implements SubsystemBase {
             hasRing = false;
         }
 
-        if (commander.getFeeder() && !commander.setShoot()) {
+        if (commander.getFeeder() && !commander.setShoot() && commander.armCommanded() != ArmCommanded.handoff) {
             
             if (sensorFeeder.get()){
 

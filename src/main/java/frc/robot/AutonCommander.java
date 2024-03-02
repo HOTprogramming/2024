@@ -144,7 +144,7 @@ public class AutonCommander implements RobotCommander {
         return auto.runIntake;
     }
 
-    @Override
+    @Override                        
     public boolean setShoot() {
         return auto.runShooter;
     }
@@ -178,6 +178,11 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean intakeOut() {
+        return false;
+    }
+
+    @Override
+    public boolean getLockParallel() {
         return false;
     }
 
