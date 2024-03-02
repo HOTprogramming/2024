@@ -328,16 +328,26 @@ public class ConstantsBase {
         public double AMP = 139.0;
         public double ARMOFFSET = 0.4;
         public double HANDOFF = 168;
-        public double DISTANCE1 = 1.16;
-        public double DISTANCE2 = 2.5;
-        public double DISTANCE3 = 4;
-        public double DISTANCE4 = 5.3;
-        public double DISTANCE5 = 6.5;
-        public double ANGLE1 = 151;
-        public double ANGLE2 = 134;
-        public double ANGLE3 = 124;
-        public double ANGLE4 = 119;
-        public double ANGLE5 = 118;
+        public double BLUEDISTANCE1 = 1.16;
+        public double BLUEDISTANCE2 = 2.5;
+        public double BLUEDISTANCE3 = 4;
+        public double BLUEDISTANCE4 = 5.3;
+        public double BLUEDISTANCE5 = 6.5;
+        public double BLUEANGLE1 = 151;
+        public double BLUEANGLE2 = 134;
+        public double BLUEANGLE3 = 124;
+        public double BLUEANGLE4 = 119;
+        public double BLUEANGLE5 = 118;
+        public double REDDISTANCE1 = 1.16;
+        public double REDDISTANCE2 = 2.5;
+        public double REDDISTANCE3 = 4;
+        public double REDDISTANCE4 = 5.3;
+        public double REDDISTANCE5 = 6.5;
+        public double REDANGLE1 = 151;
+        public double REDANGLE2 = 134;
+        public double REDANGLE3 = 124;
+        public double REDANGLE4 = 119;
+        public double REDANGLE5 = 118;
     }
 
     public abstract class Extension{

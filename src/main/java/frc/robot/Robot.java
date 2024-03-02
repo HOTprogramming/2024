@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot {
     RobotController.setBrownoutVoltage(5.5);
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
+    
 
     constantsBase = new ConstantsBase();
     constantsBase.setAllConstants();
@@ -83,16 +85,15 @@ public class Robot extends TimedRobot {
 
     newAuto = new NewAuto(robotState);
 
-    autoSelector.setDefaultOption("Right Auto Blue", "rightBlue");
-    autoSelector.addOption("Center Blue", "centerBlue");
-    autoSelector.setDefaultOption("Right Auto Red", "rightRed");
-    autoSelector.addOption("Center Red", "centerRed");
+    autoSelector.setDefaultOption("Center", "center");
+    autoSelector.addOption("Amp", "amp");
 
 
       Shuffleboard.getTab("Competition")
       .add("Auto Selector", autoSelector)
       .withWidget(BuiltInWidgets.kComboBoxChooser)
       .withSize(2, 2);
+
 
     arm.armInit();
     extension.extensionInit();
@@ -119,13 +120,13 @@ public class Robot extends TimedRobot {
     // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
-    if(selectedAuto.equals("rightBlue")){
+    if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(right4NoteBlue);
-    } else if(selectedAuto.equals("centerBlue")){
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(center4NoteBlue);
-    } else if(selectedAuto.equals("rightRed")){
+    } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(right4Note);
-    } else if(selectedAuto.equals("centerRed")){
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(center4Note);
     }
 
@@ -149,6 +150,7 @@ public class Robot extends TimedRobot {
     arm.enabled(autonCommander);
     intake.enabled(autonCommander);
     feeder.enabled(autonCommander);
+    
     lights.enabled(autonCommander);
     climber.enabled(autonCommander);   
     extension.enabled(autonCommander);

@@ -79,7 +79,7 @@ public class Intake implements SubsystemBase {
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        slurperCancoder.configMagnetOffset(-35.0);
+        slurperCancoder.configMagnetOffset(-276.5);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -171,11 +171,11 @@ public class Intake implements SubsystemBase {
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getIntake()) { // left trigger
+        if (commander.getIntake() && !robotState.getBeamBreak()) { // left trigger
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0); 
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -166.0 / 360.0 * 4096.0); 
             slurperSpin.set(ControlMode.PercentOutput, .8);
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 166.0 / 360.0 * 4096.0);
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 160.0 / 360.0 * 4096.0);
 
             SmartDashboard.putString("Test If running", "running");
         } else if(commander.intakeOut()){
@@ -192,8 +192,8 @@ public class Intake implements SubsystemBase {
             Out.Output = 0;
             intake.setControl(Out);
 
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 90 / 360.0 * 4096.0); //335.5
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 90 / 360.0 * 4096.0);
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 96 / 360.0 * 4096.0); //335.5
+            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset + 96 / 360.0 * 4096.0);
         }   
         // } else {
         //     slurperArm.set(ControlMode.PercentOutput, 0);

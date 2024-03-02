@@ -36,13 +36,12 @@ public class Right4NoteBlue extends AutonBase {
     public Step step = Step.start;
 
 
-
-    public Pose2d ring1 = new Pose2d(8.15, 6.8, Rotation2d.fromDegrees(0));
+    public Pose2d firstShot = new Pose2d(3, 6.7, Rotation2d.fromDegrees(18));
+    public Pose2d ring1 = new Pose2d(8.55, 6.73, Rotation2d.fromDegrees(0));
     public Pose2d shoot1 = new Pose2d(4.7, 5.8, Rotation2d.fromDegrees(3));
 
-    public Pose2d ring2 = new Pose2d(8.15, 5.8, Rotation2d.fromDegrees(-10));
+    public Pose2d ring2 = new Pose2d(8.4, 5.625, Rotation2d.fromDegrees(-15));
 
-    public Pose2d firstShot = new Pose2d(3, 6.7, Rotation2d.fromDegrees(30));
 
     public Right4NoteBlue(RobotState robotState) {
         super(robotState);
@@ -133,7 +132,7 @@ public class Right4NoteBlue extends AutonBase {
                 ));
             }
         } else if(step == Step.driveshoot1){
-            armCommand = ArmCommanded.auton;
+            armCommand = ArmCommanded.shotMap;
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 driving = false;
@@ -165,12 +164,12 @@ public class Right4NoteBlue extends AutonBase {
                 timer.reset();
 
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
-                    Waypoint.fromHolonomicPose(ring2),
+                    Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(160)),
                     Waypoint.fromHolonomicPose(shoot1)
                 ));
             }
         } else if(step == Step.driveshoot2){
-            armCommand = ArmCommanded.auton;
+            armCommand = ArmCommanded.shotMap;
             
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 driving = false;

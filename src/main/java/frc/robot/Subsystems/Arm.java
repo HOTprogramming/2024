@@ -210,7 +210,7 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if(commander.climberUp()){
-        commandedPosition = 164/360.0;
+        commandedPosition = 168/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.handoff){
@@ -224,7 +224,7 @@ public Arm(RobotState robotState) {
         }
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
-        commandedPosition = 119.5/360.0;
+        commandedPosition = 120.25/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){

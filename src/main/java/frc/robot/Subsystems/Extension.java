@@ -252,8 +252,8 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
 
-            if(extendPosition.getValueAsDouble() > 0.3)
-            extendMotor.setControl(extendMagic.withPosition(0.29).withSlot(0));
+            if(extendPosition.getValueAsDouble() > 0.2)
+            extendMotor.setControl(extendMagic.withPosition(0.19).withSlot(0));
 
             else{
             extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));    

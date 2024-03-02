@@ -48,7 +48,6 @@ public interface RobotCommander {
     public abstract boolean decreaseLeftTargetSpeed();
     public abstract boolean increaseRightTargetSpeed();
     public abstract boolean decreaseRightTargetSpeed();
-    public abstract double getTargetDriveSpeed();
     public boolean getLockSpeakerCommand();
     public abstract double getTargetArmSpeed();
     public abstract boolean setShoot();

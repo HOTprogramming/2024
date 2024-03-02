@@ -103,11 +103,6 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
-    @Override
-    public double getTargetDriveSpeed() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
     @Override
     public double getTargetArmSpeed() {
@@ -183,8 +178,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean intakeOut() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'intakeOut'");
+        return false;
     }
 
 }

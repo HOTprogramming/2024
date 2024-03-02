@@ -118,24 +118,23 @@ public class TeleopCommander implements RobotCommander {
     }
 
     public boolean increaseLeftTargetSpeed() {
-        return operator.getYButtonPressed();
+        // return operator.getYButtonPressed();
+        return false;
     }
 
     public boolean decreaseLeftTargetSpeed() {
-        return operator.getXButtonPressed();
+        // return operator.getXButtonPressed();
+        return false;
     }
 
     public boolean increaseRightTargetSpeed() {
-        return operator.getBButtonPressed();
+        // return operator.getBButtonPressed();
+        return false;
     }
 
     public boolean decreaseRightTargetSpeed() {
-        return operator.getAButtonPressed();
-    }
-
-    @Override
-    public double getTargetDriveSpeed() {
-        return operator.getLeftY();
+        // return operator.getAButtonPressed();
+        return false;
     }
 
     @Override
@@ -171,12 +170,11 @@ public class TeleopCommander implements RobotCommander {
             return ArmCommanded.handoff;
             }
         }
-        else if (operator.getLeftTriggerAxis() >= .1 && operator.getAButton()){
+        else if (operator.getAButton()){
             return ArmCommanded.close;
         }
-        else if (operator.getLeftTriggerAxis() >= .1 && operator.getYButton()){
+        else if (operator.getYButton()){
             return ArmCommanded.protect;
-            //needs to be ArmCommanded.extend when extension parts are implemented.
         }
         else if (operator.getRightStickButton()){
             return ArmCommanded.trapZero;
