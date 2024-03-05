@@ -6,10 +6,12 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -25,19 +27,46 @@ public class CompBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            //All are false right now, once we start using the compbot, set each camera you have to true :D
-            HAS_FRONT_CAMERA = false;
-            HAS_REAR_CAMERA = false;
-            HAS_LEFT_CAMERA = false;
-            HAS_RIGHT_CAMERA = false;
-
             FRONT_CAMERA_RESOLUTION[0] = 640; //x, y
             FRONT_CAMERA_RESOLUTION[1] = 480;
             FRONT_CAMERA_FOV[0] = 54.06; //x, y
             FRONT_CAMERA_FOV[1] = 41.91;
+            super();
+            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
+                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120.38)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
+
+            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
+                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120.38)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
         }
     }
-
+    public class Intake extends ConstantsBase.Intake {
+        public Intake() {
+            SLURPER_ARM_CANCODER_OFFSET = -44;
+            INTAKE_ENTER_CAN = 14;
+            INTAKESPEED = 83;
+            INTAKE_VELOCITY_ERROR = .01;
+            GRABBER_ENTER_CAN = 50;
+            GRABBERSPEED = 83;
+            GRABBER_VELOCITY_ERROR = .01;
+            SLURPER_ROLLER_CAN = 16;
+        }
+    }
+    public class Feeder extends ConstantsBase.Feeder {
+        public Feeder() {
+         FEEDER_CAN = 13;
+         FEEDERSPEED = 95;
+         FEEDERSPEED2 = 95;
+         DESIREDENCODERED = 2;
+         FEEDER_VELOCITY_ERROR = .01;
+         FEEDER_SENSOR_CHANNEL = 0;
+        }
+    }
     public class Drivetrain extends ConstantsBase.Drivetrain {
         public Drivetrain() {
             ROBOT_LENGTH_INCHES = 20.25;
@@ -49,11 +78,11 @@ public class CompBotConstants extends ConstantsBase {
 
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
-            Slot0Configs SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(100).withKI(0).withKD(0.2)
+            SWERVE_STEER_GAINS = new Slot0Configs()
+            .withKP(400).withKI(0).withKD(8)
             .withKS(0).withKV(1.5).withKA(0);
 
-            Slot0Configs SWERVE_DRIVE_GAINS = new Slot0Configs()
+            SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
             .withKS(0).withKV(0).withKA(0);
             
@@ -133,7 +162,7 @@ public class CompBotConstants extends ConstantsBase {
             kFrontLeftDriveMotorId = 1;
             kFrontLeftSteerMotorId = 2;
             kFrontLeftEncoderId = 43;
-            kFrontLeftEncoderOffset = 0.440673828125 * Math.PI;
+            kFrontLeftEncoderOffset = 0.3193359375 * Math.PI;
 
             kFrontLeftXPosInches = 10.125;
             kFrontLeftYPosInches = 10.125;
@@ -144,7 +173,7 @@ public class CompBotConstants extends ConstantsBase {
             kFrontRightDriveMotorId = 3;
             kFrontRightSteerMotorId = 4;
             kFrontRightEncoderId = 41;
-            kFrontRightEncoderOffset = 0.098876953125 * Math.PI;
+            kFrontRightEncoderOffset = -0.149169921875 * Math.PI;
 
             kFrontRightXPosInches = 10.125;
             kFrontRightYPosInches = -10.125;
@@ -155,7 +184,7 @@ public class CompBotConstants extends ConstantsBase {
             kBackLeftDriveMotorId = 5;
             kBackLeftSteerMotorId = 6;
             kBackLeftEncoderId = 42;
-            kBackLeftEncoderOffset = -0.450439453125 * Math.PI;
+            kBackLeftEncoderOffset = -0.04150390625 * Math.PI;
 
             kBackLeftXPosInches = -10.125;
             kBackLeftYPosInches = 10.125;
@@ -167,7 +196,7 @@ public class CompBotConstants extends ConstantsBase {
             kBackRightDriveMotorId = 7;
             kBackRightSteerMotorId = 8;
             kBackRightEncoderId = 40;
-            kBackRightEncoderOffset = -0.44140625 * Math.PI;
+            kBackRightEncoderOffset = -0.279296875 * Math.PI;
 
             kBackRightXPosInches = -10.125;
             kBackRightYPosInches = -10.125;
@@ -185,6 +214,111 @@ public class CompBotConstants extends ConstantsBase {
             BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
             kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset / Math.PI, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), !SWERVE_BACK_RIGHT_DRIVE_UNINVERT)
             .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
+        }
+
+        
+    }
+
+    public class Shooter extends ConstantsBase.Shooter {
+        public Shooter() {            
+            FEEDER_KP = 0.25;
+            FEEDER_KI = 0.5;
+            FEEDER_KD = 0.0001;
+    
+
+            RIGHT_FLYWHEEL_CAN = 12;
+            LEFT_FLYWHEEL_CAN = 11;
+            FEEDER_CAN = 13;
+    
+            TARGET_SPEED_INCREMENT = 5;
+            START_TARGET_SPEED = 70;
+    
+            FEEDER_SPEED = 10;
+            FEEDER_REVOLUTIONS = 25;
+    
+            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
+            FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
+    
+            FLYWHEEL_KP = 35.0; // 22.0
+            FLYWHEEL_KI = 0.15; // 0.0
+            FLYWHEEL_KD = 0.0; // 2.0
+            LEFT_FLYWHEEL_KV = .130; //.133
+            LEFT_FLYWHEEL_KS = 0.8; // .8 | .384
+
+
+            RFLYWHEEL_KP = 30.0; // 16.0
+            RFLYWHEEL_KI = 0.1; // 0.0
+            RFLYWHEEL_KD = 0.0; // 4.0
+            RIGHT_FLYWHEEL_KV = .138; //.138
+            RIGHT_FLYWHEEL_KS = 0.8; // 0.8 | .38
+
+
+        }
+
+    }
+
+    public class Lights extends ConstantsBase.Lights {
+        public Lights() {
+         LIGHTS_CAN_RIGHT = 51;
+        }
+    }
+
+    public class Arm extends ConstantsBase.Arm {
+        public Arm(){
+            CANCODER_CAN = 44;
+            ARM_CAN = 9;
+            CRUISEVELOCITY = 500;
+            ACCELERATION = 420;//350
+            JERK = 1000;
+            ARMKP = 200;
+            ARMKI = 20;
+            ARMKD = 0;//4
+            ARMKV = 0.8;
+            ARMKS = 0.4;
+            ZERO = 95.0;
+            SHOOT = 118.0;
+            TRAP = 141.0;
+            CLOSE = 150.0;
+            PROTECT = 125.25;
+            AMP = 133.3; //was 140.3;
+            HANDOFF = 168;
+            ARMOFFSET = 0.098;
+            
+            BLUEDISTANCE1 = 1.16;
+            BLUEDISTANCE2 = 2.5;
+            BLUEDISTANCE3 = 4;
+            BLUEDISTANCE4 = 5.3;
+            BLUEDISTANCE5 = 6.5;
+            BLUEANGLE1 = 150.0;
+            BLUEANGLE2 = 129.0;
+            BLUEANGLE3 = 119.0;
+            BLUEANGLE4 = 116.3;   
+            BLUEANGLE5 = 115.3;
+
+            REDDISTANCE1 = 1.16;
+            REDDISTANCE2 = 2.5;
+            REDDISTANCE3 = 4;
+            REDDISTANCE4 = 5.3;
+            REDDISTANCE5 = 6.5;
+            REDANGLE1 = 150.0;
+            REDANGLE2 = 129.0;
+            REDANGLE3 = 119.0;
+            REDANGLE4 = 116.0;   
+            REDANGLE5 = 115.2;
+        }
+    }
+
+    public class Extension extends ConstantsBase.Extension{
+        public Extension(){
+            ECRUISEVELOCITY = 15;
+            EACCELERATION = 15;
+            EJERK = 50;
+            EKP = 30;
+            EKI = 0.5;
+            EKD = 0;
+            EKV = 0.12;
+            EKS = 0.25;
+            SHOOTERENCODER = 2.8;
         }
     }
 }

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +20,10 @@ public class AutonCommander implements RobotCommander {
     public void setAuto(AutonBase selectedAuto) {
         this.auto = selectedAuto;
         this.auto.reset();
+    }
+
+    public AutonBase getAuto(){
+        return this.auto;
     }
 
     @Override
@@ -85,7 +90,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getLockSpeakerCommand() {
-        return false;
+        return auto.autoAim;
     }
     public double getRunArm() {
         // return auto.armPos;
@@ -98,15 +103,10 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
-    @Override
-    public double getTargetDriveSpeed() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
     @Override
     public double getTargetArmSpeed() {
-        return auto.armSpeed;
+        return 0; 
     }
     
     // @Override
@@ -123,7 +123,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getResetRobotPose() {
-        return false;
+        return auto.seedPose;
     }
 
     @Override
@@ -135,29 +135,55 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean getIntake() {
         // TODO Auto-generated method stub
-        return false;
+        return auto.runIntake;
     }
     
     @Override
     public boolean getFeeder() {
         // TODO Auto-generated method stub
+        return auto.runIntake;
+    }
+
+    @Override                        
+    public boolean setShoot() {
+        return auto.runShooter;
+    }
+
+    @Override
+    public ArmCommanded armCommanded() {
+        return auto.armCommand;
+    }
+
+    @Override
+    public boolean climberUp() {
         return false;
     }
 
     @Override
-    public boolean runArm() {
-        return auto.runArm;
+    public boolean climberDown() {
+        return false;
     }
 
     @Override
-    public boolean zeroArm() {
+    public double trapArmFineControl() {
         // TODO Auto-generated method stub
-        return !auto.runArm;
+        return 0;
     }
 
     @Override
-    public boolean setShoot() {
+    public boolean climberOverride() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setShoot'");
+        return false;
     }
+
+    @Override
+    public boolean intakeOut() {
+        return false;
+    }
+
+    @Override
+    public boolean getLockParallel() {
+        return false;
+    }
+
 }

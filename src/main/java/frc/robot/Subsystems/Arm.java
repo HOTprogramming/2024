@@ -5,6 +5,7 @@ import static frc.robot.Constants.ArmConstants.*;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 import frc.robot.ShotMap;
+import frc.robot.ConstantsFolder.ConstantsBase;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -41,13 +42,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm implements SubsystemBase {
 
+ConstantsBase.Arm constants;
+
 RobotState robotState;    
 TalonFX armMotor;
 
 MotionMagicVoltage armMagic;
-
-TalonFXSimState armSimState;
-DCMotorSim armSim;
 
 CANcoder cancoder;
 
@@ -62,75 +62,73 @@ StatusSignal<Double> cancoderPosition;
 StatusSignal<Double> cancoderVelocity;
 StatusSignal<Double> armRotorPos;
 
-// public enum armDesiredPos{
-
-//   shoot(127),
-//   zero(95);
-
-//   public final double armcpos;
-//   public double getcommmPosition(){
-//     return armcpos;
-//   }
-
-// armDesiredPos(double armcpos){
-// this.armcpos = armcpos;
-// }
-
-
-// }
-
-public boolean setArmDesPos;
-
 public double robotePosToSpeaker;
 public double commandedPosition;
 
 ShotMap shotMap;
 
+public enum ArmCommanded{
+  shotMap,
+  close,
+  protect,
+  amp,
+  trap,
+  trap2,
+  handoff,
+  trapZero,
+  zero,
+  auton,
+  preload,
+  none;
+}
+
 public Arm(RobotState robotState) {
 
     this.robotState = robotState;
+    this.constants = robotState.getConstants().getArmConstants();
 
     shotMap = new ShotMap(robotState);
-    armMotor = new TalonFX(ARM_CAN, "drivetrain");
-    cancoder = new CANcoder(CANCODER_CAN, "drivetrain");               
+    armMotor = new TalonFX(constants.ARM_CAN, "drivetrain");
+    cancoder = new CANcoder(constants.CANCODER_CAN, "drivetrain");               
 
-   armMagic = new MotionMagicVoltage(0);
+    armMagic = new MotionMagicVoltage(0);
 
-  f_fusedSensorOutOfSync = armMotor.getFault_FusedSensorOutOfSync();
-  sf_fusedSensorOutOfSync = armMotor.getStickyFault_FusedSensorOutOfSync();
-  f_remoteSensorInvalid = armMotor.getFault_RemoteSensorDataInvalid();
-  sf_remoteSensorInvalid = armMotor.getStickyFault_RemoteSensorDataInvalid();
+    f_fusedSensorOutOfSync = armMotor.getFault_FusedSensorOutOfSync();
+    sf_fusedSensorOutOfSync = armMotor.getStickyFault_FusedSensorOutOfSync();
+    f_remoteSensorInvalid = armMotor.getFault_RemoteSensorDataInvalid();
+    sf_remoteSensorInvalid = armMotor.getStickyFault_RemoteSensorDataInvalid();
 
-  armPosition = armMotor.getPosition();
-  armVelocity = armMotor.getVelocity();
-  cancoderPosition = cancoder.getPosition();
-  cancoderVelocity = cancoder.getVelocity();
-  armRotorPos = armMotor.getRotorPosition();
+    armPosition = armMotor.getPosition();
+    armVelocity = armMotor.getVelocity();
+    cancoderPosition = cancoder.getPosition();
+    cancoderVelocity = cancoder.getVelocity();
+    armRotorPos = armMotor.getRotorPosition();
+
+
 }
 
   public void armInit(){
     TalonFXConfiguration cfg = new TalonFXConfiguration();
 
     MotionMagicConfigs mm = cfg.MotionMagic;
-    mm.MotionMagicCruiseVelocity = CRUISEVELOCITY; //rps
-    mm.MotionMagicAcceleration = ACCELERATION;
-    mm.MotionMagicJerk = JERK;
+    mm.MotionMagicCruiseVelocity = constants.CRUISEVELOCITY; //rps
+    mm.MotionMagicAcceleration = constants.ACCELERATION;
+    mm.MotionMagicJerk = constants.JERK;
 
     Slot0Configs slot0 = cfg.Slot0;
-    slot0.kP = ARMKP;
-    slot0.kI = ARMKI;
-    slot0.kD = ARMKD;
-    slot0.kV = ARMKV;
-    slot0.kS = ARMKS; // Approximately 0.25V to get the mechanism moving
+    slot0.kP = constants.ARMKP;
+    slot0.kI = constants.ARMKI;
+    slot0.kD = constants.ARMKD;
+    slot0.kV = constants.ARMKV;
+    slot0.kS = constants.ARMKS; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = cfg.Feedback;
     fdb.SensorToMechanismRatio = 1;
 
-
     CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
     cancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     cancoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-    cancoderConfig.MagnetSensor.MagnetOffset = 0.4;
+    cancoderConfig.MagnetSensor.MagnetOffset = constants.ARMOFFSET;
     cancoder.getConfigurator().apply(cancoderConfig);
 
     cfg.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
@@ -139,7 +137,7 @@ public Arm(RobotState robotState) {
     cfg.Feedback.RotorToSensorRatio = 4096/360; //12.8;
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     cfg.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .42;
+    cfg.SoftwareLimitSwitch.ForwardSoftLimitThreshold = .5;
     cfg.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     cfg.SoftwareLimitSwitch.ReverseSoftLimitThreshold = .25;
 
@@ -152,16 +150,25 @@ public Arm(RobotState robotState) {
     if (!armStatus.isOK()) {
       System.out.println("Could not configure device. Error: " + armStatus.toString());
     }
-
-    armSim = new DCMotorSim(DCMotor.getKrakenX60(1), 500, .001);
 }  
 
     public void updateState(){
-        robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
+      robotePosToSpeaker = robotState.getPoseToSpeaker();
+
+      robotState.setArmPos(armMotor.getPosition().getValueAsDouble());
+
+      armPosition.refresh(); 
+      armVelocity.refresh();
+      cancoderPosition.refresh(); 
+      cancoderVelocity.refresh();
+      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360.0);
+      SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
+      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360.0);
+      SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
+      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360.0);
+      SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);  
+      SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
-
-
-    double mapArmPos = ZERO;
 
     public void enabled(RobotCommander commander){
 
@@ -169,41 +176,64 @@ public Arm(RobotState robotState) {
       armVelocity.refresh();
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
+    
 
-      //armDesiredPos thePos = commander.armPosition();
-
-      //armMotor.setControl(armMagic.withPosition(thePos.getcommmPosition()/360).withSlot(0));
-      
-      robotePosToSpeaker = robotState.getPoseToSpeaker();
-
-      
-      
-      if(commander.runArm()){
-        commandedPosition = shotMap.calcShotMap()/360;
-        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-      
-      } else if (commander.zeroArm()) {
-        commandedPosition = 100/360;
+      if(commander.armCommanded() == ArmCommanded.shotMap){
+        commandedPosition = shotMap.calcShotMap();
+        SmartDashboard.putNumber("Arm_ShotmapPose", commandedPosition);
+        if(commandedPosition >= 95.0){
+        armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
+        }
+      } 
+       else if (commander.armCommanded() == ArmCommanded.zero) {
+         commandedPosition = constants.ZERO/360.0;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
          
-      } else{
+      } 
+        else if(commander.armCommanded() == ArmCommanded.trap){
+        commandedPosition = constants.TRAP/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+
+      }
+      else if (commander.armCommanded() == ArmCommanded.close){
+        commandedPosition = constants.CLOSE/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+
+      }
+      else if (commander.armCommanded() == ArmCommanded.protect){
+        commandedPosition = constants.PROTECT/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+
+      }
+      else if (commander.armCommanded() == ArmCommanded.amp){
+        commandedPosition = constants.AMP/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if(commander.climberUp()){
+        commandedPosition = 168/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.handoff){
+        if(commander.climberUp()){
+          commandedPosition = 164/360.0;
+          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        }
+        else{
+        commandedPosition = constants.HANDOFF/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        }
+      }
+      else if (commander.armCommanded() == ArmCommanded.auton){
+        commandedPosition = (constants.PROTECT + 1.5)/360.0; // commandedPosition = 120.25/360.0
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.preload){
+        commandedPosition = 143/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else{
         armMotor.setVoltage(0);
       }
-    
-   
-
-      SmartDashboard.putNumber("Cancoder", cancoderPosition.getValueAsDouble()*360);
-      SmartDashboard.putNumber("CancoderVelocity", cancoderVelocity.getValueAsDouble());
-      SmartDashboard.putNumber("Calced Arm Pose", mapArmPos);
-      SmartDashboard.putNumber("ArmPos", armPosition.getValueAsDouble()*360);
-      SmartDashboard.putNumber("ArmPosRaw", armPosition.getValueAsDouble());
-      SmartDashboard.putNumber("ArmVelocity", armVelocity.getValueAsDouble()*360);
-      SmartDashboard.putNumber("posetospeaker", robotePosToSpeaker);
-      // if(this.robotState != null){
-        SmartDashboard.putNumber("commandedPosition", shotMap.calcShotMap());
-      // }
-      //SmartDashboard.putNumber("ArmCommandedPosition", thePos.getcommmPosition());
-
     }
     public void disabled(){
         armMotor.stopMotor();
@@ -214,32 +244,10 @@ public Arm(RobotState robotState) {
     }
 
     public void simulation(){
-        armSimState = armMotor.getSimState();
-
-        armSimState.setSupplyVoltage(12);
-        
-        var motorVoltage = armSimState.getMotorVoltage();
-
-        SmartDashboard.putNumber("Motor VOlts", motorVoltage);
-
-        // use the motor voltage to calculate new position and velocity using an external MotorSimModel class
-        armSim.setInputVoltage(motorVoltage);
-        armSim.update(0.020); // assume 20 ms loop time
-
-        SmartDashboard.putNumber("Arm Sim Pos", armSim.getAngularPositionRotations());
-        SmartDashboard.putNumber("Arm Sim Speed", armSim.getAngularVelocityRPM());
-
-        // SmartDashboard.putNumber("Correct Arm Pos", armMotor.getposition().getValueAsDouble());
-
-        // apply the new rotor position and velocity to the TalonFX
-        armSimState.setRawRotorPosition(armSim.getAngularPositionRotations());
-        armSimState.setRotorVelocity(armSim.getAngularVelocityRPM() / 60);
-
     }
 
     @Override
     public void init(RobotCommander commander) {
-      // TODO Auto-generated method stub
     }
 }
 

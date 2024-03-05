@@ -4,6 +4,7 @@ import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
@@ -14,47 +15,46 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 
 public class Shooter implements SubsystemBase {
     RobotState robotState;
     TalonFX leftFlywheel;
     TalonFX rightFlywheel;
-    //TalonFX feeder;
-    
+
     VelocityVoltage leftVoltageVelocity;
     VelocityVoltage rightVoltageVelocity;
-    VelocityVoltage feederVoltageVelocity;
     VelocityTorqueCurrentFOC leftTorqueCurrentFOC;
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
-    double leftTargetSpeed = 66.6;
-    double rightTargetSpeed = 50;
+    double leftHighSpeed = 61.6;
+    double rightHighSpeed = 50;
+    double leftSlowSpeed = 24;
+    double rightSlowSpeed = 24;
+    double leftIdleSpeed = 33;
+    double rightIdleSpeed = 33;
     boolean isShooting = false;
     
     ConstantsBase.Shooter constants;
+    StatusSignal<Double> shooterPosition;
 
 
-    public Shooter(RobotState robotState) {
+    public Shooter(RobotState robotState, double leftCurrentLimit, double rightCurrentLimit) {
 
         constants = robotState.getConstants().getShooterConstants();
 
         this.robotState = robotState;
         leftFlywheel = new TalonFX(constants.LEFT_FLYWHEEL_CAN, "drivetrain");
         rightFlywheel = new TalonFX(constants.RIGHT_FLYWHEEL_CAN, "drivetrain");
-        //feeder = new TalonFX(constants.FEEDER_CAN, "drivetrain");
 
         leftVoltageVelocity = new VelocityVoltage(0, 0, true, 7.5, 0, false, false, false);
         rightVoltageVelocity = new VelocityVoltage(0, 0, true, 7.5, 0, false, false, false);
         leftTorqueCurrentFOC = new VelocityTorqueCurrentFOC(0,0,0,0,false,false,false);
         rightTorqueCurrentFOC = new VelocityTorqueCurrentFOC(0,0,0,0,false,false,false);
-        feederVoltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
 
-        StatusCode rightStatus = StatusCode.StatusCodeNotInitialized;
-        StatusCode leftStatus = StatusCode.StatusCodeNotInitialized;
-        StatusCode feederStatus = StatusCode.StatusCodeNotInitialized;
+
 
         TalonFXConfiguration leftConfigs = new TalonFXConfiguration();
         TalonFXConfiguration rightConfigs = new TalonFXConfiguration();
-        TalonFXConfiguration feederConfigs = new TalonFXConfiguration();
 
         leftConfigs.Slot0.kP = constants.FLYWHEEL_KP;
         leftConfigs.Slot0.kI = constants.FLYWHEEL_KI;
@@ -62,103 +62,118 @@ public class Shooter implements SubsystemBase {
         leftConfigs.Slot0.kV = constants.LEFT_FLYWHEEL_KV;
         leftConfigs.Slot0.kS = constants.LEFT_FLYWHEEL_KS;
         
-        
         rightConfigs.Slot0.kP = constants.RFLYWHEEL_KP;
         rightConfigs.Slot0.kI = constants.RFLYWHEEL_KI;
         rightConfigs.Slot0.kD = constants.RFLYWHEEL_KD;
         rightConfigs.Slot0.kV = constants.RIGHT_FLYWHEEL_KV;
         rightConfigs.Slot0.kS = constants.RIGHT_FLYWHEEL_KS;
 
-        feederConfigs.Slot0.kP = constants.FEEDER_KP;
-        feederConfigs.Slot0.kI = constants.FEEDER_KI;
-        feederConfigs.Slot0.kD = constants.FEEDER_KD;
 
-        leftConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
-        leftConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
-        rightConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
-        rightConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
+
+        // leftConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
+        // leftConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
+        // rightConfigs.Voltage.PeakForwardVoltage = constants.FLYWHEEL_PEAK_VOLTAGE;
+        // rightConfigs.Voltage.PeakReverseVoltage = -constants.FLYWHEEL_PEAK_VOLTAGE;
 
         leftConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         rightConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         leftConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         rightConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-        leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 80;
-        leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -80;
-        rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = 80;
-        rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -80;
+        leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = leftCurrentLimit;
+        leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -leftCurrentLimit;
+        rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = rightCurrentLimit;
+        rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -rightCurrentLimit;
+
+        StatusCode rightStatus = StatusCode.StatusCodeNotInitialized;
+        StatusCode leftStatus = StatusCode.StatusCodeNotInitialized;
 
         for (int i = 0; i < 5; ++i) {
             leftStatus = leftFlywheel.getConfigurator().apply(leftConfigs);
-            rightStatus = rightFlywheel.getConfigurator().apply(rightConfigs);
-            //feederStatus = feeder.getConfigurator().apply(feederConfigs);
-            if (leftStatus.isOK() && rightStatus.isOK()) break;
+            if (leftStatus.isOK()) break;
         }
         if(!leftStatus.isOK()) {
             System.out.println("Could not apply configs, error code: " + leftStatus.toString());
         }
+
+        for (int i = 0; i < 5; ++i) {
+            rightStatus = rightFlywheel.getConfigurator().apply(rightConfigs);
+            if (rightStatus.isOK()) break;
+        }
         if(!rightStatus.isOK()) {
             System.out.println("Could not apply configs, error code: " + rightStatus.toString());
         }
-        if(!feederStatus.isOK()) {
-            System.out.println("Could not apply configs, error code: " + feederStatus.toString());
-        }
+
+        shooterPosition = leftFlywheel.getPosition();
+
     }
 
     @Override
     public void updateState() {
+        if (Math.abs(leftTorqueCurrentFOC.Velocity - leftFlywheel.getVelocity().getValue()) < 10 && 
+                leftTorqueCurrentFOC.Velocity > leftSlowSpeed && 
+                Math.abs(rightTorqueCurrentFOC.Velocity - rightFlywheel.getVelocity().getValue()) < 10 && 
+                rightTorqueCurrentFOC.Velocity > rightSlowSpeed) {
+
+            robotState.setShooterOn(true);
+            SmartDashboard.putBoolean("Shooter_on", true);
+        } else {
+            robotState.setShooterOn(false);
+            SmartDashboard.putBoolean("Shooter_on", false);
+
+        }
+
+        shooterPosition.refresh();
+        robotState.setShooterPos(leftFlywheel.getPosition().getValueAsDouble());
+
+        SmartDashboard.putNumber("Shooter_Left target speed", leftHighSpeed * 60);
+        SmartDashboard.putNumber("Shooter_right target speed", rightHighSpeed * 60);
+        SmartDashboard.putNumber("Shooter_Left speed RPM", leftFlywheel.getVelocity().getValueAsDouble() * 60);
+        SmartDashboard.putNumber("Shooter_Right speed RPM", rightFlywheel.getVelocity().getValueAsDouble() * 60);
+        SmartDashboard.putNumber("Shooter_ShootVolt", leftFlywheel.getMotorVoltage().getValue());
+        SmartDashboard.putNumber("Shooter_commandedvolts", leftFlywheel.getSupplyVoltage().getValue());
+        SmartDashboard.putBoolean("Shooter_isShooting", isShooting);
     }
 
     @Override
     public void enabled(RobotCommander commander) {
-        if (commander.runArm()) {
-             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftTargetSpeed).withFeedForward(25));
-             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightTargetSpeed).withFeedForward(25));
-            // rightFlywheel.setVoltage(7.5);
-            // leftFlywheel.setVoltage(7.5);
-        } else {
+
+        shooterPosition.refresh();
+
+        if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton) {
+             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
+             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
+        }
+
+        // } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterOnAmpTrap()){
+        //     leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
+        //     rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
+            
+        // }
+        else if (commander.armCommanded() == ArmCommanded.zero){
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftIdleSpeed));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightIdleSpeed));
+        }
+        else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getShooterOnAmpTrap()){
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
+        }
+        else if (commander.armCommanded() == ArmCommanded.preload){
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(42));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(42));
+        }
+        else {
             leftFlywheel.setVoltage(0);
             rightFlywheel.setVoltage(0);
         }
 
         if (commander.getRunFeeder() && !isShooting) {
             isShooting = true;
-            //feeder.setPosition(0);
         }
 
-        // if (feeder.getPosition().getValueAsDouble() > constants.FEEDER_REVOLUTIONS) {
-        //     isShooting = false;
-        // }
 
-        if (isShooting) {
-             //feeder.setControl(rightVoltageVelocity.withVelocity(constants.FEEDER_SPEED));
-        } else {
-            //feeder.setVoltage(0);
-        }
-
-        // if (commander.increaseLeftTargetSpeed()) {
-        //     leftTargetSpeed += constants.TARGET_SPEED_INCREMENT;
-        // }
-        // if (commander.decreaseLeftTargetSpeed()) {
-        //     leftTargetSpeed -= constants.TARGET_SPEED_INCREMENT;
-        // }
-        // if (commander.increaseRightTargetSpeed()) {
-        //     rightTargetSpeed += constants.TARGET_SPEED_INCREMENT;
-        // }
-        // if (commander.decreaseRightTargetSpeed()) {
-        //     rightTargetSpeed -= constants.TARGET_SPEED_INCREMENT;
-        // }
-        SmartDashboard.putNumber("Left target speed", leftTargetSpeed * 60);
-        SmartDashboard.putNumber("right target speed", rightTargetSpeed * 60);
-        SmartDashboard.putNumber("Left speed RPM", leftFlywheel.getVelocity().getValueAsDouble() * 60);
-        SmartDashboard.putNumber("Right speed RPM", rightFlywheel.getVelocity().getValueAsDouble() * 60);
-        SmartDashboard.putNumber("ShootVolt", leftFlywheel.getMotorVoltage().getValue());
-        SmartDashboard.putNumber("commandedvolts", leftFlywheel.getSupplyVoltage().getValue());
         
-       // SmartDashboard.putNumber("feeder position", feeder.getPosition().getValueAsDouble());
-        SmartDashboard.putBoolean("isShooting", isShooting);
     }
 
     @Override
@@ -167,13 +182,10 @@ public class Shooter implements SubsystemBase {
 
     @Override
     public void reset() {
-        // rightTargetSpeed = constants.START_TARGET_SPEED;
-        // leftTargetSpeed = constants.START_TARGET_SPEED;
     }
 
     @Override
     public void init(RobotCommander commander) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'init'");
     }
 
@@ -184,8 +196,4 @@ public class Shooter implements SubsystemBase {
     public TalonFX getRightShooter(){
         return rightFlywheel;
     }
-
-    // public TalonFX getFeederMotor(){
-    //     return feeder;
-    // }
 }

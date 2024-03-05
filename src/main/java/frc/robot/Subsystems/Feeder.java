@@ -2,22 +2,26 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.RobotCommander;
+
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.StatusCode;
-//import edu.wpi.first.wpilibj.TimedRobot;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
-//import com.ctre.phoenix6.controls.Follower;
-//import edu.wpi.first.wpilibj.XboxController;
-//import com.ctre.phoenix6.controls.NeutralOut;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 
 public class Feeder implements SubsystemBase {
     ConstantsBase.Feeder constants;
@@ -25,10 +29,12 @@ public class Feeder implements SubsystemBase {
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX feeder;
     int timer = 0;
+    boolean hasRing = false;
     private final VelocityVoltage m_voltageVelocity = new VelocityVoltage(0, 0, true, 0, 0, false, false, false);
      static DigitalInput sensorFeeder;
     TalonFXConfiguration feederConfigs = new TalonFXConfiguration();
-RobotState robotState;
+    RobotState robotState;
+
     public Feeder(RobotState robotState) { 
         this.robotState = robotState;
         constants = robotState.getConstants().getFeederConstants();
@@ -44,14 +50,14 @@ RobotState robotState;
 
         feeder = new TalonFX(constants.FEEDER_CAN, "drivetrain");
 
-        feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        feederConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
    
          StatusCode feederStatus = StatusCode.StatusCodeNotInitialized;
          for (int i = 0; i < 5; ++i) {
              feederStatus = feeder.getConfigurator().apply(feederConfigs);
              if (feederStatus.isOK()) break;
-       }
+        }
            if(!feederStatus.isOK()) {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
@@ -60,35 +66,49 @@ RobotState robotState;
 
     @Override
     public void updateState() {
-        SmartDashboard.putNumber("intake Speed", feeder.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("intake Speed", feeder.getVelocity().getValueAsDouble());                                              
         if ((feeder.getVelocity().getValueAsDouble()) >= (constants.FEEDERSPEED - constants.FEEDER_VELOCITY_ERROR) ){
+            SmartDashboard.putBoolean("Feeder_RSon", true);
             robotState.setFeederOn(true);
         } else {
+            SmartDashboard.putBoolean("Feeder_RSon", false);
+
             robotState.setFeederOn(false);
         }
+
+        robotState.setBeamBreak(sensorFeeder.get());
+        SmartDashboard.putBoolean("beambreak", sensorFeeder.get());
+
     }
     
     @Override
     public void enabled(RobotCommander commander){
-       if (sensorFeeder.get()){
-            timer += 1;
-        } else {
-            timer = 0;
+        boolean getFeeder = commander.getFeeder();
+        boolean setShoot = commander.setShoot();
+        // feeder.setControl(Out);
+        SmartDashboard.putBoolean("Feeder getFeeder", commander.getFeeder());
+        SmartDashboard.putBoolean("Feeder SetShoot", commander.setShoot());
+        SmartDashboard.putBoolean("Feeder_detection", sensorFeeder.get());
+        SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
+        SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
+        SmartDashboard.putNumber("Feeder_position", feeder.getPosition().getValueAsDouble());
+
+        if (!hasRing && sensorFeeder.get()) {
+            hasRing = true;
+            feeder.setPosition(0);
+        } else if (hasRing && !sensorFeeder.get()) {
+            hasRing = false;
         }
-           SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getFeeder() || commander.setShoot()) {
-            feeder.setControl(Out);
-            SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
-            SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
-            SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
+
+        if (commander.getFeeder() && !commander.setShoot() && commander.armCommanded() != ArmCommanded.handoff) {
+            
             if (sensorFeeder.get()){
-                if (timer >= constants.DESIREDTIMER){
+
+
+                if (feeder.getPosition().getValueAsDouble() >= constants.DESIREDENCODERED){ 
                 
-                    if (commander.setShoot()) {
-                        feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
-                    } else {
-                        feeder.setControl(Out);
-                    }
+                    feeder.setControl(Out);
 
                 } else {
                     feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
@@ -96,15 +116,21 @@ RobotState robotState;
             } else { 
                feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
             }           
-            } else {
-                Out.Output = 0;
-                feeder.setControl(Out);
-            }
+        } else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
+            feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+        } else if (commander.setShoot()) {
+            feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+        } else {
+            Out.Output = 0;
+            feeder.setControl(Out);
+
         }
+    }
         
     @Override
     public void disabled() {
         feeder.stopMotor();
+        feeder.setNeutralMode(NeutralModeValue.Brake);
     }
 
     @Override

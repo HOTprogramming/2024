@@ -5,10 +5,12 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
@@ -16,31 +18,43 @@ public class PracticeBotConstants extends ConstantsBase {
 
     public class Auton extends ConstantsBase.Auton {
         public Auton() {
-            AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-            AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+            AUTON_DEFAULT_MAX_VELOCITY_METERS = 4.0;
+            AUTON_DEFAULT_MAX_ACCEL_METERS = 3.0;
         }        
     }
   
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            HAS_FRONT_CAMERA = true;
-            HAS_REAR_CAMERA = true;
-            HAS_LEFT_CAMERA = true;
-            HAS_RIGHT_CAMERA = true;
 
             FRONT_CAMERA_RESOLUTION[0] = 640; //x, y
             FRONT_CAMERA_RESOLUTION[1] = 480;
             FRONT_CAMERA_FOV[0] = 54.06; //x, y
             FRONT_CAMERA_FOV[1] = 41.91;
+            super();
+            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+                                                       new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)),
+                                                       new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
+
+            cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
+                                                       new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)),
+                                                       new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120)),
+                                                       VecBuilder.fill(4, 4, 8),
+                                                       VecBuilder.fill(0.5, 0.5, 1)));
         }
     }
 
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
+         SLURPER_ARM_CANCODER_OFFSET = -145;
          INTAKE_ENTER_CAN = 14;
          INTAKESPEED = 83;
          INTAKE_VELOCITY_ERROR = .01;
+         GRABBER_ENTER_CAN = 50;
+         GRABBERSPEED = 83;
+         GRABBER_VELOCITY_ERROR = .01;
         }
     }
     
@@ -48,46 +62,106 @@ public class PracticeBotConstants extends ConstantsBase {
         public Feeder() {
          FEEDER_CAN = 13;
          FEEDERSPEED = 83;
-         DESIREDTIMER = 0;
+         FEEDERSPEED2 = 83;
+         DESIREDENCODERED = 7;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
         }
     }
+
+    public class Lights extends ConstantsBase.Lights {
+        public Lights() {
+         LIGHTS_CAN_RIGHT = 51;
+        }
+    }
+
+
+    public class Climber extends ConstantsBase.Climber {
+        public Climber() {
+            CLIMBER_CAN = 18;
+            CLIMBER_SPEED = 0.1;
+        }
+    } 
 
     public class Shooter extends ConstantsBase.Shooter {
         public Shooter() {
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
             FEEDER_CAN = 13;
-
+    
             TARGET_SPEED_INCREMENT = 5;
-            START_TARGET_SPEED = 63.3;
-
-            FEEDER_SPEED = 20;
-            FEEDER_REVOLUTIONS = 50;
-
-            FLYWHEEL_MAX_SPEED = 1; // percent of full speed
+            START_TARGET_SPEED = 70;
+    
+            FEEDER_SPEED = 10;
+            FEEDER_REVOLUTIONS = 25;
+    
+            FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
-
-            FLYWHEEL_KP = 40;
-            FLYWHEEL_KI = 1.5; //.5
-            FLYWHEEL_KD = .75; //.0001
-            LEFT_FLYWHEEL_KV = 0;
-            RIGHT_FLYWHEEL_KV = 0;
-            LEFT_FLYWHEEL_KS = 7.5;
-            RIGHT_FLYWHEEL_KS = 7.5;
-            FLYWHEEL_PEAK_VOLTAGE = 12;
+    
+            FLYWHEEL_KP = 22.0;
+            FLYWHEEL_KI = 0.0;
+            FLYWHEEL_KD = 2.0;
+            LEFT_FLYWHEEL_KV = .130; //.133
+            RIGHT_FLYWHEEL_KV = .138; //.138
+            LEFT_FLYWHEEL_KS = 0.8; //.384
+            RIGHT_FLYWHEEL_KS = 0.8; //38
             FEEDER_KP = 0.25;
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
-
-            RFLYWHEEL_KP = 40;
-            RFLYWHEEL_KI = 1.5; //.5
-            RFLYWHEEL_KD = .75; //.0001
-
-
+    
+            RFLYWHEEL_KP = 16.0;
+            RFLYWHEEL_KI = 0.0;
+            RFLYWHEEL_KD = 4.0;
         }
 
+    }
+
+    public class Arm extends ConstantsBase.Arm {
+       
+        public Arm(){
+         CANCODER_CAN = 44;
+         ARM_CAN = 9;
+         CRUISEVELOCITY = 500;
+         ACCELERATION = 420;//350
+         JERK = 1000;
+         ARMKP = 200;
+         ARMKI = 20;
+         ARMKD = 0;//4
+         ARMKV = 0.8;
+         ARMKS = 0.4;
+         ZERO = 95.0;
+         SHOOT = 118.0;
+         TRAP = 138.0;
+         CLOSE = 151.0;
+         PROTECT = 126.0;
+         AMP = 120.3; //was 143.3; 133.3
+         HANDOFF = 160;
+         ARMOFFSET = 0.4;
+         REDDISTANCE1 = 1.16;
+         REDDISTANCE2 = 2.5;
+         REDDISTANCE3 = 4;
+         REDDISTANCE4 = 5.3;
+         REDDISTANCE5 = 6.5;
+         REDANGLE1 = 151;
+         REDANGLE2 = 134;
+         REDANGLE3 = 124;
+         REDANGLE4 = 119;
+         REDANGLE5 = 118;
+        }
+    }
+
+    public class Extension extends ConstantsBase.Extension{
+        public Extension(){
+        ECRUISEVELOCITY = 15;
+        EACCELERATION = 15;
+        EJERK = 50;
+        EKP = 30;
+        EKI = 0.5;
+        EKD = 0;
+        EKV = 0.12;
+        EKS = 0.25;
+        SHOOTERENCODER = 7;
+        }
     }
 
     public class Drivetrain extends ConstantsBase.Drivetrain {
@@ -105,8 +179,8 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(400).withKI(0).withKD(8)
-            .withKS(0).withKV(1.5).withKA(0);
+            .withKP(600).withKI(0).withKD(8)
+            .withKS(0).withKV(.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
@@ -129,7 +203,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
 
 
-            WHEEL_SLIP_CURRENT = 300.0; // *tune later
+            WHEEL_SLIP_CURRENT = 600.0; //300
 
             // Meters per second theroretical max speed at 12 volts
             FREE_SPEED_12V = 6.37032;

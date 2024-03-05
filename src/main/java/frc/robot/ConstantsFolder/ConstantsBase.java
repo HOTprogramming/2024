@@ -1,29 +1,43 @@
 package frc.robot.ConstantsFolder;
 
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Subsystems.Camera.CameraPositions;
+import frc.robot.Subsystems.Climber;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Practice;
+    public RobotType ROBOT_TYPE = RobotType.Comp;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;
     private Camera camera;
     private Drivetrain drivetrain;
     private Shooter shooter;
+    private Arm arm;
+    private Extension extension;
     private Intake intake;
     private Feeder feeder;
+    private Lights lights;
+    private Climber climber;
 
     public void setAllConstants() {
         CamBotConstants camBotConstants = new CamBotConstants();
@@ -34,19 +48,27 @@ public class ConstantsBase {
 
             this.auton = compBotConstants.new Auton();
             this.camera = compBotConstants.new Camera();
+            this.arm = compBotConstants.new Arm();
+            this.extension = compBotConstants.new Extension();
             this.drivetrain = compBotConstants.new Drivetrain();
-            this.shooter = practiceBotConstants.new Shooter();
-            this.intake = practiceBotConstants.new Intake();
-                                    this.feeder = practiceBotConstants.new Feeder();
+            this.shooter = compBotConstants.new Shooter();
+            this.intake = compBotConstants.new Intake();
+            this.feeder = compBotConstants.new Feeder();
+            this.lights = compBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
 
         } else if (ROBOT_TYPE == RobotType.Practice) {
             
             this.auton = practiceBotConstants.new Auton();
             this.camera = practiceBotConstants.new Camera();
+            this.arm = practiceBotConstants.new Arm();
+            this.extension = practiceBotConstants.new Extension();
             this.drivetrain = practiceBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                        this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
 
         } else {
             this.auton = camBotConstants.new Auton();
@@ -54,7 +76,9 @@ public class ConstantsBase {
             this.drivetrain = camBotConstants.new Drivetrain();
             this.shooter = practiceBotConstants.new Shooter();
             this.intake = practiceBotConstants.new Intake();
-                        this.feeder = practiceBotConstants.new Feeder();
+            this.feeder = practiceBotConstants.new Feeder();
+            this.lights = practiceBotConstants.new Lights();
+            this.climber = practiceBotConstants.new Climber();
         }
     }
 
@@ -82,6 +106,21 @@ public class ConstantsBase {
         return this.shooter;
     }
 
+    public Arm getArmConstants(){
+        return this.arm;
+    }
+
+    public Extension getExtensionConstants(){
+        return this.extension;
+    }
+
+    public Lights getLightsConstants() {
+        return this.lights;
+    }
+
+    public Climber getClimberConstants(){
+        return this.climber;
+    }
 
     private enum RobotType {
         Comp,
@@ -91,15 +130,27 @@ public class ConstantsBase {
 
 
     public abstract class Auton {
-        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 5;
-        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 2;
+        public double AUTON_DEFAULT_MAX_VELOCITY_METERS = 4;
+        public double AUTON_DEFAULT_MAX_ACCEL_METERS = 3;
         
         public Auton getAuton() {
             return this;
         }
     }
 
+    public abstract class Lights {
+        public int LIGHTS_CAN_RIGHT = 51;
+        public int LIGHTS_CAN_LEFT = 52;
+    }
+
+    public abstract class Climber {
+        public int CLIMBER_CAN = 18;
+        public double CLIMBER_SPEED = 0.1;
+        public double CLIMBERPOS = 5;
+    }
+
     public abstract class Intake {
+        // intake
         public int INTAKE_ENTER_CAN = 14;
         public double INTAKESPEED = 83;
         public double INTAKE_VELOCITY_ERROR = .1;
@@ -110,14 +161,47 @@ public class ConstantsBase {
         public double P1IntakeEnter = 5;
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
+
+        // slurper
+        public double SLURPER_ARM_CANCODER_OFFSET = -44;
+        public int SLURPER_ARM_CAN = 15;
+        public int SLURPER_ROLLER_CAN = 20;
+        public int SLURPER_CANCODER_CAN = 46;
+
+        public double SLURPER_DOWN_ANGLE = -5;
+        public double SLURPER_UP_ANGLE = 0;
+        public double SLURPER_ROLLER_SPEED_RPS = 10;
+
+        public double SLURPER_ARM_CRUISE_VELOCITY = 5;
+        public double SLURPER_ARM_ACCELERATION = 10;
+        public double SLURPER_ARM_JERK = 50;
+
+        public Slot0Configs SLURPER_ARM_GAINS = new Slot0Configs()
+        .withKP(60).withKI(0).withKD(0.1)
+        .withKS(0.12).withKV(0.25).withKA(0);
+
+        public Slot0Configs SLURPER_ROLLER_GAINS = new Slot0Configs()
+        .withKP(100).withKI(0).withKD(0.2)
+        .withKS(0).withKV(1.5).withKA(0);
+        public int GRABBER_ENTER_CAN = 50;
+        public double GRABBERSPEED = 40;
+        public double GRABBER_VELOCITY_ERROR = .1;
+        public double P0GrabberEnter = 4.0;
+        public double I0GrabberEnter = 0.5;
+        public double D0GrabberEnter = 0.0001;
+        public double V0GrabberEnter = 0.12;
+        public double P1GrabberEnter = 5;
+        public double I1GrabberEnter = 1;
+        public double D1GrabberEnter = 0.001;
     }
 
     public abstract class Feeder {
         public int FEEDER_CAN = 13;
-        public double FEEDERSPEED = 40;
-        public int DESIREDTIMER = 0;
+        public double FEEDERSPEED = 83;
+        public double FEEDERSPEED2 = 83;
+        public int DESIREDENCODERED = 3;
         public int FEEDER_SENSOR_CHANNEL = 0;
-        public double FEEDER_VELOCITY_ERROR = .1;
+        public double FEEDER_VELOCITY_ERROR = .3;
         public double P0IntakeFeeder = 4.0;
         public double I0IntakeFeeder = 0.5;
         public double D0IntakeFeeder = 0.0001;
@@ -126,6 +210,39 @@ public class ConstantsBase {
         public double I1IntakeFeeder = 1;
         public double D1IntakeFeeder = 0.001;
         }
+
+    public class CameraConstant{
+
+        public CameraConstant(String name, 
+                              Translation3d relativeTranslation, 
+                              Rotation3d relativeRotation, 
+                              Matrix<N3, N1> singleTagStdDevs,
+                              Matrix<N3, N1> multiTagStdDevs) {
+            this.name = name;
+            this.transform = new Transform3d(relativeTranslation, relativeRotation);
+            this.singleTagStdDevs = singleTagStdDevs;
+            this.multiTagStdDevs = multiTagStdDevs;
+        }
+
+        private Matrix<N3, N1> singleTagStdDevs;
+        public Matrix<N3, N1> getSingleTagStdDevs() {
+            return singleTagStdDevs;
+        }
+
+        private Matrix<N3, N1> multiTagStdDevs;
+        public Matrix<N3, N1> getMultiTagStdDevs() {
+            return multiTagStdDevs;
+        }
+
+        private String name;
+        public String getName() {
+            return name;
+        }
+        private Transform3d transform;
+        public Transform3d getTransform() {
+            return transform;
+        }
+    }
 
     public abstract class Camera {
         //DEFAULT VALUES ARE PRACTICE BOT VALUES
@@ -139,50 +256,33 @@ public class ConstantsBase {
         //Y: Left and right (Left +)
         //Z: Vertical distance from the floor to the camera (Up +)
 
-        public double[] STDEV_GAIN = new double[] {1, 1, 1};
-
-        //FRONT
-        public boolean HAS_FRONT_CAMERA = false;
-
-        public String FRONT_CAMERA_NAME = "front_camera";
+        public double[] STDEV_GAIN = new double[] {.7, .7, .5};
+        public double MAX_DISTANCE = 5.5;
         
-        public Translation3d FRONT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625));
-        public Rotation3d FRONT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, 0, 0);
-        public Transform3d FRONT_CAMERA_TRANSFORM = new Transform3d(FRONT_CAMERA_RELATIVE_POSITION, FRONT_CAMERA_RELATIVE_ROTATION);
+        public Map<CameraPositions, CameraConstant> cameraConstants = null;
+        
+        public Camera(){
+            cameraConstants = new EnumMap<>(CameraPositions.class);         
+                cameraConstants.put(CameraPositions.FRONT, new CameraConstant("front_camera",
+                new Translation3d(Units.inchesToMeters(12.483), Units.inchesToMeters(0), Units.inchesToMeters(8.625)),
+                new Rotation3d(0, 0, 0),
+                VecBuilder.fill(4, 4, 8),
+                VecBuilder.fill(0.5, 0.5, 1)));
 
         public double[] FRONT_CAMERA_RESOLUTION = {640, 480}; //x, y
         public double[] FRONT_CAMERA_FOV = {54.06, 41.91}; //x, y
 
-        //REAR
-        public boolean HAS_REAR_CAMERA = false;
+            
+            cameraConstants.put(CameraPositions.BACK, new CameraConstant("back_camera",
+                    new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(0), Units.inchesToMeters(6.193)),
+                    new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)),
+                    VecBuilder.fill(4, 4, 8),
+                    VecBuilder.fill(0.5, 0.5, 1)));
 
-        public String REAR_CAMERA_NAME = "back_camera";
-
-        public Translation3d REAR_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(-12.563), Units.inchesToMeters(0), Units.inchesToMeters(6.193)); // -12.563, 0, 6.193
-        public Rotation3d REAR_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)); // 0 20 180
-        public Transform3d REAR_CAMERA_TRANSFORM = new Transform3d(REAR_CAMERA_RELATIVE_POSITION, REAR_CAMERA_RELATIVE_ROTATION);
-
-        //RIGHT
-        public boolean HAS_RIGHT_CAMERA = false;
-
-        public String RIGHT_CAMERA_NAME = "right_camera";
-
-        public Translation3d RIGHT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d RIGHT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(-30));
-        public Transform3d RIGHT_CAMERA_TRANSFORM = new Transform3d(RIGHT_CAMERA_RELATIVE_POSITION, RIGHT_CAMERA_RELATIVE_ROTATION);
-
-        //LEFT
-        public boolean HAS_LEFT_CAMERA = false;
-
-        public String LEFT_CAMERA_NAME = "left_camera";
-
-        public Translation3d LEFT_CAMERA_RELATIVE_POSITION = new Translation3d(Units.inchesToMeters(2.008), Units.inchesToMeters(-10.696), Units.inchesToMeters(16.838)); //X is not set yet, guessing 3 inch
-        public Rotation3d LEFT_CAMERA_RELATIVE_ROTATION = new Rotation3d(0, Units.degreesToRadians(-5), Units.degreesToRadians(30));
-        public Transform3d LEFT_CAMERA_TRANSFORM = new Transform3d(LEFT_CAMERA_RELATIVE_POSITION, LEFT_CAMERA_RELATIVE_ROTATION);
-
+        }
     }
  
-    public abstract class Shooter {
+    public abstract class Shooter {  
         public int RIGHT_FLYWHEEL_CAN = 12;
         public int LEFT_FLYWHEEL_CAN = 11;
         public int FEEDER_CAN = 13;
@@ -196,21 +296,76 @@ public class ConstantsBase {
         public double FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
         public double FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
 
-        public double FLYWHEEL_KP = 0.25;
-        public double FLYWHEEL_KI = 0.5;
-        public double FLYWHEEL_KD = 0.0001;
+        public double FLYWHEEL_KP = 22.0;
+        public double FLYWHEEL_KI = 0.0;
+        public double FLYWHEEL_KD = 2.0;
         public double LEFT_FLYWHEEL_KV = .130; //.133
-        public double RIGHT_FLYWHEEL_KV = .130; //.138
+        public double RIGHT_FLYWHEEL_KV = .138; //.138
         public double LEFT_FLYWHEEL_KS = 0.8; //.384
         public double RIGHT_FLYWHEEL_KS = 0.8; //38
-        public double FLYWHEEL_PEAK_VOLTAGE = 12;
+        // public double FLYWHEEL_PEAK_VOLTAGE = 12;
         public double FEEDER_KP = 0.25;
         public double FEEDER_KI = 0.5;
         public double FEEDER_KD = 0.0001;
 
-        public double RFLYWHEEL_KP = 0.25;
-        public double RFLYWHEEL_KI = 0.5;
-        public double RFLYWHEEL_KD = 0.0001;
+        public double RFLYWHEEL_KP = 16.0;
+        public double RFLYWHEEL_KI = 0.0;
+        public double RFLYWHEEL_KD = 4.0;
+    }
+
+    public abstract class Arm{
+        public int CANCODER_CAN = 44;
+        public int ARM_CAN = 9;
+        public double CRUISEVELOCITY = 400;
+        public double ACCELERATION = 400;
+        public double JERK = 1000;
+        public double ARMKP = 250;
+        public double ARMKI = 0;
+        public double ARMKD = 200;
+        public double ARMKV = 0.8;
+        public double ARMKS = 0.1;
+        public double ZERO = 95.0;
+        public double SHOOT = 118.0;
+        public double TRAP = 138.0;
+        public double CLOSE = 151.0;
+        public double PROTECT = 126.0;
+        public double AMP = 139.0;
+        public double ARMOFFSET = 0.4;
+        public double HANDOFF = 168;
+        public double BLUEDISTANCE1 = 1.16;
+        public double BLUEDISTANCE2 = 2.5;
+        public double BLUEDISTANCE3 = 4;
+        public double BLUEDISTANCE4 = 5.3;
+        public double BLUEDISTANCE5 = 6.5;
+        public double BLUEANGLE1 = 151;
+        public double BLUEANGLE2 = 134;
+        public double BLUEANGLE3 = 124;
+        public double BLUEANGLE4 = 119;
+        public double BLUEANGLE5 = 118;
+        public double REDDISTANCE1 = 1.16;
+        public double REDDISTANCE2 = 2.5;
+        public double REDDISTANCE3 = 4;
+        public double REDDISTANCE4 = 5.3;
+        public double REDDISTANCE5 = 6.5;
+        public double REDANGLE1 = 151;
+        public double REDANGLE2 = 134;
+        public double REDANGLE3 = 124;
+        public double REDANGLE4 = 119;
+        public double REDANGLE5 = 118;
+    }
+
+    public abstract class Extension{
+        public double ECRUISEVELOCITY = 15;
+        public double EACCELERATION = 15;
+        public double EJERK = 50;
+        public double EKP = 30;
+        public double EKI = 0.5;
+        public double EKD = 0;
+        public double EKV = 0.12;
+        public double EKS = 0.25;
+        public int EXTENSIONCAN = 10;
+        public double SHOOTERENCODER = 5;
+
     }
 
     public abstract class Drivetrain {
@@ -240,12 +395,34 @@ public class ConstantsBase {
 
         // private ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
 
+
         
         public ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
         public ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
 
+        public Slot0Configs TELEOP_SWERVE_STEER_GAINS = new Slot0Configs()
+        .withKP(100).withKI(0).withKD(0.2)
+        .withKS(0).withKV(1.5).withKA(0);
+
+        public Slot0Configs TELEOP_SWERVE_DRIVE_GAINS = new Slot0Configs()
+        .withKP(3).withKI(0).withKD(0)
+        .withKS(0).withKV(0).withKA(0);
+
+        public TorqueCurrentConfigs AUTON_STEER_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(300)
+                                    .withPeakReverseTorqueCurrent(-300);
+        public TorqueCurrentConfigs AUTON_DRIVE_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(300)
+                                    .withPeakReverseTorqueCurrent(-300);
+
+        public TorqueCurrentConfigs TELEOP_STEER_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(70)
+                                    .withPeakReverseTorqueCurrent(-70);
+        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
+                                    .withPeakForwardTorqueCurrent(120)
+                                    .withPeakReverseTorqueCurrent(-120);
 
         public double WHEEL_SLIP_CURRENT = 300.0; // *tune later
 

@@ -3,33 +3,41 @@ package frc.robot.Subsystems;
 
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
+import frc.robot.Autons.Center4Note;
+import frc.robot.Autons.Center4NoteBlue;
+import frc.robot.Autons.Right4NoteBlue;
 import frc.robot.ConstantsFolder.ConstantsBase;
+import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.utils.trajectory.CustomHolonomicDriveController;
 import frc.robot.utils.trajectory.RotationSequence;
 
-import java.sql.Driver;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.fasterxml.jackson.databind.node.POJONode;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,10 +62,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
-    Alliance currentAlliance = Alliance.Red;
-
-    private double currentRobotePos;
-
     // for velocity calcs
     private SwerveDriveState currentState;
     private Pose2d lastPose = new Pose2d();
@@ -65,18 +69,19 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(4.9, 0.1, .1);
-    private static final PIDController yController = new PIDController(4.9, 0.1, .1);
-    private static final PIDController thetaController = new PIDController(5, 0.1, .1);
-
+    private static final PIDController xController = new PIDController(15.0, 0.15, 0.3); // 9 .15 .5
+    private static final PIDController yController = new PIDController(15, 0.13, 0.3); // 8.5 .13 .45
+    private static final PIDController thetaController = new PIDController(12.5, 0.1, .1);
+    
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
 
     // TEMP pose 2d for get angle snap command
-    private Pose2d blueSpeaker = new Pose2d(0.93, 5.55, Rotation2d.fromDegrees(0));
-    private Pose2d redSpeaker = new Pose2d(16.579, 5.548, Rotation2d.fromDegrees(180));
+    private Pose2d blueSpeaker = new Pose2d(0.1, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d redSpeaker = new Pose2d(16.579, 5.688, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
+
         // call swervedriveDrivetrain constructor (parent class)
         super(robotState.getConstants().getDriveTrainConstants().DRIVETRAIN_CONSTANTS,
                 robotState.getConstants().getDriveTrainConstants().FRONT_LEFT_MODULE_CONSTANTS, 
@@ -92,6 +97,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         configNeutralMode(NeutralModeValue.Brake);
         fieldTypePublisher.set("Field2d");
 
+
+        // this.m_odometry.
     }
 
     /**
@@ -135,11 +142,25 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     }
 
-    private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
-        if (holoDriveState != null && rotationState != null) {
-            // drive with target states from trajectory generator (auton)
+    private void autoTurnControl(State holoDriveState, RotationSequence.State rotationState, Rotation2d targetTheta) {
+        // Uses theta control to rotate (Rotation2d)
             ChassisSpeeds chassisSpeeds = driveController.calculate(getState().Pose, holoDriveState, rotationState);
 
+            setControl(robotCentric.withVelocityX(chassisSpeeds.vxMetersPerSecond)
+                                    .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+                                    .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        
+
+    }
+
+    private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
+        SmartDashboard.putBoolean("Step_Actuallydriving", false);
+
+        if (holoDriveState != null && rotationState != null) {
+            SmartDashboard.putBoolean("Step_Actuallydriving", true);
+            // drive with target states from trajectory generator (auton)
+            ChassisSpeeds chassisSpeeds = driveController.calculate(currentState.Pose, holoDriveState, rotationState);
             setControl(withChassisSpeeds.withSpeeds(chassisSpeeds));
         }
 
@@ -180,14 +201,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
-if (currentAlliance == Alliance.Blue) {
-                currentRobotePos = currentState.Pose.minus(blueSpeaker).getTranslation().getNorm();
+            if (robotState.getAlliance() == Alliance.Blue) {
+                robotState.setPoseToSpeaker(currentState.Pose.minus(blueSpeaker).getTranslation().getNorm());
             }
             else{
-                currentRobotePos = currentState.Pose.minus(redSpeaker).getTranslation().getNorm();
+                robotState.setPoseToSpeaker(currentState.Pose.minus(redSpeaker).getTranslation().getNorm());
             }
 
-            robotState.setPoseToSpeaker(currentRobotePos);
             
             robotState.setDrivePose(currentState.Pose);
             double currentTime = Utils.getCurrentTimeSeconds();
@@ -197,6 +217,8 @@ if (currentAlliance == Alliance.Blue) {
             lastPose = currentState.Pose;
 
             velocities = distanceDifference.div(timeDifference);
+
+            robotState.setDriveVelocity(velocities);
 
             // publishes pose to smartdashboard
             posePublisher.set(new double[] {
@@ -213,14 +235,18 @@ if (currentAlliance == Alliance.Blue) {
             });
         }
 
-        // for (int i = 0; i < robotState.getVisionMeasurements().length; i++) {
-        //     if (robotState.getVisionTimestamps()[i] != -1 && robotState.getVisionMeasurements()[i].minus(currentState.Pose).getTranslation().getNorm() < constants.CAM_MAX_ERROR) {
-        //         addVisionMeasurement(robotState.getVisionMeasurements()[i],
-        //                 robotState.getVisionTimestamps()[i],
-        //                 robotState.getVisionStdevs().extractColumnVector(i));
-        //         // assuming it wants rotation in radians
-        //     }
-        // }
+
+
+        robotState.getVisionMeasurements().forEach((key,measurement) -> {
+            measurement.ifPresent(
+                est -> {
+                    // Change our trust in the measurement based on the tags we can see
+                    var estStdDevs = robotState.getCameraStdDeviations().get(key);
+
+                    addVisionMeasurement(
+                            est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                });
+        });
 
         // updates module states for finding encoder offsets
         if (currentState.ModuleStates != null) {
@@ -239,6 +265,13 @@ if (currentAlliance == Alliance.Blue) {
         // sets start pose to auton start pose
         seedFieldRelative(commander.getOdomretryOverride());
 
+        if(commander.getAuto() != null){
+            seedFieldRelative(commander.getAuto().startPose); //15.15);
+        }
+
+        // seedFieldRelative(new Pose2d(15.3, 6.7, Rotation2d.fromDegrees(155))); //15.15
+         //15.15);
+
         // sets boolean tolerances for auton refrence poses
         driveController.setTolerance(commander.getRefrenceTolerances());
 
@@ -254,12 +287,13 @@ if (currentAlliance == Alliance.Blue) {
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
         }
-
-
-        if(commander.getDriveState() != null && commander.getDriveRotationState() != null){
-            desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
+        
+        try{
+      desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
                                                 commander.getDriveState().poseMeters.getY(),
-                                                commander.getDriveRotationState().position));         
+                                                commander.getDriveRotationState().position));    
+        } catch(Exception e){
+
         }
 
         if (commander.getBrakeCommand()) {
@@ -268,8 +302,18 @@ if (currentAlliance == Alliance.Blue) {
 
 
         if (commander.getPidgeonReset()) {
-            m_pigeon2.reset();
+            m_pigeon2.setYaw(0);
             
+        }
+
+        if (commander.getLockParallel()) {
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
+
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
+
+            }
         }
 
         if (commander.getAngleSnapCommand() != -1) {
@@ -277,9 +321,12 @@ if (currentAlliance == Alliance.Blue) {
         }
 
         if (commander.getLockSpeakerCommand()) {
-            // TODO add driverstation get for speaker lock pose
-            // TODO ask gamespec for a targeting system (pass target pose, get a target rotation)
-            autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), false);
+            
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+            } 
         }
 
         // if (commander.getLockRingCommand()) {
@@ -287,7 +334,11 @@ if (currentAlliance == Alliance.Blue) {
         // }
 
         if (commander.getResetRobotPose()) {
-            seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
+            if (measurment.isPresent()) {
+                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
+            }
         }
     }
 
@@ -298,6 +349,26 @@ if (currentAlliance == Alliance.Blue) {
 
     @Override
     public void reset() {
+    }
+
+    public void teleLimits(){
+        for (int i = 0; i < ModuleCount; i++) {
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_SWERVE_STEER_GAINS);
+
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_DRIVE_CURRENT);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_STEER_CURRENT);
+        }
+    }
+
+    public void autoLimits(){
+        for (int i = 0; i < ModuleCount; i++) {
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.SWERVE_DRIVE_GAINS);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.SWERVE_STEER_GAINS);
+
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.AUTON_DRIVE_CURRENT);
+            Modules[i].getSteerMotor().getConfigurator().apply(constants.AUTON_STEER_CURRENT);
+        }
     }
 
 }

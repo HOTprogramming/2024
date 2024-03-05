@@ -4,8 +4,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 
 public class TeleopCommander implements RobotCommander {
@@ -15,6 +18,8 @@ public class TeleopCommander implements RobotCommander {
 
     RobotState robotState;
     double armPose;
+
+    double deadbands = 0.0;
     double LX;
     double LY;
     double RX;
@@ -31,6 +36,10 @@ public class TeleopCommander implements RobotCommander {
 
     }
 
+    public AutonBase getAuto(){
+        return null;
+    }
+
    @Override
    
     public double[] getDrivePercentCommand() {
@@ -38,24 +47,43 @@ public class TeleopCommander implements RobotCommander {
         double leftx;
         double rightx;
 
-        if (Math.abs(driver.getLeftY()) > .15) {
-            leftY = -driver.getLeftY();
-        } else {
-            leftY = 0;
-        }
+        if (robotState.getAlliance() == Alliance.Red) {
+            if (Math.abs(driver.getLeftY()) > deadbands) {
+                leftY = driver.getLeftY();
+            } else {
+                leftY = 0;
+            }
 
-        if (Math.abs(driver.getLeftX()) > .15) {
-            leftx = -driver.getLeftX();
-        } else {
-            leftx = 0;
-        }
+            if (Math.abs(driver.getLeftX()) > deadbands) {
+                leftx = driver.getLeftX();
+            } else {
+                leftx = 0;
+            }
 
-        if (Math.abs(driver.getRightX()) > .15) {
-            rightx = -driver.getRightX();
+            if (Math.abs(driver.getRightX()) > deadbands) {
+                rightx = -driver.getRightX();
+            } else {
+                rightx = 0;
+            }            
         } else {
-            rightx = 0;
-        }
+            if (Math.abs(driver.getLeftY()) > deadbands) {
+                leftY = -driver.getLeftY();
+            } else {
+                leftY = 0;
+            }
 
+            if (Math.abs(driver.getLeftX()) > deadbands) {
+                leftx = -driver.getLeftX();
+            } else {
+                leftx = 0;
+            }
+
+            if (Math.abs(driver.getRightX()) > deadbands) {
+                rightx = -driver.getRightX();
+            } else {
+                rightx = 0;
+            }
+        }
 
         return new double[] {leftY, leftx, rightx};
     }
@@ -83,31 +111,30 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getRunShooter() {
-        return operator.getRightTriggerAxis() > .1;
+        return operator.getLeftTriggerAxis() > .1;
     }
     public boolean getRunFeeder() {
-        return (operator.getRightTriggerAxis() > 0.01);
+        return (operator.getLeftTriggerAxis() > 0.01);
     }
 
     public boolean increaseLeftTargetSpeed() {
-        return operator.getYButtonPressed();
+        // return operator.getYButtonPressed();
+        return false;
     }
 
     public boolean decreaseLeftTargetSpeed() {
-        return operator.getXButtonPressed();
+        // return operator.getXButtonPressed();
+        return false;
     }
 
     public boolean increaseRightTargetSpeed() {
-        return operator.getBButtonPressed();
+        // return operator.getBButtonPressed();
+        return false;
     }
 
     public boolean decreaseRightTargetSpeed() {
-        return operator.getAButtonPressed();
-    }
-
-    @Override
-    public double getTargetDriveSpeed() {
-        return operator.getLeftY();
+        // return operator.getAButtonPressed();
+        return false;
     }
 
     @Override
@@ -128,23 +155,35 @@ public class TeleopCommander implements RobotCommander {
 
     // }
 
-    @Override
-    public boolean runArm(){
-        if(operator.getRightBumper()){
-            return true;
+    public ArmCommanded armCommanded(){
+        if(operator.getLeftTriggerAxis() >= .1 && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
+            return ArmCommanded.shotMap;
+        }
+        else if(operator.getXButton()){
+            if (operator.getAButton()){
+                return ArmCommanded.amp;
+            }
+            else if(operator.getBButton()){
+                return ArmCommanded.trap;
+            }
+            else{
+            return ArmCommanded.handoff;
+            }
+        }
+        else if (operator.getAButton()){
+            return ArmCommanded.close;
+        }
+        else if (operator.getYButton()){
+            return ArmCommanded.protect;
+        }
+        else if (operator.getRightStickButton()){
+            return ArmCommanded.trapZero;
+        }
+        else if (operator.getLeftBumper()){
+            return ArmCommanded.zero;
         }
         else{
-            return false;
-        }
-    }
-
-    @Override
-    public boolean zeroArm(){
-        if(operator.getLeftBumper()){
-            return true;
-        }
-        else{
-            return false;
+            return ArmCommanded.none;
         }
     }
 
@@ -201,17 +240,73 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getIntake() {
-        return operator.getLeftTriggerAxis() > .1;
+        return operator.getRightTriggerAxis() > .1;
     }
 
     @Override
     public boolean setShoot() {
-        return driver.getRightBumper();
+        return driver.getRightTriggerAxis() >= .1;
     }
+    
      @Override
     public boolean getFeeder() {
-        return operator.getLeftTriggerAxis() > .1;
+        return operator.getRightTriggerAxis() > .1;
     }
 
+    @Override
+    public boolean climberUp() {
+        if(  operator.getPOV() >= 315 || (operator.getPOV() <= 45 && 0 <= operator.getPOV()) ){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    @Override
+    public boolean climberDown() {
+        if(135 <= operator.getPOV() && operator.getPOV() <= 225){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public double trapArmFineControl() {
+        if (driver.getLeftBumper())  {
+            return 1;
+        } else if (driver.getRightBumper())  {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean climberOverride() {
+     if(operator.getRightBumper()){
+        return true;
+     }
+     else{
+        return false;
+     }
+    }
+
+    @Override
+    public boolean intakeOut() {
+       if(operator.getBButton()){
+        return true;
+     }
+     else{
+        return false;
+     }
+    }
+
+    @Override
+    public boolean getLockParallel() {
+        return driver.getBButton();    
+    }
 }
+
+
+
