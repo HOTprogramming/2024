@@ -1,16 +1,19 @@
 package frc.robot;
 
 import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 
 public class AutonCommander implements RobotCommander {
     RobotState robotState;
     AutonBase auto;
-    
+    Camera camera = new Camera(robotState);
 
     public AutonCommander(RobotState robotState) {
         this.robotState = robotState;
@@ -186,4 +189,12 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    public boolean noteDetected() {
+        return camera.noteDetected();
+    }
+
+    @Override
+    public Pose2d getNotePose() {
+        return robotState.getDrivePose().plus(new Transform2d(camera.notePose(), new Rotation2d(0)));
+    }
 }

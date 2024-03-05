@@ -2,22 +2,25 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autons.AutonBase;
+import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
 
 public class TeleopCommander implements RobotCommander {
     private static XboxController driver;
     private static XboxController operator;
-
+    
 
     RobotState robotState;
     double armPose;
+    Camera camera = new Camera(robotState);
 
     double deadbands = 0.0;
     double LX;
@@ -305,6 +308,16 @@ public class TeleopCommander implements RobotCommander {
     @Override
     public boolean getLockParallel() {
         return driver.getBButton();    
+    }
+
+    @Override
+    public boolean noteDetected() {
+        return camera.noteDetected();
+    }
+
+    @Override
+    public Pose2d getNotePose() {
+        return robotState.getDrivePose().plus(new Transform2d(camera.notePose(), new Rotation2d(0)));
     }
 }
 

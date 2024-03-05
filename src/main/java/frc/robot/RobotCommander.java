@@ -59,4 +59,6 @@ public interface RobotCommander {
     public abstract boolean climberOverride();
     public abstract boolean intakeOut();
     public abstract boolean getLockParallel();
+    public abstract boolean noteDetected();
+    public abstract Pose2d getNotePose();
 }

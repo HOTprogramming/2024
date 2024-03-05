@@ -170,6 +170,7 @@ public class RobotState {
 
     public Pose2d getNotePose(){
         return notePose;
+    }
 
     public boolean getShooterOn() {
         return shooterOn;

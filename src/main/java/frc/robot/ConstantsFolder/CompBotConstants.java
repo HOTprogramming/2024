@@ -27,10 +27,6 @@ public class CompBotConstants extends ConstantsBase {
   
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
-            FRONT_CAMERA_RESOLUTION[0] = 640; //x, y
-            FRONT_CAMERA_RESOLUTION[1] = 480;
-            FRONT_CAMERA_FOV[0] = 54.06; //x, y
-            FRONT_CAMERA_FOV[1] = 41.91;
             super();
             cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
                                                        new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),

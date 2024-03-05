@@ -177,6 +177,13 @@ public class Camera implements SubsystemBase {
 
     // docs https://docs.photonvision.org/ 
 
+    boolean frontDetects;
+    int frontPipeline;
+    double noteX;
+    double noteY;
+    Translation2d noteVector;
+    PhotonTrackedTarget frontThing;
+
     public Camera(RobotState robotState) {
         this.robotState = robotState;
 
@@ -339,6 +346,26 @@ public class Camera implements SubsystemBase {
 
         robotState.setVisionMeasurements(cameraMeasurements);
         robotState.setCameraStdDeviations(cameraStdDeviations);
+
+        frontDetects = frontCamera.getLatestResult().hasTargets();
+        SmartDashboard.putBoolean("CAMERA: Front Camera sees anything", frontDetects);
+
+        frontPipeline = frontCamera.getPipelineIndex();
+        SmartDashboard.putBoolean("CAMERA: Front Camera Object Detection?", frontPipeline == 2);
+        SmartDashboard.putNumber("CAMERA: Pipeline # for front camera", frontPipeline);
+
+        if(frontDetects && frontPipeline == 2){
+            frontThing = frontCamera.getLatestResult().getBestTarget();
+            noteX = -frontThing.getYaw();
+            noteY = frontThing.getPitch();
+            SmartDashboard.putNumber("CAMERA: Note X angle", noteX);
+            SmartDashboard.putNumber("CAMERA: Note Y angle", noteY);
+
+            noteVector = new Translation2d(-(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ()/39.37)/Math.tan(noteY), 0);
+            SmartDashboard.putNumber("CAMERA: Note distance", noteVector.getDistance(noteVector));
+
+            noteVector.rotateBy(new Rotation2d(Math.toRadians(noteX) + robotState.getDrivePose().getRotation().getRadians()));
+        }
     }
 
     public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, PhotonCamera camera, CameraConstant constant, PhotonPoseEstimator estimator) {
@@ -392,5 +419,12 @@ public class Camera implements SubsystemBase {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'reset'");
     }
-    
+
+    public Translation2d notePose() {
+        return noteVector;
+    }
+
+    public boolean noteDetected(){
+        return frontDetects && frontCamera.getPipelineIndex() == 2;
+    }
 }
