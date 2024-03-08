@@ -317,7 +317,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public Pose2d getNotePose() {
-        return robotState.getDrivePose().plus(new Transform2d(camera.notePose(), new Rotation2d(0)));
+        return robotState.getDrivePose().plus(camera.notePose());
     }
 }
 
