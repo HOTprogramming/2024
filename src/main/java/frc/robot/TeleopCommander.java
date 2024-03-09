@@ -19,7 +19,7 @@ public class TeleopCommander implements RobotCommander {
     RobotState robotState;
     double armPose;
 
-    double deadbands = 0.0;
+    double deadbands = 0.15;
     double LX;
     double LY;
     double RX;
@@ -306,6 +306,7 @@ public class TeleopCommander implements RobotCommander {
     public boolean getLockParallel() {
         return driver.getBButton();    
     }
+
 }
 
 

@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
   private Right4Note right4Note;
   private Center4NoteBlue center4NoteBlue;
   private Right4NoteBlue right4NoteBlue;
+  private AndysAuton andysAuton;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -56,8 +57,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     RobotController.setBrownoutVoltage(5.5);
-    DataLogManager.start();
-    DriverStation.startDataLog(DataLogManager.getLog());
+    //DataLogManager.start();
+    //DriverStation.startDataLog(DataLogManager.getLog());
     
 
     constantsBase = new ConstantsBase();
@@ -82,6 +83,7 @@ public class Robot extends TimedRobot {
     right4Note = new Right4Note(robotState);
     center4NoteBlue = new Center4NoteBlue(robotState);
     right4NoteBlue = new Right4NoteBlue(robotState);
+    andysAuton = new AndysAuton(robotState);
 
     newAuto = new NewAuto(robotState);
 
@@ -120,15 +122,17 @@ public class Robot extends TimedRobot {
     // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
-    if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(right4NoteBlue);
-    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(center4NoteBlue);
-    } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(right4Note);
-    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(center4Note);
-    }
+    // if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
+    //   autonCommander.setAuto(right4NoteBlue);
+    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
+    //   autonCommander.setAuto(center4NoteBlue);
+    // } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
+    //   autonCommander.setAuto(right4Note);
+    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
+    //   autonCommander.setAuto(center4Note);
+    // }
+
+    autonCommander.setAuto(andysAuton);
 
     drivetrain.init(autonCommander);
     shooter.reset();

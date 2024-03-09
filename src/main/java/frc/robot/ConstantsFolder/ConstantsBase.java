@@ -25,7 +25,7 @@ import frc.robot.Subsystems.Climber;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 
 public class ConstantsBase {
-    public RobotType ROBOT_TYPE = RobotType.Comp;
+    public RobotType ROBOT_TYPE = RobotType.Practice;
     public boolean IS_SIMULATION = false;
 
     private Auton auton;

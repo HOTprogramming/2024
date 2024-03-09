@@ -150,6 +150,8 @@ public Arm(RobotState robotState) {
     if (!armStatus.isOK()) {
       System.out.println("Could not configure device. Error: " + armStatus.toString());
     }
+
+    robotState.setAutonHintXPos(-1);
 }  
 
     public void updateState(){
