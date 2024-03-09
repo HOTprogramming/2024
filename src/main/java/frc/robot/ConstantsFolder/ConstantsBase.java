@@ -417,13 +417,13 @@ public class ConstantsBase {
                                     .withPeakForwardTorqueCurrent(70)
                                     .withPeakReverseTorqueCurrent(-70);
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(120)
-                                    .withPeakReverseTorqueCurrent(-120);
+                                    .withPeakForwardTorqueCurrent(150)
+                                    .withPeakReverseTorqueCurrent(-150);
 
-        public double WHEEL_SLIP_CURRENT = 300.0; // *tune later
+        public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 
         // Meters per second theroretical max speed at 12 volts
-        public double FREE_SPEED_12V = 6.37032;
+        public double FREE_SPEED_12V = 8.37032; // 6.37032
 
         // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
         // This may need to be tuned to your individual robot
