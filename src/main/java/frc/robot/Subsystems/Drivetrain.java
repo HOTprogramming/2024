@@ -11,6 +11,8 @@ import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.utils.trajectory.CustomHolonomicDriveController;
 import frc.robot.utils.trajectory.RotationSequence;
+import edu.wpi.first.math.util.Units;
+
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -61,6 +63,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     StringPublisher fieldTypePublisher = table.getStringTopic(".type").publish();
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
+
+    DoubleArrayPublisher posePublisherKeith = table.getDoubleArrayTopic("RobotPoseKeith").publish();
+    DoubleArrayPublisher velocityPublisherKieth = table.getDoubleArrayTopic("RobotVelocityKeith").publish();
+
 
     // for velocity calcs
     private SwerveDriveState currentState;
@@ -231,6 +237,19 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             velocityPublisher.set(new double[] {
                     velocities.getX(),
                     velocities.getY(),
+                    velocities.getAngle().getDegrees()
+            });
+
+            posePublisherKeith.set(new double[] {
+                    Units.metersToFeet(currentState.Pose.getX()),
+                    Units.metersToFeet(currentState.Pose.getY()),
+                    currentState.Pose.getRotation().getDegrees()
+            });
+
+            // publishes velocity to smartdashboard
+            velocityPublisherKieth.set(new double[] {
+                    Units.metersToFeet(velocities.getX()),
+                    Units.metersToFeet(velocities.getY()),
                     velocities.getAngle().getDegrees()
             });
         }

@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
     climber.reset();
     extension.reset();
 
-    // drivetrain.autoLimits();
+    drivetrain.autoLimits();
   }
 
   @Override
@@ -169,7 +169,7 @@ public class Robot extends TimedRobot {
     climber.reset();
     climber.init(teleopCommander);
     extension.reset();
-    // drivetrain.teleLimits();
+    drivetrain.teleLimits();
   }
 
   @Override

@@ -56,9 +56,9 @@ public class CompBotConstants extends ConstantsBase {
     public class Feeder extends ConstantsBase.Feeder {
         public Feeder() {
          FEEDER_CAN = 13;
-         FEEDERSPEED = 95;
+         FEEDERSPEED = 90;
          FEEDERSPEED2 = 95;
-         DESIREDENCODERED = 2;
+         DESIREDENCODERED = 0;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
         }
@@ -67,15 +67,15 @@ public class CompBotConstants extends ConstantsBase {
         public Drivetrain() {
             ROBOT_LENGTH_INCHES = 20.25;
             ROBOT_WITDTH_INCHES = 20.25;
-            MAX_VELOCITY_METERS = 6.37032; // from SDS
+            MAX_VELOCITY_METERS = 7.37032; // from SDS
             // public MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
             // public MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
-            MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
+            MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / (0.7274007458 * .8);
 
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(400).withKI(0).withKD(8)
+            .withKP(100).withKI(0).withKD(.2) // 400, 0, 8 , 0 ,1.5, 0
             .withKS(0).withKV(1.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
@@ -88,17 +88,17 @@ public class CompBotConstants extends ConstantsBase {
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
             } else {
-                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }
 
 
 
-            WHEEL_SLIP_CURRENT = 300.0; // *tune later
+            WHEEL_SLIP_CURRENT = 650.0; // *tune later
 
             // Meters per second theroretical max speed at 12 volts
-            FREE_SPEED_12V = 6.37032;
+            FREE_SPEED_12V = 7.37032;
 
             // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
             // This may need to be tuned to your individual robot
@@ -271,14 +271,14 @@ public class CompBotConstants extends ConstantsBase {
             ARMKD = 0;//4
             ARMKV = 0.8;
             ARMKS = 0.4;
-            ZERO = 95.0;
+            ZERO = 95.7;
             SHOOT = 118.0;
             TRAP = 141.0;
             CLOSE = 150.0;
             PROTECT = 125.25;
             AMP = 133.3; //was 140.3;
             HANDOFF = 168;
-            ARMOFFSET = 0.098;
+            ARMOFFSET = -0.4895;
             
             BLUEDISTANCE1 = 1.16;
             BLUEDISTANCE2 = 2.5;
