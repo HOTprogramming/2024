@@ -66,6 +66,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     DoubleArrayPublisher posePublisherKeith = table.getDoubleArrayTopic("RobotPoseKeith").publish();
     DoubleArrayPublisher velocityPublisherKieth = table.getDoubleArrayTopic("RobotVelocityKeith").publish();
+    Rotation2d cachedRotation = Rotation2d.fromDegrees(0);
+
 
 
     // for velocity calcs
@@ -114,15 +116,27 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
      * @param fieldCentricDrive drive fieldcentricly or robotcentricaly
      */
     private void percentDrive(double[] drivePercents, boolean fieldCentricDrive) {
-        if (fieldCentricDrive) {
-            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
+        
+        if (Math.abs(drivePercents[2]) > 0.05) {
+            cachedRotation = currentState.Pose.getRotation();
+            SmartDashboard.putBoolean("AutoSteer", false);
+
+            if (fieldCentricDrive) {
+                setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                        .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                        .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
+            } else {
+                setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                        .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                        .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
+            }
         } else {
-            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
+            SmartDashboard.putBoolean("AutoSteer", true);
+
+            autoTurnControl(drivePercents, cachedRotation, fieldCentricDrive);
         }
+        
+        SmartDashboard.putNumber("CachedRotation", cachedRotation.getDegrees());
     }
 
     /**
@@ -207,6 +221,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
+
             if (robotState.getAlliance() == Alliance.Blue) {
                 robotState.setPoseToSpeaker(currentState.Pose.minus(blueSpeaker).getTranslation().getNorm());
             }
@@ -368,6 +383,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     @Override
     public void reset() {
+        cachedRotation = currentState.Pose.getRotation();
     }
 
     public void teleLimits(){
