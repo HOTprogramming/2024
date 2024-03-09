@@ -117,9 +117,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
      */
     private void percentDrive(double[] drivePercents, boolean fieldCentricDrive) {
         
-        if (Math.abs(drivePercents[2]) > 0.05) {
+        if (Math.abs(drivePercents[2]) > 0.01) {
             cachedRotation = currentState.Pose.getRotation();
-            SmartDashboard.putBoolean("AutoSteer", false);
 
             if (fieldCentricDrive) {
                 setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
@@ -131,8 +130,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                         .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
             }
         } else {
-            SmartDashboard.putBoolean("AutoSteer", true);
-
             autoTurnControl(drivePercents, cachedRotation, fieldCentricDrive);
         }
         
@@ -323,9 +320,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
         
         try{
-      desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
-                                                commander.getDriveState().poseMeters.getY(),
-                                                commander.getDriveRotationState().position));    
+            desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
+                                                        commander.getDriveState().poseMeters.getY(),
+                                                        commander.getDriveRotationState().position));    
         } catch(Exception e){
 
         }
@@ -337,10 +334,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getPidgeonReset()) {
             m_pigeon2.setYaw(0);
-            
+            cachedRotation = currentState.Pose.getRotation();
+
         }
 
         if (commander.getLockParallel()) {
+            cachedRotation = currentState.Pose.getRotation();
+
             if (robotState.getAlliance() == Alliance.Red) {
                 autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
 
@@ -351,11 +351,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
 
         if (commander.getAngleSnapCommand() != -1) {
+            cachedRotation = currentState.Pose.getRotation();
+
             autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
         }
 
         if (commander.getLockSpeakerCommand()) {
-            
+            cachedRotation = currentState.Pose.getRotation();
             if (robotState.getAlliance() == Alliance.Red) {
                 autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
             } else {
