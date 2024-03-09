@@ -19,7 +19,9 @@ public class AndysAuton extends AutonBase {
     enum Step {
         start,
         two,
-        three,
+        shoot2,
+        ring2,
+        shoot3,
         four;
     }
 
@@ -33,7 +35,9 @@ public class AndysAuton extends AutonBase {
         seedPose = true;
     }
     
-    Pose2d end = new Pose2d(7.8, 7.3, Rotation2d.fromDegrees(10));
+    Pose2d shooting2 = new Pose2d(5.1, 6.03, Rotation2d.fromDegrees(10));
+    Pose2d firstRing = new Pose2d(8, 7.3, Rotation2d.fromDegrees(10));
+    Pose2d secondRing = new Pose2d(8, 5, Rotation2d.fromDegrees(10));
 
     @Override
     public void runAuto() {
@@ -49,12 +53,10 @@ public class AndysAuton extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(6, 4);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(0)),
-                        Waypoint.fromHolonomicPose(end,Rotation2d.fromDegrees(0))));
+                        Waypoint.fromHolonomicPose(firstRing,Rotation2d.fromDegrees(0))));
                 driving = false;
                 timer.reset();  
-                step = Step.two;              
-            
-                            
+                step = Step.two;                             
         }
         else if (step == Step.two){
             robotState.setAutonHintXPos(3.76); //3.9 posetospeaker
@@ -71,16 +73,71 @@ public class AndysAuton extends AutonBase {
             }
 
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
+                trajectoryConfig = new TrajectoryConfig(6, 4);
+                trajectoryGenerator.generate(trajectoryConfig,
+                    List.of(Waypoint.fromHolonomicPose(firstRing, Rotation2d.fromDegrees(0)),
+                            Waypoint.fromHolonomicPose(shooting2,Rotation2d.fromDegrees(0))));
                 timer.reset();    
-                step = Step.three;
+                step = Step.shoot2;
             }
 
         } 
-        else if(step == Step.three){
+        else if(step == Step.shoot2){
+            runShooter = false;
+            driving = true;
+            runIntake = true;
+            swerveBrake = false;   
+            robotState.setAutonHintXPos(5.05);
+            armCommand = ArmCommanded.shotMap; 
+            
+            if(timer.get() < trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() && timer.get() > (trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()-1.0)){
+                runShooter = true;
+            }
+            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
+                trajectoryConfig = new TrajectoryConfig(6, 4);
+                trajectoryGenerator.generate(trajectoryConfig,
+                    List.of(Waypoint.fromHolonomicPose(shooting2, Rotation2d.fromDegrees(0)),
+                            Waypoint.fromHolonomicPose(secondRing,Rotation2d.fromDegrees(0))));
+                timer.reset();    
+                step = Step.ring2;
+            }
+        }
+        else if (step == Step.ring2){
+            runShooter = false;
+            driving = true;
+            runIntake = true;
+            swerveBrake = false;  
+
+            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
+                trajectoryConfig = new TrajectoryConfig(6, 4);
+                trajectoryGenerator.generate(trajectoryConfig,
+                    List.of(Waypoint.fromHolonomicPose(secondRing, Rotation2d.fromDegrees(0)),
+                            Waypoint.fromHolonomicPose(shooting2, Rotation2d.fromDegrees(0))));
+                timer.reset();    
+                step = Step.shoot3;
+            }
+
+        }
+        else if (step == Step.shoot3){
+            runShooter = false;
+            driving = true;
+            runIntake = true;
+            swerveBrake = false;   
+            robotState.setAutonHintXPos(5.05);
+            armCommand = ArmCommanded.shotMap; 
+            
+            if(timer.get() < trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() && timer.get() > (trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()-1.0)){
+                runShooter = true;
+            }
+            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){   
+                step = Step.four;
+            }
+        }
+        else if (step == Step.four){
             runShooter = false;
             driving = false;
             runIntake = false;
-            swerveBrake = true;    
+            swerveBrake = true;          
         }
         else {
             runShooter = false;
