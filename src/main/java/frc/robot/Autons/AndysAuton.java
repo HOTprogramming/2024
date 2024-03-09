@@ -28,12 +28,12 @@ public class AndysAuton extends AutonBase {
     public AndysAuton(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(1.37, 6.06, Rotation2d.fromDegrees(12.8)); //15.15
+        startPose = new Pose2d(1.14, 6.016, Rotation2d.fromDegrees(0)); //15.15
 
         seedPose = true;
     }
     
-    Pose2d end = new Pose2d(8.1, 7.5, Rotation2d.fromDegrees(10));
+    Pose2d end = new Pose2d(7.8, 7.3, Rotation2d.fromDegrees(10));
 
     @Override
     public void runAuto() {
@@ -48,8 +48,8 @@ public class AndysAuton extends AutonBase {
             
             trajectoryConfig = new TrajectoryConfig(6, 4);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose),
-                        Waypoint.fromHolonomicPose(end)));
+                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(0)),
+                        Waypoint.fromHolonomicPose(end,Rotation2d.fromDegrees(0))));
                 driving = false;
                 timer.reset();  
                 step = Step.two;              
@@ -57,7 +57,7 @@ public class AndysAuton extends AutonBase {
                             
         }
         else if (step == Step.two){
-            robotState.setAutonHintXPos(3.83); //3.9 posetospeaker
+            robotState.setAutonHintXPos(3.76); //3.9 posetospeaker
             armCommand = ArmCommanded.shotMap; 
             driving = true;
             runIntake = false;
