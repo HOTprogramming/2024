@@ -39,12 +39,13 @@ public class BlueOppositeAmp extends AutonBase {
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.09, 0.7, Rotation2d.fromDegrees(0));//heading 68 deg
-    Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-50));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.18, 2.41, Rotation2d.fromDegrees(10));//heading 85 deg
-    Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-50));
-    Pose2d ring3 = new Pose2d(2.7, 4.17, Rotation2d.fromDegrees(-10));
-    Pose2d shoot3 = new Pose2d(2.4, 4.8, Rotation2d.fromDegrees(-20));
+    Pose2d ring1 = new Pose2d(8.3, 1.00, Rotation2d.fromDegrees(0));//heading 68 deg
+    Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-40));//heading 57 deg
+    Pose2d ring2Intermediary = new Pose2d(5.3, 2.1, Rotation2d.fromDegrees(7));//heading 57 deg
+    Pose2d ring2 = new Pose2d(8.3, 2.85, Rotation2d.fromDegrees(30));//heading 85 deg
+    Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-40));
+    Pose2d ring3Intermediary = new Pose2d(2, 4.17, Rotation2d.fromDegrees(-10));
+    Pose2d ring3 = new Pose2d(2.67, 4.12, Rotation2d.fromDegrees(-25));
 
     @Override
     public void runAuto() {
@@ -52,37 +53,34 @@ public class BlueOppositeAmp extends AutonBase {
         
         if(step == Step.start){
             driving = false;
-            runIntake = false;
             swerveBrake = true; 
             armCommand = ArmCommanded.shotMap;
 
-            if(timer.get() < 0.5){
+            if(timer.get() > 0.3 && timer.get() < 0.8){
                 runShooter = true;
+                runIntake = true;
             }
 
-            else if (timer.get() >= 0.5){
-            trajectoryConfig = new TrajectoryConfig(2, 1);
+            else if (timer.get() >= 0.8){
+            trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-70)),
                         Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
                 runShooter = false;
                 timer.reset();  
                 step = Step.ring1;        
-                runIntake = true;
             }               
         }
         else if(step == Step.ring1){
             driving = true;
             swerveBrake = false;
-            runIntake = true;
 
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                trajectoryConfig = new TrajectoryConfig(2, 1);
+                trajectoryConfig = new TrajectoryConfig(6, 3);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(180)),
-                            Waypoint.fromHolonomicPose(shoot1,Rotation2d.fromDegrees(120))));
+                    List.of(Waypoint.fromHolonomicPose(ring1),
+                            Waypoint.fromHolonomicPose(shoot1)));
                 timer.reset();    
-                runIntake = false;
                 step = Step.shot1;
             }
         }
@@ -102,26 +100,25 @@ public class BlueOppositeAmp extends AutonBase {
             }
 
             else {
-            trajectoryConfig = new TrajectoryConfig(2, 1);
+            trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot1, Rotation2d.fromDegrees(-70)),
-                        Waypoint.fromHolonomicPose(ring2,Rotation2d.fromDegrees(50))));
+                List.of(Waypoint.fromHolonomicPose(shoot1, Rotation2d.fromDegrees(-40)),
+                        Waypoint.fromHolonomicPose(ring2Intermediary, Rotation2d.fromDegrees(0)),
+                        Waypoint.fromHolonomicPose(ring2,Rotation2d.fromDegrees(0))));
             timer.reset();    
-            runIntake = true;
+            runShooter = false;
             step = Step.ring2;
             }
 
         }
         else if (step == Step.ring2){
             driving = true;
-            runIntake = true;
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                trajectoryConfig = new TrajectoryConfig(2, 1);
+                trajectoryConfig = new TrajectoryConfig(5, 2.5);
                 trajectoryGenerator.generate(trajectoryConfig,
                     List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(230)),
-                            Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(90))));
+                            Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(150))));
                 timer.reset();    
-                runIntake = false;
                 step = Step.shot2;
             }
         }
@@ -142,12 +139,13 @@ public class BlueOppositeAmp extends AutonBase {
             }
 
             else {
-            trajectoryConfig = new TrajectoryConfig(2, 1);
+            trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(shoot2, Rotation2d.fromDegrees(180)),
+                        Waypoint.fromHolonomicPose(ring3Intermediary,Rotation2d.fromDegrees(0)),
                         Waypoint.fromHolonomicPose(ring3,Rotation2d.fromDegrees(0))));
             timer.reset();    
-            runIntake = true;
+            runShooter = false;
             step = Step.ring3;
             }
 
@@ -155,22 +153,11 @@ public class BlueOppositeAmp extends AutonBase {
         }
         else if (step == Step.ring3){
             driving = true;
-            runIntake = true;
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                trajectoryConfig = new TrajectoryConfig(2, 1);
-                trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(180)),
-                            Waypoint.fromHolonomicPose(shoot3,Rotation2d.fromDegrees(90))));
-                timer.reset();
-                runIntake = false;
-                step = Step.shot3;
-            }
-        }
-        else if (step == Step.shot3){
-            driving = true;
+            armCommand = ArmCommanded.shotMap;
+            runShooter = true;
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 driving = false;
-                timer.reset();
+                timer.reset();    
                 step = Step.end;
             }
 

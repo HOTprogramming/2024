@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
     center4NoteBlue = new Center4NoteBlue(robotState);
     right4NoteBlue = new Right4NoteBlue(robotState);
     andysAuton = new AndysAuton(robotState);
+    blueOppositeAmp = new BlueOppositeAmp(robotState);
 
     newAuto = new NewAuto(robotState);
 
@@ -134,7 +135,8 @@ public class Robot extends TimedRobot {
     //   autonCommander.setAuto(center4Note);
     // }
 
-    autonCommander.setAuto(andysAuton);
+    //autonCommander.setAuto(andysAuton);
+    autonCommander.setAuto(blueOppositeAmp);
 
     drivetrain.init(autonCommander);
     shooter.reset();
