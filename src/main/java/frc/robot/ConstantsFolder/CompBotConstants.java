@@ -278,23 +278,23 @@ public class CompBotConstants extends ConstantsBase {
             HANDOFF = 168;
             ARMOFFSET = -0.4895;
             
-            BLUEDISTANCE1 = 1.16;
-            BLUEDISTANCE2 = 2.5;
-            BLUEDISTANCE3 = 4;
-            BLUEDISTANCE4 = 5.3;
-            BLUEDISTANCE5 = 6.5;
+            BLUEDISTANCE1 = 1.21; // 0 in
+            BLUEDISTANCE2 = 2.3; // 43 in 
+            BLUEDISTANCE3 = 3.5; // 93 in 
+            BLUEDISTANCE4 = 4.88; // 148 in 
+            BLUEDISTANCE5 = 6.25; // 195 in at 6.1
             BLUEANGLE1 = 150.0;
-            BLUEANGLE2 = 129.0;
-            BLUEANGLE3 = 119.0;
-            BLUEANGLE4 = 116.3;   
-            BLUEANGLE5 = 115.3;
+            BLUEANGLE2 = 134.6;
+            BLUEANGLE3 = 127.0;
+            BLUEANGLE4 = 122.0;   
+            BLUEANGLE5 = 122.0;
 
             REDDISTANCE1 = 1.16;
             REDDISTANCE2 = 2.5;
             REDDISTANCE3 = 4;
             REDDISTANCE4 = 5.3;
             REDDISTANCE5 = 6.5;
-            REDANGLE1 = 150.0;
+            REDANGLE1 = 149.3;
             REDANGLE2 = 129.0;
             REDANGLE3 = 119.0;
             REDANGLE4 = 116.0;   
