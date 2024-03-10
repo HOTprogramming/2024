@@ -83,6 +83,9 @@ public class PracticeBotConstants extends ConstantsBase {
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
             FEEDER_CAN = 13;
+
+            RIGHT_FLYWHEEL_TARGET_RPM = 3000;
+            LEFT_FLYWHEEL_TARGET_RPM = 3700;
     
             TARGET_SPEED_INCREMENT = 5;
             START_TARGET_SPEED = 70;
