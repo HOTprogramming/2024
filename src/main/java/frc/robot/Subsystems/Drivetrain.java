@@ -77,9 +77,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(15.0, 0.15, 0.3); // 9 .15 .5
-    private static final PIDController yController = new PIDController(15, 0.13, 0.3); // 8.5 .13 .45
-    private static final PIDController thetaController = new PIDController(12.5, 0.1, .1);
+    private static final PIDController xController = new PIDController(10, 0, 0); // 9 .15 .5
+    private static final PIDController yController = new PIDController(10, 0, 0); // 8.5 .13 .45
+    private static final PIDController thetaController = new PIDController(10, 0, 0);
     
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -117,8 +117,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
      */
     private void percentDrive(double[] drivePercents, boolean fieldCentricDrive) {
         
-        if (Math.abs(drivePercents[2]) > 0.01) {
-            cachedRotation = currentState.Pose.getRotation();
+        // if (Math.abs(drivePercents[2]) > 0.01) {
+            // cachedRotation = currentState.Pose.getRotation();
 
             if (fieldCentricDrive) {
                 setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
@@ -129,9 +129,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                         .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                         .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
             }
-        } else {
-            autoTurnControl(drivePercents, cachedRotation, fieldCentricDrive);
-        }
+        // } else {
+            // autoTurnControl(drivePercents, cachedRotation, fieldCentricDrive);
+        // }
         
         SmartDashboard.putNumber("CachedRotation", cachedRotation.getDegrees());
     }
@@ -338,23 +338,23 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         }
 
-        if (commander.getLockParallel()) {
-            cachedRotation = currentState.Pose.getRotation();
+        // if (commander.getLockParallel()) {
+        //     cachedRotation = currentState.Pose.getRotation();
 
-            if (robotState.getAlliance() == Alliance.Red) {
-                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
+        //     if (robotState.getAlliance() == Alliance.Red) {
+        //         autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
 
-            } else {
-                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
+        //     } else {
+        //         autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
 
-            }
-        }
+        //     }
+        // }
 
-        if (commander.getAngleSnapCommand() != -1) {
-            cachedRotation = currentState.Pose.getRotation();
+        // if (commander.getAngleSnapCommand() != -1) {
+        //     cachedRotation = currentState.Pose.getRotation();
 
-            autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
-        }
+        //     autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
+        // }
 
         if (commander.getLockSpeakerCommand()) {
             cachedRotation = currentState.Pose.getRotation();

@@ -93,8 +93,6 @@ public class CompBotConstants extends ConstantsBase {
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }
 
-
-
             WHEEL_SLIP_CURRENT = 650.0; // *tune later
 
             // Meters per second theroretical max speed at 12 volts
