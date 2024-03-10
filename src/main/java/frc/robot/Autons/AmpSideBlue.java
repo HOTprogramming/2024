@@ -263,8 +263,11 @@ public class AmpSideBlue extends AutonBase {
             }
         } else if (step == Step.shoot1) {
             driving = false;
-            runShooter = true;
-            if (timer.get() > .4) {
+            if (timer.get() > .2) {
+                runShooter = true;
+
+            }
+            if (timer.get() > .5) {
                 runShooter = false;
                 driving = true;
                 if (ring2First) {
@@ -284,9 +287,6 @@ public class AmpSideBlue extends AutonBase {
             }
 
         } else if (step == Step.toring2) {
-            if (timer.get() > .3) {
-                runShooter = false;
-            }
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 if (ring2First) {
@@ -317,8 +317,12 @@ public class AmpSideBlue extends AutonBase {
         } else if (step == Step.closeshot) {
 
             driving = false;
-            runShooter = true;
-            if (timer.get() > .3) {
+
+            if (timer.get() > .2) {
+                runShooter = true;
+
+            }
+            if (timer.get() > .5) {
                 runShooter = false;
                 driving = true;
                 trajectoryConfig = new TrajectoryConfig(3, 2);
@@ -339,9 +343,14 @@ public class AmpSideBlue extends AutonBase {
                 step = Step.shoot3;
             }
         } else if (step == Step.shoot3) {
-            runShooter = true;
             driving = false;
-            if (timer.get() > .3) {
+
+
+            if (timer.get() > .2) {
+                runShooter = true;
+
+            }
+            if (timer.get() > .5) {
                 driving = true;
                 runShooter = false;
                 timer.reset();
