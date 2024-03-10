@@ -266,7 +266,9 @@ public Extension(RobotState robotState) {
             extensionTimer = 0;
         }
 
-        if(commander.setShoot()){
+        if(commander.setShoot() && (commander.armCommanded() == ArmCommanded.amp || 
+                                    commander.armCommanded() == ArmCommanded.handoff ||
+                                    commander.armCommanded() == ArmCommanded.trap)){
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
