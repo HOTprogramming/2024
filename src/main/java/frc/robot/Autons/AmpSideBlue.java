@@ -180,7 +180,7 @@ public class AmpSideBlue extends AutonBase {
     }
     public Step step = Step.toring1;
 
-    boolean ring2First = true;
+    boolean ring2First = false;
 
     Pose2d start = new Pose2d(1.574, 6.109, Rotation2d.fromDegrees(8));
     Pose2d ring1 = new Pose2d(8.2, 7.13, Rotation2d.fromDegrees(0));
