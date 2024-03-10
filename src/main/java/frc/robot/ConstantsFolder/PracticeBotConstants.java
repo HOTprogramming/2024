@@ -83,6 +83,9 @@ public class PracticeBotConstants extends ConstantsBase {
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
             FEEDER_CAN = 13;
+
+            RIGHT_FLYWHEEL_TARGET_RPM = 3000;
+            LEFT_FLYWHEEL_TARGET_RPM = 3700;
     
             TARGET_SPEED_INCREMENT = 5;
             START_TARGET_SPEED = 70;
@@ -174,8 +177,8 @@ public class PracticeBotConstants extends ConstantsBase {
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(600).withKI(0).withKD(8)
-            .withKS(0).withKV(.5).withKA(0);
+            .withKP(100).withKI(0).withKD(.2)
+            .withKS(0).withKV(1.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
             .withKP(3).withKI(0).withKD(0)
@@ -190,7 +193,7 @@ public class PracticeBotConstants extends ConstantsBase {
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
             } else {
-                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }

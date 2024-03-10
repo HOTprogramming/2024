@@ -20,7 +20,7 @@ import frc.robot.Subsystems.Camera.CameraPositions;
 
 public class RobotState {
     private ConstantsBase constants;
-    private Alliance alliance = Alliance.Red;
+    private Alliance alliance = Alliance.Blue;
 
     private Pose2d drivePose;
     private boolean atTargetPose;
@@ -44,6 +44,7 @@ public class RobotState {
     private boolean twoTags;
     private boolean oneTag;
     private boolean noTag;
+    private double autonHintXPos;
  
     private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
@@ -211,6 +212,14 @@ public class RobotState {
 
     public boolean getFeederOnAmpTrap(){
         return feederAmpTrap;
+    }
+
+    public void setAutonHintXPos(double autonHintXPos){
+        this.autonHintXPos = autonHintXPos;
+    }
+
+    public double getAutonHintXPos(){
+        return autonHintXPos;
     }
 
     public void setTwoTags(boolean twoTags){

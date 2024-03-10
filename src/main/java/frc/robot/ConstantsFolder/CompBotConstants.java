@@ -93,8 +93,6 @@ public class CompBotConstants extends ConstantsBase {
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }
 
-
-
             WHEEL_SLIP_CURRENT = 650.0; // *tune later
 
             // Meters per second theroretical max speed at 12 volts
@@ -221,6 +219,8 @@ public class CompBotConstants extends ConstantsBase {
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
     
+            RIGHT_FLYWHEEL_TARGET_RPM = 4000;
+            LEFT_FLYWHEEL_TARGET_RPM = 6000;
 
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
@@ -235,11 +235,11 @@ public class CompBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
     
-            FLYWHEEL_KP = 35.0; // 22.0
+            FLYWHEEL_KP = 50.0; // 22.0
             FLYWHEEL_KI = 0.15; // 0.0
             FLYWHEEL_KD = 0.0; // 2.0
-            LEFT_FLYWHEEL_KV = .130; //.133
-            LEFT_FLYWHEEL_KS = 0.8; // .8 | .384
+            LEFT_FLYWHEEL_KV = .60; //.133
+            LEFT_FLYWHEEL_KS = 1.2; // .8 | .384
 
 
             RFLYWHEEL_KP = 30.0; // 16.0
@@ -247,6 +247,8 @@ public class CompBotConstants extends ConstantsBase {
             RFLYWHEEL_KD = 0.0; // 4.0
             RIGHT_FLYWHEEL_KV = .138; //.138
             RIGHT_FLYWHEEL_KS = 0.8; // 0.8 | .38
+
+
 
 
         }
@@ -280,23 +282,23 @@ public class CompBotConstants extends ConstantsBase {
             HANDOFF = 168;
             ARMOFFSET = -0.4895;
             
-            BLUEDISTANCE1 = 1.16;
-            BLUEDISTANCE2 = 2.5;
-            BLUEDISTANCE3 = 4;
-            BLUEDISTANCE4 = 5.3;
-            BLUEDISTANCE5 = 6.5;
+            BLUEDISTANCE1 = 1.21; // 0 in
+            BLUEDISTANCE2 = 2.3; // 43 in 
+            BLUEDISTANCE3 = 3.5; // 93 in 
+            BLUEDISTANCE4 = 4.88; // 148 in 
+            BLUEDISTANCE5 = 6.25; // 195 in at 6.1
             BLUEANGLE1 = 150.0;
-            BLUEANGLE2 = 129.0;
-            BLUEANGLE3 = 119.0;
-            BLUEANGLE4 = 116.3;   
-            BLUEANGLE5 = 115.3;
+            BLUEANGLE2 = 134.1;
+            BLUEANGLE3 = 126.5;
+            BLUEANGLE4 = 122.0;   
+            BLUEANGLE5 = 120.0;
 
             REDDISTANCE1 = 1.16;
             REDDISTANCE2 = 2.5;
             REDDISTANCE3 = 4;
             REDDISTANCE4 = 5.3;
             REDDISTANCE5 = 6.5;
-            REDANGLE1 = 150.0;
+            REDANGLE1 = 149.3;
             REDANGLE2 = 129.0;
             REDANGLE3 = 119.0;
             REDANGLE4 = 116.0;   

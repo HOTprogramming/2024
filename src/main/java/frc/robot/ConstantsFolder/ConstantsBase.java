@@ -283,6 +283,20 @@ public class ConstantsBase {
         public int LEFT_FLYWHEEL_CAN = 11;
         public int FEEDER_CAN = 13;
 
+        public double RIGHT_FLYWHEEL_TARGET_RPM = 3000;
+        public double LEFT_FLYWHEEL_TARGET_RPM = 3700;
+
+        public double RIGHT_FLYWHEEL_SLOW_RPM = 1400;
+        public double LEFT_FLYWHEEL_SLOW_RPM = 1400;
+
+        public double RIGHT_FLYWHEEL_IDLE_RPM = 2000;
+        public double LEFT_FLYWHEEL_IDLE_RPM = 2000;
+
+        public double RIGHT_FLYWHEEL_PRELOAD_RPM = 2500;
+        public double LEFT_FLYWHEEL_PRELOAD_RPM = 2500;
+
+
+
         public double TARGET_SPEED_INCREMENT = 5;
         public double START_TARGET_SPEED = 70;
 

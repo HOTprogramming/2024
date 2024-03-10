@@ -37,6 +37,9 @@ public class ShotMap {
     private double angleX3;
     private double angleX4;
     private double velocityX;
+    private double velocityY;
+    private double velocityH;
+    private double velocityH2;
     
 
     public ShotMap(RobotState robotState) {
@@ -66,9 +69,14 @@ public class ShotMap {
     }
 
     public double getVelocity(){
+        // velocityX = robotState.getDriveVelocity().getX();
         velocityX = robotState.getDriveVelocity().getX();
-        SmartDashboard.putNumber("VelocityY", velocityX);
-        return velocityX;
+        velocityY = robotState.getDriveVelocity().getY();
+        velocityH = (velocityX*velocityX) + (velocityY*velocityY);
+        velocityH2 = Math.sqrt(velocityH);
+
+        SmartDashboard.putNumber("VelocityH", velocityH2);
+        return velocityH2;
     }
 
     public double calculateSlope(double a2, double a1, double d2, double d1, double currentPos){
@@ -103,7 +111,7 @@ public class ShotMap {
                 angleX2 = this.calculateSlope(blueAngle5, blueAngle4, blueDistance5, blueDistance4, xPos);
             } 
             else {
-                angleX2 = 95.0;
+                angleX2 = blueDistance5;
                 SmartDashboard.putNumber("Outside", angleX2);
             }
         } else {
@@ -123,11 +131,18 @@ public class ShotMap {
                 angleX2 = this.calculateSlope(redAngle5, redAngle4, redDistance5, redDistance4, xPos);
             } 
             else {
-                angleX2 = 95.0;
+                angleX2 = redDistance5;
                 SmartDashboard.putNumber("Outside", angleX2);
             }
         }
-        xPos = robotState.getPoseToSpeaker(); //+ 0.1*this.getVelocity();
+
+        if(robotState.getAutonHintXPos()<0){
+        xPos = robotState.getPoseToSpeaker();// - 0.2*(this.getVelocity()*this.getVelocity());
+        }
+        else if(robotState.getAutonHintXPos()>=0){
+            xPos = robotState.getAutonHintXPos();
+        }
+
         SmartDashboard.putNumber("distancetotarget", xPos);
 
         
