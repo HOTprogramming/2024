@@ -283,6 +283,20 @@ public class ConstantsBase {
         public int LEFT_FLYWHEEL_CAN = 11;
         public int FEEDER_CAN = 13;
 
+        public double RIGHT_FLYWHEEL_TARGET_RPM = 3000;
+        public double LEFT_FLYWHEEL_TARGET_RPM = 3700;
+
+        public double RIGHT_FLYWHEEL_SLOW_RPM = 1400;
+        public double LEFT_FLYWHEEL_SLOW_RPM = 1400;
+
+        public double RIGHT_FLYWHEEL_IDLE_RPM = 2000;
+        public double LEFT_FLYWHEEL_IDLE_RPM = 2000;
+
+        public double RIGHT_FLYWHEEL_PRELOAD_RPM = 2500;
+        public double LEFT_FLYWHEEL_PRELOAD_RPM = 2500;
+
+
+
         public double TARGET_SPEED_INCREMENT = 5;
         public double START_TARGET_SPEED = 70;
 
@@ -417,13 +431,13 @@ public class ConstantsBase {
                                     .withPeakForwardTorqueCurrent(70)
                                     .withPeakReverseTorqueCurrent(-70);
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(120)
-                                    .withPeakReverseTorqueCurrent(-120);
+                                    .withPeakForwardTorqueCurrent(150)
+                                    .withPeakReverseTorqueCurrent(-150);
 
-        public double WHEEL_SLIP_CURRENT = 300.0; // *tune later
+        public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 
         // Meters per second theroretical max speed at 12 volts
-        public double FREE_SPEED_12V = 6.37032;
+        public double FREE_SPEED_12V = 8.37032; // 6.37032
 
         // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
         // This may need to be tuned to your individual robot

@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
   private Right4NoteBlue right4NoteBlue;
   private AndysAuton andysAuton;
   private BlueOppositeAmp blueOppositeAmp;
+  private AmpSideBlue ampSideBlue;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -85,7 +86,6 @@ public class Robot extends TimedRobot {
     center4NoteBlue = new Center4NoteBlue(robotState);
     right4NoteBlue = new Right4NoteBlue(robotState);
     andysAuton = new AndysAuton(robotState);
-    blueOppositeAmp = new BlueOppositeAmp(robotState);
 
     newAuto = new NewAuto(robotState);
 
@@ -134,8 +134,7 @@ public class Robot extends TimedRobot {
     //   autonCommander.setAuto(center4Note);
     // }
 
-    //autonCommander.setAuto(andysAuton);
-    autonCommander.setAuto(blueOppositeAmp);
+    autonCommander.setAuto(andysAuton);
 
     drivetrain.init(autonCommander);
     shooter.reset();
@@ -146,7 +145,7 @@ public class Robot extends TimedRobot {
     climber.reset();
     extension.reset();
 
-    // drivetrain.autoLimits();
+    drivetrain.autoLimits();
   }
 
   @Override
@@ -167,6 +166,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     shooter = new Shooter(robotState, 55, 55);
     robotState.setAlliance(DriverStation.getAlliance().get());
+    robotState.setAutonHintXPos(-1);
     shooter.reset();
     drivetrain.reset();
     arm.reset();
@@ -176,7 +176,7 @@ public class Robot extends TimedRobot {
     climber.reset();
     climber.init(teleopCommander);
     extension.reset();
-    // drivetrain.teleLimits();
+    drivetrain.teleLimits();
   }
 
   @Override

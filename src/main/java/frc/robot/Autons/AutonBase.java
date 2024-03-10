@@ -14,6 +14,7 @@ import frc.robot.utils.trajectory.Waypoint;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class AutonBase {
@@ -21,6 +22,9 @@ public abstract class AutonBase {
     Timer timer = new Timer();
     
     RobotState robotState;
+
+    private Pose2d blueSpeaker = new Pose2d(0.1, 5.55, Rotation2d.fromDegrees(0));
+    private Pose2d redSpeaker = new Pose2d(16.579, 5.688, Rotation2d.fromDegrees(180));
 
     // default values if possible
     public Pose2d startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
@@ -48,6 +52,14 @@ public abstract class AutonBase {
     
 
         constants = robotState.getConstants().getAutonConstants();
+    }
+
+    public double calculateArmHint(Pose2d shootPose) {
+        if (robotState.getAlliance() == Alliance.Blue) {
+            return shootPose.minus(blueSpeaker).getTranslation().getNorm();
+        } else {
+            return shootPose.minus(redSpeaker).getTranslation().getNorm();
+        }
     }
 
     public void visualizePath() {
