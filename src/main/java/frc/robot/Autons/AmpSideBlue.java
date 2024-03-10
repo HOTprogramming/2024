@@ -180,6 +180,8 @@ public class AmpSideBlue extends AutonBase {
     }
     public Step step = Step.toring1;
 
+    boolean ring2First = true;
+
     Pose2d start = new Pose2d(1.574, 6.109, Rotation2d.fromDegrees(8));
     Pose2d ring1 = new Pose2d(8.2, 7.13, Rotation2d.fromDegrees(0));
     Pose2d midShoot = new Pose2d(4.7, 6.3, Rotation2d.fromDegrees(14));
@@ -196,9 +198,17 @@ public class AmpSideBlue extends AutonBase {
     private void startTraj() {
         trajectoryConfig.setEndVelocity(0);
         trajectoryConfig = new TrajectoryConfig(6, 3.0);
-        trajectoryGenerator.generate(trajectoryConfig, List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(0)), 
-                                                    Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(0))));
-    }
+        if (ring2First) {
+            trajectoryGenerator.generate(trajectoryConfig, 
+                        List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(0)), 
+                                Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-14))));
+        } else {
+            trajectoryGenerator.generate(trajectoryConfig, 
+                        List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(0)), 
+                                Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(0))));
+
+        }
+}
 
     public AmpSideBlue(RobotState robotState) {
         super(robotState);
@@ -231,9 +241,16 @@ public class AmpSideBlue extends AutonBase {
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 runShooter = false;
-                trajectoryGenerator.generate(trajectoryConfig, 
+                if (ring2First) {
+                    trajectoryGenerator.generate(trajectoryConfig, 
+                            List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(160)), 
+                                    Waypoint.fromHolonomicPose(midShoot)));
+                } else {
+                    trajectoryGenerator.generate(trajectoryConfig, 
                             List.of(Waypoint.fromHolonomicPose(ring1), 
                                     Waypoint.fromHolonomicPose(midShoot)));
+                }
+                
                 robotState.setAutonHintXPos(-1);
                 timer.reset();
                 step = Step.toshoot1;
@@ -250,10 +267,18 @@ public class AmpSideBlue extends AutonBase {
             if (timer.get() > .4) {
                 runShooter = false;
                 driving = true;
-                trajectoryGenerator.generate(trajectoryConfig,
+                if (ring2First) {
+                    trajectoryGenerator.generate(trajectoryConfig,
+                            List.of(Waypoint.fromHolonomicPose(midShoot),
+                                    Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(0))));
+
+                } else {
+                    trajectoryGenerator.generate(trajectoryConfig,
                             List.of(Waypoint.fromHolonomicPose(midShoot),
                                     Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-14))));
 
+                }
+                
                 timer.reset();
                 step = Step.toring2;
             }
@@ -264,11 +289,20 @@ public class AmpSideBlue extends AutonBase {
             }
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                trajectoryGenerator.generate(trajectoryConfig, List.of(
+                if (ring2First) {
+                    trajectoryGenerator.generate(trajectoryConfig, List.of(
+                                    Waypoint.fromHolonomicPose(ring1),
+                                    Waypoint.fromHolonomicPose(almostBetweenRings),
+                                    Waypoint.fromHolonomicPose(betweenRings),
+                                    Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(-180))));
+                } else {
+                    trajectoryGenerator.generate(trajectoryConfig, List.of(
                                     Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(160)),
                                     Waypoint.fromHolonomicPose(almostBetweenRings),
                                     Waypoint.fromHolonomicPose(betweenRings),
                                     Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(-180))));
+                }
+                
                 timer.reset();
                 step = Step.tocloseshot;
             }
@@ -352,6 +386,8 @@ public class AmpSideBlue extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.toring1;
+        startTraj();
+
         trajectoryConfig.setEndVelocity(1);
     }
 }
