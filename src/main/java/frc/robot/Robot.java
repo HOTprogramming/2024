@@ -190,8 +190,7 @@ public class Robot extends TimedRobot {
     arm.teleop(teleopCommander);
     intake.teleop(teleopCommander);
     feeder.teleop(teleopCommander);
-    // lights.teleop(teleopCommander);
-    lights.cameraLights();
+    lights.teleop(teleopCommander);
     climber.teleop(teleopCommander);
     extension.teleop(teleopCommander);
   }
