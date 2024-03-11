@@ -166,6 +166,8 @@ public class Camera implements SubsystemBase {
     Map<CameraPositions, DoubleArrayPublisher> publishers = new EnumMap<>(CameraPositions.class);
     Map<CameraPositions, PhotonPoseEstimator> photonPoseEstimators = new EnumMap<>(CameraPositions.class); 
     Map<CameraPositions, Double> lastEstTimestamps = new EnumMap<>(CameraPositions.class); 
+    private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera  = new EnumMap<>(CameraPositions.class);
+    CameraPositions allowMultiTag;
 
     private int minimumTagsSeenByAnyCamera;
     private int lastMinimumTagsSeenByAnyCamera = 0;
@@ -272,12 +274,14 @@ public class Camera implements SubsystemBase {
         double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
         boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
 
-        if (newResult) 
+        targetsSeenByCamera.put(key,camera.getLatestResult().targets);
+
+        if (newResult) {
             lastEstTimestamp = latestTimestamp;
-        else {
+        } else {
             publisher.set(null);
         }
-            visionEst.ifPresent(est -> {
+            visionEst.ifPresent(est -> { 
                 publisher.set(new double[] {est.estimatedPose.toPose2d().getX(),
                 est.estimatedPose.toPose2d().getY(),
                 est.estimatedPose.toPose2d().getRotation().getDegrees()});
@@ -299,45 +303,42 @@ public class Camera implements SubsystemBase {
         constants.cameraConstants.forEach((key,constant) -> {
             if (constant != null) {
                 cameraMeasurements.put(key,updateCameraMeasurment(key, constant, cameras.get(key), publishers.get(key), photonPoseEstimators.get(key), lastEstTimestamps.get(key)));
-                if (cameraMeasurements.get(key).isPresent()) {
-                    cameraStdDeviations.put(key,getEstimationStdDevs(cameraMeasurements.get(key).get().estimatedPose.toPose2d(), cameras.get(key), constant, photonPoseEstimators.get(key)));
-                    List<PhotonTrackedTarget> tagsUsed = cameraMeasurements.get(key).get().targetsUsed;
-                    if (tagsUsed.size() > minimumTagsSeenByAnyCamera) {
-                        minimumTagsSeenByAnyCamera = tagsUsed.size();
-                    }
-                    SmartDashboard.putNumber("Seen by " + key.name(), tagsUsed.size());
-                }
             }
         });
 
-        if(lastMinimumTagsSeenByAnyCamera != minimumTagsSeenByAnyCamera && loopsPast > 50){
-            SmartDashboard.putNumber("minimumTagsSeenByAnyCamera",minimumTagsSeenByAnyCamera);
-            if (minimumTagsSeenByAnyCamera >=2 ) {
-                robotState.setOneTag(false);
-                robotState.setTwoTags(true);
-                robotState.setNoTag(false);
-            } else if (minimumTagsSeenByAnyCamera == 1) {
-                robotState.setOneTag(true);
-                robotState.setTwoTags(false);
-                robotState.setNoTag(false);
-            } else {
-                robotState.setOneTag(false);
-                robotState.setTwoTags(false);
-                robotState.setNoTag(true);
+        targetsSeenByCamera.forEach((key, list) -> {
+            if (list.size() > minimumTagsSeenByAnyCamera) {
+                minimumTagsSeenByAnyCamera = list.size();
             }
-            loopsPast = 0;
-        } else{
-            loopsPast++;
-        }
+            SmartDashboard.putNumber("Camera" + key + "sees:", list.size());
+        });
 
-        lastMinimumTagsSeenByAnyCamera = minimumTagsSeenByAnyCamera;
+        allowMultiTag = CameraPositions.BACK;
+
+        if (targetsSeenByCamera.containsKey(CameraPositions.BACK) && targetsSeenByCamera.get(CameraPositions.BACK).size() >=2 ) {
+            allowMultiTag = CameraPositions.BACK;
+        } else if (targetsSeenByCamera.containsKey(CameraPositions.RIGHT) && targetsSeenByCamera.get(CameraPositions.RIGHT).size() >=2 ) {
+            allowMultiTag = CameraPositions.RIGHT;
+        } else if (targetsSeenByCamera.containsKey(CameraPositions.LEFT) && targetsSeenByCamera.get(CameraPositions.LEFT).size() >=2 ) {
+            allowMultiTag = CameraPositions.LEFT;
+        } else if (targetsSeenByCamera.containsKey(CameraPositions.FRONT) && targetsSeenByCamera.get(CameraPositions.FRONT).size() >=2 ) {
+            allowMultiTag = CameraPositions.FRONT;
+        } 
+
+        cameraMeasurements.forEach((key,measurement) -> {
+            if (measurement.isPresent()) {
+                cameraStdDeviations.put(key,getEstimationStdDevs(measurement.get().estimatedPose.toPose2d(), cameras.get(key), constants.cameraConstants.get(key), photonPoseEstimators.get(key),allowMultiTag == key));
+            }
+        });
+
+        robotState.putTargetsSeenByCamera(targetsSeenByCamera);
 
 
         robotState.setVisionMeasurements(cameraMeasurements);
         robotState.setCameraStdDeviations(cameraStdDeviations);
     }
 
-    public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, PhotonCamera camera, CameraConstant constant, PhotonPoseEstimator estimator) {
+    public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, PhotonCamera camera, CameraConstant constant, PhotonPoseEstimator estimator, boolean allowMultiTag) {
         var estStdDevs = constant.getSingleTagStdDevs();
         var targets = camera.getLatestResult().getTargets();
         int numTags = 0;
@@ -352,7 +353,7 @@ public class Camera implements SubsystemBase {
         if (numTags == 0) return estStdDevs;
         avgDist /= numTags;
         // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = constant.getMultiTagStdDevs();;
+        if (allowMultiTag && numTags > 1) estStdDevs = constant.getMultiTagStdDevs();;
         // Increase std devs based on (average) distance
         if (numTags > 1 && avgDist > 6.5) estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
         if (numTags == 1 && avgDist > 4)
@@ -369,13 +370,13 @@ public class Camera implements SubsystemBase {
     }
 
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'enabled'");
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'disabled'");
     }

@@ -131,7 +131,7 @@ public class Shooter implements SubsystemBase {
     }
 
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
 
         shooterPosition.refresh();
 
@@ -171,7 +171,7 @@ public class Shooter implements SubsystemBase {
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
     }
 
     @Override

@@ -29,13 +29,13 @@ public class CompBotConstants extends ConstantsBase {
         public Camera() {
             super();
             cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
-                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
                                                        new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120.38)),
                                                        VecBuilder.fill(4, 4, 8),
                                                        VecBuilder.fill(0.5, 0.5, 1)));
 
             cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
-                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
                                                        new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120.38)),
                                                        VecBuilder.fill(4, 4, 8),
                                                        VecBuilder.fill(0.5, 0.5, 1)));

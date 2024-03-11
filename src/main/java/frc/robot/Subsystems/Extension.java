@@ -164,7 +164,7 @@ public Extension(RobotState robotState) {
 
 
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         extendPosition.refresh(); 
         extendVelocity.refresh();
         
@@ -282,7 +282,7 @@ public Extension(RobotState robotState) {
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
        extendMotor.stopMotor();
     }
 

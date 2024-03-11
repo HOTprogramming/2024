@@ -311,7 +311,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         // commands drivetrain based on target drivemode
         if (commander.getDriveMode() == DriveMode.percent) {
             percentDrive(commander.getDrivePercentCommand(), true);
@@ -379,7 +379,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
         setControl(brake);
     }
 
