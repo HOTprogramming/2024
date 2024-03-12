@@ -172,7 +172,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
 
-    public void enabled(RobotCommander commander){
+    public void teleop(RobotCommander commander){
 
       armPosition.refresh(); 
       armVelocity.refresh();
@@ -237,7 +237,7 @@ public Arm(RobotState robotState) {
         armMotor.setVoltage(0);
       }
     }
-    public void disabled(){
+    public void cameraLights(){
         armMotor.stopMotor();
     }
     public void reset(){

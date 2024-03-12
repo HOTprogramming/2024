@@ -44,7 +44,7 @@ public class Climber implements SubsystemBase {
     }
     
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         // if (commander.climberUp()) {
         //     climberMotor.setControl(climberMagic.withPosition(constants.CLIMBERPOS).withSlot(0)); //125   
         // } else if (commander.climberDown() && climberPosition.getValueAsDouble() > 0) {
@@ -69,7 +69,7 @@ public class Climber implements SubsystemBase {
     
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
     }
 
     @Override

@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
     center4NoteBlue = new Center4NoteBlue(robotState);
     right4NoteBlue = new Right4NoteBlue(robotState);
     andysAuton = new AndysAuton(robotState);
+    ampSideBlue = new AmpSideBlue(robotState);
     blueOppositeAmp = new BlueOppositeAmp(robotState);
 
     newAuto = new NewAuto(robotState);
@@ -136,7 +137,7 @@ public class Robot extends TimedRobot {
     // }
 
     //autonCommander.setAuto(andysAuton);
-    autonCommander.setAuto(blueOppositeAmp);
+    autonCommander.setAuto(ampSideBlue);
 
     drivetrain.init(autonCommander);
     shooter.reset();
@@ -153,15 +154,15 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
-    shooter.enabled(autonCommander);
-    drivetrain.enabled(autonCommander);
-    arm.enabled(autonCommander);
-    intake.enabled(autonCommander);
-    feeder.enabled(autonCommander);
+    shooter.teleop(autonCommander);
+    drivetrain.teleop(autonCommander);
+    arm.teleop(autonCommander);
+    intake.teleop(autonCommander);
+    feeder.teleop(autonCommander);
     
-    lights.enabled(autonCommander);
-    climber.enabled(autonCommander);   
-    extension.enabled(autonCommander);
+    lights.cameraLights();
+    climber.teleop(autonCommander);   
+    extension.teleop(autonCommander);
   }
 
   @Override
@@ -183,31 +184,32 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    shooter.enabled(teleopCommander);
-    drivetrain.enabled(teleopCommander);
-    arm.enabled(teleopCommander);
-    intake.enabled(teleopCommander);
-    feeder.enabled(teleopCommander);
-    lights.enabled(teleopCommander);
-    climber.enabled(teleopCommander);
-    extension.enabled(teleopCommander);
+    shooter.teleop(teleopCommander);
+    drivetrain.teleop(teleopCommander);
+    arm.teleop(teleopCommander);
+    intake.teleop(teleopCommander);
+    feeder.teleop(teleopCommander);
+    // lights.teleop(teleopCommander);
+    lights.cameraLights();
+    climber.teleop(teleopCommander);
+    extension.teleop(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
-    shooter.disabled();
-    drivetrain.disabled();
-    arm.disabled();
-    feeder.disabled();
-    intake.disabled();
-    lights.disabled();
-    climber.disabled();
-    extension.disabled();
+    shooter.cameraLights();
+    drivetrain.cameraLights();
+    arm.cameraLights();
+    feeder.cameraLights();
+    intake.cameraLights();
+    lights.cameraLights();
+    climber.cameraLights();
+    extension.cameraLights();
   }
 
   @Override
   public void disabledPeriodic() {
-    lights.disabled();
+    lights.cameraLights();
   }
 
   @Override

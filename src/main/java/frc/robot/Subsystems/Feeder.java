@@ -82,7 +82,7 @@ public class Feeder implements SubsystemBase {
     }
     
     @Override
-    public void enabled(RobotCommander commander){
+    public void teleop(RobotCommander commander){
         boolean getFeeder = commander.getFeeder();
         boolean setShoot = commander.setShoot();
         // feeder.setControl(Out);
@@ -128,7 +128,7 @@ public class Feeder implements SubsystemBase {
     }
         
     @Override
-    public void disabled() {
+    public void cameraLights() {
         feeder.stopMotor();
         feeder.setNeutralMode(NeutralModeValue.Brake);
     }

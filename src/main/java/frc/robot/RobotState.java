@@ -1,12 +1,14 @@
 package frc.robot;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.swing.text.html.Option;
 
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -47,7 +49,8 @@ public class RobotState {
     private double autonHintXPos;
  
     private boolean feederStop = false;
- //   private armDesiredPos stateArmPos;
+    private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
+    //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
     }
@@ -241,4 +244,15 @@ public class RobotState {
     public boolean getNoTag(){
         return noTag;
     }
+
+    public void putTargetsSeenByCamera(Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera) {
+        // TODO Auto-generated method stub
+        this.targetsSeenByCamera = targetsSeenByCamera;
+    }
+
+    
+    public Map<CameraPositions, List<PhotonTrackedTarget>> getTargetsSeenByCamera() {
+        return targetsSeenByCamera;
+    }
+
 }

@@ -164,7 +164,7 @@ public class Intake implements SubsystemBase {
     }
     
     @Override
-    public void enabled(RobotCommander commander){
+    public void teleop(RobotCommander commander){
         SmartDashboard.putNumber("slurper target angle", constants.SLURPER_DOWN_ANGLE);
         // SmartDashboard.putNumber("SlurpDesired", );
       
@@ -206,7 +206,7 @@ public class Intake implements SubsystemBase {
     
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
         
         intake.stopMotor();
     }
