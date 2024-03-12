@@ -14,7 +14,7 @@ import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.Waypoint;
 
 //red auton
-public class BlueOppositeAmp extends AutonBase {
+public class RedOppositeAmp extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -31,19 +31,21 @@ public class BlueOppositeAmp extends AutonBase {
 
     public Step step = Step.start;   
 
-    public BlueOppositeAmp(RobotState robotState) {
+    public RedOppositeAmp(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(1.45, 4.63, Rotation2d.fromDegrees(-70)); //15.15
+        startPose = new Pose2d(15.49, 4.63, Rotation2d.fromDegrees(-110)); //15.15
 
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.3, 1.00, Rotation2d.fromDegrees(0));//heading 68 deg
-    Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));//heading 57 deg
-    Pose2d ring2Intermediary = new Pose2d(5.3, 2.1, Rotation2d.fromDegrees(7));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(30));//heading 85 deg
-    Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));
+    Pose2d ring1 = new Pose2d(8.3, 1.00, Rotation2d.fromDegrees(180));//
+    Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-135));//heading 57 deg
+    Pose2d ring2Intermediary = new Pose2d(11.0, 2.1, Rotation2d.fromDegrees(173));//heading 57 deg
+    Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(150));//heading 85 deg
+    Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-135));
+
+    //these aren't updated to correct red side positions.
     Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
     Pose2d ring3 = new Pose2d(2.67, 4.12, Rotation2d.fromDegrees(-25));
 
@@ -65,8 +67,8 @@ public class BlueOppositeAmp extends AutonBase {
             if (timer.get() >= 1.15){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-70)),
-                        Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
+                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-110)),
+                        Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(180))));
                 runShooter = false;
                 timer.reset();  
                 step = Step.ring1;   
@@ -107,9 +109,9 @@ public class BlueOppositeAmp extends AutonBase {
             else {
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot1, Rotation2d.fromDegrees(-40)),
-                        Waypoint.fromHolonomicPose(ring2Intermediary, Rotation2d.fromDegrees(0)),
-                        Waypoint.fromHolonomicPose(ring2,Rotation2d.fromDegrees(0))));
+                List.of(Waypoint.fromHolonomicPose(shoot1, Rotation2d.fromDegrees(-140)),//subtract this from 180
+                        Waypoint.fromHolonomicPose(ring2Intermediary, Rotation2d.fromDegrees(180)),
+                        Waypoint.fromHolonomicPose(ring2,Rotation2d.fromDegrees(180))));
             timer.reset();    
             runShooter = false;
             step = Step.ring2;
@@ -122,8 +124,8 @@ public class BlueOppositeAmp extends AutonBase {
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 trajectoryConfig = new TrajectoryConfig(5, 2.5);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(230)),
-                            Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(150))));
+                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-50)),
+                            Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(30))));
                 timer.reset();    
                 step = Step.shot2;
             }
