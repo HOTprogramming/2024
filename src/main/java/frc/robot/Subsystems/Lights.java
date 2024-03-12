@@ -44,21 +44,6 @@ public class Lights implements SubsystemBase {
     public void updateState() {
     }
 
-    private void setLEDs(int r, int g, int b) {
-        candleRight.setLEDs(r, g, b);
-        candleLeft.setLEDs(r, g, b);
-    }
-    
-    @Override
-    public void teleop(RobotCommander commander){
-        if (robotState.getBeamBreak()) {
-            setLEDs(255, 165, 0);  // orange
-        } 
-        else {
-            setLEDs(0, 0, 0);  // off
-        }
-    }
-    
     private void setCameraLEDR(Map<CameraPositions, List<PhotonTrackedTarget>> list, CameraPositions key, CANdle caNdle, int start, int count) {
         int size = -1;
 
@@ -86,7 +71,28 @@ public class Lights implements SubsystemBase {
             caNdle.setLEDs(255, 255, 255, 0, start, count);  // white
         }
     }
-
+    
+    @Override
+    public void teleop(RobotCommander commander){
+        if (robotState.getBeamBreak()) {
+            candleLeft.setLEDs(255, 165, 0, 0, 0,8);  // orange
+            candleLeft.setLEDs(255, 165, 0, 0, 10 ,16);  // orange
+            candleRight.setLEDs(255, 165, 0, 0, 0,8);  // orange
+            candleLeft.setLEDs(255, 165, 0, 0, 10 ,21);  // orange
+        } 
+        else {
+            candleLeft.setLEDs(0, 0, 0, 0, 0,8);  // off
+            candleLeft.setLEDs(0, 0, 0, 0, 10 ,16);  // off
+            candleRight.setLEDs(0, 0, 0, 0, 0,8);  // off
+            candleLeft.setLEDs(0, 0, 0, 0, 10 ,21);  // off
+        }
+        
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.FRONT,candleLeft,8,3);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.FRONT,candleLeft,27,3);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.BACK,candleRight,8,3);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.BACK,candleRight,32,3);
+    }
+    
     @Override
     public void cameraLights() {
         setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.RIGHT,candleRight,0,8);
