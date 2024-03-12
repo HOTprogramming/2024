@@ -278,10 +278,10 @@ public class CompBotConstants extends ConstantsBase {
             TRAP = 141.0;
             CLOSE = 150.0;
             PROTECT = 125.25;
-            AMP = 133.3; //was 140.3;
+            AMP = 139.992; //was 140.3;
             HANDOFF = 168;
 
-            ARMOFFSET = -322.484 / 360.0; //-0.4895 rotations, now degrees 
+            ARMOFFSET = -321.684 / 360.0; //-0.4895 rotations, now degrees 
             
 
             BLUEDISTANCE1 = 1.21; // 0 in
