@@ -176,6 +176,9 @@ public class TeleopCommander implements RobotCommander {
         else if (operator.getYButton()){
             return ArmCommanded.protect;
         }
+        else if (operator.getBButton() && !(operator.getRightTriggerAxis() >= .1)){
+            return ArmCommanded.hailMary;
+        }
         else if (operator.getRightStickButton()){
             return ArmCommanded.trapZero;
         }
@@ -294,7 +297,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean intakeOut() {
-       if(operator.getBButton()){
+       if(operator.getBButton() && operator.getRightTriggerAxis() >= .1){
         return true;
      }
      else{
