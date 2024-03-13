@@ -42,7 +42,7 @@ StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
 double fullyExtended = 2.17;
-double fullyExtendedAmp = 1.2;
+double fullyExtendedAmp = 1.08;
 double middlePoint = 0.6;
 double extensionZero = 0;
 double initialShooterPos;

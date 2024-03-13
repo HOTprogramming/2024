@@ -180,7 +180,7 @@ public class AmpSideBlue extends AutonBase {
     }
     public Step step = Step.toring1;
 
-    boolean ring2First = true;
+    boolean ring2First = false;
 
     Pose2d start = new Pose2d(1.574, 6.109, Rotation2d.fromDegrees(8));
     Pose2d ring1 = new Pose2d(8.2, 7.13, Rotation2d.fromDegrees(0));
@@ -403,6 +403,9 @@ public class AmpSideBlue extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.toring1;
+        runIntake = false;
+        runShooter = false;
+        driving = false;
         startTraj();
 
         trajectoryConfig.setEndVelocity(1);

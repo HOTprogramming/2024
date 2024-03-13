@@ -42,7 +42,7 @@ public class BlueOppositeAmp extends AutonBase {
     Pose2d ring1 = new Pose2d(8.3, 1.00, Rotation2d.fromDegrees(0));//heading 68 deg
     Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));//heading 57 deg
     Pose2d ring2Intermediary = new Pose2d(5.3, 2.1, Rotation2d.fromDegrees(7));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(30));//heading 85 deg
+    Pose2d ring2 = new Pose2d(8.3, 2.43, Rotation2d.fromDegrees(30));//heading 85 deg
     Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));
     Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
     Pose2d ring3 = new Pose2d(2.67, 4.12, Rotation2d.fromDegrees(-25));
