@@ -1,14 +1,8 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.ArmConstants.*;
-
-import frc.robot.RobotCommander;
-import frc.robot.RobotState;
-import frc.robot.ShotMap;
-import frc.robot.ConstantsFolder.ConstantsBase;
-
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -16,29 +10,16 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.ctre.phoenix6.sim.TalonFXSimState;
 
-import frc.robot.utils.Interpolation.InterpolatingDouble;
-import frc.robot.utils.Interpolation.InterpolatingTreeMap;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotCommander;
+import frc.robot.RobotState;
+import frc.robot.ShotMap;
+import frc.robot.ConstantsFolder.ConstantsBase;
 
 public class Arm implements SubsystemBase {
 
@@ -75,6 +56,7 @@ public enum ArmCommanded{
   trap,
   trap2,
   handoff,
+  hailMary,
   trapZero,
   zero,
   auton,
@@ -224,6 +206,9 @@ public Arm(RobotState robotState) {
         commandedPosition = constants.HANDOFF/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
         }
+      } else if (commander.armCommanded() == ArmCommanded.hailMary){
+        commandedPosition = constants.HAILMARY/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
         commandedPosition = (constants.PROTECT + 1.5)/360.0; // commandedPosition = 120.25/360.0
