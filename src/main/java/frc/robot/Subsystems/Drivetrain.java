@@ -172,10 +172,17 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void autoXControl(double[] drivePercents, double xPose, Rotation2d targetTheta) {
-        setControl(fieldCentric.withVelocityX(xController.calculate(currentState.Pose.getX(), xPose))
+        if (!(xController.atSetpoint() && thetaController.atSetpoint())) {
+            setControl(fieldCentric.withVelocityX(xController.calculate(currentState.Pose.getX(), xPose))
                                 .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                                 .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
                                             targetTheta.getRadians())));
+        } else {
+            setControl(fieldCentric.withVelocityX(0)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(0));
+        }
+        
     }
 
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
@@ -311,7 +318,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
          //15.15);
 
         // sets boolean tolerances for auton refrence poses
-        driveController.setTolerance(commander.getRefrenceTolerances());
+        xController.setTolerance(.03);
+        thetaController.setTolerance(Units.degreesToRadians(5));
 
         SmartDashboard.putData("Desired Field", desiredField);
     }
