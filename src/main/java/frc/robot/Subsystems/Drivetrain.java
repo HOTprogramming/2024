@@ -383,7 +383,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             if (robotState.getAlliance() == Alliance.Red) {
                 autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
             } else {
-                autoXControl(commander.getDrivePercentCommand(), 2, Rotation2d.fromDegrees(-90)); // 1.84
+                autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
             } 
         }
 
