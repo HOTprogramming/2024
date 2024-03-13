@@ -312,7 +312,7 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getLockAmpCommand() {
-        return driver.getLeftBumper();
+        return driver.getXButton();
     }
 
 }

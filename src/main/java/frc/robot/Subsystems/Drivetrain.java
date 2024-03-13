@@ -172,12 +172,19 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     private void autoXControl(double[] drivePercents, double xPose, Rotation2d targetTheta) {
-        if (!(xController.atSetpoint() && thetaController.atSetpoint())) {
+        SmartDashboard.putBoolean("xatSet", xController.atSetpoint());
+        SmartDashboard.putBoolean("tatSet", thetaController.atSetpoint());
+
+
+        if (!xController.atSetpoint() || !thetaController.atSetpoint()) {
             setControl(fieldCentric.withVelocityX(xController.calculate(currentState.Pose.getX(), xPose))
                                 .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                                 .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
                                             targetTheta.getRadians())));
         } else {
+            thetaController.calculate(currentState.Pose.getRotation().getRadians());
+            xController.calculate(currentState.Pose.getX());
+
             setControl(fieldCentric.withVelocityX(0)
                                     .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                                     .withRotationalRate(0));
@@ -318,8 +325,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
          //15.15);
 
         // sets boolean tolerances for auton refrence poses
-        xController.setTolerance(.03);
-        thetaController.setTolerance(Units.degreesToRadians(5));
+        xController.setTolerance(.01);
+        thetaController.setTolerance(Units.degreesToRadians(2));
 
         SmartDashboard.putData("Desired Field", desiredField);
     }
@@ -376,7 +383,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             if (robotState.getAlliance() == Alliance.Red) {
                 autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
             } else {
-                autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
+                autoXControl(commander.getDrivePercentCommand(), 2, Rotation2d.fromDegrees(-90)); // 1.84
             } 
         }
 
