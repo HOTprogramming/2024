@@ -59,8 +59,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     RobotController.setBrownoutVoltage(5.5);
-    //DataLogManager.start();
-    //DriverStation.startDataLog(DataLogManager.getLog());
+    DataLogManager.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
     
 
     constantsBase = new ConstantsBase();
@@ -123,7 +123,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     shooter = new Shooter(robotState, 60, 60);
     robotState.setAlliance(DriverStation.getAlliance().get());
-    // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
     // if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
@@ -138,7 +137,7 @@ public class Robot extends TimedRobot {
 
     //autonCommander.setAuto(andysAuton);
     // autonCommander.setAuto(ampSideBlue);
-    autonCommander.setAuto(blueOppositeAmp);
+    autonCommander.setAuto(ampSideBlue);
 
     drivetrain.init(autonCommander);
     shooter.reset();

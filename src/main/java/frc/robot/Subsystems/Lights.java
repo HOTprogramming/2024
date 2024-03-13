@@ -75,22 +75,26 @@ public class Lights implements SubsystemBase {
     @Override
     public void teleop(RobotCommander commander){
         if (robotState.getBeamBreak()) {
-            candleLeft.setLEDs(255, 165, 0, 0, 0,8);  // orange
-            candleLeft.setLEDs(255, 165, 0, 0, 10 ,16);  // orange
-            candleRight.setLEDs(255, 165, 0, 0, 0,8);  // orange
-            candleLeft.setLEDs(255, 165, 0, 0, 10 ,21);  // orange
+            candleLeft.setLEDs(255, 165, 0, 0, 1,6);  // orange
+            candleLeft.setLEDs(255, 165, 0, 0, 11 ,16);  // orange
+            candleRight.setLEDs(255, 165, 0, 0, 1,6);  // orange
+            candleRight.setLEDs(255, 165, 0, 0, 11 ,20);  // orange
         } 
         else {
-            candleLeft.setLEDs(0, 0, 0, 0, 0,8);  // off
-            candleLeft.setLEDs(0, 0, 0, 0, 10 ,16);  // off
-            candleRight.setLEDs(0, 0, 0, 0, 0,8);  // off
-            candleLeft.setLEDs(0, 0, 0, 0, 10 ,21);  // off
+            candleLeft.setLEDs(0, 0, 0, 0, 1,6);  // off
+            candleLeft.setLEDs(0, 0, 0, 0, 11 ,16);  // off
+            candleRight.setLEDs(0, 0, 0, 0, 1,6);  // off
+            candleRight.setLEDs(0, 0, 0, 0, 11 ,20);  // off
         }
         
         setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.FRONT,candleLeft,8,3);
         setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.FRONT,candleLeft,27,3);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.RIGHT,candleLeft,0,1);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.RIGHT,candleLeft,7,1);
         setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.BACK,candleRight,8,3);
-        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.BACK,candleRight,32,3);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.BACK,candleRight,31,3);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.LEFT,candleRight,0,1);
+        setCameraLEDR(robotState.getTargetsSeenByCamera(),CameraPositions.LEFT,candleRight,7,1);
     }
     
     @Override

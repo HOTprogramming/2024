@@ -16,21 +16,25 @@ public class ShotMap {
     private double redDistance3;
     private double redDistance4;
     private double redDistance5;
+    private double redDistance6;
     private double redAngle1;
     private double redAngle2;
     private double redAngle3;
     private double redAngle4;
     private double redAngle5;
+    private double redAngle6;
     private double blueDistance1;
     private double blueDistance2;
     private double blueDistance3;
     private double blueDistance4;
     private double blueDistance5;
+    private double blueDistance6;
     private double blueAngle1;
     private double blueAngle2;
     private double blueAngle3;
     private double blueAngle4;
     private double blueAngle5;
+    private double blueAngle6;
     private double xPos;
     private double angleX;
     private double angleX2;
@@ -51,21 +55,25 @@ public class ShotMap {
         redDistance3 = constants.REDDISTANCE3;
         redDistance4 = constants.REDDISTANCE4;
         redDistance5 = constants.REDDISTANCE5;
+        redDistance6 = constants.REDDISTANCE6;
         redAngle1 = constants.REDANGLE1;//-1
         redAngle2 = constants.REDANGLE2;
         redAngle3 = constants.REDANGLE3;
         redAngle4 = constants.REDANGLE4;
         redAngle5 = constants.REDANGLE5;
+        redAngle6 = constants.REDANGLE6;
         blueDistance1 = constants.BLUEDISTANCE1;
         blueDistance2 = constants.BLUEDISTANCE2;
         blueDistance3 = constants.BLUEDISTANCE3;
         blueDistance4 = constants.BLUEDISTANCE4;
         blueDistance5 = constants.BLUEDISTANCE5;
+        blueDistance6 = constants.BLUEDISTANCE6;
         blueAngle1 = constants.BLUEANGLE1;//-1
         blueAngle2 = constants.BLUEANGLE2;
         blueAngle3 = constants.BLUEANGLE3;
         blueAngle4 = constants.BLUEANGLE4;
         blueAngle5 = constants.BLUEANGLE5;
+        blueAngle6 = constants.BLUEANGLE6;
     }
 
     public double getVelocity(){
@@ -110,8 +118,11 @@ public class ShotMap {
             else if(xPos>=blueDistance4 && xPos<blueDistance5){
                 angleX2 = this.calculateSlope(blueAngle5, blueAngle4, blueDistance5, blueDistance4, xPos);
             } 
+            else if(xPos>=blueDistance5 && xPos<blueDistance6){
+                angleX2 = this.calculateSlope(blueAngle6, blueAngle5, blueDistance6, blueDistance5, xPos);
+            } 
             else {
-                angleX2 = blueDistance5;
+                angleX2 = blueDistance6;
                 SmartDashboard.putNumber("Outside", angleX2);
             }
         } else {
@@ -129,9 +140,12 @@ public class ShotMap {
             }
             else if(xPos>=redDistance4 && xPos<redDistance5){
                 angleX2 = this.calculateSlope(redAngle5, redAngle4, redDistance5, redDistance4, xPos);
+            }
+            else if(xPos>=redDistance5 && xPos<redDistance6){
+                angleX2 = this.calculateSlope(redAngle6, redAngle5, redDistance6, redDistance5, xPos);
             } 
             else {
-                angleX2 = redDistance5;
+                angleX2 = redDistance6;
                 SmartDashboard.putNumber("Outside", angleX2);
             }
         }

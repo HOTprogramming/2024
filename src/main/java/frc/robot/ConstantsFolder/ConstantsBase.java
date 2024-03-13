@@ -347,21 +347,25 @@ public class ConstantsBase {
         public double BLUEDISTANCE3 = 4;
         public double BLUEDISTANCE4 = 5.3;
         public double BLUEDISTANCE5 = 6.5;
+        public double BLUEDISTANCE6 = 8.8;
         public double BLUEANGLE1 = 151;
         public double BLUEANGLE2 = 134;
         public double BLUEANGLE3 = 124;
         public double BLUEANGLE4 = 119;
         public double BLUEANGLE5 = 118;
+        public double BLUEANGLE6 = 117;
         public double REDDISTANCE1 = 1.16;
         public double REDDISTANCE2 = 2.5;
         public double REDDISTANCE3 = 4;
         public double REDDISTANCE4 = 5.3;
         public double REDDISTANCE5 = 6.5;
+        public double REDDISTANCE6 = 8.8;
         public double REDANGLE1 = 151;
         public double REDANGLE2 = 134;
         public double REDANGLE3 = 124;
         public double REDANGLE4 = 119;
         public double REDANGLE5 = 118;
+        public double REDANGLE6 = 117;
     }
 
     public abstract class Extension{
