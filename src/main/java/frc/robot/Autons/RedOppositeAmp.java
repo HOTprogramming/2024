@@ -39,11 +39,11 @@ public class RedOppositeAmp extends AutonBase {
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.3, 1.00, Rotation2d.fromDegrees(180));//
-    Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-135));//heading 57 deg
+    Pose2d ring1 = new Pose2d(8.3, .6, Rotation2d.fromDegrees(180));//
+    Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-137.5));//heading 57 deg
     Pose2d ring2Intermediary = new Pose2d(11.0, 2.1, Rotation2d.fromDegrees(173));//heading 57 deg
     Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(150));//heading 85 deg
-    Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-135));
+    Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-137.5));
 
     //these aren't updated to correct red side positions.
     Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
@@ -56,7 +56,7 @@ public class RedOppositeAmp extends AutonBase {
         if(step == Step.start){
             driving = false;
             swerveBrake = true; 
-            armCommand = ArmCommanded.shotMap;
+            armCommand = ArmCommanded.preload;
 
             if(timer.get() > 0.85 && timer.get() < 1.15){
                 runShooter = true;
@@ -79,6 +79,10 @@ public class RedOppositeAmp extends AutonBase {
             driving = true;
             swerveBrake = false;
             runShooter = false;
+
+            if(timer.get() > 1){
+                armCommand = ArmCommanded.shotMap;
+            }
 
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 trajectoryConfig = new TrajectoryConfig(6, 3);

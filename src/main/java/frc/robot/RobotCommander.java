@@ -59,4 +59,5 @@ public interface RobotCommander {
     public abstract boolean climberOverride();
     public abstract boolean intakeOut();
     public abstract boolean getLockParallel();
+    public abstract boolean getLockAmpCommand();
 }

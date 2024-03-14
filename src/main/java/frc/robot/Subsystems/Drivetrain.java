@@ -171,6 +171,27 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     }
 
+    private void autoXControl(double[] drivePercents, double xPose, Rotation2d targetTheta) {
+        SmartDashboard.putBoolean("xatSet", xController.atSetpoint());
+        SmartDashboard.putBoolean("tatSet", thetaController.atSetpoint());
+
+
+        if (!xController.atSetpoint() || !thetaController.atSetpoint()) {
+            setControl(fieldCentric.withVelocityX(xController.calculate(currentState.Pose.getX(), xPose))
+                                .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        } else {
+            thetaController.calculate(currentState.Pose.getRotation().getRadians());
+            xController.calculate(currentState.Pose.getX());
+
+            setControl(fieldCentric.withVelocityX(0)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(0));
+        }
+        
+    }
+
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
         SmartDashboard.putBoolean("Step_Actuallydriving", false);
 
@@ -304,7 +325,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
          //15.15);
 
         // sets boolean tolerances for auton refrence poses
-        driveController.setTolerance(commander.getRefrenceTolerances());
+        xController.setTolerance(.01);
+        thetaController.setTolerance(Units.degreesToRadians(2));
 
         SmartDashboard.putData("Desired Field", desiredField);
     }
@@ -356,6 +378,15 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         //     autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
         // }
 
+        if (commander.getLockAmpCommand()) {
+            cachedRotation = currentState.Pose.getRotation();
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
+            } else {
+                autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
+            } 
+        }
+
         if (commander.getLockSpeakerCommand()) {
             cachedRotation = currentState.Pose.getRotation();
             if (robotState.getAlliance() == Alliance.Red) {
@@ -364,6 +395,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
             } 
         }
+
 
         // if (commander.getLockRingCommand()) {
         //     autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getVisionRingTranslation), true);

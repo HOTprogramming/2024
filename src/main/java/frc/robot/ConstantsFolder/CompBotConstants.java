@@ -265,11 +265,11 @@ public class CompBotConstants extends ConstantsBase {
         public Arm(){
             CANCODER_CAN = 44;
             ARM_CAN = 9;
-            CRUISEVELOCITY = 500;
-            ACCELERATION = 420;//350
+            CRUISEVELOCITY = 600; // 800
+            ACCELERATION = 350;//420
             JERK = 1000;
-            ARMKP = 200;
-            ARMKI = 20;
+            ARMKP = 320;
+            ARMKI = 0;
             ARMKD = 0;//4
             ARMKV = 0.8;
             ARMKS = 0.4;
@@ -278,31 +278,39 @@ public class CompBotConstants extends ConstantsBase {
             TRAP = 141.0;
             CLOSE = 150.0;
             PROTECT = 125.25;
-            AMP = 133.3; //was 140.3;
+            AMP = 139.992; //was 140.3;
             HANDOFF = 168;
-            ARMOFFSET = -0.4895;
+
+            ARMOFFSET = -321.684 / 360.0; //-0.4895 rotations, now degrees 
             
+
             BLUEDISTANCE1 = 1.21; // 0 in
             BLUEDISTANCE2 = 2.3; // 43 in 
             BLUEDISTANCE3 = 3.5; // 93 in 
             BLUEDISTANCE4 = 4.88; // 148 in 
-            BLUEDISTANCE5 = 6.25; // 195 in at 6.1
-            BLUEANGLE1 = 150.0;
-            BLUEANGLE2 = 134.1;
-            BLUEANGLE3 = 126.5;
-            BLUEANGLE4 = 122.0;   
-            BLUEANGLE5 = 120.0;
-
-            REDDISTANCE1 = 1.16;
-            REDDISTANCE2 = 2.5;
-            REDDISTANCE3 = 4;
-            REDDISTANCE4 = 5.3;
-            REDDISTANCE5 = 6.5;
-            REDANGLE1 = 149.3;
-            REDANGLE2 = 129.0;
-            REDANGLE3 = 119.0;
-            REDANGLE4 = 116.0;   
-            REDANGLE5 = 115.2;
+            BLUEDISTANCE5 = 6.25; // 17ft
+            BLUEDISTANCE6 = 8.2;//23ft 1in
+            BLUEANGLE1 = 148.0;
+            BLUEANGLE2 = 133.4;
+            BLUEANGLE3 = 125.5;
+            BLUEANGLE4 = 121.0;   
+            BLUEANGLE5 = 119.9;
+            BLUEANGLE6 = 117.8;
+            
+            
+            
+            REDDISTANCE1 = 1.21; // 0 in6;
+            REDDISTANCE2 = 2.3; // 43 in;
+            REDDISTANCE3 = 3.5; // 93 in  
+            REDDISTANCE4 = 4.88; // 148 ;
+            REDDISTANCE5 = 6.25; // 17ft;
+            REDDISTANCE6 = 8.2;//23ft 1i;
+            REDANGLE1 = 148.0;
+            REDANGLE2 = 133.4;
+            REDANGLE3 = 125.5;
+            REDANGLE4 = 121.0;   
+            REDANGLE5 = 119.9;
+            REDANGLE6 = 117.8;
         }
     }
 
@@ -311,7 +319,7 @@ public class CompBotConstants extends ConstantsBase {
             ECRUISEVELOCITY = 15;
             EACCELERATION = 15;
             EJERK = 50;
-            EKP = 30;
+            EKP = 80;
             EKI = 0.5;
             EKD = 0;
             EKV = 0.12;

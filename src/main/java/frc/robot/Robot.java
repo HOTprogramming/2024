@@ -50,8 +50,9 @@ public class Robot extends TimedRobot {
   private Center4NoteBlue center4NoteBlue;
   private Right4NoteBlue right4NoteBlue;
   private AndysAuton andysAuton;
-  private BlueOppositeAmp blueOppositeAmp;
   private AmpSideBlue ampSideBlue;
+  private AmpSideRed ampSideRed;
+  private BlueOppositeAmp blueOppositeAmp;
   private RedOppositeAmp redOppositeAmp;
 
   // creates autonSelector
@@ -60,8 +61,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     RobotController.setBrownoutVoltage(5.5);
-    //DataLogManager.start();
-    //DriverStation.startDataLog(DataLogManager.getLog());
+    DataLogManager.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
     
 
     constantsBase = new ConstantsBase();
@@ -88,6 +89,7 @@ public class Robot extends TimedRobot {
     right4NoteBlue = new Right4NoteBlue(robotState);
     andysAuton = new AndysAuton(robotState);
     ampSideBlue = new AmpSideBlue(robotState);
+    ampSideRed = new AmpSideRed(robotState);
     blueOppositeAmp = new BlueOppositeAmp(robotState);
     redOppositeAmp = new RedOppositeAmp(robotState);
 
@@ -125,7 +127,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     shooter = new Shooter(robotState, 60, 60);
     robotState.setAlliance(DriverStation.getAlliance().get());
-    // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
 
     // if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
@@ -139,8 +140,8 @@ public class Robot extends TimedRobot {
     // }
 
     //autonCommander.setAuto(andysAuton);
-    //autonCommander.setAuto(ampSideBlue);
-    //autonCommander.setAuto(blueOppositeAmp);
+    // autonCommander.setAuto(ampSideBlue);
+    // autonCommander.setAuto(ampSideRed);
     autonCommander.setAuto(redOppositeAmp);
 
     drivetrain.init(autonCommander);
@@ -193,8 +194,7 @@ public class Robot extends TimedRobot {
     arm.teleop(teleopCommander);
     intake.teleop(teleopCommander);
     feeder.teleop(teleopCommander);
-    // lights.teleop(teleopCommander);
-    lights.cameraLights();
+    lights.teleop(teleopCommander);
     climber.teleop(teleopCommander);
     extension.teleop(teleopCommander);
   }
