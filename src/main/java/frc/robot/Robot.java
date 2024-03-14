@@ -96,6 +96,14 @@ public class Robot extends TimedRobot {
 
     newAuto = new NewAuto(robotState);
 
+    noteSelector.setDefaultOption("1 then 2", "12");
+    noteSelector.setDefaultOption("2 then 1", "21");
+
+      Shuffleboard.getTab("Competition")
+      .add("Note Selector", noteSelector)
+      .withWidget(BuiltInWidgets.kComboBoxChooser)
+      .withSize(2, 2);
+
     autoSelector.setDefaultOption("Center", "center");
     autoSelector.addOption("Amp", "amp");
     autoSelector.addOption("Source", "source");
@@ -105,8 +113,7 @@ public class Robot extends TimedRobot {
       .withWidget(BuiltInWidgets.kComboBoxChooser)
       .withSize(2, 2);
 
-    noteSelector.setDefaultOption("1 then 2", "12");
-    noteSelector.setDefaultOption("2 then 1", "21");
+
 
     arm.armInit();
     extension.extensionInit();
