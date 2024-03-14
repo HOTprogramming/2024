@@ -319,7 +319,7 @@ public class CompBotConstants extends ConstantsBase {
             ECRUISEVELOCITY = 15;
             EACCELERATION = 15;
             EJERK = 50;
-            EKP = 30;
+            EKP = 80;
             EKI = 0.5;
             EKD = 0;
             EKV = 0.12;
