@@ -215,8 +215,13 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){
-        commandedPosition = 143/360.0;
-        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        // commandedPosition = 143/360.0;
+        // armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        commandedPosition = shotMap.calcShotMap();
+        SmartDashboard.putNumber("Arm_ShotmapPose", commandedPosition);
+        if(commandedPosition >= 95.0){
+        armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
+        }
       }
       else{
         armMotor.setVoltage(0);
