@@ -31,7 +31,7 @@ public class AmpSideRed extends AutonBase {
 
 
     Pose2d start = new Pose2d(14.966, 6.109, Rotation2d.fromDegrees(172));
-    Pose2d ring1 = new Pose2d(8.34, 7.13, Rotation2d.fromDegrees(180));
+    Pose2d ring1 = new Pose2d(8.34, 7.06, Rotation2d.fromDegrees(180));
     Pose2d midShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
     Pose2d ring2 = new Pose2d(8.24, 5.62, Rotation2d.fromDegrees(194));
     Pose2d almostBetweenRings = new Pose2d(12.54, 6.109, Rotation2d.fromDegrees(180));
@@ -79,10 +79,10 @@ public class AmpSideRed extends AutonBase {
             armCommand = ArmCommanded.shotMap;
 
             robotState.setAutonHintXPos(4);
-            if (timer.get() > 2) {
+            if (timer.get() > 1) {
                 runShooter = false;
 
-            } else if (timer.get() > 1.5) {
+            } else if (timer.get() > 0.5) {
                 runShooter = true;
                 runIntake = true;
             }
