@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
+  private final SendableChooser<String> noteSelector = new SendableChooser<>();
 
   @Override
   public void robotInit() {
@@ -97,13 +98,15 @@ public class Robot extends TimedRobot {
 
     autoSelector.setDefaultOption("Center", "center");
     autoSelector.addOption("Amp", "amp");
-
+    autoSelector.addOption("Source", "source");
 
       Shuffleboard.getTab("Competition")
       .add("Auto Selector", autoSelector)
       .withWidget(BuiltInWidgets.kComboBoxChooser)
       .withSize(2, 2);
 
+    noteSelector.setDefaultOption("1 then 2", "12");
+    noteSelector.setDefaultOption("2 then 1", "21");
 
     arm.armInit();
     extension.extensionInit();
@@ -128,21 +131,24 @@ public class Robot extends TimedRobot {
     shooter = new Shooter(robotState, 60, 60);
     robotState.setAlliance(DriverStation.getAlliance().get());
     String selectedAuto = autoSelector.getSelected();
+    
+    String selectedNote = noteSelector.getSelected();
 
-    // if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(right4NoteBlue);
-    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(center4NoteBlue);
-    // } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(right4Note);
-    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(center4Note);
-    // }
+    robotState.setOneNoteFirst(selectedNote.equals("12"));
 
-    //autonCommander.setAuto(andysAuton);
-    // autonCommander.setAuto(ampSideBlue);
-    // autonCommander.setAuto(ampSideRed);
-    autonCommander.setAuto(redOppositeAmp);
+    if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(ampSideBlue);
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(center4NoteBlue);
+    } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(ampSideRed);
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(center4Note);
+    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(redOppositeAmp);
+    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(blueOppositeAmp);
+    }
 
     drivetrain.init(autonCommander);
     shooter.reset();
