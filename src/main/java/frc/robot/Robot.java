@@ -25,7 +25,7 @@ import frc.robot.Subsystems.Climber;
 public class Robot extends TimedRobot {
   private ConstantsBase constantsBase;
   private RobotState robotState;
-
+  
   private TeleopCommander teleopCommander;
   private AutonCommander autonCommander;
 
@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
   private AmpSideRed ampSideRed;
   private BlueOppositeAmp blueOppositeAmp;
   private RedOppositeAmp redOppositeAmp;
+  private FourRedOppositeAmp fourRedOppositeAmp;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -92,6 +93,7 @@ public class Robot extends TimedRobot {
     ampSideRed = new AmpSideRed(robotState);
     blueOppositeAmp = new BlueOppositeAmp(robotState);
     redOppositeAmp = new RedOppositeAmp(robotState);
+    fourRedOppositeAmp = new FourRedOppositeAmp(robotState);
 
     newAuto = new NewAuto(robotState);
 
@@ -142,7 +144,8 @@ public class Robot extends TimedRobot {
     //autonCommander.setAuto(andysAuton);
     // autonCommander.setAuto(ampSideBlue);
     // autonCommander.setAuto(ampSideRed);
-    autonCommander.setAuto(redOppositeAmp);
+    //autonCommander.setAuto(redOppositeAmp);
+    autonCommander.setAuto(fourRedOppositeAmp);
 
     drivetrain.init(autonCommander);
     shooter.reset();

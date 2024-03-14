@@ -14,7 +14,7 @@ import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.Waypoint;
 
 //red auton
-public class RedOppositeAmp extends AutonBase {
+public class FourRedOppositeAmp extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -31,23 +31,24 @@ public class RedOppositeAmp extends AutonBase {
 
     public Step step = Step.start;   
 
-    public RedOppositeAmp(RobotState robotState) {
+    public FourRedOppositeAmp(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(15.49, 4.63, Rotation2d.fromDegrees(-110)); //15.15
+        startPose = new Pose2d(15.11, 3.3, Rotation2d.fromDegrees(-122)); //15.15
 
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.3, .6, Rotation2d.fromDegrees(180));//
-    Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-135));//heading 57 deg
+    Pose2d ring1 = new Pose2d(8.3, 0.6, Rotation2d.fromDegrees(180));//
+    Pose2d ring1Intermediary = new Pose2d(10.9, 0.92, Rotation2d.fromDegrees(180));//
+    Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-138));//heading 57 deg
     Pose2d ring2Intermediary = new Pose2d(11.0, 2.1, Rotation2d.fromDegrees(173));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(150));//heading 85 deg
-    Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-135));
+    Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(170));//heading 85 deg
+    Pose2d shoot2 = new Pose2d(14.8, 4.3, Rotation2d.fromDegrees(-138));
 
     //these aren't updated to correct red side positions.
-    Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
-    Pose2d ring3 = new Pose2d(2.67, 4.12, Rotation2d.fromDegrees(-25));
+    Pose2d ring3Intermediary = new Pose2d(14.5, 3.9, Rotation2d.fromDegrees(-170));
+    Pose2d ring3 = new Pose2d(14.1, 4.3, Rotation2d.fromDegrees(-150));
 
     @Override
     public void runAuto() {
@@ -56,18 +57,19 @@ public class RedOppositeAmp extends AutonBase {
         if(step == Step.start){
             driving = false;
             swerveBrake = true; 
-            armCommand = ArmCommanded.preload;
+            armCommand = ArmCommanded.shotMap;
 
-            if(timer.get() > 0.85 && timer.get() < 1.15){
+            if(timer.get() > 0.65 && timer.get() < 1){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
 
-            if (timer.get() >= 1.15){
+            if (timer.get() >= 1){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-110)),
+                        Waypoint.fromHolonomicPose(ring1Intermediary),
                         Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(180))));
                 runShooter = false;
                 timer.reset();  
@@ -126,9 +128,9 @@ public class RedOppositeAmp extends AutonBase {
             driving = true;
             runShooter = false;
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                trajectoryConfig = new TrajectoryConfig(5, 2.5);
+                trajectoryConfig = new TrajectoryConfig(6, 3);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-50)),
+                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-20)),
                             Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(30))));
                 timer.reset();    
                 step = Step.shot2;
@@ -154,12 +156,11 @@ public class RedOppositeAmp extends AutonBase {
             else {
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot2, Rotation2d.fromDegrees(180)),
-                        Waypoint.fromHolonomicPose(ring3Intermediary,Rotation2d.fromDegrees(0)),
-                        Waypoint.fromHolonomicPose(ring3,Rotation2d.fromDegrees(0))));
+                List.of(Waypoint.fromHolonomicPose(shoot2, Rotation2d.fromDegrees(160)),
+                        Waypoint.fromHolonomicPose(ring3)));
             timer.reset();    
             runShooter = false;
-            step = Step.end;
+            step = Step.ring3;
             }
 
 
