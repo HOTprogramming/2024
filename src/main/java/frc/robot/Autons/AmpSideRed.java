@@ -30,10 +30,11 @@ public class AmpSideRed extends AutonBase {
     boolean ring2First = false;
 
 
-    Pose2d start = new Pose2d(14.966, 6.109, Rotation2d.fromDegrees(172));
-    Pose2d ring1 = new Pose2d(8.34, 7.06, Rotation2d.fromDegrees(180));
+    Pose2d start = new Pose2d(15.164, 6.27, Rotation2d.fromDegrees(165));
+    Pose2d ring1 = new Pose2d(8.34, 6.96, Rotation2d.fromDegrees(180));
     Pose2d midShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
-    Pose2d ring2 = new Pose2d(8.24, 5.62, Rotation2d.fromDegrees(194));
+    Pose2d nextToStage = new Pose2d(10.9, 6.2, Rotation2d.fromDegrees(185));
+    Pose2d ring2 = new Pose2d(8.244, 5.30, Rotation2d.fromDegrees(210));
     Pose2d almostBetweenRings = new Pose2d(12.54, 6.109, Rotation2d.fromDegrees(180));
     Pose2d betweenRings = new Pose2d(13.61, 6.109, Rotation2d.fromDegrees(180));
     Pose2d closeShoot = new Pose2d(14.29, 6.3, Rotation2d.fromDegrees(165));
@@ -48,8 +49,10 @@ public class AmpSideRed extends AutonBase {
         trajectoryConfig = new TrajectoryConfig(6, 3.0);
         if (ring2First) {
             trajectoryGenerator.generate(trajectoryConfig, 
-                        List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(180)), 
-                                Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(194))));
+                        List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(180)),
+                                Waypoint.fromHolonomicPose(betweenRings),
+                                Waypoint.fromHolonomicPose(nextToStage), 
+                                Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(210))));
         } else {
             trajectoryGenerator.generate(trajectoryConfig, 
                         List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(180)), 
@@ -78,11 +81,11 @@ public class AmpSideRed extends AutonBase {
 
             armCommand = ArmCommanded.shotMap;
 
-            robotState.setAutonHintXPos(4);
-            if (timer.get() > 1) {
+            robotState.setAutonHintXPos(2.7);
+            if (timer.get() > 1.3) {
                 runShooter = false;
 
-            } else if (timer.get() > 0.5) {
+            } else if (timer.get() > 0.8) {
                 runShooter = true;
                 runIntake = true;
             }
@@ -92,7 +95,8 @@ public class AmpSideRed extends AutonBase {
                 // trajectoryConfig.setEndVelocity(0);
                 if (ring2First) {
                     trajectoryGenerator.generate(trajectoryConfig, 
-                            List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(20)), 
+                            List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(40)),
+                                    Waypoint.fromHolonomicPose(nextToStage),  
                                     Waypoint.fromHolonomicPose(midShoot)));
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig, 
@@ -129,7 +133,8 @@ public class AmpSideRed extends AutonBase {
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig,
                             List.of(Waypoint.fromHolonomicPose(midShoot),
-                                    Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(194))));
+                                    Waypoint.fromHolonomicPose(nextToStage), 
+                                    Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(210))));
 
                 }
                 
@@ -150,6 +155,7 @@ public class AmpSideRed extends AutonBase {
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig, List.of(
                                     Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(20)),
+                                    Waypoint.fromHolonomicPose(nextToStage), 
                                     Waypoint.fromHolonomicPose(almostBetweenRings),
                                     Waypoint.fromHolonomicPose(betweenRings),
                                     Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(0))));
