@@ -11,6 +11,7 @@ import frc.robot.RobotState;
 import frc.robot.ConstantsFolder.CompBotConstants.Intake;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.Waypoint;
+
 public class AmpSideBlue extends AutonBase {
     enum Step {
         toring1,
@@ -62,11 +63,7 @@ public class AmpSideBlue extends AutonBase {
         startPose = start; //15.15
         // trajectoryConfig.setEndVelocity(1.5);
         trajectoryConfig.setEndVelocity(1);
-
-        ring2First = !robotState.getOneNoteFirst();
-
         startTraj();
-
 
         driving = false;
         runIntake = false;
@@ -257,11 +254,7 @@ public class AmpSideBlue extends AutonBase {
         runIntake = false;
         runShooter = false;
         driving = false;
-
-        ring2First = !robotState.getOneNoteFirst();
-        
         startTraj();
-
 
         trajectoryConfig.setEndVelocity(1);
     }

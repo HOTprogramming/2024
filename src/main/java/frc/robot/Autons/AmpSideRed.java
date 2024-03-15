@@ -66,9 +66,6 @@ public class AmpSideRed extends AutonBase {
         startPose = start; //15.15
         // trajectoryConfig.setEndVelocity(1.5);
         trajectoryConfig.setEndVelocity(1);
-
-        ring2First = !robotState.getOneNoteFirst();
-
         startTraj();
 
         driving = false;
@@ -260,9 +257,6 @@ public class AmpSideRed extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.toring1;
-
-        ring2First = !robotState.getOneNoteFirst();
-
         startTraj();
 
         trajectoryConfig.setEndVelocity(1);
