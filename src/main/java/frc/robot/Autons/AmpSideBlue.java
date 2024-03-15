@@ -32,6 +32,7 @@ public class AmpSideBlue extends AutonBase {
     Pose2d start = new Pose2d(1.574, 6.109, Rotation2d.fromDegrees(8));
     Pose2d ring1 = new Pose2d(8.2, 7.13, Rotation2d.fromDegrees(0));
     Pose2d midShoot = new Pose2d(4.7, 6.3, Rotation2d.fromDegrees(10));
+    Pose2d nextToStage = new Pose2d(5.5, 6.2, Rotation2d.fromDegrees(-5));
     Pose2d ring2 = new Pose2d(8.3, 5.62, Rotation2d.fromDegrees(-14));
     Pose2d almostBetweenRings = new Pose2d(4, 6.109, Rotation2d.fromDegrees(0));
     Pose2d betweenRings = new Pose2d(2.93, 6.109, Rotation2d.fromDegrees(0));
@@ -48,6 +49,8 @@ public class AmpSideBlue extends AutonBase {
         if (ring2First) {
             trajectoryGenerator.generate(trajectoryConfig, 
                         List.of(Waypoint.fromHolonomicPose(start, Rotation2d.fromDegrees(0)), 
+                                Waypoint.fromHolonomicPose(betweenRings),
+                                Waypoint.fromHolonomicPose(nextToStage), 
                                 Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-14))));
         } else {
             trajectoryGenerator.generate(trajectoryConfig, 
@@ -95,7 +98,8 @@ public class AmpSideBlue extends AutonBase {
                 // trajectoryConfig.setEndVelocity(0);
                 if (ring2First) {
                     trajectoryGenerator.generate(trajectoryConfig, 
-                            List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(160)), 
+                            List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(140)), 
+                                    Waypoint.fromHolonomicPose(nextToStage),  
                                     Waypoint.fromHolonomicPose(midShoot)));
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig, 
@@ -132,6 +136,7 @@ public class AmpSideBlue extends AutonBase {
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig,
                             List.of(Waypoint.fromHolonomicPose(midShoot),
+                                    Waypoint.fromHolonomicPose(nextToStage), 
                                     Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(-14))));
 
                 }
@@ -153,6 +158,7 @@ public class AmpSideBlue extends AutonBase {
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig, List.of(
                                     Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(160)),
+                                    Waypoint.fromHolonomicPose(nextToStage), 
                                     Waypoint.fromHolonomicPose(almostBetweenRings),
                                     Waypoint.fromHolonomicPose(betweenRings),
                                     Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(-180))));
