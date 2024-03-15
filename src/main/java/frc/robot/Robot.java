@@ -55,6 +55,9 @@ public class Robot extends TimedRobot {
   private BlueOppositeAmp blueOppositeAmp;
   private RedOppositeAmp redOppositeAmp;
 
+  private FourRedOppositeAmp fourRedOppositeAmp;
+  private FourBlueOppositeAmp fourBlueOppositeAmp;
+
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
   private final SendableChooser<String> noteSelector = new SendableChooser<>();
@@ -93,6 +96,9 @@ public class Robot extends TimedRobot {
     ampSideRed = new AmpSideRed(robotState);
     blueOppositeAmp = new BlueOppositeAmp(robotState);
     redOppositeAmp = new RedOppositeAmp(robotState);
+    fourBlueOppositeAmp = new FourBlueOppositeAmp(robotState);
+    fourRedOppositeAmp = new FourRedOppositeAmp(robotState);
+    
 
     newAuto = new NewAuto(robotState);
 
@@ -106,7 +112,8 @@ public class Robot extends TimedRobot {
 
     autoSelector.setDefaultOption("Center", "center");
     autoSelector.addOption("Amp", "amp");
-    autoSelector.addOption("Source", "source");
+    autoSelector.addOption("Source 3", "source");
+    autoSelector.addOption("Source 4", "source4");
 
       Shuffleboard.getTab("Competition")
       .add("Auto Selector", autoSelector)
@@ -155,6 +162,10 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(redOppositeAmp);
     } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(blueOppositeAmp);
+    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(fourBlueOppositeAmp);
+    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(fourRedOppositeAmp);
     }
 
     drivetrain.init(autonCommander);
