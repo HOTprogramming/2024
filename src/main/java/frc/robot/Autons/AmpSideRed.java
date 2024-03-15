@@ -36,11 +36,11 @@ public class AmpSideRed extends AutonBase {
     Pose2d nextToStage = new Pose2d(10.9, 6.2, Rotation2d.fromDegrees(185));
     Pose2d ring2 = new Pose2d(8.244, 5.30, Rotation2d.fromDegrees(210));
     Pose2d almostBetweenRings = new Pose2d(12.54, 6.109, Rotation2d.fromDegrees(180));
-    Pose2d betweenRings = new Pose2d(13.61, 6.109, Rotation2d.fromDegrees(180));
+    Pose2d betweenRings = new Pose2d(13.61, 6.134, Rotation2d.fromDegrees(180));
     Pose2d closeShoot = new Pose2d(14.29, 6.3, Rotation2d.fromDegrees(165));
     Pose2d ring3 = new Pose2d(13.57, 7.06, Rotation2d.fromDegrees(152));
     Pose2d backRing4 = new Pose2d(14.24, 5.8, Rotation2d.fromDegrees(180));
-    Pose2d ring4 = new Pose2d(13.54, 5.50, Rotation2d.fromDegrees(185));
+    Pose2d ring4 = new Pose2d(13.54, 5.50, Rotation2d.fromDegrees(182));
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(6, 3.0);
 
@@ -66,6 +66,9 @@ public class AmpSideRed extends AutonBase {
         startPose = start; //15.15
         // trajectoryConfig.setEndVelocity(1.5);
         trajectoryConfig.setEndVelocity(1);
+
+        ring2First = !robotState.getOneNoteFirst();
+
         startTraj();
 
         driving = false;
@@ -257,6 +260,9 @@ public class AmpSideRed extends AutonBase {
         super.reset();
         swerveBrake = false;
         step = Step.toring1;
+
+        ring2First = !robotState.getOneNoteFirst();
+
         startTraj();
 
         trajectoryConfig.setEndVelocity(1);

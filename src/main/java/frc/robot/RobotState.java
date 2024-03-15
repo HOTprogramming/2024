@@ -47,6 +47,7 @@ public class RobotState {
     private boolean oneTag;
     private boolean noTag;
     private double autonHintXPos;
+    private boolean oneFirst;
  
     private boolean feederStop = false;
     private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
@@ -253,6 +254,14 @@ public class RobotState {
     
     public Map<CameraPositions, List<PhotonTrackedTarget>> getTargetsSeenByCamera() {
         return targetsSeenByCamera;
+    }
+
+    public void setOneNoteFirst(boolean oneFirst){
+        this.oneFirst = oneFirst;
+    }
+
+    public boolean getOneNoteFirst(){
+        return oneFirst;
     }
 
 }
