@@ -31,16 +31,16 @@ public class AmpSideBlue extends AutonBase {
     boolean ring2First = false;
 
     Pose2d start = new Pose2d(1.574, 6.109, Rotation2d.fromDegrees(8));
-    Pose2d ring1 = new Pose2d(8.2, 7.13, Rotation2d.fromDegrees(0));
+    Pose2d ring1 = new Pose2d(8.2, 7.23, Rotation2d.fromDegrees(0));
     Pose2d midShoot = new Pose2d(4.7, 6.3, Rotation2d.fromDegrees(10));
-    Pose2d nextToStage = new Pose2d(5.5, 6.2, Rotation2d.fromDegrees(-5));
-    Pose2d ring2 = new Pose2d(8.3, 5.62, Rotation2d.fromDegrees(-14));
-    Pose2d almostBetweenRings = new Pose2d(4, 6.109, Rotation2d.fromDegrees(0));
-    Pose2d betweenRings = new Pose2d(2.93, 6.109, Rotation2d.fromDegrees(0));
+    Pose2d nextToStage = new Pose2d(5.5, 6.8, Rotation2d.fromDegrees(-5));
+    Pose2d ring2 = new Pose2d(8.32, 5.71, Rotation2d.fromDegrees(-14));
+    Pose2d almostBetweenRings = new Pose2d(4, 6.30, Rotation2d.fromDegrees(0));
+    Pose2d betweenRings = new Pose2d(2.93, 6.30, Rotation2d.fromDegrees(0));
     Pose2d closeShoot = new Pose2d(2.25, 6.3, Rotation2d.fromDegrees(15));
-    Pose2d ring3 = new Pose2d(2.97, 7.06, Rotation2d.fromDegrees(28));
+    Pose2d ring3 = new Pose2d(2.87, 6.98, Rotation2d.fromDegrees(28));
     Pose2d backRing4 = new Pose2d(2.3, 5.8, Rotation2d.fromDegrees(0));
-    Pose2d ring4 = new Pose2d(3.0, 5.50, Rotation2d.fromDegrees(-5));
+    Pose2d ring4 = new Pose2d(2.87, 5.62, Rotation2d.fromDegrees(-5));
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(6, 3.0);
 
