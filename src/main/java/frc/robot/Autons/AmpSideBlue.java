@@ -106,7 +106,7 @@ public class AmpSideBlue extends AutonBase {
                                     Waypoint.fromHolonomicPose(midShoot)));
                 }
                 
-                robotState.setAutonHintXPos(calculateArmHint(midShoot)+.2);
+                robotState.setAutonHintXPos(calculateArmHint(midShoot));
                 timer.reset();
                 step = Step.toshoot1;
             }
