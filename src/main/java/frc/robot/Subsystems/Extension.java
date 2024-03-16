@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -41,7 +42,7 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
-double fullyExtended = 2.17;
+double fullyExtended = 2.16;
 double fullyExtendedAmp = 1.08;
 double middlePoint = 0.6;
 double extensionZero = 0;
@@ -118,6 +119,13 @@ public Extension(RobotState robotState) {
     eSlot0.kV = constants.EKV;
     eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
+    Slot1Configs eSlot1 = ecfg.Slot1;
+    eSlot1.kP = 45;
+    eSlot1.kI = 0.5;
+    eSlot1.kD = 0;
+    eSlot1.kV = 0.12;
+    eSlot1.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
     ecfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -145,6 +153,8 @@ public Extension(RobotState robotState) {
 
         robotState.setExtendPos(extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionPos", extendPosition.getValueAsDouble());
+        SmartDashboard.putNumber("extensionzero", 0);
+        SmartDashboard.putNumber("extensiontrap", fullyExtended);
         SmartDashboard.putString("extensionenum", getExtensionPhaseTrap().toString());
     }
 
@@ -252,11 +262,11 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
 
-            if(extendPosition.getValueAsDouble() > 0.2)
-            extendMotor.setControl(extendMagic.withPosition(0.19).withSlot(0));
+            if(extendPosition.getValueAsDouble() > 0.16)
+            extendMotor.setControl(extendMagic.withPosition(0.15).withSlot(0));
 
             else{
-            extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));    
+            extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(1));    
             }
 
             if (!commander.getIntake()) {
