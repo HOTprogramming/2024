@@ -39,7 +39,7 @@ public class AmpSideBlue extends AutonBase {
     Pose2d betweenRings = new Pose2d(2.93, 6.30, Rotation2d.fromDegrees(0));
     Pose2d closeShoot = new Pose2d(2.25, 6.3, Rotation2d.fromDegrees(15));
     Pose2d ring3 = new Pose2d(2.87, 6.98, Rotation2d.fromDegrees(28));
-    Pose2d backRing4 = new Pose2d(2.3, 5.8, Rotation2d.fromDegrees(0));
+    Pose2d backRing4 = new Pose2d(2.1, 5.8, Rotation2d.fromDegrees(0));
     Pose2d ring4 = new Pose2d(2.87, 5.62, Rotation2d.fromDegrees(-5));
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(6, 3.0);
@@ -66,6 +66,8 @@ public class AmpSideBlue extends AutonBase {
         startPose = start; //15.15
         // trajectoryConfig.setEndVelocity(1.5);
         trajectoryConfig.setEndVelocity(1);
+        ring2First = !robotState.getOneNoteFirst();
+
         startTraj();
 
         driving = false;
@@ -260,6 +262,8 @@ public class AmpSideBlue extends AutonBase {
         runIntake = false;
         runShooter = false;
         driving = false;
+        ring2First = !robotState.getOneNoteFirst();
+
         startTraj();
 
         trajectoryConfig.setEndVelocity(1);

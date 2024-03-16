@@ -43,7 +43,7 @@ public class FourRedOppositeAmp extends AutonBase {
     Pose2d ring1Intermediary = new Pose2d(10.9, 0.92, Rotation2d.fromDegrees(180));//
     Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-138));//heading 57 deg
     Pose2d ring2Intermediary = new Pose2d(11.0, 1.8, Rotation2d.fromDegrees(173));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.3, 2.00, Rotation2d.fromDegrees(170));//heading 85 deg
+    Pose2d ring2 = new Pose2d(8.3, 2.8, Rotation2d.fromDegrees(170));//heading 85 deg
     Pose2d shoot2 = new Pose2d(14.8, 4.3, Rotation2d.fromDegrees(-138));
 
     Pose2d ring3Intermediary = new Pose2d(14.5, 3.9, Rotation2d.fromDegrees(-170));
@@ -58,13 +58,13 @@ public class FourRedOppositeAmp extends AutonBase {
             swerveBrake = true; 
             armCommand = ArmCommanded.shotMap;
 
-            if(timer.get() > 0.65 && timer.get() < 1){
+            if(timer.get() > 0.75 && timer.get() < 1.1){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
 
-            if (timer.get() >= 1){
+            if (timer.get() >= 1.1){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-110)),
