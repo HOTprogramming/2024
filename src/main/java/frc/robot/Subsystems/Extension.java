@@ -120,8 +120,8 @@ public Extension(RobotState robotState) {
     eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
     Slot1Configs eSlot1 = ecfg.Slot1;
-    eSlot1.kP = 30;
-    eSlot1.kI = 5;//0.5
+    eSlot1.kP = 45;
+    eSlot1.kI = 0.5;
     eSlot1.kD = 0;
     eSlot1.kV = 0.12;
     eSlot1.kS = 0.25; // Approximately 0.25V to get the mechanism moving
@@ -261,8 +261,8 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
 
-            if(extendPosition.getValueAsDouble() > 0.2)
-            extendMotor.setControl(extendMagic.withPosition(0.19).withSlot(0));
+            if(extendPosition.getValueAsDouble() > 0.17)
+            extendMotor.setControl(extendMagic.withPosition(0.16).withSlot(0));
 
             else{
             extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(1));    

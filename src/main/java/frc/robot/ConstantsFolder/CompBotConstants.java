@@ -323,7 +323,7 @@ public class CompBotConstants extends ConstantsBase {
 
     public class Extension extends ConstantsBase.Extension{
         public Extension(){
-            ECRUISEVELOCITY = 15;
+            ECRUISEVELOCITY = 25;
             EACCELERATION = 15;
             EJERK = 50;
             EKP = 80;
