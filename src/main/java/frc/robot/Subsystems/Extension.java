@@ -42,7 +42,7 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
-double fullyExtended = 2.17;
+double fullyExtended = 2.16;
 double fullyExtendedAmp = 1.08;
 double middlePoint = 0.6;
 double extensionZero = 0;
@@ -154,6 +154,7 @@ public Extension(RobotState robotState) {
         robotState.setExtendPos(extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionPos", extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionzero", 0);
+        SmartDashboard.putNumber("extensiontrap", fullyExtended);
         SmartDashboard.putString("extensionenum", getExtensionPhaseTrap().toString());
     }
 
@@ -261,8 +262,8 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
 
-            if(extendPosition.getValueAsDouble() > 0.17)
-            extendMotor.setControl(extendMagic.withPosition(0.16).withSlot(0));
+            if(extendPosition.getValueAsDouble() > 0.16)
+            extendMotor.setControl(extendMagic.withPosition(0.15).withSlot(0));
 
             else{
             extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(1));    
