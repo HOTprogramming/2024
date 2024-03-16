@@ -60,4 +60,5 @@ public interface RobotCommander {
     public abstract boolean intakeOut();
     public abstract boolean getLockParallel();
     public abstract boolean getLockAmpCommand();
+    public abstract void driverRumble();
 }

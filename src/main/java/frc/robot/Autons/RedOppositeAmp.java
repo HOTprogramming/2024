@@ -53,13 +53,13 @@ public class RedOppositeAmp extends AutonBase {
             swerveBrake = true; 
             armCommand = ArmCommanded.preload;
 
-            if(timer.get() > 0.85 && timer.get() < 1.15){
+            if(timer.get() > 0.95 && timer.get() < 1.25){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
 
-            if (timer.get() >= 1.15){
+            if (timer.get() >= 1.25){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-110)),

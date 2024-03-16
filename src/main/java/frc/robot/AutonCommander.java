@@ -191,4 +191,6 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public void driverRumble() {}
 }

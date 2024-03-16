@@ -83,11 +83,11 @@ public class AmpSideBlue extends AutonBase {
 
             armCommand = ArmCommanded.shotMap;
 
-            robotState.setAutonHintXPos(4);
-            if (timer.get() > 2) {
+            robotState.setAutonHintXPos(3.8);
+            if (timer.get() > 1.3) {
                 runShooter = false;
 
-            } else if (timer.get() > 1.5) {
+            } else if (timer.get() > 0.8) {
                 runShooter = true;
                 runIntake = true;
             }
