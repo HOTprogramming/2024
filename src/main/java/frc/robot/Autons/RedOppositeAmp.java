@@ -39,16 +39,11 @@ public class RedOppositeAmp extends AutonBase {
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.3, .6, Rotation2d.fromDegrees(180));//
+    Pose2d ring1 = new Pose2d(8.3, .9, Rotation2d.fromDegrees(180));//
     Pose2d shoot1 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-137.5));//heading 57 deg
-    Pose2d ring2Intermediary = new Pose2d(11.0, 2.1, Rotation2d.fromDegrees(173));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.3, 2.16, Rotation2d.fromDegrees(150));//heading 85 deg
+    Pose2d ring2Intermediary = new Pose2d(11.0, 1.8, Rotation2d.fromDegrees(173));//heading 57 deg
+    Pose2d ring2 = new Pose2d(8.3, 2.56, Rotation2d.fromDegrees(150));//heading 85 deg
     Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-137.5));
-
-    //these aren't updated to correct red side positions.
-    Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
-    Pose2d ring3 = new Pose2d(2.67, 4.12, Rotation2d.fromDegrees(-25));
-
     @Override
     public void runAuto() {
         SmartDashboard.putString("BlueOppositeAmpEnum", step.toString());
@@ -152,27 +147,11 @@ public class RedOppositeAmp extends AutonBase {
             }
 
             else {
-            trajectoryConfig = new TrajectoryConfig(6, 3);
-            trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot2, Rotation2d.fromDegrees(180)),
-                        Waypoint.fromHolonomicPose(ring3Intermediary,Rotation2d.fromDegrees(0)),
-                        Waypoint.fromHolonomicPose(ring3,Rotation2d.fromDegrees(0))));
             timer.reset();    
-            runShooter = false;
+            runShooter = true;
             step = Step.end;
             }
 
-
-        }
-        else if (step == Step.ring3){
-            driving = true;
-            armCommand = ArmCommanded.shotMap;
-            runShooter = true;
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                driving = false;
-                timer.reset();    
-                step = Step.end;
-            }
 
         }
         else if (step == Step.end){

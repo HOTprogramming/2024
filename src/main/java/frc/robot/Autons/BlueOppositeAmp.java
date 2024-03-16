@@ -39,13 +39,11 @@ public class BlueOppositeAmp extends AutonBase {
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.3, 1.00, Rotation2d.fromDegrees(0));//heading 68 deg
+    Pose2d ring1 = new Pose2d(8.34, 0.93, Rotation2d.fromDegrees(0));//heading 68 deg
     Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));//heading 57 deg
-    Pose2d ring2Intermediary = new Pose2d(5.3, 2.1, Rotation2d.fromDegrees(7));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.3, 2.43, Rotation2d.fromDegrees(30));//heading 85 deg
+    Pose2d ring2Intermediary = new Pose2d(5.3, 1.9, Rotation2d.fromDegrees(7));//heading 57 deg
+    Pose2d ring2 = new Pose2d(8.28, 2.47, Rotation2d.fromDegrees(30));//heading 85 deg
     Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));
-    Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
-    Pose2d ring3 = new Pose2d(2.67, 4.12, Rotation2d.fromDegrees(-25));
 
     @Override
     public void runAuto() {
@@ -146,27 +144,11 @@ public class BlueOppositeAmp extends AutonBase {
             }
 
             else {
-            trajectoryConfig = new TrajectoryConfig(6, 3);
-            trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot2, Rotation2d.fromDegrees(180)),
-                        Waypoint.fromHolonomicPose(ring3Intermediary,Rotation2d.fromDegrees(0)),
-                        Waypoint.fromHolonomicPose(ring3,Rotation2d.fromDegrees(0))));
             timer.reset();    
-            runShooter = false;
+            runShooter = true;
             step = Step.end;
             }
 
-
-        }
-        else if (step == Step.ring3){
-            driving = true;
-            armCommand = ArmCommanded.shotMap;
-            runShooter = true;
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                driving = false;
-                timer.reset();    
-                step = Step.end;
-            }
 
         }
         else if (step == Step.end){
