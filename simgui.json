@@ -3,6 +3,8 @@
     "types": {
       "/Drivetrain": "Field2d",
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Competition/Auto Selector": "String Chooser",
+      "/Shuffleboard/Competition/Note Selector": "String Chooser",
       "/SmartDashboard/Arm Mech": "Mechanism2d",
       "/SmartDashboard/Desired Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-SimVision/Sim Field": "Field2d"
