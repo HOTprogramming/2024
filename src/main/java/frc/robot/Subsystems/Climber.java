@@ -54,8 +54,11 @@ public class Climber implements SubsystemBase {
         // }
 
         if ((commander.climberUp() && climberPosition.getValueAsDouble() >= -113.5) || (commander.climberUp() && commander.climberOverride()) ) {
-            climberMotor.setVoltage(-10);    
-        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() <= 10.2) || (commander.climberDown() && commander.climberOverride())) {
+            climberMotor.setVoltage(-10);  
+          
+        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() <= -70.2)) {
+            climberMotor.setVoltage(8);
+        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() <= 10.7) || (commander.climberDown() && commander.climberOverride())) {
             climberMotor.setVoltage(12);
         } else {
             climberMotor.setVoltage(0);
