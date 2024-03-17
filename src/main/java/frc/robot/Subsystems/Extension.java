@@ -181,7 +181,7 @@ public Extension(RobotState robotState) {
         
         if(commander.armCommanded() == ArmCommanded.handoff){
             SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
-            if(extensionTimer < 75){
+            if(extensionTimer < 87){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
             SmartDashboard.putNumber("firststage", 1);
             }
@@ -209,10 +209,12 @@ public Extension(RobotState robotState) {
 
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
                 //command extension to middle position
+                if(extensionTimer>12){
                 robotState.setShooterOnAmpTrap(true);
                 robotState.setFeederOnAmpTrap(false);
                 extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
                 spitter.set(ControlMode.PercentOutput, 0.8);
+                }
                 SmartDashboard.putNumber("secondstage", 1);
                 extensionTimer++;
             }
