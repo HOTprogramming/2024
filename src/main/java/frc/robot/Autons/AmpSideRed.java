@@ -31,7 +31,7 @@ public class AmpSideRed extends AutonBase {
 
 
     Pose2d start = new Pose2d(15.164, 6.27, Rotation2d.fromDegrees(165));
-    Pose2d ring1 = new Pose2d(8.41, 7.4, Rotation2d.fromDegrees(180));
+    Pose2d ring1 = new Pose2d(8.21, 7.4, Rotation2d.fromDegrees(180));
     Pose2d midShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
     Pose2d nextToStage = new Pose2d(10.9, 6.8, Rotation2d.fromDegrees(185));
     Pose2d ring2 = new Pose2d(8.325, 5.86, Rotation2d.fromDegrees(210));
