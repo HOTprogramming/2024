@@ -139,6 +139,7 @@ public Extension(RobotState robotState) {
       System.out.println("Could not configure device. Error: " + status.toString());
     }
     extendMotor.setPosition(0);
+    
     spitter.setNeutralMode(NeutralMode.Brake);
     returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
     extensionTimer = 0;
@@ -262,11 +263,18 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
 
-            if(extendPosition.getValueAsDouble() > 0.16)
-            extendMotor.setControl(extendMagic.withPosition(0.15).withSlot(0));
+            if(extendPosition.getValueAsDouble() > 0.30) { 
+                    extendMotor.set(-0.30);
 
-            else{
-            extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(1));    
+            } else if (extendPosition.getValueAsDouble() > 0.1){
+                
+                extendMotor.set(-0.15);
+            
+            } else if (extendPosition.getValueAsDouble() > 0.01){
+                extendMotor.set(-0.15);
+
+            } else {
+                extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
             }
 
             if (!commander.getIntake()) {
