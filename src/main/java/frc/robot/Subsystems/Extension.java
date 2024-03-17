@@ -121,10 +121,10 @@ public Extension(RobotState robotState) {
 
     Slot1Configs eSlot1 = ecfg.Slot1;
     eSlot1.kP = 45;
-    eSlot1.kI = 0.5;
+    eSlot1.kI = 0.0;
     eSlot1.kD = 0;
-    eSlot1.kV = 0.12;
-    eSlot1.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+    eSlot1.kV = 0.0;
+    eSlot1.kS = 0.0; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
@@ -264,15 +264,17 @@ public Extension(RobotState robotState) {
 
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+            if (commander.extentionOveride()) {
+                extendMotor.set(-0.2);
 
-            if(extendPosition.getValueAsDouble() > 0.30) { 
-                    extendMotor.set(-0.30);
+            } else if(extendPosition.getValueAsDouble() > 0.30) { 
+                extendMotor.set(-0.30);
 
             } else if (extendPosition.getValueAsDouble() > 0.1){
                 
                 extendMotor.set(-0.15);
             
-            } else if (extendPosition.getValueAsDouble() > 0.01){
+            } else if (extendPosition.getValueAsDouble() > 0.0045){
                 extendMotor.set(-0.15);
 
             } else {
@@ -298,6 +300,9 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.3);
         } 
 
+        if (commander.extentionZero()) {
+            extendMotor.setPosition(-0.06);
+        }
 
     }
 

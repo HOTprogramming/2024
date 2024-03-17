@@ -319,12 +319,22 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getLockParallel() {
-        return driver.getBButton();    
+        return false;    
     }
 
     @Override
     public boolean getLockAmpCommand() {
         return driver.getXButton();
+    }
+
+    @Override
+    public boolean extentionOveride() {
+        return driver.getBButton();
+    }
+
+    @Override
+    public boolean extentionZero() {
+        return driver.getBButtonReleased();
     }
 
 }
