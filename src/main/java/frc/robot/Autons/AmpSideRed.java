@@ -31,15 +31,15 @@ public class AmpSideRed extends AutonBase {
 
 
     Pose2d start = new Pose2d(15.164, 6.27, Rotation2d.fromDegrees(165));
-    Pose2d ring1 = new Pose2d(8.41, 7.4, Rotation2d.fromDegrees(180));
+    Pose2d ring1 = new Pose2d(8.21, 7.4, Rotation2d.fromDegrees(180));
     Pose2d midShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
     Pose2d nextToStage = new Pose2d(10.9, 6.8, Rotation2d.fromDegrees(185));
     Pose2d ring2 = new Pose2d(8.325, 5.86, Rotation2d.fromDegrees(210));
     Pose2d almostBetweenRings = new Pose2d(12.54, 6.28, Rotation2d.fromDegrees(180));
     Pose2d betweenRings = new Pose2d(13.71, 6.28, Rotation2d.fromDegrees(180));
-    Pose2d closeShoot = new Pose2d(14.29, 6.3, Rotation2d.fromDegrees(165));
+    Pose2d closeShoot = new Pose2d(14.60, 6.3, Rotation2d.fromDegrees(165));
     Pose2d ring3 = new Pose2d(13.68, 6.98, Rotation2d.fromDegrees(152));
-    Pose2d backRing4 = new Pose2d(14.24, 5.8, Rotation2d.fromDegrees(180));
+    Pose2d backRing4 = new Pose2d(14.64, 5.8, Rotation2d.fromDegrees(180));
     Pose2d ring4 = new Pose2d(13.74, 5.58, Rotation2d.fromDegrees(182));
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(6, 3.0);
@@ -83,7 +83,7 @@ public class AmpSideRed extends AutonBase {
 
             armCommand = ArmCommanded.shotMap;
 
-            robotState.setAutonHintXPos(4.0); // 2.7
+            robotState.setAutonHintXPos(3.3); // 2.7
             if (timer.get() > 1.3) {
                 runShooter = false;
 
@@ -106,7 +106,7 @@ public class AmpSideRed extends AutonBase {
                                     Waypoint.fromHolonomicPose(midShoot)));
                 }
                 
-                robotState.setAutonHintXPos(calculateArmHint(midShoot)+.2);
+                robotState.setAutonHintXPos(calculateArmHint(midShoot));
                 timer.reset();
                 step = Step.toshoot1;
             }
@@ -219,7 +219,7 @@ public class AmpSideRed extends AutonBase {
                 step = Step.toring4;
             } 
         } else if (step == Step.toring4) {
-            robotState.setAutonHintXPos(calculateArmHint(ring4)+.2);
+            robotState.setAutonHintXPos(calculateArmHint(ring4));
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 runShooter = true;
                 timer.reset();

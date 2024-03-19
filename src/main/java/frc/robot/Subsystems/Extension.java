@@ -121,10 +121,10 @@ public Extension(RobotState robotState) {
 
     Slot1Configs eSlot1 = ecfg.Slot1;
     eSlot1.kP = 45;
-    eSlot1.kI = 0.5;
+    eSlot1.kI = 0.0;
     eSlot1.kD = 0;
-    eSlot1.kV = 0.12;
-    eSlot1.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+    eSlot1.kV = 0.0;
+    eSlot1.kS = 0.0; // Approximately 0.25V to get the mechanism moving
 
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
@@ -139,6 +139,7 @@ public Extension(RobotState robotState) {
       System.out.println("Could not configure device. Error: " + status.toString());
     }
     extendMotor.setPosition(0);
+    
     spitter.setNeutralMode(NeutralMode.Brake);
     returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
     extensionTimer = 0;
@@ -180,7 +181,7 @@ public Extension(RobotState robotState) {
         
         if(commander.armCommanded() == ArmCommanded.handoff){
             SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
-            if(extensionTimer < 75){
+            if(extensionTimer < 87){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
             SmartDashboard.putNumber("firststage", 1);
             }
@@ -208,10 +209,12 @@ public Extension(RobotState robotState) {
 
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
                 //command extension to middle position
+                if(extensionTimer>12){
                 robotState.setShooterOnAmpTrap(true);
                 robotState.setFeederOnAmpTrap(false);
                 extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
                 spitter.set(ControlMode.PercentOutput, 0.8);
+                }
                 SmartDashboard.putNumber("secondstage", 1);
                 extensionTimer++;
             }
@@ -261,12 +264,21 @@ public Extension(RobotState robotState) {
 
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+            if (commander.extentionOveride()) {
+                extendMotor.set(-0.2);
 
-            if(extendPosition.getValueAsDouble() > 0.16)
-            extendMotor.setControl(extendMagic.withPosition(0.15).withSlot(0));
+            } else if(extendPosition.getValueAsDouble() > 0.30) { 
+                extendMotor.set(-0.30);
 
-            else{
-            extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(1));    
+            } else if (extendPosition.getValueAsDouble() > 0.1){
+                
+                extendMotor.set(-0.15);
+            
+            } else if (extendPosition.getValueAsDouble() > 0.0045){
+                extendMotor.set(-0.15);
+
+            } else {
+                extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
             }
 
             if (!commander.getIntake()) {
@@ -288,6 +300,9 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.3);
         } 
 
+        if (commander.extentionZero()) {
+            extendMotor.setPosition(-0.06);
+        }
 
     }
 

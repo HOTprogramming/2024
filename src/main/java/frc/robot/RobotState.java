@@ -48,6 +48,7 @@ public class RobotState {
     private boolean noTag;
     private double autonHintXPos;
     private boolean oneFirst;
+    private boolean driverRumble = true;
  
     private boolean feederStop = false;
     private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
@@ -66,6 +67,14 @@ public class RobotState {
 
     public Alliance getAlliance() {
         return alliance;
+    }
+
+    public void setDriverRumble(boolean driverRumble) {
+        this.driverRumble = driverRumble;
+    }
+
+    public boolean getDriverRumble() {
+        return this.driverRumble;
     }
 
 

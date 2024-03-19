@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autons.AutonBase;
@@ -36,6 +37,17 @@ public class TeleopCommander implements RobotCommander {
 
     }
 
+    public void driverRumble() {
+        if (robotState.getDriverRumble()) {
+            driver.setRumble(RumbleType.kBothRumble, 0.7);
+
+        } else {
+            driver.setRumble(RumbleType.kBothRumble, 0.0);
+
+        }
+    }
+
+    @Override
     public AutonBase getAuto(){
         return null;
     }
@@ -307,12 +319,22 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getLockParallel() {
-        return driver.getBButton();    
+        return false;    
     }
 
     @Override
     public boolean getLockAmpCommand() {
         return driver.getXButton();
+    }
+
+    @Override
+    public boolean extentionOveride() {
+        return driver.getBButton();
+    }
+
+    @Override
+    public boolean extentionZero() {
+        return driver.getBButtonReleased();
     }
 
 }
