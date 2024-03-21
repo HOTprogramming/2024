@@ -10,6 +10,8 @@ import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -22,7 +24,7 @@ public class RobotState {
     private ConstantsBase constants;
     private Alliance alliance = Alliance.Red;
 
-    private Pose2d drivePose;
+    private Pose2d drivePose = new Pose2d(0, 0, new Rotation2d(0));
     private boolean atTargetPose;
 
     private Map<CameraPositions, Optional<EstimatedRobotPose>> visionMeasurements;
@@ -47,6 +49,8 @@ public class RobotState {
     private boolean twoTags;
     private boolean oneTag;
     private boolean noTag;
+
+    private boolean noteDetected;
  
     private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
@@ -164,14 +168,6 @@ public class RobotState {
         return armPos;
     }
 
-    public void setNotePose(Pose2d notePose){
-        this.notePose = notePose;
-    }
-
-    public Pose2d getNotePose(){
-        return notePose;
-    }
-
     public boolean getShooterOn() {
         return shooterOn;
     }
@@ -242,5 +238,19 @@ public class RobotState {
     }
     public boolean getNoTag(){
         return noTag;
+    }
+
+    public boolean getNoteDetected(){
+        return noteDetected;
+    }
+    public void setNoteDetected(boolean bool){
+        noteDetected = bool;
+    }
+
+    public Pose2d getNotePose(){
+        return notePose;
+    }
+    public void setNotePose(Transform2d transform){
+        notePose = drivePose.transformBy(transform);
     }
 }

@@ -72,7 +72,7 @@ public class Camera implements SubsystemBase {
     RobotState robotState;
 
     // front
-    PhotonCamera frontCamera;
+    PhotonCamera frontCamera = new PhotonCamera("front_camera");
     PhotonPipelineResult result;
     PhotonTrackedTarget frontBestTarget;
     double frontSampleTime;
@@ -187,7 +187,6 @@ public class Camera implements SubsystemBase {
     Transform2d noteTransform;
 
     public Camera(RobotState robotState) {
-        this.robotState = robotState;
 
         constants = robotState.getConstants().getCameraConstants();
         
@@ -276,6 +275,8 @@ public class Camera implements SubsystemBase {
                 simRearCam.enableDrawWireframe(drawWireframes);
             }
         }
+
+        this.robotState = robotState;
     }
 
     private Optional<EstimatedRobotPose> updateCameraMeasurment(CameraPositions key, CameraConstant constant, PhotonCamera camera, DoubleArrayPublisher publisher, PhotonPoseEstimator estimator, double lastEstTimestamp) {
@@ -313,15 +314,17 @@ public class Camera implements SubsystemBase {
             if (constant != null) {
                 cameraMeasurements.put(key,updateCameraMeasurment(key, constant, cameras.get(key), publishers.get(key), photonPoseEstimators.get(key), lastEstTimestamps.get(key)));
                 if (cameraMeasurements.get(key).isPresent()) {
-                    cameraStdDeviations.put(key,getEstimationStdDevs(cameraMeasurements.get(key).get().estimatedPose.toPose2d(), cameras.get(key), constant, photonPoseEstimators.get(key)));
-                    List<PhotonTrackedTarget> tagsUsed = cameraMeasurements.get(key).get().targetsUsed;
-                    if (tagsUsed.size() > minimumTagsSeenByAnyCamera) {
-                        minimumTagsSeenByAnyCamera = tagsUsed.size();
+                    if(!(key == CameraPositions.FRONT && frontPipeline == 1)) {
+                        cameraStdDeviations.put(key,getEstimationStdDevs(cameraMeasurements.get(key).get().estimatedPose.toPose2d(), cameras.get(key), constant, photonPoseEstimators.get(key)));
+                        List<PhotonTrackedTarget> tagsUsed = cameraMeasurements.get(key).get().targetsUsed;
+                        if (tagsUsed.size() > minimumTagsSeenByAnyCamera) {
+                            minimumTagsSeenByAnyCamera = tagsUsed.size();
+                        }
+                        SmartDashboard.putNumber("Seen by " + key.name(), tagsUsed.size());
                     }
-                    SmartDashboard.putNumber("Seen by " + key.name(), tagsUsed.size());
                 }
             }
-        });
+        }); 
 
         if(lastMinimumTagsSeenByAnyCamera != minimumTagsSeenByAnyCamera && loopsPast > 50){
             SmartDashboard.putNumber("minimumTagsSeenByAnyCamera",minimumTagsSeenByAnyCamera);
@@ -356,24 +359,31 @@ public class Camera implements SubsystemBase {
         SmartDashboard.putBoolean("CAMERA: Front Camera sees anything", frontDetects);
 
         frontPipeline = frontCamera.getPipelineIndex();
-        SmartDashboard.putBoolean("CAMERA: Front Camera Object Detection?", frontPipeline == 2);
+        SmartDashboard.putBoolean("CAMERA: Front Camera Object Detection?", frontPipeline == 1);
         SmartDashboard.putNumber("CAMERA: Pipeline # for front camera", frontPipeline);
 
-        if(frontDetects && frontPipeline == 2){
+        robotState.setNoteDetected(frontPipeline == 1 && frontDetects);
+        if(frontDetects && frontPipeline == 1){
             frontThing = frontCamera.getLatestResult().getBestTarget();
             noteX = -frontThing.getYaw();
             noteY = frontThing.getPitch();
             SmartDashboard.putNumber("CAMERA: Note X angle", noteX);
             SmartDashboard.putNumber("CAMERA: Note Y angle", noteY);
 
-            noteVector = new Translation2d(-(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ()/39.37)/Math.tan(noteY), 0);
-            SmartDashboard.putNumber("CAMERA: Note distance to camera", noteVector.getDistance(noteVector));
-            SmartDashboard.putNumber("CAMERA: Note forward relative to camera", noteVector.getDistance(noteVector)*Math.cos(Math.toRadians(noteX)));
-            SmartDashboard.putNumber("CAMERA: Left/Right relative to camera", noteVector.getDistance(noteVector)*Math.sin(Math.toRadians(noteX)));
+            noteVector = new Translation2d(PhotonUtils.calculateDistanceToTargetMeters(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ(), Units.inchesToMeters(1.75/2), constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getRotation().getY(), Math.toRadians(noteY)), 0);
+            /* noteVector = new Translation2d(-(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ())/Math.tan(Math.toRadians(noteY)), 0); */
+            SmartDashboard.putNumber("CAMERA: Note distance to camera", PhotonUtils.calculateDistanceToTargetMeters(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ(), Units.inchesToMeters(1.75/2), constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getRotation().getY(), Math.toRadians(noteY)));
+        
 
             noteVector.rotateBy(new Rotation2d(Math.toRadians(noteX) + robotState.getDrivePose().getRotation().getRadians()));
-            noteVector.minus(new Translation2d(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getX()/39.37, constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getY()/39.37).rotateBy(new Rotation2d(robotState.getDrivePose().getRotation().getRadians())));
+            SmartDashboard.putNumber("dummy", Math.toRadians(noteX) + robotState.getDrivePose().getRotation().getRadians());
+            noteVector.minus(new Translation2d(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getX(), constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getY()).rotateBy(new Rotation2d(robotState.getDrivePose().getRotation().getRadians())));
             noteTransform = new Transform2d(noteVector, new Rotation2d(Math.toRadians(noteX)));
+
+            SmartDashboard.putNumber("CAMERA: Note X to robot", noteVector.getX());
+            SmartDashboard.putNumber("CAMERA: Note Y to robot", noteVector.getY());
+
+            robotState.setNotePose(noteTransform);
         }
     }
 
@@ -427,13 +437,5 @@ public class Camera implements SubsystemBase {
     public void reset() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'reset'");
-    }
-
-    public Transform2d notePose() {
-        return noteTransform;
-    }
-
-    public boolean noteDetected(){
-        return frontDetects && frontCamera.getPipelineIndex() == 2;
     }
 }

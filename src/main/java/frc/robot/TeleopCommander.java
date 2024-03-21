@@ -20,7 +20,7 @@ public class TeleopCommander implements RobotCommander {
 
     RobotState robotState;
     double armPose;
-    Camera camera = new Camera(robotState);
+    // Camera camera = new Camera(robotState);
 
     double deadbands = 0.0;
     double LX;
@@ -312,12 +312,14 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean noteDetected() {
-        return camera.noteDetected();
+        // return camera.noteDetected();
+        return false;
     }
 
     @Override
     public Pose2d getNotePose() {
-        return robotState.getDrivePose().plus(camera.notePose());
+        // return robotState.getDrivePose().plus(camera.notePose());
+        return new Pose2d();
     }
 }
 

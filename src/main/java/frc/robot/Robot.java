@@ -56,8 +56,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     RobotController.setBrownoutVoltage(5.5);
-    DataLogManager.start();
-    DriverStation.startDataLog(DataLogManager.getLog());
+    // DataLogManager.start();
+    // DriverStation.startDataLog(DataLogManager.getLog());
     
 
     constantsBase = new ConstantsBase();

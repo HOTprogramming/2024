@@ -13,7 +13,7 @@ import edu.wpi.first.math.trajectory.Trajectory.State;
 public class AutonCommander implements RobotCommander {
     RobotState robotState;
     AutonBase auto;
-    Camera camera = new Camera(robotState);
+    //Camera camera = new Camera(robotState);
 
     public AutonCommander(RobotState robotState) {
         this.robotState = robotState;
@@ -190,11 +190,13 @@ public class AutonCommander implements RobotCommander {
     }
 
     public boolean noteDetected() {
-        return camera.noteDetected();
+       // return camera.noteDetected();
+       return false;
     }
 
     @Override
     public Pose2d getNotePose() {
-        return robotState.getDrivePose().plus(camera.notePose());
+        return new Pose2d();
+        //return robotState.getDrivePose().plus(camera.notePose());
     }
 }
