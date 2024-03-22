@@ -48,6 +48,8 @@ double middlePoint = 0.6;
 double extensionZero = 0;
 double initialShooterPos;
 double currentShooterPos;
+double ampShooterPose = 0;
+double ampCurrentShooterPose = 0;
 double extensionTimer;
 double extendedCommandedPosition;
 
@@ -246,14 +248,6 @@ public Extension(RobotState robotState) {
             }
         }
 
-        else if(commander.armCommanded() == ArmCommanded.amp){
-            SmartDashboard.putNumber("here", 1);
-            extendedCommandedPosition = fullyExtendedAmp;
-            spitter.set(ControlMode.PercentOutput, 0);
-            extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
-            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
-        }
-
         else if(commander.armCommanded() == ArmCommanded.trap){
             SmartDashboard.putNumber("here", 1);
             extendedCommandedPosition = fullyExtended;
@@ -302,6 +296,22 @@ public Extension(RobotState robotState) {
 
         if (commander.extentionZero()) {
             extendMotor.setPosition(-0.06);
+        }
+
+        if (commander.armCommanded() == ArmCommanded.amp) {
+            extendMotor.setControl(extendMagic.withPosition(0.89).withSlot(0));
+            ampCurrentShooterPose = robotState.getShooterPos();
+
+            if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose < 7)) {
+                spitter.set(ControlMode.PercentOutput, 1);
+            } else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7)) { // could be implied
+                spitter.set(ControlMode.PercentOutput, -1);
+                
+            } else {
+                ampShooterPose = robotState.getShooterPos();
+                spitter.set(ControlMode.PercentOutput, 1);
+
+            }
         }
 
     }
