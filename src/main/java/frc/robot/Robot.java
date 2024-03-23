@@ -54,9 +54,9 @@ public class Robot extends TimedRobot {
   private AmpSideRed ampSideRed;
   private BlueOppositeAmp blueOppositeAmp;
   private RedOppositeAmp redOppositeAmp;
-
   private FourRedOppositeAmp fourRedOppositeAmp;
   private FourBlueOppositeAmp fourBlueOppositeAmp;
+  private SourceRed sourceRed;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -98,6 +98,7 @@ public class Robot extends TimedRobot {
     redOppositeAmp = new RedOppositeAmp(robotState);
     fourBlueOppositeAmp = new FourBlueOppositeAmp(robotState);
     fourRedOppositeAmp = new FourRedOppositeAmp(robotState);
+    sourceRed = new SourceRed(robotState);
     
 
     newAuto = new NewAuto(robotState);
@@ -150,23 +151,25 @@ public class Robot extends TimedRobot {
 
     robotState.setOneNoteFirst(selectedNote.equals("12"));
 
-    if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(ampSideBlue);
-    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(center4NoteBlue);
-    } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(ampSideRed);
-    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(center4Note);
-    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(redOppositeAmp);
-    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(blueOppositeAmp);
-    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(fourBlueOppositeAmp);
-    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(fourRedOppositeAmp);
-    }
+    // if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
+    //   autonCommander.setAuto(ampSideBlue);
+    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
+    //   autonCommander.setAuto(center4NoteBlue);
+    // } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
+    //   autonCommander.setAuto(ampSideRed);
+    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
+    //   autonCommander.setAuto(center4Note);
+    // } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Red){
+    //   autonCommander.setAuto(redOppositeAmp);
+    // } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
+    //   autonCommander.setAuto(blueOppositeAmp);
+    // } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Blue){
+    //   autonCommander.setAuto(fourBlueOppositeAmp);
+    // } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Red){
+    //   autonCommander.setAuto(fourRedOppositeAmp);
+    // }
+
+    autonCommander.setAuto(sourceRed);
 
     drivetrain.init(autonCommander);
     shooter.reset();

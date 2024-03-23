@@ -63,4 +63,5 @@ public interface RobotCommander {
     public abstract void driverRumble();
     public abstract boolean extentionOveride();
     public abstract boolean extentionZero();
+    public abstract boolean spitOut();
 }

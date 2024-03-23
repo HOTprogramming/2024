@@ -336,6 +336,11 @@ public class TeleopCommander implements RobotCommander {
         return driver.getBButtonReleased();
     }
 
+    @Override
+    public boolean spitOut() {
+       return false;
+    }
+
 }
 
 

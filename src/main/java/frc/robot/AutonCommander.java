@@ -205,5 +205,10 @@ public class AutonCommander implements RobotCommander {
     @Override
     public boolean extentionZero() {
         return false;
+    }
+
+    @Override
+    public boolean spitOut() {
+        return auto.spitOut;
     }   
 }
