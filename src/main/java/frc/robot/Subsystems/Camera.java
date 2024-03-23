@@ -188,6 +188,8 @@ public class Camera implements SubsystemBase {
     PhotonTrackedTarget frontThing;
     Transform2d noteTransform;
     double noteDistance;
+    //double FRONTHeartBeat;
+    //double previousFRONTHeartBeat;
 
     public Camera(RobotState robotState) {
 
@@ -372,7 +374,7 @@ public class Camera implements SubsystemBase {
             SmartDashboard.putNumber("CAMERA: Note X angle", noteX);
             SmartDashboard.putNumber("CAMERA: Note Y angle", noteY);
 
-            noteDistance = PhotonUtils.calculateDistanceToTargetMeters(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ(), Units.inchesToMeters(1.75/2), constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getRotation().getY(), Math.toRadians(noteY));
+            noteDistance = PhotonUtils.calculateDistanceToTargetMeters(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ(), 0.0, constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getRotation().getY(), Math.toRadians(noteY));
             noteVector = new Translation2d(noteDistance, 0);
             // noteVector = new Translation2d(-(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ())/Math.tan(Math.toRadians(noteY)), 0); 
             SmartDashboard.putNumber("CAMERA: Note distance to camera", noteDistance);
@@ -381,6 +383,8 @@ public class Camera implements SubsystemBase {
             noteVector = noteVector.rotateBy(new Rotation2d(Math.toRadians(noteX) + robotState.getDrivePose().getRotation().getRadians()));
             noteVector = noteVector.plus(new Translation2d(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getX(), constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getY()).rotateBy(new Rotation2d(robotState.getDrivePose().getRotation().getRadians())));
             noteTransform = new Transform2d(noteVector, new Rotation2d(Math.toRadians(noteX)));
+
+            SmartDashboard.putNumber("CAMERA: Note distance to robot", noteVector.getDistance(new Translation2d(0,0)));
 
             SmartDashboard.putNumber("CAMERA: Note X to robot", noteVector.getX());
             SmartDashboard.putNumber("CAMERA: Note Y to robot", noteVector.getY());

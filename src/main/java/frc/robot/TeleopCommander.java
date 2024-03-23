@@ -23,7 +23,7 @@ public class TeleopCommander implements RobotCommander {
     double armPose;
     // Camera camera = new Camera(robotState);
 
-    double deadbands = 0.0;
+    double deadbands = 0.2;
     double LX;
     double LY;
     double RX;
@@ -340,6 +340,6 @@ public class TeleopCommander implements RobotCommander {
     }
 
     public boolean getLockNote() {
-        return false;
+        return driver.getYButton();
     }
 }
