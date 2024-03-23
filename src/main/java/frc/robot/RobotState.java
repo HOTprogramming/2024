@@ -43,6 +43,7 @@ public class RobotState {
     private boolean beambreak;
     private boolean shooterAmpTrap;
     private boolean feederAmpTrap;
+    private boolean armAmpRetract;
     private boolean twoTags;
     private boolean oneTag;
     private boolean noTag;
@@ -225,6 +226,14 @@ public class RobotState {
 
     public boolean getFeederOnAmpTrap(){
         return feederAmpTrap;
+    }
+
+    public void setArmOnAmpRetract(boolean armAmpRetract){
+        this.armAmpRetract = armAmpRetract;
+    }
+
+    public boolean getArmOnAmpRetract(){
+        return armAmpRetract;
     }
 
     public void setAutonHintXPos(double autonHintXPos){

@@ -327,14 +327,15 @@ public class TeleopCommander implements RobotCommander {
     }
 
     @Override
-    public boolean extentionOveride() {
+    public boolean extensionOveride() {
         return driver.getBButton();
     }
 
     @Override
-    public boolean extentionZero() {
+    public boolean extensionZero() {
         return driver.getBButtonReleased();
     }
+
 
 }
 

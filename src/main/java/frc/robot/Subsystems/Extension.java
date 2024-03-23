@@ -52,6 +52,7 @@ double ampShooterPose = 0;
 double ampCurrentShooterPose = 0;
 double extensionTimer;
 double extendedCommandedPosition;
+boolean ampCycle = false;
 
 
 public enum ExtensionPhaseTrap{
@@ -258,7 +259,7 @@ public Extension(RobotState robotState) {
 
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
-            if (commander.extentionOveride()) {
+            if (commander.extensionOveride()) {
                 extendMotor.set(-0.2);
 
             } else if(extendPosition.getValueAsDouble() > 0.30) { 
@@ -275,6 +276,13 @@ public Extension(RobotState robotState) {
                 extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
             }
 
+            if(extendPosition.getValueAsDouble() > 0.5){
+                robotState.setArmOnAmpRetract(true);
+                }
+                else{
+                robotState.setArmOnAmpRetract(false);
+                }
+
             if (!commander.getIntake()) {
                 spitter.set(ControlMode.PercentOutput, 0);
             }
@@ -288,13 +296,7 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
-        if (commander.trapArmFineControl() == 1) {
-            spitter.set(ControlMode.PercentOutput, 0.3);
-        } else if (commander.trapArmFineControl() == -1) {
-            spitter.set(ControlMode.PercentOutput, -0.3);
-        } 
-
-        if (commander.extentionZero()) {
+        if (commander.extensionZero()) {
             extendMotor.setPosition(-0.06);
         }
 
@@ -307,12 +309,20 @@ public Extension(RobotState robotState) {
             } else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7)) { // could be implied
                 spitter.set(ControlMode.PercentOutput, -1);
                 
-            } else {
+            } else if(robotState.getBeamBreak() == true){
                 ampShooterPose = robotState.getShooterPos();
                 spitter.set(ControlMode.PercentOutput, 1);
-
+            }
+            else{
+                spitter.set(ControlMode.PercentOutput, 0);  
             }
         }
+
+        if (commander.trapArmFineControl() == 1) {
+            spitter.set(ControlMode.PercentOutput, 0.3);
+        } else if (commander.trapArmFineControl() == -1) {
+            spitter.set(ControlMode.PercentOutput, -0.3);
+        } 
 
     }
 
