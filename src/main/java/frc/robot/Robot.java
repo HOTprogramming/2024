@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
   private FourRedOppositeAmp fourRedOppositeAmp;
   private FourBlueOppositeAmp fourBlueOppositeAmp;
   private SourceRed sourceRed;
+  private SourceBlue sourceBlue;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -99,6 +100,7 @@ public class Robot extends TimedRobot {
     fourBlueOppositeAmp = new FourBlueOppositeAmp(robotState);
     fourRedOppositeAmp = new FourRedOppositeAmp(robotState);
     sourceRed = new SourceRed(robotState);
+    sourceBlue = new SourceBlue(robotState);
     
 
     newAuto = new NewAuto(robotState);
@@ -169,7 +171,8 @@ public class Robot extends TimedRobot {
     //   autonCommander.setAuto(fourRedOppositeAmp);
     // }
 
-    autonCommander.setAuto(sourceRed);
+    //autonCommander.setAuto(sourceRed);
+    autonCommander.setAuto(sourceBlue);
 
     drivetrain.init(autonCommander);
     shooter.reset();

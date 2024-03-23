@@ -215,7 +215,7 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.spitOut()){
-        commandedPosition = 126.0/360.0; // commandedPosition = 120.25/360.0
+        commandedPosition = 95.0/360.0; // commandedPosition = 120.25/360.0
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){

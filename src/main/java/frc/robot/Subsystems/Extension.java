@@ -306,20 +306,14 @@ public Extension(RobotState robotState) {
 
             if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose < 7)) {
                 spitter.set(ControlMode.PercentOutput, 1);
-            } 
-            else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7)) { // could be implied
+                }
+            else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7) && (ampCurrentShooterPose - ampShooterPose < 12)) { // could be implied
                 spitter.set(ControlMode.PercentOutput, -1);  
                 ampCycle = true;
             }
-            if (ampCycle = true) {
-                if(ampCurrentShooterPose - ampShooterPose < 10){
-                    spitter.set(ControlMode.PercentOutput, -1);
-                }
-                else{
-                ampShooterPose = robotState.getShooterPos();
+            else if (ampCycle = true) {
                 spitter.set(ControlMode.PercentOutput, 0);
-                }
-            }
+            } 
             else{
                 ampShooterPose = robotState.getShooterPos();
                 spitter.set(ControlMode.PercentOutput, 1);
