@@ -44,7 +44,6 @@ public abstract class AutonBase {
     public boolean autoAim = false;
     public boolean zeroArm = false;
     public boolean driving = false;
-    public boolean spitOut = false;
     
 
 

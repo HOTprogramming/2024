@@ -207,8 +207,4 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
-    @Override
-    public boolean spitOut() {
-        return auto.spitOut;
-    }   
 }

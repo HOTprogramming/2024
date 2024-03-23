@@ -301,26 +301,21 @@ public Extension(RobotState robotState) {
         }
 
         if (commander.armCommanded() == ArmCommanded.amp) {
-        extendMotor.setControl(extendMagic.withPosition(0.89).withSlot(0));
-        ampCurrentShooterPose = robotState.getShooterPos();
+            extendMotor.setControl(extendMagic.withPosition(0.89).withSlot(0));
+            ampCurrentShooterPose = robotState.getShooterPos();
 
             if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose < 7)) {
                 spitter.set(ControlMode.PercentOutput, 1);
-                }
-            else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7) && (ampCurrentShooterPose - ampShooterPose < 12)) { // could be implied
-                spitter.set(ControlMode.PercentOutput, -1);  
-                ampCycle = true;
-            }
-            else if (ampCycle = true) {
-                spitter.set(ControlMode.PercentOutput, 0);
-            } 
-            else{
+            } else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7)) { // could be implied
+                spitter.set(ControlMode.PercentOutput, -1);
+                
+            } else if(robotState.getBeamBreak() == true){
                 ampShooterPose = robotState.getShooterPos();
                 spitter.set(ControlMode.PercentOutput, 1);
             }
-        }
-        else{
-            ampCycle = false;
+            else{
+                spitter.set(ControlMode.PercentOutput, 0);  
+            }
         }
 
         if (commander.trapArmFineControl() == 1) {

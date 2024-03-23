@@ -61,6 +61,8 @@ public enum ArmCommanded{
   zero,
   auton,
   preload,
+  spitOut,
+  spitOut2,
   none;
 }
 
@@ -156,12 +158,12 @@ public Arm(RobotState robotState) {
 
     public void teleop(RobotCommander commander){
 
+      SmartDashboard.putString("armCommand", commander.armCommanded().toString());
+
       armPosition.refresh(); 
       armVelocity.refresh();
       cancoderPosition.refresh(); 
       cancoderVelocity.refresh();
-    
-
       if(commander.armCommanded() == ArmCommanded.shotMap){
         commandedPosition = shotMap.calcShotMap();
         SmartDashboard.putNumber("Arm_ShotmapPose", commandedPosition);
@@ -187,7 +189,10 @@ public Arm(RobotState robotState) {
       else if (commander.armCommanded() == ArmCommanded.protect){
         commandedPosition = constants.PROTECT/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-
+      }
+      else if (commander.armCommanded() == ArmCommanded.spitOut || commander.armCommanded() == ArmCommanded.spitOut2){
+        commandedPosition = 95.0/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.amp || robotState.getArmOnAmpRetract()){
         commandedPosition = 135.175/360.0;
@@ -212,10 +217,6 @@ public Arm(RobotState robotState) {
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
         commandedPosition = (constants.PROTECT + 1.5)/360.0; // commandedPosition = 120.25/360.0
-        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-      }
-      else if (commander.spitOut()){
-        commandedPosition = 95.0/360.0; // commandedPosition = 120.25/360.0
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){

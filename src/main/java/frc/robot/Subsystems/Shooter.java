@@ -157,6 +157,14 @@ public class Shooter implements SubsystemBase {
             leftFlywheel.setControl(leftVoltageVelocity.withVelocity((constants.RIGHT_FLYWHEEL_PRELOAD_RPM / 60.0)));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_PRELOAD_RPM / 60.0)).withFeedForward(20.0));
         }
+        else if (commander.armCommanded() == ArmCommanded.spitOut){
+            leftFlywheel.setControl(leftVoltageVelocity.withVelocity((constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_SLOW_RPM/ 60.0)).withFeedForward(20.0));
+        }
+        else if (commander.armCommanded() == ArmCommanded.spitOut2){
+            leftFlywheel.setControl(leftVoltageVelocity.withVelocity((1000.0 / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((1000.0 / 60.0)).withFeedForward(20.0));
+        }
         else if (commander.armCommanded() == ArmCommanded.hailMary) {
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((3700.0 / 60.0)));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((2700.0 / 60.0)));
@@ -164,10 +172,6 @@ public class Shooter implements SubsystemBase {
         else if (commander.armCommanded() == ArmCommanded.amp) {
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0)));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_SLOW_RPM / 60.0)));
-        } 
-        else if (commander.spitOut()) {
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((1200.0 / 60.0)));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((1200.0 / 60.0)));
         } 
         else {
             leftFlywheel.setVoltage(0);
