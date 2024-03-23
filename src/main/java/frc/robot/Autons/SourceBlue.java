@@ -29,8 +29,8 @@ public class SourceBlue extends AutonBase {
     }
 
     public Step step = Step.start;   
-    private double speed = 6;
-    private double accel = 3;
+    private double speed = 2.5;
+    private double accel = 1.7;
 
     public SourceBlue(RobotState robotState) {
         super(robotState);
@@ -45,7 +45,7 @@ public class SourceBlue extends AutonBase {
     Pose2d lobRing1Ring2 = new Pose2d(6.0, 1.54, Rotation2d.fromDegrees(0));
     Pose2d ring2 = new Pose2d(8.8, 2.56, Rotation2d.fromDegrees(30));
     Pose2d stage = new Pose2d(5.7, 4.3, Rotation2d.fromDegrees(0));
-    Pose2d shoot = new Pose2d(2.8, 3.7, Rotation2d.fromDegrees(-40));
+    Pose2d shoot = new Pose2d(2.8, 3.5, Rotation2d.fromDegrees(-40));
     Pose2d ring3 = new Pose2d(8.5, 4.20, Rotation2d.fromDegrees(0));
 
     @Override
@@ -132,7 +132,7 @@ public class SourceBlue extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(-30)),
+                List.of(Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(-50)),
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(0))));
                 driving = true;
@@ -149,8 +149,9 @@ public class SourceBlue extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(-130)),
-                        Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(150))));
+                List.of(Waypoint.fromHolonomicPose(ring3),
+                        Waypoint.fromHolonomicPose(stage),
+                        Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(90))));
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot2;   
