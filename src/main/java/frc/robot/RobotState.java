@@ -1,12 +1,14 @@
 package frc.robot;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.swing.text.html.Option;
 
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,7 +24,7 @@ import frc.robot.Subsystems.Camera.CameraPositions;
 
 public class RobotState {
     private ConstantsBase constants;
-    private Alliance alliance = Alliance.Red;
+    private Alliance alliance = Alliance.Blue;
 
     private Pose2d drivePose = new Pose2d(0, 0, new Rotation2d(0));
     private boolean atTargetPose;
@@ -52,9 +54,14 @@ public class RobotState {
 
     private boolean noteDetected;
     private double noteDistance;
+
+    private double autonHintXPos;
+    private boolean oneFirst;
+    private boolean driverRumble = true;
  
     private boolean feederStop = false;
- //   private armDesiredPos stateArmPos;
+    private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
+    //   private armDesiredPos stateArmPos;
     public RobotState(ConstantsBase constants) {
         this.constants = constants;
     }
@@ -69,6 +76,14 @@ public class RobotState {
 
     public Alliance getAlliance() {
         return alliance;
+    }
+
+    public void setDriverRumble(boolean driverRumble) {
+        this.driverRumble = driverRumble;
+    }
+
+    public boolean getDriverRumble() {
+        return this.driverRumble;
     }
 
 
@@ -221,6 +236,14 @@ public class RobotState {
         return feederAmpTrap;
     }
 
+    public void setAutonHintXPos(double autonHintXPos){
+        this.autonHintXPos = autonHintXPos;
+    }
+
+    public double getAutonHintXPos(){
+        return autonHintXPos;
+    }
+
     public void setTwoTags(boolean twoTags){
         this.twoTags = twoTags;
     }
@@ -260,5 +283,23 @@ public class RobotState {
     }
     public void setNoteDistance(double doub){
         noteDistance = doub;
+    }
+
+    public void putTargetsSeenByCamera(Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera) {
+        // TODO Auto-generated method stub
+        this.targetsSeenByCamera = targetsSeenByCamera;
+    }
+
+    
+    public Map<CameraPositions, List<PhotonTrackedTarget>> getTargetsSeenByCamera() {
+        return targetsSeenByCamera;
+    }
+
+    public void setOneNoteFirst(boolean oneFirst){
+        this.oneFirst = oneFirst;
+    }
+
+    public boolean getOneNoteFirst(){
+        return oneFirst;
     }
 }

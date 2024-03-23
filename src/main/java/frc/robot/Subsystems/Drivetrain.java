@@ -11,6 +11,8 @@ import frc.robot.Subsystems.Camera.CameraPositions;
 import frc.robot.RobotCommander.DriveMode;
 import frc.robot.utils.trajectory.CustomHolonomicDriveController;
 import frc.robot.utils.trajectory.RotationSequence;
+import edu.wpi.first.math.util.Units;
+
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -62,6 +64,12 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     DoubleArrayPublisher posePublisher = table.getDoubleArrayTopic("RobotPose").publish();
     DoubleArrayPublisher velocityPublisher = table.getDoubleArrayTopic("RobotVelocity").publish();
 
+    DoubleArrayPublisher posePublisherKeith = table.getDoubleArrayTopic("RobotPoseKeith").publish();
+    DoubleArrayPublisher velocityPublisherKieth = table.getDoubleArrayTopic("RobotVelocityKeith").publish();
+    Rotation2d cachedRotation = Rotation2d.fromDegrees(0);
+
+
+
     // for velocity calcs
     private SwerveDriveState currentState;
     private Pose2d lastPose = new Pose2d();
@@ -69,9 +77,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Translation2d velocities = new Translation2d(0, Rotation2d.fromDegrees(0));
 
     // Drive controllers
-    private static final PIDController xController = new PIDController(15.0, 0.15, 0.3); // 9 .15 .5
-    private static final PIDController yController = new PIDController(15, 0.13, 0.3); // 8.5 .13 .45
-    private static final PIDController thetaController = new PIDController(12.5, 0.1, .1);
+    private static final PIDController xController = new PIDController(10, 0, 0); // 9 .15 .5
+    private static final PIDController yController = new PIDController(10, 0, 0); // 8.5 .13 .45
+    private static final PIDController thetaController = new PIDController(10, 0, 0);
     
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -108,15 +116,24 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
      * @param fieldCentricDrive drive fieldcentricly or robotcentricaly
      */
     private void percentDrive(double[] drivePercents, boolean fieldCentricDrive) {
-        if (fieldCentricDrive) {
-            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
-        } else {
-            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
-                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
-                    .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
-        }
+        
+        // if (Math.abs(drivePercents[2]) > 0.01) {
+            // cachedRotation = currentState.Pose.getRotation();
+
+            if (fieldCentricDrive) {
+                setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                        .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                        .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
+            } else {
+                setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                        .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                        .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));
+            }
+        // } else {
+            // autoTurnControl(drivePercents, cachedRotation, fieldCentricDrive);
+        // }
+        
+        SmartDashboard.putNumber("CachedRotation", cachedRotation.getDegrees());
     }
 
     /**
@@ -152,6 +169,27 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                                             targetTheta.getRadians())));
         
 
+    }
+
+    private void autoXControl(double[] drivePercents, double xPose, Rotation2d targetTheta) {
+        SmartDashboard.putBoolean("xatSet", xController.atSetpoint());
+        SmartDashboard.putBoolean("tatSet", thetaController.atSetpoint());
+
+
+        if (!xController.atSetpoint() || !thetaController.atSetpoint()) {
+            setControl(fieldCentric.withVelocityX(xController.calculate(currentState.Pose.getX(), xPose))
+                                .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        } else {
+            thetaController.calculate(currentState.Pose.getRotation().getRadians());
+            xController.calculate(currentState.Pose.getX());
+
+            setControl(fieldCentric.withVelocityX(0)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(0));
+        }
+        
     }
 
     private void stateDrive(State holoDriveState, RotationSequence.State rotationState) {
@@ -201,6 +239,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         // updates pose reliant functions
         if (currentState.Pose != null) {
+
             if (robotState.getAlliance() == Alliance.Blue) {
                 robotState.setPoseToSpeaker(currentState.Pose.minus(blueSpeaker).getTranslation().getNorm());
             }
@@ -231,6 +270,19 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             velocityPublisher.set(new double[] {
                     velocities.getX(),
                     velocities.getY(),
+                    velocities.getAngle().getDegrees()
+            });
+
+            posePublisherKeith.set(new double[] {
+                    Units.metersToFeet(currentState.Pose.getX()),
+                    Units.metersToFeet(currentState.Pose.getY()),
+                    currentState.Pose.getRotation().getDegrees()
+            });
+
+            // publishes velocity to smartdashboard
+            velocityPublisherKieth.set(new double[] {
+                    Units.metersToFeet(velocities.getX()),
+                    Units.metersToFeet(velocities.getY()),
                     velocities.getAngle().getDegrees()
             });
         }
@@ -273,14 +325,15 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
          //15.15);
 
         // sets boolean tolerances for auton refrence poses
-        driveController.setTolerance(commander.getRefrenceTolerances());
+        xController.setTolerance(.01);
+        thetaController.setTolerance(Units.degreesToRadians(2));
 
         SmartDashboard.putData("Desired Field", desiredField);
     }
 
     
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         // commands drivetrain based on target drivemode
         if (commander.getDriveMode() == DriveMode.percent) {
             percentDrive(commander.getDrivePercentCommand(), true);
@@ -289,9 +342,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         }
         
         try{
-      desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
-                                                commander.getDriveState().poseMeters.getY(),
-                                                commander.getDriveRotationState().position));    
+            desiredField.setRobotPose(new Pose2d(commander.getDriveState().poseMeters.getX(),
+                                                        commander.getDriveState().poseMeters.getY(),
+                                                        commander.getDriveRotationState().position));    
         } catch(Exception e){
 
         }
@@ -303,28 +356,42 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getPidgeonReset()) {
             m_pigeon2.setYaw(0);
+            cachedRotation = currentState.Pose.getRotation();
         }
 
-        if (commander.getLockParallel()) {
-            if (robotState.getAlliance() == Alliance.Red) {
-                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
+        // if (commander.getLockParallel()) {
+        //     cachedRotation = currentState.Pose.getRotation();
 
-            } else {
-                autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
+        //     if (robotState.getAlliance() == Alliance.Red) {
+        //         autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(180), true);
 
-            }
-        }
+        //     } else {
+        //         autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
+
+        //     }
+        // }
+
+        // if (commander.getAngleSnapCommand() != -1) {
+        //     cachedRotation = currentState.Pose.getRotation();
+
+        //     autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
+        // }
 
         if (commander.getLockNote()) {
             autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getNotePose()), true);
         }
 
-        if (commander.getAngleSnapCommand() != -1) {
-            autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
+        if (commander.getLockAmpCommand()) {
+            cachedRotation = currentState.Pose.getRotation();
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
+            } else {
+                autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
+            } 
         }
 
         if (commander.getLockSpeakerCommand()) {
-            
+            cachedRotation = currentState.Pose.getRotation();
             if (robotState.getAlliance() == Alliance.Red) {
                 autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
             } else {
@@ -342,12 +409,13 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
         setControl(brake);
     }
 
     @Override
     public void reset() {
+        cachedRotation = currentState.Pose.getRotation();
     }
 
     public void teleLimits(){

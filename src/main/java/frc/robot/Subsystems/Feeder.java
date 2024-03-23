@@ -5,6 +5,7 @@ import frc.robot.ConstantsFolder.ConstantsBase;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.RobotCommander;
 
+import edu.wpi.first.wpilibj.Timer;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.StatusCode;
@@ -35,6 +36,8 @@ public class Feeder implements SubsystemBase {
     TalonFXConfiguration feederConfigs = new TalonFXConfiguration();
     RobotState robotState;
 
+    Timer rumble = new Timer();
+
     public Feeder(RobotState robotState) { 
         this.robotState = robotState;
         constants = robotState.getConstants().getFeederConstants();
@@ -61,6 +64,7 @@ public class Feeder implements SubsystemBase {
            if(!feederStatus.isOK()) {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
+        rumble.start();
     }
 
 
@@ -82,7 +86,7 @@ public class Feeder implements SubsystemBase {
     }
     
     @Override
-    public void enabled(RobotCommander commander){
+    public void teleop(RobotCommander commander){
         boolean getFeeder = commander.getFeeder();
         boolean setShoot = commander.setShoot();
         // feeder.setControl(Out);
@@ -97,9 +101,17 @@ public class Feeder implements SubsystemBase {
         if (!hasRing && sensorFeeder.get()) {
             hasRing = true;
             feeder.setPosition(0);
+            rumble.reset();
         } else if (hasRing && !sensorFeeder.get()) {
             hasRing = false;
         }
+
+        if (rumble.get() < 0.55) {
+            robotState.setDriverRumble(true);
+        } else {
+            robotState.setDriverRumble(false);
+        }
+        commander.driverRumble();
 
         if (commander.getFeeder() && !commander.setShoot() && commander.armCommanded() != ArmCommanded.handoff) {
             
@@ -128,7 +140,7 @@ public class Feeder implements SubsystemBase {
     }
         
     @Override
-    public void disabled() {
+    public void cameraLights() {
         feeder.stopMotor();
         feeder.setNeutralMode(NeutralModeValue.Brake);
     }

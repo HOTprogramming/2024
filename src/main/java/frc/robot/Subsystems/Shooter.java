@@ -26,12 +26,6 @@ public class Shooter implements SubsystemBase {
     VelocityVoltage rightVoltageVelocity;
     VelocityTorqueCurrentFOC leftTorqueCurrentFOC;
     VelocityTorqueCurrentFOC rightTorqueCurrentFOC;
-    double leftHighSpeed = 61.6;
-    double rightHighSpeed = 50;
-    double leftSlowSpeed = 24;
-    double rightSlowSpeed = 24;
-    double leftIdleSpeed = 33;
-    double rightIdleSpeed = 33;
     boolean isShooting = false;
     
     ConstantsBase.Shooter constants;
@@ -112,9 +106,9 @@ public class Shooter implements SubsystemBase {
     @Override
     public void updateState() {
         if (Math.abs(leftTorqueCurrentFOC.Velocity - leftFlywheel.getVelocity().getValue()) < 10 && 
-                leftTorqueCurrentFOC.Velocity > leftSlowSpeed && 
+                leftTorqueCurrentFOC.Velocity > (constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0) && 
                 Math.abs(rightTorqueCurrentFOC.Velocity - rightFlywheel.getVelocity().getValue()) < 10 && 
-                rightTorqueCurrentFOC.Velocity > rightSlowSpeed) {
+                rightTorqueCurrentFOC.Velocity > (constants.RIGHT_FLYWHEEL_SLOW_RPM / 60.0)) {
 
             robotState.setShooterOn(true);
             SmartDashboard.putBoolean("Shooter_on", true);
@@ -127,8 +121,8 @@ public class Shooter implements SubsystemBase {
         shooterPosition.refresh();
         robotState.setShooterPos(leftFlywheel.getPosition().getValueAsDouble());
 
-        SmartDashboard.putNumber("Shooter_Left target speed", leftHighSpeed * 60);
-        SmartDashboard.putNumber("Shooter_right target speed", rightHighSpeed * 60);
+        SmartDashboard.putNumber("Shooter_Left target speed", constants.LEFT_FLYWHEEL_TARGET_RPM);
+        SmartDashboard.putNumber("Shooter_right target speed", constants.RIGHT_FLYWHEEL_TARGET_RPM);
         SmartDashboard.putNumber("Shooter_Left speed RPM", leftFlywheel.getVelocity().getValueAsDouble() * 60);
         SmartDashboard.putNumber("Shooter_Right speed RPM", rightFlywheel.getVelocity().getValueAsDouble() * 60);
         SmartDashboard.putNumber("Shooter_ShootVolt", leftFlywheel.getMotorVoltage().getValue());
@@ -137,13 +131,13 @@ public class Shooter implements SubsystemBase {
     }
 
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
 
         shooterPosition.refresh();
 
         if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton) {
-             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftHighSpeed));
-             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightHighSpeed));
+             leftFlywheel.setControl(leftVoltageVelocity.withVelocity((constants.LEFT_FLYWHEEL_TARGET_RPM / 60.0)));
+             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_TARGET_RPM / 60.0)).withFeedForward(20.0));
         }
 
         // } else if (commander.armCommanded() == ArmCommanded.trap && robotState.getShooterOnAmpTrap()){
@@ -152,17 +146,25 @@ public class Shooter implements SubsystemBase {
             
         // }
         else if (commander.armCommanded() == ArmCommanded.zero){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftIdleSpeed));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightIdleSpeed));
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_IDLE_RPM / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_IDLE_RPM / 60.0)));
         }
         else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getShooterOnAmpTrap()){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(leftSlowSpeed));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(rightSlowSpeed));
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_SLOW_RPM / 60.0)));
         }
         else if (commander.armCommanded() == ArmCommanded.preload){
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity(42));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity(42));
+            leftFlywheel.setControl(leftVoltageVelocity.withVelocity((constants.RIGHT_FLYWHEEL_PRELOAD_RPM / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_PRELOAD_RPM / 60.0)).withFeedForward(20.0));
         }
+        else if (commander.armCommanded() == ArmCommanded.hailMary) {
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((3700.0 / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((2700.0 / 60.0)));
+        } else if (commander.armCommanded() == ArmCommanded.amp) {
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_SLOW_RPM / 60.0)));
+        
+        } 
         else {
             leftFlywheel.setVoltage(0);
             rightFlywheel.setVoltage(0);
@@ -177,7 +179,7 @@ public class Shooter implements SubsystemBase {
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
     }
 
     @Override

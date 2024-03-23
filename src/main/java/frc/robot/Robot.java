@@ -49,9 +49,18 @@ public class Robot extends TimedRobot {
   private Right4Note right4Note;
   private Center4NoteBlue center4NoteBlue;
   private Right4NoteBlue right4NoteBlue;
+  private AndysAuton andysAuton;
+  private AmpSideBlue ampSideBlue;
+  private AmpSideRed ampSideRed;
+  private BlueOppositeAmp blueOppositeAmp;
+  private RedOppositeAmp redOppositeAmp;
+
+  private FourRedOppositeAmp fourRedOppositeAmp;
+  private FourBlueOppositeAmp fourBlueOppositeAmp;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
+  private final SendableChooser<String> noteSelector = new SendableChooser<>();
 
   @Override
   public void robotInit() {
@@ -82,17 +91,35 @@ public class Robot extends TimedRobot {
     right4Note = new Right4Note(robotState);
     center4NoteBlue = new Center4NoteBlue(robotState);
     right4NoteBlue = new Right4NoteBlue(robotState);
+    andysAuton = new AndysAuton(robotState);
+    ampSideBlue = new AmpSideBlue(robotState);
+    ampSideRed = new AmpSideRed(robotState);
+    blueOppositeAmp = new BlueOppositeAmp(robotState);
+    redOppositeAmp = new RedOppositeAmp(robotState);
+    fourBlueOppositeAmp = new FourBlueOppositeAmp(robotState);
+    fourRedOppositeAmp = new FourRedOppositeAmp(robotState);
+    
 
     newAuto = new NewAuto(robotState);
 
+    noteSelector.setDefaultOption("1 then 2", "12");
+    noteSelector.setDefaultOption("2 then 1", "21");
+
+      Shuffleboard.getTab("Competition")
+      .add("Note Selector", noteSelector)
+      .withWidget(BuiltInWidgets.kComboBoxChooser)
+      .withSize(2, 2);
+
     autoSelector.setDefaultOption("Center", "center");
     autoSelector.addOption("Amp", "amp");
-
+    autoSelector.addOption("Source 3", "source");
+    autoSelector.addOption("Source 4", "source4");
 
       Shuffleboard.getTab("Competition")
       .add("Auto Selector", autoSelector)
       .withWidget(BuiltInWidgets.kComboBoxChooser)
       .withSize(2, 2);
+
 
 
     arm.armInit();
@@ -117,17 +144,28 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     shooter = new Shooter(robotState, 60, 60);
     robotState.setAlliance(DriverStation.getAlliance().get());
-    // robotState.setAlliance(Alliance.Blue);
     String selectedAuto = autoSelector.getSelected();
+    
+    String selectedNote = noteSelector.getSelected();
+
+    robotState.setOneNoteFirst(selectedNote.equals("12"));
 
     if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(right4NoteBlue);
+      autonCommander.setAuto(ampSideBlue);
     } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(center4NoteBlue);
     } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(right4Note);
+      autonCommander.setAuto(ampSideRed);
     } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(center4Note);
+    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(redOppositeAmp);
+    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(blueOppositeAmp);
+    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(fourBlueOppositeAmp);
+    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(fourRedOppositeAmp);
     }
 
     drivetrain.init(autonCommander);
@@ -139,27 +177,28 @@ public class Robot extends TimedRobot {
     climber.reset();
     extension.reset();
 
-    // drivetrain.autoLimits();
+    drivetrain.autoLimits();
   }
 
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
-    shooter.enabled(autonCommander);
-    drivetrain.enabled(autonCommander);
-    arm.enabled(autonCommander);
-    intake.enabled(autonCommander);
-    feeder.enabled(autonCommander);
+    shooter.teleop(autonCommander);
+    drivetrain.teleop(autonCommander);
+    arm.teleop(autonCommander);
+    intake.teleop(autonCommander);
+    feeder.teleop(autonCommander);
     
-    lights.enabled(autonCommander);
-    climber.enabled(autonCommander);   
-    extension.enabled(autonCommander);
+    lights.cameraLights();
+    climber.teleop(autonCommander);   
+    extension.teleop(autonCommander);
   }
 
   @Override
   public void teleopInit() {
     shooter = new Shooter(robotState, 55, 55);
     robotState.setAlliance(DriverStation.getAlliance().get());
+    robotState.setAutonHintXPos(-1);
     shooter.reset();
     drivetrain.reset();
     arm.reset();
@@ -169,36 +208,36 @@ public class Robot extends TimedRobot {
     climber.reset();
     climber.init(teleopCommander);
     extension.reset();
-    // drivetrain.teleLimits();
+    drivetrain.teleLimits();
   }
 
   @Override
   public void teleopPeriodic() {
-    shooter.enabled(teleopCommander);
-    drivetrain.enabled(teleopCommander);
-    arm.enabled(teleopCommander);
-    intake.enabled(teleopCommander);
-    feeder.enabled(teleopCommander);
-    lights.enabled(teleopCommander);
-    climber.enabled(teleopCommander);
-    extension.enabled(teleopCommander);
+    shooter.teleop(teleopCommander);
+    drivetrain.teleop(teleopCommander);
+    arm.teleop(teleopCommander);
+    intake.teleop(teleopCommander);
+    feeder.teleop(teleopCommander);
+    lights.teleop(teleopCommander);
+    climber.teleop(teleopCommander);
+    extension.teleop(teleopCommander);
   }
 
   @Override
   public void disabledInit() {
-    shooter.disabled();
-    drivetrain.disabled();
-    arm.disabled();
-    feeder.disabled();
-    intake.disabled();
-    lights.disabled();
-    climber.disabled();
-    extension.disabled();
+    shooter.cameraLights();
+    drivetrain.cameraLights();
+    arm.cameraLights();
+    feeder.cameraLights();
+    intake.cameraLights();
+    lights.cameraLights();
+    climber.cameraLights();
+    extension.cameraLights();
   }
 
   @Override
   public void disabledPeriodic() {
-    lights.disabled();
+    lights.cameraLights();
   }
 
   @Override

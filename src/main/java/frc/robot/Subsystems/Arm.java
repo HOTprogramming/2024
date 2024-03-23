@@ -1,14 +1,8 @@
 package frc.robot.Subsystems;
 
-import static frc.robot.Constants.ArmConstants.*;
-
-import frc.robot.RobotCommander;
-import frc.robot.RobotState;
-import frc.robot.ShotMap;
-import frc.robot.ConstantsFolder.ConstantsBase;
-
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -16,29 +10,16 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.ctre.phoenix6.sim.TalonFXSimState;
 
-import frc.robot.utils.Interpolation.InterpolatingDouble;
-import frc.robot.utils.Interpolation.InterpolatingTreeMap;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotCommander;
+import frc.robot.RobotState;
+import frc.robot.ShotMap;
+import frc.robot.ConstantsFolder.ConstantsBase;
 
 public class Arm implements SubsystemBase {
 
@@ -75,6 +56,7 @@ public enum ArmCommanded{
   trap,
   trap2,
   handoff,
+  hailMary,
   trapZero,
   zero,
   auton,
@@ -150,6 +132,8 @@ public Arm(RobotState robotState) {
     if (!armStatus.isOK()) {
       System.out.println("Could not configure device. Error: " + armStatus.toString());
     }
+
+    robotState.setAutonHintXPos(-1);
 }  
 
     public void updateState(){
@@ -170,7 +154,7 @@ public Arm(RobotState robotState) {
       SmartDashboard.putNumber("armCommandedPosition", commandedPosition);
     }
 
-    public void enabled(RobotCommander commander){
+    public void teleop(RobotCommander commander){
 
       armPosition.refresh(); 
       armVelocity.refresh();
@@ -206,36 +190,45 @@ public Arm(RobotState robotState) {
 
       }
       else if (commander.armCommanded() == ArmCommanded.amp){
-        commandedPosition = constants.AMP/360.0;
+        commandedPosition = 135.175/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if(commander.climberUp()){
-        commandedPosition = 168/360.0;
+        commandedPosition = 171.4/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.handoff){
         if(commander.climberUp()){
-          commandedPosition = 164/360.0;
+          commandedPosition = 171.4/360.0;
           armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
         }
         else{
         commandedPosition = constants.HANDOFF/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
         }
+      } else if (commander.armCommanded() == ArmCommanded.hailMary){
+        commandedPosition = constants.HAILMARY/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
         commandedPosition = (constants.PROTECT + 1.5)/360.0; // commandedPosition = 120.25/360.0
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){
-        commandedPosition = 143/360.0;
-        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        // commandedPosition = 143/360.0;
+        // armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+        commandedPosition = shotMap.calcShotMap();
+        SmartDashboard.putNumber("Arm_ShotmapPose", commandedPosition);
+        if(commandedPosition >= 95.0){
+        armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
+        }
       }
       else{
         armMotor.setVoltage(0);
       }
+
     }
-    public void disabled(){
+    public void cameraLights(){
         armMotor.stopMotor();
     }
     public void reset(){

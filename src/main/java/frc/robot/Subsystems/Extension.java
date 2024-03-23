@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -41,12 +42,14 @@ StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
 VictorSPX spitter;
-double fullyExtended = 2.17;
-double fullyExtendedAmp = 1.2;
+double fullyExtended = 2.16;
+double fullyExtendedAmp = 1.08;
 double middlePoint = 0.6;
 double extensionZero = 0;
 double initialShooterPos;
 double currentShooterPos;
+double ampShooterPose = 0;
+double ampCurrentShooterPose = 0;
 double extensionTimer;
 double extendedCommandedPosition;
 
@@ -118,6 +121,13 @@ public Extension(RobotState robotState) {
     eSlot0.kV = constants.EKV;
     eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
+    Slot1Configs eSlot1 = ecfg.Slot1;
+    eSlot1.kP = 45;
+    eSlot1.kI = 0.0;
+    eSlot1.kD = 0;
+    eSlot1.kV = 0.0;
+    eSlot1.kS = 0.0; // Approximately 0.25V to get the mechanism moving
+
     FeedbackConfigs fdb = ecfg.Feedback;
     fdb.SensorToMechanismRatio = 12.8;
     ecfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -131,6 +141,7 @@ public Extension(RobotState robotState) {
       System.out.println("Could not configure device. Error: " + status.toString());
     }
     extendMotor.setPosition(0);
+    
     spitter.setNeutralMode(NeutralMode.Brake);
     returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
     extensionTimer = 0;
@@ -145,6 +156,8 @@ public Extension(RobotState robotState) {
 
         robotState.setExtendPos(extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionPos", extendPosition.getValueAsDouble());
+        SmartDashboard.putNumber("extensionzero", 0);
+        SmartDashboard.putNumber("extensiontrap", fullyExtended);
         SmartDashboard.putString("extensionenum", getExtensionPhaseTrap().toString());
     }
 
@@ -164,13 +177,13 @@ public Extension(RobotState robotState) {
 
 
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         extendPosition.refresh(); 
         extendVelocity.refresh();
         
         if(commander.armCommanded() == ArmCommanded.handoff){
             SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
-            if(extensionTimer < 75){
+            if(extensionTimer < 87){
             returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
             SmartDashboard.putNumber("firststage", 1);
             }
@@ -198,10 +211,12 @@ public Extension(RobotState robotState) {
 
             if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
                 //command extension to middle position
+                if(extensionTimer>12){
                 robotState.setShooterOnAmpTrap(true);
                 robotState.setFeederOnAmpTrap(false);
                 extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
                 spitter.set(ControlMode.PercentOutput, 0.8);
+                }
                 SmartDashboard.putNumber("secondstage", 1);
                 extensionTimer++;
             }
@@ -233,14 +248,6 @@ public Extension(RobotState robotState) {
             }
         }
 
-        else if(commander.armCommanded() == ArmCommanded.amp){
-            SmartDashboard.putNumber("here", 1);
-            extendedCommandedPosition = fullyExtendedAmp;
-            spitter.set(ControlMode.PercentOutput, 0);
-            extendMotor.setControl(extendMagic.withPosition(fullyExtendedAmp).withSlot(0));
-            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
-        }
-
         else if(commander.armCommanded() == ArmCommanded.trap){
             SmartDashboard.putNumber("here", 1);
             extendedCommandedPosition = fullyExtended;
@@ -251,12 +258,21 @@ public Extension(RobotState robotState) {
 
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+            if (commander.extentionOveride()) {
+                extendMotor.set(-0.2);
 
-            if(extendPosition.getValueAsDouble() > 0.2)
-            extendMotor.setControl(extendMagic.withPosition(0.19).withSlot(0));
+            } else if(extendPosition.getValueAsDouble() > 0.30) { 
+                extendMotor.set(-0.30);
 
-            else{
-            extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));    
+            } else if (extendPosition.getValueAsDouble() > 0.1){
+                
+                extendMotor.set(-0.15);
+            
+            } else if (extendPosition.getValueAsDouble() > 0.0045){
+                extendMotor.set(-0.15);
+
+            } else {
+                extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
             }
 
             if (!commander.getIntake()) {
@@ -266,7 +282,9 @@ public Extension(RobotState robotState) {
             extensionTimer = 0;
         }
 
-        if(commander.setShoot()){
+        if(commander.setShoot() && (commander.armCommanded() == ArmCommanded.amp || 
+                                    commander.armCommanded() == ArmCommanded.handoff ||
+                                    commander.armCommanded() == ArmCommanded.trap)){
             spitter.set(ControlMode.PercentOutput, -0.8);
         }
 
@@ -276,11 +294,30 @@ public Extension(RobotState robotState) {
             spitter.set(ControlMode.PercentOutput, -0.3);
         } 
 
+        if (commander.extentionZero()) {
+            extendMotor.setPosition(-0.06);
+        }
+
+        if (commander.armCommanded() == ArmCommanded.amp) {
+            extendMotor.setControl(extendMagic.withPosition(0.89).withSlot(0));
+            ampCurrentShooterPose = robotState.getShooterPos();
+
+            if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose < 7)) {
+                spitter.set(ControlMode.PercentOutput, 1);
+            } else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7)) { // could be implied
+                spitter.set(ControlMode.PercentOutput, -1);
+                
+            } else {
+                ampShooterPose = robotState.getShooterPos();
+                spitter.set(ControlMode.PercentOutput, 1);
+
+            }
+        }
 
     }
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
        extendMotor.stopMotor();
     }
 

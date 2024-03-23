@@ -29,13 +29,13 @@ public class CompBotConstants extends ConstantsBase {
         public Camera() {
             super();
             cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
-                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
                                                        new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120.38)),
                                                        VecBuilder.fill(4, 4, 8),
                                                        VecBuilder.fill(0.5, 0.5, 1)));
 
             cameraConstants.put(CameraPositions.RIGHT, new CameraConstant("right_camera",
-                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11.49), Units.inchesToMeters(16.74)),
+                                                       new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(-11.49), Units.inchesToMeters(16.74)),
                                                        new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120.38)),
                                                        VecBuilder.fill(4, 4, 8),
                                                        VecBuilder.fill(0.5, 0.5, 1)));
@@ -56,9 +56,9 @@ public class CompBotConstants extends ConstantsBase {
     public class Feeder extends ConstantsBase.Feeder {
         public Feeder() {
          FEEDER_CAN = 13;
-         FEEDERSPEED = 95;
+         FEEDERSPEED = 90;
          FEEDERSPEED2 = 95;
-         DESIREDENCODERED = 2;
+         DESIREDENCODERED = 0;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
         }
@@ -67,15 +67,15 @@ public class CompBotConstants extends ConstantsBase {
         public Drivetrain() {
             ROBOT_LENGTH_INCHES = 20.25;
             ROBOT_WITDTH_INCHES = 20.25;
-            MAX_VELOCITY_METERS = 6.37032; // from SDS
+            MAX_VELOCITY_METERS = 7.37032; // from SDS
             // public MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / Math.hypot(Units.inchesToMeters(ROBOT_LENGTH_INCHES / 2), Units.inchesToMeters(ROBOT_WITDTH_INCHES / 2));
             // public MAX_ANGULAR_VELOCITY_RADS = Math.PI * 2; // fix latr 0.7274007458
-            MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / 0.7274007458;
+            MAX_ANGULAR_VELOCITY_RADS = MAX_VELOCITY_METERS / (0.7274007458 * .8);
 
             // WCS Docs X3 11 https://docs.wcproducts.com/wcp-swervex/general-info/ratio-options 
             // SWERVE BUILDER
             SWERVE_STEER_GAINS = new Slot0Configs()
-            .withKP(400).withKI(0).withKD(8)
+            .withKP(100).withKI(0).withKD(.2) // 400, 0, 8 , 0 ,1.5, 0
             .withKS(0).withKV(1.5).withKA(0);
 
             SWERVE_DRIVE_GAINS = new Slot0Configs()
@@ -88,17 +88,15 @@ public class CompBotConstants extends ConstantsBase {
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
             } else {
-                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+                STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
                 DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
             }
 
-
-
-            WHEEL_SLIP_CURRENT = 300.0; // *tune later
+            WHEEL_SLIP_CURRENT = 650.0; // *tune later
 
             // Meters per second theroretical max speed at 12 volts
-            FREE_SPEED_12V = 6.37032;
+            FREE_SPEED_12V = 7.37032;
 
             // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
             // This may need to be tuned to your individual robot
@@ -221,6 +219,8 @@ public class CompBotConstants extends ConstantsBase {
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
     
+            RIGHT_FLYWHEEL_TARGET_RPM = 4000;
+            LEFT_FLYWHEEL_TARGET_RPM = 6000;
 
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
@@ -235,11 +235,11 @@ public class CompBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
     
-            FLYWHEEL_KP = 35.0; // 22.0
+            FLYWHEEL_KP = 50.0; // 22.0
             FLYWHEEL_KI = 0.15; // 0.0
             FLYWHEEL_KD = 0.0; // 2.0
-            LEFT_FLYWHEEL_KV = .130; //.133
-            LEFT_FLYWHEEL_KS = 0.8; // .8 | .384
+            LEFT_FLYWHEEL_KV = .60; //.133
+            LEFT_FLYWHEEL_KS = 1.2; // .8 | .384
 
 
             RFLYWHEEL_KP = 30.0; // 16.0
@@ -247,6 +247,8 @@ public class CompBotConstants extends ConstantsBase {
             RFLYWHEEL_KD = 0.0; // 4.0
             RIGHT_FLYWHEEL_KV = .138; //.138
             RIGHT_FLYWHEEL_KS = 0.8; // 0.8 | .38
+
+
 
 
         }
@@ -263,53 +265,68 @@ public class CompBotConstants extends ConstantsBase {
         public Arm(){
             CANCODER_CAN = 44;
             ARM_CAN = 9;
-            CRUISEVELOCITY = 500;
-            ACCELERATION = 420;//350
+            CRUISEVELOCITY = 600; // 800
+            ACCELERATION = 350;//420
             JERK = 1000;
-            ARMKP = 200;
-            ARMKI = 20;
+            ARMKP = 320;
+            ARMKI = 0;
             ARMKD = 0;//4
             ARMKV = 0.8;
             ARMKS = 0.4;
-            ZERO = 95.0;
+            ZERO = 95.7;
             SHOOT = 118.0;
-            TRAP = 141.0;
+            TRAP = 144.0;
             CLOSE = 150.0;
             PROTECT = 125.25;
-            AMP = 133.3; //was 140.3;
+            AMP = 139.992; //was 140.3;
             HANDOFF = 168;
-            ARMOFFSET = 0.098;
-            
-            BLUEDISTANCE1 = 1.16;
-            BLUEDISTANCE2 = 2.5;
-            BLUEDISTANCE3 = 4;
-            BLUEDISTANCE4 = 5.3;
-            BLUEDISTANCE5 = 6.5;
-            BLUEANGLE1 = 150.0;
-            BLUEANGLE2 = 129.0;
-            BLUEANGLE3 = 119.0;
-            BLUEANGLE4 = 116.3;   
-            BLUEANGLE5 = 115.3;
 
-            REDDISTANCE1 = 1.16;
-            REDDISTANCE2 = 2.5;
-            REDDISTANCE3 = 4;
-            REDDISTANCE4 = 5.3;
-            REDDISTANCE5 = 6.5;
-            REDANGLE1 = 150.0;
-            REDANGLE2 = 129.0;
-            REDANGLE3 = 119.0;
-            REDANGLE4 = 116.0;   
-            REDANGLE5 = 115.2;
+            ARMOFFSET = -321.684 / 360.0; //-0.4895 rotations, now degrees 
+            
+
+            BLUEDISTANCE1 = 1.21; // 0 in
+            BLUEDISTANCE2 = 2.3; // 43 in 
+            BLUEDISTANCE3 = 3.46; // 93 in 
+            BLUEDISTANCE4 = 4.83; // 148 in 
+            BLUEDISTANCE5 = 6.46; // 17ft
+            BLUEDISTANCE6 = 8.2;//23ft 1in
+            BLUEANGLE1 = 148.0;
+            BLUEANGLE2 = 133.4;
+            BLUEANGLE3 = 125.5;
+            BLUEANGLE4 = 122.0;   
+            BLUEANGLE5 = 119.9;
+            BLUEANGLE6 = 117.8; 
+
+            // BLUEANGLE1 = 148.0;
+            // BLUEANGLE2 = 133.4;
+            // BLUEANGLE3 = 125.5;
+            // BLUEANGLE4 = 121.0;   
+            // BLUEANGLE5 = 119.9;
+            // BLUEANGLE6 = 117.8; 
+            
+            
+            
+            REDDISTANCE1 = 1.26; // 0 in6;
+            REDDISTANCE2 = 2.4; // 43 in;
+            REDDISTANCE3 = 3.64; // 93 in  
+            REDDISTANCE4 = 4.95; // 148 ;
+            REDDISTANCE5 = 6.46; // 17ft;
+            REDDISTANCE6 = 8.2;//23ft 1i;
+            REDANGLE1 = 148.0;
+            REDANGLE2 = 133.4;
+            REDANGLE3 = 125.5;
+            REDANGLE4 = 121.63;   
+            REDANGLE5 = 119.9;
+            REDANGLE6 = 117.8;
         }
     }
 
     public class Extension extends ConstantsBase.Extension{
         public Extension(){
-            ECRUISEVELOCITY = 15;
+            ECRUISEVELOCITY = 25;
             EACCELERATION = 15;
             EJERK = 50;
-            EKP = 30;
+            EKP = 80;
             EKI = 0.5;
             EKD = 0;
             EKV = 0.12;

@@ -44,7 +44,7 @@ public class Climber implements SubsystemBase {
     }
     
     @Override
-    public void enabled(RobotCommander commander) {
+    public void teleop(RobotCommander commander) {
         // if (commander.climberUp()) {
         //     climberMotor.setControl(climberMagic.withPosition(constants.CLIMBERPOS).withSlot(0)); //125   
         // } else if (commander.climberDown() && climberPosition.getValueAsDouble() > 0) {
@@ -53,14 +53,17 @@ public class Climber implements SubsystemBase {
         //     climberMotor.setVoltage(0);
         // }
 
-        if ((commander.climberUp() && climberPosition.getValueAsDouble() < 283) || (commander.climberUp() && commander.climberOverride()) ) {
-            climberMotor.setVoltage(8);    
-        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() > 0) || (commander.climberDown() && commander.climberOverride())) {
-            climberMotor.setVoltage(-8);
+        if ((commander.climberUp() && climberPosition.getValueAsDouble() >= -113.5) || (commander.climberUp() && commander.climberOverride()) ) {
+            climberMotor.setVoltage(-10);  
+          
+        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() <= -70.2)) {
+            climberMotor.setVoltage(8);
+        } else if ((commander.climberDown() && climberPosition.getValueAsDouble() <= 10.7) || (commander.climberDown() && commander.climberOverride())) {
+            climberMotor.setVoltage(12);
         } else {
             climberMotor.setVoltage(0);
         }
-
+ 
 
   
         SmartDashboard.putBoolean("ClimbUp", commander.climberUp());
@@ -69,7 +72,7 @@ public class Climber implements SubsystemBase {
     
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
     }
 
     @Override

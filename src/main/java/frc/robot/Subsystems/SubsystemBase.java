@@ -18,12 +18,12 @@ public interface SubsystemBase {
      * Called in any periodic where the subsystem is enabled (must update robot.java)
      * @param commander the current commander, should not matter at a subsystem level
      */
-    public void enabled(RobotCommander commander);
+    public void teleop(RobotCommander commander);
 
     /**
      * Called in disabled init or periodic. Should set motor controll to off or breakmode
      */
-    public void disabled();
+    public void cameraLights();
 
     public void reset();
 }

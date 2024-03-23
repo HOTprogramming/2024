@@ -4,6 +4,9 @@ import frc.robot.Autons.AutonBase;
 import frc.robot.Subsystems.Camera;
 import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.RotationSequence;
+
+import org.opencv.objdetect.FaceDetectorYN;
+
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -192,4 +195,22 @@ public class AutonCommander implements RobotCommander {
     public boolean getLockNote(){
         return false;
     }
+
+    @Override
+    public boolean getLockAmpCommand() {
+        return false;
+    }
+
+    @Override
+    public void driverRumble() {}
+
+    @Override
+    public boolean extentionOveride() {
+        return false;
+    }
+
+    @Override
+    public boolean extentionZero() {
+        return false;
+    }   
 }

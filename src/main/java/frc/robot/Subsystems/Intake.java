@@ -79,7 +79,7 @@ public class Intake implements SubsystemBase {
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        slurperCancoder.configMagnetOffset(-278);
+        slurperCancoder.configMagnetOffset(15.0);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -164,22 +164,22 @@ public class Intake implements SubsystemBase {
     }
     
     @Override
-    public void enabled(RobotCommander commander){
+    public void teleop(RobotCommander commander){
         SmartDashboard.putNumber("slurper target angle", constants.SLURPER_DOWN_ANGLE);
         // SmartDashboard.putNumber("SlurpDesired", );
       
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
-        if (commander.getIntake() && !robotState.getBeamBreak()) { // left trigger
+        if(commander.intakeOut()){
+            intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+        } else if (commander.getIntake() && !robotState.getBeamBreak()) { // left trigger
             slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0); 
             intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
             slurperSpin.set(ControlMode.PercentOutput, .8);
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 160.0 / 360.0 * 4096.0);
 
             SmartDashboard.putString("Test If running", "running");
-        } else if(commander.intakeOut()){
-            intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
             
         }else {
             SmartDashboard.putBoolean("Pulse_check", false); 
@@ -206,7 +206,7 @@ public class Intake implements SubsystemBase {
     
 
     @Override
-    public void disabled() {
+    public void cameraLights() {
         
         intake.stopMotor();
     }
