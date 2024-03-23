@@ -63,6 +63,7 @@ public enum ArmCommanded{
   preload,
   spitOut,
   spitOut2,
+  sourceAuto,
   none;
 }
 
@@ -179,12 +180,10 @@ public Arm(RobotState robotState) {
         else if(commander.armCommanded() == ArmCommanded.trap){
         commandedPosition = constants.TRAP/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-
       }
       else if (commander.armCommanded() == ArmCommanded.close){
         commandedPosition = constants.CLOSE/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-
       }
       else if (commander.armCommanded() == ArmCommanded.protect){
         commandedPosition = constants.PROTECT/360.0;
@@ -192,6 +191,10 @@ public Arm(RobotState robotState) {
       }
       else if (commander.armCommanded() == ArmCommanded.spitOut || commander.armCommanded() == ArmCommanded.spitOut2){
         commandedPosition = 95.0/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.sourceAuto){
+        commandedPosition = 114.0/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.amp || robotState.getArmOnAmpRetract()){
