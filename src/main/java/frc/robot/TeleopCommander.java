@@ -310,18 +310,7 @@ public class TeleopCommander implements RobotCommander {
         return driver.getBButton();    
     }
 
-    @Override
-    public boolean noteDetected() {
-        // return camera.noteDetected();
+    public boolean getLockNote() {
         return false;
     }
-
-    @Override
-    public Pose2d getNotePose() {
-        // return robotState.getDrivePose().plus(camera.notePose());
-        return new Pose2d();
-    }
 }
-
-
-

@@ -51,6 +51,7 @@ public class RobotState {
     private boolean noTag;
 
     private boolean noteDetected;
+    private double noteDistance;
  
     private boolean feederStop = false;
  //   private armDesiredPos stateArmPos;
@@ -252,5 +253,12 @@ public class RobotState {
     }
     public void setNotePose(Transform2d transform){
         notePose = drivePose.transformBy(transform);
+    }
+
+    public double getNoteDistance(){
+        return noteDistance;
+    }
+    public void setNoteDistance(double doub){
+        noteDistance = doub;
     }
 }

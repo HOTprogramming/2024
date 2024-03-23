@@ -303,7 +303,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getPidgeonReset()) {
             m_pigeon2.setYaw(0);
-            
         }
 
         if (commander.getLockParallel()) {
@@ -314,6 +313,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(0), true);
 
             }
+        }
+
+        if (commander.getLockNote()) {
+            autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getNotePose()), true);
         }
 
         if (commander.getAngleSnapCommand() != -1) {
@@ -328,10 +331,6 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                 autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
             } 
         }
-
-        // if (commander.getLockRingCommand()) {
-        //     autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getVisionRingTranslation), true);
-        // }
 
         if (commander.getResetRobotPose()) {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));

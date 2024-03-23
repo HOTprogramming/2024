@@ -189,14 +189,7 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
-    public boolean noteDetected() {
-       // return camera.noteDetected();
-       return false;
-    }
-
-    @Override
-    public Pose2d getNotePose() {
-        return new Pose2d();
-        //return robotState.getDrivePose().plus(camera.notePose());
+    public boolean getLockNote(){
+        return false;
     }
 }
