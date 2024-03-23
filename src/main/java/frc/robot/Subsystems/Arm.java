@@ -190,16 +190,16 @@ public Arm(RobotState robotState) {
 
       }
       else if (commander.armCommanded() == ArmCommanded.amp){
-        commandedPosition = constants.AMP/360.0;
+        commandedPosition = 135.175/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if(commander.climberUp()){
-        commandedPosition = 170.2/360.0;
+        commandedPosition = 171.4/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.handoff){
         if(commander.climberUp()){
-          commandedPosition = 164/360.0;
+          commandedPosition = 171.4/360.0;
           armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
         }
         else{
@@ -226,6 +226,7 @@ public Arm(RobotState robotState) {
       else{
         armMotor.setVoltage(0);
       }
+
     }
     public void cameraLights(){
         armMotor.stopMotor();

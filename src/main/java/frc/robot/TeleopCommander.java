@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 //import frc.robot.Subsystems.Arm.armDesiredPos;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autons.AutonBase;
@@ -36,6 +37,17 @@ public class TeleopCommander implements RobotCommander {
 
     }
 
+    public void driverRumble() {
+        if (robotState.getDriverRumble()) {
+            driver.setRumble(RumbleType.kBothRumble, 0.7);
+
+        } else {
+            driver.setRumble(RumbleType.kBothRumble, 0.0);
+
+        }
+    }
+
+    @Override
     public AutonBase getAuto(){
         return null;
     }
@@ -159,15 +171,11 @@ public class TeleopCommander implements RobotCommander {
         if(operator.getLeftTriggerAxis() >= .1 && operator.getAButton() != true && operator.getBButton() != true && operator.getXButton() != true && operator.getYButton() != true){
             return ArmCommanded.shotMap;
         }
-        else if(operator.getXButton()){
-            if (operator.getAButton()){
-                return ArmCommanded.amp;
-            }
-            else if(operator.getBButton()){
+        else if(operator.getLeftBumper() && operator.getRightBumper()){
+            if(operator.getBButton()){
                 return ArmCommanded.trap;
-            }
-            else{
-            return ArmCommanded.handoff;
+            } else {
+                return ArmCommanded.handoff;
             }
         }
         else if (operator.getAButton()){
@@ -184,6 +192,9 @@ public class TeleopCommander implements RobotCommander {
         }
         else if (operator.getLeftBumper()){
             return ArmCommanded.zero;
+        }
+        else if (operator.getXButton()) {
+            return ArmCommanded.amp;
         }
         else{
             return ArmCommanded.none;
@@ -307,12 +318,22 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean getLockParallel() {
-        return driver.getBButton();    
+        return false;    
     }
 
     @Override
     public boolean getLockAmpCommand() {
         return driver.getXButton();
+    }
+
+    @Override
+    public boolean extentionOveride() {
+        return driver.getBButton();
+    }
+
+    @Override
+    public boolean extentionZero() {
+        return driver.getBButtonReleased();
     }
 
 }

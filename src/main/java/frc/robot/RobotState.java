@@ -47,6 +47,8 @@ public class RobotState {
     private boolean oneTag;
     private boolean noTag;
     private double autonHintXPos;
+    private boolean oneFirst;
+    private boolean driverRumble = true;
  
     private boolean feederStop = false;
     private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
@@ -65,6 +67,14 @@ public class RobotState {
 
     public Alliance getAlliance() {
         return alliance;
+    }
+
+    public void setDriverRumble(boolean driverRumble) {
+        this.driverRumble = driverRumble;
+    }
+
+    public boolean getDriverRumble() {
+        return this.driverRumble;
     }
 
 
@@ -253,6 +263,14 @@ public class RobotState {
     
     public Map<CameraPositions, List<PhotonTrackedTarget>> getTargetsSeenByCamera() {
         return targetsSeenByCamera;
+    }
+
+    public void setOneNoteFirst(boolean oneFirst){
+        this.oneFirst = oneFirst;
+    }
+
+    public boolean getOneNoteFirst(){
+        return oneFirst;
     }
 
 }

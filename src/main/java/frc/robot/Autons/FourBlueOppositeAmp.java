@@ -14,7 +14,7 @@ import frc.robot.Subsystems.Arm.ArmCommanded;
 import frc.robot.utils.trajectory.Waypoint;
 
 //red auton
-public class BlueOppositeAmp extends AutonBase {
+public class FourBlueOppositeAmp extends AutonBase {
     // create steps based on desired function
     enum Step {
         start,
@@ -31,19 +31,22 @@ public class BlueOppositeAmp extends AutonBase {
 
     public Step step = Step.start;   
 
-    public BlueOppositeAmp(RobotState robotState) {
+    public FourBlueOppositeAmp(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(1.45, 4.63, Rotation2d.fromDegrees(-70)); //15.15
+        startPose = new Pose2d(1.45, 3.3, Rotation2d.fromDegrees(-60)); //15.15
 
         seedPose = true;
     }
     
     Pose2d ring1 = new Pose2d(8.34, 0.93, Rotation2d.fromDegrees(0));//heading 68 deg
+    Pose2d ring1Intermediary = new Pose2d(6.00, 1.3, Rotation2d.fromDegrees(180));//
     Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));//heading 57 deg
     Pose2d ring2Intermediary = new Pose2d(5.3, 1.9, Rotation2d.fromDegrees(7));//heading 57 deg
     Pose2d ring2 = new Pose2d(8.28, 2.47, Rotation2d.fromDegrees(30));//heading 85 deg
-    Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));
+    Pose2d shoot2 = new Pose2d(1.62, 3.95, Rotation2d.fromDegrees(-48));
+    Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
+    Pose2d ring3 = new Pose2d(2.35, 4.19, Rotation2d.fromDegrees(-30));
 
     @Override
     public void runAuto() {
@@ -54,16 +57,16 @@ public class BlueOppositeAmp extends AutonBase {
             swerveBrake = true; 
             armCommand = ArmCommanded.shotMap;
 
-            if(timer.get() > 0.95 && timer.get() < 1.25){
+            if(timer.get() > 0.75 && timer.get() < 1.1){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
 
-            if (timer.get() >= 1.25){
+            if (timer.get() >= 1.1){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-70)),
+                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-50)),
                         Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
                 runShooter = false;
                 timer.reset();  
@@ -120,7 +123,7 @@ public class BlueOppositeAmp extends AutonBase {
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 trajectoryConfig = new TrajectoryConfig(5, 2.5);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(230)),
+                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(220)),
                             Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(150))));
                 timer.reset();    
                 step = Step.shot2;
@@ -144,11 +147,26 @@ public class BlueOppositeAmp extends AutonBase {
             }
 
             else {
+            trajectoryConfig = new TrajectoryConfig(6, 3);
+            trajectoryGenerator.generate(trajectoryConfig,
+                List.of(Waypoint.fromHolonomicPose(shoot2, Rotation2d.fromDegrees(0)),
+                        Waypoint.fromHolonomicPose(ring3)));
             timer.reset();    
-            runShooter = true;
-            step = Step.end;
+            runShooter = false;
+            step = Step.ring3;
             }
 
+
+        }
+        else if (step == Step.ring3){
+            driving = true;
+            armCommand = ArmCommanded.shotMap;
+            runShooter = true;
+            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
+                driving = false;
+                timer.reset();    
+                step = Step.end;
+            }
 
         }
         else if (step == Step.end){
