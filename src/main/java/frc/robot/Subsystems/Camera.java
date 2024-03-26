@@ -180,7 +180,7 @@ public class Camera implements SubsystemBase {
 
     // docs https://docs.photonvision.org/ 
 
-    boolean frontDetects;
+    boolean frontDetects  = frontCamera.getLatestResult().hasTargets();;
     int frontPipeline;
     double noteX;
     double noteY;
@@ -285,7 +285,7 @@ public class Camera implements SubsystemBase {
     }
 
     private Optional<EstimatedRobotPose> updateCameraMeasurment(CameraPositions key, CameraConstant constant, PhotonCamera camera, DoubleArrayPublisher publisher, PhotonPoseEstimator estimator, double lastEstTimestamp) {
-                
+        
         var visionEst = estimator.update();
         double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
         boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;

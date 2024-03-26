@@ -79,7 +79,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     // Drive controllers
     private static final PIDController xController = new PIDController(10, 0, 0); // 9 .15 .5
     private static final PIDController yController = new PIDController(10, 0, 0); // 8.5 .13 .45
-    private static final PIDController thetaController = new PIDController(0.35, 0.005, 0.01); //FOR AIM TESTING ONLY, originally 10,0,0
+    private static final PIDController thetaController = new PIDController(0.8, 0.0, 0.45); //FOR AIM TESTING ONLY, originally 10,0,0
     
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);

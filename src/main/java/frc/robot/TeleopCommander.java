@@ -23,7 +23,7 @@ public class TeleopCommander implements RobotCommander {
     double armPose;
     // Camera camera = new Camera(robotState);
 
-    double deadbands = 0.2;
+    double deadbands = 0.15;
     double LX;
     double LY;
     double RX;
