@@ -64,6 +64,8 @@ public enum ArmCommanded{
   spitOut,
   spitOut2,
   sourceAuto,
+  sourceAuto2,
+  unPackage,
   none;
 }
 
@@ -175,7 +177,6 @@ public Arm(RobotState robotState) {
        else if (commander.armCommanded() == ArmCommanded.zero) {
          commandedPosition = constants.ZERO/360.0;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-         
       } 
         else if(commander.armCommanded() == ArmCommanded.trap){
         commandedPosition = constants.TRAP/360.0;
@@ -194,7 +195,11 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAuto){
-        commandedPosition = 114.0/360.0;
+        commandedPosition = 123.0/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.sourceAuto2){
+        commandedPosition = 124.0/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.amp || robotState.getArmOnAmpRetract()){
@@ -220,6 +225,10 @@ public Arm(RobotState robotState) {
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
         commandedPosition = (constants.PROTECT + 1.5)/360.0; // commandedPosition = 120.25/360.0
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.unPackage){
+        commandedPosition = 128.8/360.0; // commandedPosition = 120.25/360.0
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){
