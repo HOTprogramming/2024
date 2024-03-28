@@ -172,7 +172,8 @@ public class Robot extends TimedRobot {
     // }
 
     //autonCommander.setAuto(sourceRed);
-    autonCommander.setAuto(sourceBlue);
+    //autonCommander.setAuto(sourceBlue);
+    autonCommander.setAuto(fourBlueOppositeAmp);
 
     drivetrain.init(autonCommander);
     shooter.reset();

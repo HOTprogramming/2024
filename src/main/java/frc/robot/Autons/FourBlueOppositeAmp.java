@@ -46,7 +46,7 @@ public class FourBlueOppositeAmp extends AutonBase {
     Pose2d ring2 = new Pose2d(8.28, 2.47, Rotation2d.fromDegrees(30));//heading 85 deg
     Pose2d shoot2 = new Pose2d(1.62, 3.95, Rotation2d.fromDegrees(-48));
     Pose2d ring3Intermediary = new Pose2d(2, 3.6, Rotation2d.fromDegrees(-10));
-    Pose2d ring3 = new Pose2d(2.35, 4.19, Rotation2d.fromDegrees(-30));
+    Pose2d ring3 = new Pose2d(2.45, 4.19, Rotation2d.fromDegrees(-25));
 
     @Override
     public void runAuto() {
@@ -56,22 +56,24 @@ public class FourBlueOppositeAmp extends AutonBase {
             driving = false;
             swerveBrake = true; 
             armCommand = ArmCommanded.shotMap;
+            unPackage = true;
 
-            if(timer.get() > 0.75 && timer.get() < 1.1){
+            if(timer.get() > 0.70 && timer.get() < 0.90){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
 
-            if (timer.get() >= 1.1){
-            trajectoryConfig = new TrajectoryConfig(6, 3);
+            if (timer.get() >= 0.90){
+            trajectoryConfig = new TrajectoryConfig(7, 4);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-50)),
+                List.of(Waypoint.fromHolonomicPose(startPose),
                         Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
                 runShooter = false;
                 timer.reset();  
                 step = Step.ring1;   
                 runIntake = true;
+                unPackage = false;
             }               
         }
         else if(step == Step.ring1){

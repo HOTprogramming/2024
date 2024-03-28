@@ -57,23 +57,25 @@ public class FourRedOppositeAmp extends AutonBase {
             driving = false;
             swerveBrake = true; 
             armCommand = ArmCommanded.shotMap;
+            unPackage = true;
 
-            if(timer.get() > 0.75 && timer.get() < 1.1){
+            if(timer.get() > 0.70 && timer.get() < 0.90){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
 
-            if (timer.get() >= 1.1){
+            if (timer.get() >= 0.90){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-110)),
+                List.of(Waypoint.fromHolonomicPose(startPose),
                         Waypoint.fromHolonomicPose(ring1Intermediary),
                         Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(180))));
                 runShooter = false;
                 timer.reset();  
                 step = Step.ring1;   
                 runIntake = true;
+                unPackage = false;
             }               
         }
         else if(step == Step.ring1){
