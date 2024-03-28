@@ -49,12 +49,12 @@ public class SourceBlue extends AutonBase {
     Pose2d lobToRing1 = new Pose2d(5.83, 1.319, Rotation2d.fromDegrees(0));
     Pose2d ring1 = new Pose2d(8.1, 0.9, Rotation2d.fromDegrees(0));
     Pose2d lobRing1Ring2 = new Pose2d(6.0, 1.54, Rotation2d.fromDegrees(0));
-    Pose2d ring2 = new Pose2d(8.6, 2.56, Rotation2d.fromDegrees(30));//8.8
+    Pose2d ring2 = new Pose2d(8.7, 2.63, Rotation2d.fromDegrees(0));//8.8
     Pose2d stage = new Pose2d(5.7, 3.88, Rotation2d.fromDegrees(0));
     Pose2d shoot = new Pose2d(3.49, 3.12, Rotation2d.fromDegrees(-33));
-    Pose2d shoot2 = new Pose2d(2.67, 2.93, Rotation2d.fromDegrees(-47.3));
+    Pose2d shoot2 = new Pose2d(2.67, 2.93, Rotation2d.fromDegrees(-46.3));
     Pose2d ring3 = new Pose2d(8.2, 4.20, Rotation2d.fromDegrees(0));//8.5
-    Pose2d firstSpit = new Pose2d(3.9, 1.00, Rotation2d.fromDegrees(-57.5));
+    Pose2d firstSpit = new Pose2d(3.9, 1.00, Rotation2d.fromDegrees(-49.0));
     Pose2d secondSpit = new Pose2d(3.90, 1.58, Rotation2d.fromDegrees(-137.5));
 
     @Override
@@ -80,7 +80,7 @@ public class SourceBlue extends AutonBase {
         }
         else if(step == Step.ring1){ 
 
-            if(timer.get() > 0.5){
+            if(timer.get() > 0.8){
             armCommand = ArmCommanded.spitOut;
             runIntake = true;
             }
@@ -133,6 +133,11 @@ public class SourceBlue extends AutonBase {
         else if(step == Step.beforeShot1){
             driving = true;
             runShooter = false;
+
+            if(robotState.getDrivePose().getX() < 4.5){
+                armCommand = ArmCommanded.shotMap;
+            }
+
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 driving = false;
                 timer.reset();
@@ -180,6 +185,10 @@ public class SourceBlue extends AutonBase {
         }
         else if (step == Step.beforeShot2){
 
+            if(robotState.getDrivePose().getX() < 4.5){
+                armCommand = ArmCommanded.shotMap;
+            }
+
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 runShooter = false;
                 timer.reset();  
@@ -189,12 +198,14 @@ public class SourceBlue extends AutonBase {
             }
         }
         else if (step == Step.shot2){
-            if(timer.get() < 0.2){
-                driving = false;
+            driving = false;
+            armCommand = ArmCommanded.shotMap;
+            if(timer.get() > 0.1 && timer.get() < 0.3){
                 runShooter = true;
-                armCommand = ArmCommanded.shotMap;
             }
+            else if(timer.get()<=0.1){
 
+            }
             else {
                 trajectoryConfig = new TrajectoryConfig(6, 3);
                 trajectoryConfig.setEndVelocity(0);
@@ -204,6 +215,7 @@ public class SourceBlue extends AutonBase {
             timer.reset();
             driving = true;
             runShooter = false;
+            armCommand = ArmCommanded.sourceAuto;
             step = Step.firstSpit;
             }
         }
@@ -216,9 +228,9 @@ public class SourceBlue extends AutonBase {
                 trajectoryGenerator.generate(trajectoryConfig,
                     List.of(Waypoint.fromHolonomicPose(firstSpit),
                             Waypoint.fromHolonomicPose(shoot2)));
-                    timer.reset();  
-                    // step = Step.beforeShot3;
-                    step = Step.beforeShot3;            
+                    timer.reset();
+                    //step = Step.beforeShot3;
+                    step = Step.end;            
                 }
 
         }
@@ -252,9 +264,14 @@ public class SourceBlue extends AutonBase {
      
 
         else if (step == Step.end){
+            if(timer.get() > 0.1){
+                runShooter = true; 
+            }
+
             driving = false;
-            armCommand = ArmCommanded.shotMap;
-            runShooter = true;
+            armCommand = ArmCommanded.sourceAuto;
+            runIntake = false;
+            
         }
         else {
             runShooter = false;
