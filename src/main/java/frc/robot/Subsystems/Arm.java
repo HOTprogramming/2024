@@ -190,8 +190,12 @@ public Arm(RobotState robotState) {
         commandedPosition = constants.PROTECT/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
-      else if (commander.armCommanded() == ArmCommanded.spitOut || commander.armCommanded() == ArmCommanded.spitOut2){
+      else if (commander.armCommanded() == ArmCommanded.spitOut){
         commandedPosition = 95.0/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if(commander.armCommanded() == ArmCommanded.spitOut2){
+        commandedPosition = 115.0/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAuto){

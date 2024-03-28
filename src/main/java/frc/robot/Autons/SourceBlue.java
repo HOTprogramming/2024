@@ -48,8 +48,8 @@ public class SourceBlue extends AutonBase {
 
     Pose2d lobToRing1 = new Pose2d(5.83, 1.319, Rotation2d.fromDegrees(0));
     Pose2d ring1 = new Pose2d(8.1, 0.9, Rotation2d.fromDegrees(0));
-    Pose2d lobRing1Ring2 = new Pose2d(6.0, 1.54, Rotation2d.fromDegrees(0));
-    Pose2d ring2 = new Pose2d(8.8, 2.63, Rotation2d.fromDegrees(0));//8.8
+    Pose2d lobRing1Ring2 = new Pose2d(5.6, 1.54, Rotation2d.fromDegrees(0));
+    Pose2d ring2 = new Pose2d(8.8, 2.70, Rotation2d.fromDegrees(0));//8.8
     Pose2d stage = new Pose2d(5.7, 3.88, Rotation2d.fromDegrees(0));
     Pose2d shoot = new Pose2d(3.49, 3.12, Rotation2d.fromDegrees(-33));
     Pose2d shoot2 = new Pose2d(2.67, 2.93, Rotation2d.fromDegrees(-46.3));
@@ -101,14 +101,16 @@ public class SourceBlue extends AutonBase {
                 runShooter = false;
                 timer.reset();  
                 step = Step.ring2;   
-                runIntake = true;     
+                runIntake = true;  
+                armCommand = ArmCommanded.spitOut2; 
+
             }         
 
         }
         else if(step == Step.ring2){ 
 
-            if(robotState.getDrivePose().getX() < 6.3){
-                armCommand = ArmCommanded.spitOut;
+            if(robotState.getDrivePose().getX() < 6.0){
+                armCommand = ArmCommanded.spitOut2;
                 runShooter = true;
               }
             else{
@@ -146,7 +148,7 @@ public class SourceBlue extends AutonBase {
             }  
         }
         else if (step == Step.shot1){
-            if(timer.get() < 0.2){
+            if(timer.get() < 0.15){
                 driving = false;
                 runShooter = true;
                 armCommand = ArmCommanded.shotMap;
