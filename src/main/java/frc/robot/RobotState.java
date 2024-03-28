@@ -54,6 +54,7 @@ public class RobotState {
 
     private boolean noteDetected;
     private double noteDistance;
+    private Rotation2d noteYaw;
 
     private double autonHintXPos;
     private boolean oneFirst;
@@ -285,6 +286,13 @@ public class RobotState {
         noteDistance = doub;
     }
 
+    public Rotation2d getNoteYaw(){
+        return noteYaw;
+    }
+
+    public void setNoteYaw(Rotation2d currentYaw){
+        noteYaw=currentYaw;
+    }
     public void putTargetsSeenByCamera(Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera) {
         // TODO Auto-generated method stub
         this.targetsSeenByCamera = targetsSeenByCamera;

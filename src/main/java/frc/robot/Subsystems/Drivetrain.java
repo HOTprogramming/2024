@@ -79,7 +79,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     // Drive controllers
     private static final PIDController xController = new PIDController(10, 0, 0); // 9 .15 .5
     private static final PIDController yController = new PIDController(10, 0, 0); // 8.5 .13 .45
-    private static final PIDController thetaController = new PIDController(0.8, 0.0, 0.45); //FOR AIM TESTING ONLY, originally 10,0,0
+    private static final PIDController thetaController = new PIDController(5, 0, 0); //FOR AIM TESTING ONLY, originally 10,0,0
     
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -335,10 +335,58 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     @Override
     public void teleop(RobotCommander commander) {
         // commands drivetrain based on target drivemode
-        if (commander.getDriveMode() == DriveMode.percent) {
+        
+        if(robotState.getNoteDetected())
+        {
+            SmartDashboard.putNumber("NoteYaw", robotState.getNoteYaw().getDegrees());
+            //SmartDashboard.putNumber("Desired Angle", Rotation2d.fromDegrees(m_pigeon2.getYaw().getValueAsDouble()).minus(robotState.getNoteYaw()).getDegrees());
+            SmartDashboard.putNumber("Desired Angle", currentState.Pose.getRotation().minus(robotState.getNoteYaw()).getDegrees());
+        }
+
+        if (commander.getLockNote() && robotState.getNoteDetected()) {
+
+            if(Math.abs(robotState.getNoteYaw().getDegrees()) > 5) {
+                //autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(m_pigeon2.getYaw().getValueAsDouble()).minus(robotState.getNoteYaw()), false);
+                autoTurnControl(commander.getDrivePercentCommand(), currentState.Pose.getRotation().minus(robotState.getNoteYaw()), false);
+            
+            }
+            else
+            {
+                 percentDrive(commander.getDrivePercentCommand(), false);
+                
+            }
+        }   
+        else if (commander.getLockAmpCommand()) {
+            cachedRotation = currentState.Pose.getRotation();
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
+            } else {
+                autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
+            } 
+        }
+        else if (commander.getLockSpeakerCommand()) {
+            cachedRotation = currentState.Pose.getRotation();
+            if (robotState.getAlliance() == Alliance.Red) {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
+            } else {
+                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
+            } 
+        }
+        else{
+            if (commander.getDriveMode() == DriveMode.percent) {
             percentDrive(commander.getDrivePercentCommand(), true);
         } else if (commander.getDriveMode() == DriveMode.stateDrive) {
             stateDrive(commander.getDriveState(), commander.getDriveRotationState());
+        }
+        }
+
+
+        if (commander.getResetRobotPose()) {
+            // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
+            Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
+            if (measurment.isPresent()) {
+                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
+            }
         }
         
         try{
@@ -377,39 +425,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         //     autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(commander.getAngleSnapCommand()), true);
         // }
 
-        if (commander.getLockNote()) {
-            if(robotState.getNoteDetected() && Math.abs(robotState.getDrivePose().getRotation().getDegrees()-robotState.getNotePose().getRotation().getDegrees()) > 5) {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(robotState.getNotePose()), true);
-            } else {
-                autoTurnControl(commander.getDrivePercentCommand(), robotState.getDrivePose().getRotation(), true);
-            }
-        }
-
-        if (commander.getLockAmpCommand()) {
-            cachedRotation = currentState.Pose.getRotation();
-            if (robotState.getAlliance() == Alliance.Red) {
-                autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
-            } else {
-                autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
-            } 
-        }
-
-        if (commander.getLockSpeakerCommand()) {
-            cachedRotation = currentState.Pose.getRotation();
-            if (robotState.getAlliance() == Alliance.Red) {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
-            } else {
-                autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
-            } 
-        }
-
-        if (commander.getResetRobotPose()) {
-            // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
-            Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
-            if (measurment.isPresent()) {
-                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
-            }
-        }
+        
     }
 
     @Override

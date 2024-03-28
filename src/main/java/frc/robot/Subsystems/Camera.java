@@ -367,9 +367,13 @@ public class Camera implements SubsystemBase {
         SmartDashboard.putNumber("CAMERA: Pipeline # for front camera", frontPipeline);
 
         robotState.setNoteDetected(frontPipeline == 1 && frontDetects);
-        if(frontDetects && frontPipeline == 1){
-            frontThing = frontCamera.getLatestResult().getBestTarget();
+
+        frontThing = frontCamera.getLatestResult().getBestTarget();
+
+        if(frontDetects && frontPipeline == 1 && frontThing!=null){
+            
             noteX = -frontThing.getYaw();
+            robotState.setNoteYaw(Rotation2d.fromDegrees(-noteX));
             noteY = frontThing.getPitch();
             SmartDashboard.putNumber("CAMERA: Note X angle", noteX);
             SmartDashboard.putNumber("CAMERA: Note Y angle", noteY);
