@@ -49,7 +49,7 @@ public class SourceBlue extends AutonBase {
     Pose2d lobToRing1 = new Pose2d(5.83, 1.319, Rotation2d.fromDegrees(0));
     Pose2d ring1 = new Pose2d(8.1, 0.9, Rotation2d.fromDegrees(0));
     Pose2d lobRing1Ring2 = new Pose2d(6.0, 1.54, Rotation2d.fromDegrees(0));
-    Pose2d ring2 = new Pose2d(8.7, 2.63, Rotation2d.fromDegrees(0));//8.8
+    Pose2d ring2 = new Pose2d(8.8, 2.63, Rotation2d.fromDegrees(0));//8.8
     Pose2d stage = new Pose2d(5.7, 3.88, Rotation2d.fromDegrees(0));
     Pose2d shoot = new Pose2d(3.49, 3.12, Rotation2d.fromDegrees(-33));
     Pose2d shoot2 = new Pose2d(2.67, 2.93, Rotation2d.fromDegrees(-46.3));
@@ -200,10 +200,10 @@ public class SourceBlue extends AutonBase {
         else if (step == Step.shot2){
             driving = false;
             armCommand = ArmCommanded.shotMap;
-            if(timer.get() > 0.1 && timer.get() < 0.3){
+            if(timer.get() > 0.05 && timer.get() < 0.2){
                 runShooter = true;
             }
-            else if(timer.get()<=0.1){
+            else if(timer.get()<=0.05){
 
             }
             else {
