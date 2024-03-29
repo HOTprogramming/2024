@@ -72,22 +72,7 @@ public enum ExtensionPhaseTrap{
     stop;
 }
 
-public enum ExtensionPhaseAmp{
-    one,
-    two,
-    three,
-    four,
-    five,
-    six,
-    seven,
-    eight,
-    nine,
-    ten,
-    none;
-}
-
 ExtensionPhaseTrap extendTrapPhase;
-ExtensionPhaseAmp extendAmpPhase;
 
 public Extension(RobotState robotState) {
 
@@ -110,10 +95,10 @@ public Extension(RobotState robotState) {
 
     /* Configure current limits */
     MotionMagicConfigs emm = ecfg.MotionMagic;
-    emm.MotionMagicCruiseVelocity = constants.ECRUISEVELOCITY; // 5 rotations per second cruise
-    emm.MotionMagicAcceleration = constants.EACCELERATION; // Take approximately 0.5 seconds to reach max vel
+    emm.MotionMagicCruiseVelocity = 70; // 5 rotations per second cruise
+    emm.MotionMagicAcceleration = 70; // Take approximately 0.5 seconds to reach max vel
     // Take approximately 0.2 seconds to reach max accel 
-    emm.MotionMagicJerk = constants.EJERK;
+    emm.MotionMagicJerk = 120;
 
     Slot0Configs eSlot0 = ecfg.Slot0;
     eSlot0.kP = constants.EKP;
@@ -262,15 +247,15 @@ public Extension(RobotState robotState) {
             if (commander.extensionOveride()) {
                 extendMotor.set(-0.2);
 
-            } else if(extendPosition.getValueAsDouble() > 0.30) { 
-                extendMotor.set(-0.30);
+            } else if(extendPosition.getValueAsDouble() > 0.27) { 
+                //extendMotor.set(-0.30);
+                extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(0));
 
             } else if (extendPosition.getValueAsDouble() > 0.1){
-                
-                extendMotor.set(-0.15);
+                extendMotor.set(-0.1);
             
-            } else if (extendPosition.getValueAsDouble() > 0.0045){
-                extendMotor.set(-0.15);
+            } else if (extendPosition.getValueAsDouble() > 0.01){
+                extendMotor.set(-0.1);
 
             } else {
                 extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
