@@ -6,6 +6,8 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.constraint.CentripetalAccelerationConstraint;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 import frc.robot.Subsystems.Arm.ArmCommanded;
@@ -21,12 +23,14 @@ public class AmpBlueSpit extends AutonBase {
         firstshot,
         tosecring,
         tocloseshoot,
+        tocloseslow,
         closeshot,
         toampring,
         ampshoot,
         topreload,
         preshoot,
         tomidring,
+        tomidringslow,
         midshoot,
         tostagering,
         stageshoot,
@@ -38,28 +42,33 @@ public class AmpBlueSpit extends AutonBase {
    
     boolean ring1first = true;
 
-    double spitXValue = 3.25;
+    double spitXValue = 3.92;
 
     Pose2d start = new Pose2d(1.58, 6.189, Rotation2d.fromDegrees(0));
     Pose2d betweenRings = new Pose2d(2.93, 6.20, Rotation2d.fromDegrees(0));
-    Pose2d afterBetweenRings = new Pose2d(4, 6.20, Rotation2d.fromDegrees(0));
-    Pose2d forkpoint = new Pose2d(6, 6.3, Rotation2d.fromDegrees(0));
-    Pose2d ring1 = new Pose2d(8.5, 7.40, Rotation2d.fromDegrees(15));
+    Pose2d afterBetweenRings = new Pose2d(4, 6.20, Rotation2d.fromDegrees(25));
+    Pose2d forkpoint = new Pose2d(6, 6.3, Rotation2d.fromDegrees(25));
+    Pose2d ring1 = new Pose2d(7.98, 7.40, Rotation2d.fromDegrees(15));
     Pose2d farShoot = new Pose2d(4.7, 6.3, Rotation2d.fromDegrees(10));
-    Pose2d ring2 = new Pose2d(8.5, 5.61, Rotation2d.fromDegrees(-14));
-    Pose2d aroundStage = new Pose2d(5.88, 6.3, Rotation2d.fromDegrees(0));
-    // Pose2d beforeBetweenOtherRings = new Pose2d(3.6, 4.7, Rotation2d.fromDegrees(0));
-    Pose2d betweenOtherRings = new Pose2d(2.9, 4.55, Rotation2d.fromDegrees(0));
+    Pose2d ring2 = new Pose2d(8.1, 5.61, Rotation2d.fromDegrees(-14));
+    Pose2d aroundStage = new Pose2d(5.88, 6.1, Rotation2d.fromDegrees(0));
+    // Pose2d beforeBetweenOtherRings = new Pose2d(4.6, 5.5, Rotation2d.fromDegrees(0));
+    // Pose2d betweenOtherRings = new Pose2d(2.9, 4.45, Rotation2d.fromDegrees(0));
     // Pose2d aroundRings = new Pose2d(3.1, 7.5, Rotation2d.fromDegrees(0));
-    Pose2d closeShoot = new Pose2d(1.9, 4.7, Rotation2d.fromDegrees(-23));
-    Pose2d stageRing = new Pose2d(2.57, 4.31, Rotation2d.fromDegrees(-23));
-    Pose2d backMidring = new Pose2d(1.9, 5.2, Rotation2d.fromDegrees(0));
-    Pose2d midRing = new Pose2d(2.87, 5.3, Rotation2d.fromDegrees(0));
-    Pose2d backPreload = new Pose2d(1.9, 5.6, Rotation2d.fromDegrees(10));
-    Pose2d preload = new Pose2d(3.0, 6.1, Rotation2d.fromDegrees(10));
-    Pose2d backAmpRing = new Pose2d(2.1, 6.5, Rotation2d.fromDegrees(25));
+    Pose2d beforeBetweenRings = new Pose2d(4, 6.14, Rotation2d.fromDegrees(0));
+    Pose2d betweenRingsBack = new Pose2d(2.93, 6.14, Rotation2d.fromDegrees(0));
+    Pose2d closeShoot = new Pose2d(1.9, 6.4, Rotation2d.fromDegrees(25));
+    // Pose2d backAmpRing = new Pose2d(2.1, 6.5, Rotation2d.fromDegrees(25));
     Pose2d ampRing = new Pose2d(2.87, 6.80, Rotation2d.fromDegrees(25));
-    
+    Pose2d backMidRing = new Pose2d(2.3, 5.5, Rotation2d.fromDegrees(0));
+    Pose2d midPreback = new Pose2d(3.5, 5.7, Rotation2d.fromDegrees(0));
+    // Pose2d backPreload = new Pose2d(1.9, 5.6, Rotation2d.fromDegrees(10));
+    Pose2d backStageRing = new Pose2d(2.2, 4.61, Rotation2d.fromDegrees(-23));
+    Pose2d stageRing = new Pose2d(2.57, 4.31, Rotation2d.fromDegrees(-23));
+
+    Pose2d midRingActual = new Pose2d(3.07, 5.56, Rotation2d.fromDegrees(0));
+    Pose2d preloadActual = new Pose2d(3.6, 5.56, Rotation2d.fromDegrees(0));
+
 
     public AmpBlueSpit(RobotState robotState) {
         super(robotState);
@@ -103,7 +112,7 @@ public class AmpBlueSpit extends AutonBase {
 
         } else if (step == Step.tofirstring) {
             if (timer.get() > 0.5){
-                armCommand = ArmCommanded.spitOut;
+                armCommand = ArmCommanded.mayaspit;
                 unPackage = false;
                 runIntake = true;
             }
@@ -115,7 +124,7 @@ public class AmpBlueSpit extends AutonBase {
                 runShooter = true;
             }
 
-            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() || (robotState.getBeamBreak() && robotState.getDrivePose().getX() > 7)) {
                 runShooter = false;
                 armCommand = ArmCommanded.shotMap;
 
@@ -135,7 +144,7 @@ public class AmpBlueSpit extends AutonBase {
                 timer.reset();
             }
         } else if (step == Step.tofirstshoot) {
-
+            robotState.setAutonHintXPos(calculateArmHint(farShoot));
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() - 0.1) {
                 step = Step.firstshot;
                 driving = false;
@@ -146,7 +155,7 @@ public class AmpBlueSpit extends AutonBase {
                 runShooter = true;
             }
 
-            if (timer.get() > .3) {
+            if (timer.get() > .2 || !robotState.getBeamBreak()) {
                 runShooter = false;
                 driving = true;
 
@@ -166,21 +175,18 @@ public class AmpBlueSpit extends AutonBase {
                 step = Step.tosecring;
             }
         } else if (step == Step.tosecring) {
-            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                trajectoryConfig = new TrajectoryConfig(6, 3);
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() || (robotState.getBeamBreak() && robotState.getDrivePose().getX() > 7)) {
+                trajectoryConfig.setEndVelocity(6);
                 if (ring1first) {
                     trajectoryGenerator.generate(trajectoryConfig, List.of(
                         Waypoint.fromHolonomicPose(ring2), 
                         Waypoint.fromHolonomicPose(aroundStage),
-                        // Waypoint.fromHolonomicPose(beforeBetweenOtherRings),
-                        Waypoint.fromHolonomicPose(betweenOtherRings, Rotation2d.fromDegrees(180)),
-                        Waypoint.fromHolonomicPose(closeShoot)
+                        Waypoint.fromHolonomicPose(beforeBetweenRings)
                     ));
                 } else {
                    trajectoryGenerator.generate(trajectoryConfig, List.of(
                         Waypoint.fromHolonomicPose(ring1),
                         // Waypoint.fromHolonomicPose(beforeBetweenOtherRings),
-                        Waypoint.fromHolonomicPose(betweenOtherRings),                        
                         Waypoint.fromHolonomicPose(closeShoot)
                     )); 
                 }
@@ -190,120 +196,114 @@ public class AmpBlueSpit extends AutonBase {
             }
         } else if (step == Step.tocloseshoot) {
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                step = Step.closeshot;
-                driving = false;
-                timer.reset();
-            }
-
-        } else if (step == Step.closeshot) {
-            if (timer.get() > 0.0) {
-                runShooter = true;
-            }
-
-            if (timer.get() > .3) {
-                runShooter = false;
-                driving = true;
-                trajectoryGenerator.generate(trajectoryConfig, List.of(
-                    Waypoint.fromHolonomicPose(closeShoot),
-                    Waypoint.fromHolonomicPose(stageRing)
-                ));
-
-                timer.reset();
-                robotState.setAutonHintXPos(calculateArmHint(midRing));
-                step = Step.tostagering;
-            }
-        } else if (step == Step.tostagering) {
-            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                step = Step.stageshoot;
-                driving = false;
-                timer.reset();
-            }
-        } else if (step == Step.stageshoot) {
-            if (timer.get() > 0.0) {
-                runShooter = true;
-            }
-
-            if (timer.get() > .3) {
-                runShooter = false;
-                driving = true;
-                trajectoryGenerator.generate(trajectoryConfig, List.of(
-                    Waypoint.fromHolonomicPose(stageRing),
-                    Waypoint.fromHolonomicPose(backMidring),
-                    Waypoint.fromHolonomicPose(midRing)
-
-                ));
-                timer.reset();
-                step = Step.tomidring;
-            }
-        } else if (step == Step.tomidring) {
-            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                step = Step.midshoot;
-                driving = false;
-                timer.reset();
-            }
-        } else if (step == Step.midshoot) {
-            if (timer.get() > 0.0) {
-                runShooter = true;
-            }
-
-            if (timer.get() > .3) {
-                runShooter = false;
-                driving = true;
                 
+                trajectoryConfig = new TrajectoryConfig(6, 3);
+                
+                trajectoryConfig.setStartVelocity(6);
+                trajectoryConfig.setEndVelocity(2);
+                trajectoryConfig.addConstraint(new CentripetalAccelerationConstraint(5));
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
-                    Waypoint.fromHolonomicPose(midRing),
-                    Waypoint.fromHolonomicPose(backPreload),
-                    Waypoint.fromHolonomicPose(preload)
+                    Waypoint.fromHolonomicPose(beforeBetweenRings),
+                    Waypoint.fromHolonomicPose(betweenRingsBack),
+                    Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(90))
                 ));
 
-                timer.reset();
-                step = Step.topreload;
-            }
-        } else if (step == Step.topreload) {
-            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                step = Step.preshoot;
-                driving = false;
+                step = Step.tocloseslow;
                 timer.reset();
             }
-        } else if (step == Step.preshoot) {
-            if (timer.get() > 0.0) {
-                runShooter = true;
-            }
+        } else if (step == Step.tocloseslow) {
+            
 
-            if (timer.get() > .3) {
-                runShooter = false;
-                driving = true;
-                
+
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
+                trajectoryConfig.setEndVelocity(0);
+                trajectoryConfig.setStartVelocity(2);
+                trajectoryConfig.addConstraint(new CentripetalAccelerationConstraint(9));
+
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
-                    Waypoint.fromHolonomicPose(preload),
-                    Waypoint.fromHolonomicPose(backAmpRing),
+                    Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(90)),
                     Waypoint.fromHolonomicPose(ampRing)
-                ));
+                    ));
+                robotState.setAutonHintXPos(calculateArmHint(closeShoot) + .5);
 
-                timer.reset();
                 step = Step.toampring;
+                timer.reset();
             }
         } else if (step == Step.toampring) {
-            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
-                step = Step.ampshoot;
-                driving = false;
-                timer.reset();
+            if (timer.get() > .4) {
+                runShooter = true;
+            }
+            if (robotState.getDrivePose().getX() > 2.4) {
+                robotState.setAutonHintXPos(calculateArmHint(ampRing));
             }
             
-        } else if (step == Step.ampshoot) {
-            if (timer.get() > 0.0) {
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
+                trajectoryConfig.setStartVelocity(0);
+                trajectoryConfig.setEndVelocity(1);
+                trajectoryGenerator.generate(trajectoryConfig, List.of(
+                    Waypoint.fromHolonomicPose(ampRing),
+                    Waypoint.fromHolonomicPose(backMidRing, Rotation2d.fromDegrees(0))
+                ));
+
+                step = Step.tomidring;
+                timer.reset();
+            }
+        } else if (step == Step.tomidring) {
+            robotState.setAutonHintXPos(calculateArmHint(midRingActual) + .3);
+
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
+                trajectoryConfig = new TrajectoryConfig(2.85, 3);
+                trajectoryConfig.setStartVelocity(1);
+                trajectoryConfig.setEndVelocity(0);
+                trajectoryGenerator.generate(trajectoryConfig, List.of(
+                    Waypoint.fromHolonomicPose(backMidRing),
+                    Waypoint.fromHolonomicPose(midPreback)                    
+                ));
+                step = Step.tomidringslow;
+                timer.reset();
+            }
+        } else if (step == Step.tomidringslow) {
+            // if (robotState.getDrivePose().getX() > 3.4) {
+            //     robotState.setAutonHintXPos(calculateArmHint(preloadActual));
+            // }
+            if (robotState.getDrivePose().getX() > 3.4) {
+                runShooter = false;
+
+            }
+
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
+                trajectoryConfig = new TrajectoryConfig(6, 3);
+                trajectoryConfig.setStartVelocity(0);
+
+                trajectoryGenerator.generate(trajectoryConfig, List.of(
+                    Waypoint.fromHolonomicPose(midPreback),
+                    Waypoint.fromHolonomicPose(backStageRing),
+                    Waypoint.fromHolonomicPose(stageRing)                    
+                ));
+
+                
+                step = Step.tostagering;
+                timer.reset();
+            }
+        } else if (step == Step.tostagering) {
+            if (timer.get() > .4) {
+                
+                robotState.setAutonHintXPos(calculateArmHint(stageRing));
+            }
+
+            if (timer.get() > .7) {
                 runShooter = true;
             }
 
-            if (timer.get() > .3) {
-                runShooter = false;
-                driving = true;
-                
+            if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() + 2) {
                 step = Step.end;
+                timer.reset();
             }
         } else if (step == Step.end) {
             driving = false;
             runIntake = false;
+            runShooter = false;
+
             armCommand = ArmCommanded.none;
         } 
         
@@ -317,6 +317,11 @@ public class AmpBlueSpit extends AutonBase {
             swerveBrake = true;
         }
         
+
+        SmartDashboard.putNumber("Step_traj_SV", trajectoryConfig.getStartVelocity());
+        SmartDashboard.putNumber("Step_traj_EV", trajectoryConfig.getEndVelocity());
+        SmartDashboard.putNumber("Step_traj_MV", trajectoryConfig.getMaxVelocity());
+
         SmartDashboard.putString("Step_step", step.toString());
 
         // path visualizer, poses put to dashboard for advantagescope or glass
@@ -328,6 +333,11 @@ public class AmpBlueSpit extends AutonBase {
         super.reset();
         robotState.setAutonHintXPos(-1);
         swerveBrake = false;
+        trajectoryConfig = new TrajectoryConfig(7, 4);
+        trajectoryConfig.addConstraint(new CentripetalAccelerationConstraint(9));
+
+        trajectoryConfig.setEndVelocity(0);
+        trajectoryConfig.setStartVelocity(0);
         startTraj();
         step = Step.start;
     }
