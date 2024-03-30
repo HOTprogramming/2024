@@ -174,10 +174,6 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition/360.0).withSlot(0));
         }
       } 
-       else if (commander.armCommanded() == ArmCommanded.zero) {
-         commandedPosition = constants.ZERO/360.0;
-         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-      } 
         else if(commander.armCommanded() == ArmCommanded.trap){
         commandedPosition = constants.TRAP/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
@@ -210,6 +206,10 @@ public Arm(RobotState robotState) {
         commandedPosition = 135.175/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
+      else if (commander.armCommanded() == ArmCommanded.zero) {
+        commandedPosition = constants.ZERO/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+     } 
       else if(commander.climberUp()){
         commandedPosition = 171.4/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));

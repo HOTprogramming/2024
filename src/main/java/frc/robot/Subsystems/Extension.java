@@ -247,15 +247,15 @@ public Extension(RobotState robotState) {
             if (commander.extensionOveride()) {
                 extendMotor.set(-0.2);
 
-            } else if(extendPosition.getValueAsDouble() > 0.27) { 
-                //extendMotor.set(-0.30);
-                extendMotor.setControl(extendMagic.withPosition(0.0).withSlot(0));
+            } else if(extendPosition.getValueAsDouble() > 0.30) { 
+                extendMotor.set(-0.30);
 
             } else if (extendPosition.getValueAsDouble() > 0.1){
-                extendMotor.set(-0.1);
+                
+                extendMotor.set(-0.15);
             
-            } else if (extendPosition.getValueAsDouble() > 0.01){
-                extendMotor.set(-0.1);
+            } else if (extendPosition.getValueAsDouble() > 0.0045){
+                extendMotor.set(-0.15);
 
             } else {
                 extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
