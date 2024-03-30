@@ -205,12 +205,13 @@ public class AutonCommander implements RobotCommander {
     public void driverRumble() {}
 
     @Override
-    public boolean extentionOveride() {
+    public boolean extensionOveride() {
         return false;
     }
 
     @Override
-    public boolean extentionZero() {
+    public boolean extensionZero() {
         return false;
-    }   
+    }
+
 }
