@@ -26,12 +26,13 @@ public class SourceCenterRingBlue extends AutonBase {
         ring2,
         beforeShot3,
         shot3,
+        ring1,
         end;
     }
 
     public Step step = Step.start;   
-    private double speed = 5;
-    private double accel = 2; 
+    private double speed = 6;
+    private double accel = 3; 
 
     public SourceCenterRingBlue(RobotState robotState) {
         super(robotState);
@@ -43,9 +44,10 @@ public class SourceCenterRingBlue extends AutonBase {
 
     Pose2d ring2 = new Pose2d(8.6, 2.30, Rotation2d.fromDegrees(-50));
     Pose2d stage = new Pose2d(5.7, 3.88, Rotation2d.fromDegrees(0));
-    Pose2d out = new Pose2d(5.0, 1.0, Rotation2d.fromDegrees(0));
     Pose2d shoot = new Pose2d(3.60, 2.90, Rotation2d.fromDegrees(-33));
     Pose2d ring3 = new Pose2d(8.2, 4.20, Rotation2d.fromDegrees(0));
+    Pose2d out = new Pose2d(5.0, 1.0, Rotation2d.fromDegrees(0));
+    Pose2d ring1 = new Pose2d(8.4, 0.9, Rotation2d.fromDegrees(0)); 
 
     @Override
     public void runAuto() {
@@ -71,7 +73,7 @@ public class SourceCenterRingBlue extends AutonBase {
             driving = true;
             runShooter = false;
 
-            if(timer.get() > 0.5){
+            if(timer.get() > 0.3){
                 armCommand = ArmCommanded.shotMap; 
                 robotState.setAutonHintXPos(calculateArmHint(shoot)); 
             }
@@ -155,14 +157,28 @@ public class SourceCenterRingBlue extends AutonBase {
                 trajectoryGenerator.generate(trajectoryConfig,
                     List.of(Waypoint.fromHolonomicPose(shoot),
                             Waypoint.fromHolonomicPose(stage),
-                            Waypoint.fromHolonomicPose(ring2),
-                            Waypoint.fromHolonomicPose(out),
-                            Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(100))));
+                            Waypoint.fromHolonomicPose(ring2)));
             timer.reset();
             driving = true;
             runShooter = false;
             armCommand = ArmCommanded.sourceAuto;
-            step = Step.beforeShot3;
+            step = Step.ring2;
+            }
+        }
+        else if(step == Step.ring2){ 
+
+            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
+            trajectoryConfig = new TrajectoryConfig(speed, accel);
+            trajectoryConfig.setEndVelocity(0);
+            trajectoryGenerator.generate(trajectoryConfig,
+                List.of(Waypoint.fromHolonomicPose(ring2),
+                        Waypoint.fromHolonomicPose(stage),
+                        Waypoint.fromHolonomicPose(shoot)));
+                armCommand = ArmCommanded.sourceAuto;       
+                runShooter = false;
+                timer.reset();  
+                step = Step.beforeShot3;   
+                runIntake = true;              
             }
         }
         else if (step == Step.beforeShot3){
@@ -187,7 +203,23 @@ public class SourceCenterRingBlue extends AutonBase {
 
             }
             else{
-            step = Step.end;
+            trajectoryConfig = new TrajectoryConfig(speed, accel);
+            trajectoryConfig.setEndVelocity(2);
+            trajectoryGenerator.generate(trajectoryConfig,
+                List.of(Waypoint.fromHolonomicPose(shoot),
+                        Waypoint.fromHolonomicPose(out),
+                        Waypoint.fromHolonomicPose(ring1)));
+               
+            timer.reset();    
+            runIntake = true;   
+            driving = true;     
+            step = Step.ring1;
+            }
+        }
+        else if (step == Step.ring1){
+            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
+                timer.reset();  
+                step = Step.end;   
             }
         }
         else if (step == Step.end){
