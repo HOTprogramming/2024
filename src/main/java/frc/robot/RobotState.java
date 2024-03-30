@@ -24,7 +24,7 @@ import frc.robot.Subsystems.Camera.CameraPositions;
 
 public class RobotState {
     private ConstantsBase constants;
-    private Alliance alliance = Alliance.Blue;
+    private Alliance alliance = Alliance.Red;
 
     private Pose2d drivePose = new Pose2d(0, 0, new Rotation2d(0));
     private boolean atTargetPose;

@@ -79,7 +79,9 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     // Drive controllers
     private static final PIDController xController = new PIDController(10, 0, 0); // 9 .15 .5
     private static final PIDController yController = new PIDController(10, 0, 0); // 8.5 .13 .45
-    private static final PIDController thetaController = new PIDController(5, 0, 0); //FOR AIM TESTING ONLY, originally 10,0,0
+    private static final PIDController thetaController = new PIDController(10, 0, 0); 
+
+    private static final PIDController noteThetaController = new PIDController(7,0,0);
     
     private static final CustomHolonomicDriveController driveController = new CustomHolonomicDriveController(
             xController, yController, thetaController);
@@ -154,6 +156,22 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
                                     .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                                     .withRotationalRate(thetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        }
+
+    }
+
+    private void noteAutoTurnControl(double[] drivePercents, Rotation2d targetTheta, boolean fieldCentricDrive) {
+        // Uses theta control to rotate (Rotation2d)
+        if (fieldCentricDrive) {
+            setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(noteThetaController.calculate(currentState.Pose.getRotation().getRadians(),
+                                            targetTheta.getRadians())));
+        } else {
+            setControl(robotCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
+                                    .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
+                                    .withRotationalRate(noteThetaController.calculate(currentState.Pose.getRotation().getRadians(),
                                             targetTheta.getRadians())));
         }
 
@@ -347,7 +365,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
             if(Math.abs(robotState.getNoteYaw().getDegrees()) > 3) {
                 //autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(m_pigeon2.getYaw().getValueAsDouble()).minus(robotState.getNoteYaw()), false);
-                autoTurnControl(commander.getDrivePercentCommand(), currentState.Pose.getRotation().minus(robotState.getNoteYaw()), false);
+                noteAutoTurnControl(commander.getDrivePercentCommand(), currentState.Pose.getRotation().minus(robotState.getNoteYaw()), false);
             
             }
             else
@@ -457,5 +475,4 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             Modules[i].getSteerMotor().getConfigurator().apply(constants.AUTON_STEER_CURRENT);
         }
     }
-
 }
