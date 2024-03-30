@@ -27,7 +27,7 @@ public class PracticeBotConstants extends ConstantsBase {
     public class Camera extends ConstantsBase.Camera {
         public Camera() {
             super();
-            cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
+            /* cameraConstants.put(CameraPositions.LEFT,  new CameraConstant("left_camera",
                                                        new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(-4), Units.inchesToMeters(16.838)),
                                                        new Rotation3d(Units.degreesToRadians(-5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(120)),
                                                        VecBuilder.fill(4, 4, 8),
@@ -37,7 +37,7 @@ public class PracticeBotConstants extends ConstantsBase {
                                                        new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(11), Units.inchesToMeters(16.838)),
                                                        new Rotation3d(Units.degreesToRadians(5.77), Units.degreesToRadians(-9.92), Units.degreesToRadians(-120)),
                                                        VecBuilder.fill(4, 4, 8),
-                                                       VecBuilder.fill(0.5, 0.5, 1)));
+                                                       VecBuilder.fill(0.5, 0.5, 1))); */
         }
     }
 

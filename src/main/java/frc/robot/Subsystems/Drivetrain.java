@@ -345,7 +345,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
         if (commander.getLockNote() && robotState.getNoteDetected()) {
 
-            if(Math.abs(robotState.getNoteYaw().getDegrees()) > 5) {
+            if(Math.abs(robotState.getNoteYaw().getDegrees()) > 3) {
                 //autoTurnControl(commander.getDrivePercentCommand(), Rotation2d.fromDegrees(m_pigeon2.getYaw().getValueAsDouble()).minus(robotState.getNoteYaw()), false);
                 autoTurnControl(commander.getDrivePercentCommand(), currentState.Pose.getRotation().minus(robotState.getNoteYaw()), false);
             
