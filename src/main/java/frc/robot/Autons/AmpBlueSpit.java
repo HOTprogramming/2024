@@ -80,6 +80,7 @@ public class AmpBlueSpit extends AutonBase {
     private void startTraj() {
         if (ring1first) {
             trajectoryConfig = new TrajectoryConfig(7, 4);
+            trajectoryConfig.setEndVelocity(1);
             trajectoryGenerator.generate(trajectoryConfig, List.of(
                 Waypoint.fromHolonomicPose(start),
                 Waypoint.fromHolonomicPose(betweenRings),
@@ -89,6 +90,7 @@ public class AmpBlueSpit extends AutonBase {
             ));
         } else {
             trajectoryConfig = new TrajectoryConfig(7, 4);
+            trajectoryConfig.setEndVelocity(1);
             trajectoryGenerator.generate(trajectoryConfig, List.of(
                 Waypoint.fromHolonomicPose(start),
                 Waypoint.fromHolonomicPose(betweenRings),
@@ -127,8 +129,10 @@ public class AmpBlueSpit extends AutonBase {
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() || (robotState.getBeamBreak() && robotState.getDrivePose().getX() > 7)) {
                 runShooter = false;
                 armCommand = ArmCommanded.shotMap;
+                trajectoryConfig.setEndVelocity(0);
 
                 if (ring1first) {
+                    
                     trajectoryGenerator.generate(trajectoryConfig, List.of(
                         Waypoint.fromHolonomicPose(ring1), 
                         Waypoint.fromHolonomicPose(farShoot)
@@ -158,6 +162,7 @@ public class AmpBlueSpit extends AutonBase {
             if (timer.get() > .2 || !robotState.getBeamBreak()) {
                 runShooter = false;
                 driving = true;
+                trajectoryConfig.setEndVelocity(1);
 
                 if (ring1first) {
                     trajectoryGenerator.generate(trajectoryConfig, List.of(
@@ -186,8 +191,7 @@ public class AmpBlueSpit extends AutonBase {
                 } else {
                    trajectoryGenerator.generate(trajectoryConfig, List.of(
                         Waypoint.fromHolonomicPose(ring1),
-                        // Waypoint.fromHolonomicPose(beforeBetweenOtherRings),
-                        Waypoint.fromHolonomicPose(closeShoot)
+                        Waypoint.fromHolonomicPose(beforeBetweenRings)
                     )); 
                 }
 
