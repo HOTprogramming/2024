@@ -62,6 +62,6 @@ public interface RobotCommander {
     public abstract boolean getLockNote();
     public abstract boolean getLockAmpCommand();
     public abstract void driverRumble();
-    public abstract boolean extentionOveride();
-    public abstract boolean extentionZero();
+    public abstract boolean extensionOveride();
+    public abstract boolean extensionZero();
 }

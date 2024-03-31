@@ -285,6 +285,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
                     Units.metersToFeet(velocities.getY()),
                     velocities.getAngle().getDegrees()
             });
+            0
         }
 
 
@@ -359,7 +360,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         else if (commander.getLockAmpCommand()) {
             cachedRotation = currentState.Pose.getRotation();
             if (robotState.getAlliance() == Alliance.Red) {
-                autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90));
+                autoXControl(commander.getDrivePercentCommand(), 14.7, Rotation2d.fromDegrees(-90))
             } else {
                 autoXControl(commander.getDrivePercentCommand(), 1.84, Rotation2d.fromDegrees(-90));
             } 

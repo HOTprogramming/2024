@@ -46,7 +46,7 @@ public class RedOppositeAmp extends AutonBase {
     Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-137.5));
     @Override
     public void runAuto() {
-        SmartDashboard.putString("BlueOppositeAmpEnum", step.toString());
+        SmartDashboard.putString("RedOppositeAmpEnum", step.toString());
         
         if(step == Step.start){
             driving = false;
