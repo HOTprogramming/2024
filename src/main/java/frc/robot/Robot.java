@@ -162,7 +162,7 @@ public class Robot extends TimedRobot {
     // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
     //   autonCommander.setAuto(center4Note);
     // } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(redOppositeAmp);
+    //   autonCommander.setAuto(redOppositeAmp);robotState.getNotePose().getX()
     // } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
     //   autonCommander.setAuto(blueOppositeAmp);
     // } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Blue){
@@ -189,9 +189,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     autonCommander.auto.runAuto();
-    shooter.teleop(autonCommander);
+    // shooter.teleop(autonCommander);
     drivetrain.teleop(autonCommander);
-    arm.teleop(autonCommander);
+    // arm.teleop(autonCommander);
     intake.teleop(autonCommander);
     feeder.teleop(autonCommander);
     

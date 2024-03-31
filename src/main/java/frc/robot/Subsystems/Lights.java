@@ -12,6 +12,9 @@ import java.util.Map;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
+
+import edu.wpi.first.wpilibj.Timer;
+
 import com.ctre.phoenix.led.CANdleConfiguration;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -22,6 +25,8 @@ public class Lights implements SubsystemBase {
     RobotState robotState;
     CANdle candleRight;
     CANdle candleLeft;
+    Timer timer = new Timer();
+    boolean lightsOn = false;
 
     public Lights(RobotState robotState) { 
         this.robotState = robotState;
@@ -75,12 +80,36 @@ public class Lights implements SubsystemBase {
     @Override
     public void teleop(RobotCommander commander){
         if (robotState.getBeamBreak()) {
+            timer.stop();
+            lightsOn = true;
             candleLeft.setLEDs(255, 165, 0, 0, 1,6);  // orange
             candleLeft.setLEDs(255, 165, 0, 0, 11 ,16);  // orange
             candleRight.setLEDs(255, 165, 0, 0, 1,6);  // orange
             candleRight.setLEDs(255, 165, 0, 0, 11 ,20);  // orange
         } 
+        else if (robotState.getNoteDetected()) {
+            timer.start();
+            if(timer.advanceIfElapsed(0.5)){
+                if(lightsOn) {
+                    candleLeft.setLEDs(0, 0, 0, 0, 1,6);  // off
+                    candleLeft.setLEDs(0, 0, 0, 0, 11 ,16);  // off
+                    candleRight.setLEDs(0, 0, 0, 0, 1,6);  // off
+                    candleRight.setLEDs(0, 0, 0, 0, 11 ,20);  // off
+                    lightsOn = false;
+                    timer.reset();
+                } else {
+                    candleLeft.setLEDs(255, 165, 0, 0, 1,6);  // orange
+                    candleLeft.setLEDs(255, 165, 0, 0, 11 ,16);  // orange
+                    candleRight.setLEDs(255, 165, 0, 0, 1,6);  // orange
+                    candleRight.setLEDs(255, 165, 0, 0, 11 ,20);  // orange
+                    lightsOn = true;
+                    timer.reset();
+                }
+            }
+        }   
         else {
+            timer.stop();
+            lightsOn = false;
             candleLeft.setLEDs(0, 0, 0, 0, 1,6);  // off
             candleLeft.setLEDs(0, 0, 0, 0, 11 ,16);  // off
             candleRight.setLEDs(0, 0, 0, 0, 1,6);  // off

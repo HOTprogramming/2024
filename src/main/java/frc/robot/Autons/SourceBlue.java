@@ -35,7 +35,7 @@ public class SourceBlue extends AutonBase {
     public SourceBlue(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(1.94, 1.319, Rotation2d.fromDegrees(0));
+        startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
 
         seedPose = true;
     }
@@ -56,138 +56,19 @@ public class SourceBlue extends AutonBase {
             driving = true;
             swerveBrake = false;
 
-            trajectoryConfig = new TrajectoryConfig(7, 4);
-            trajectoryConfig.setEndVelocity(1.5);
+            trajectoryConfig = new TrajectoryConfig(3, 2);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose),
-                        Waypoint.fromHolonomicPose(lobToRing1),
-                        Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
+                List.of(Waypoint.fromHolonomicPose(new Pose2d(0,0,Rotation2d.fromDegrees(0))),
+                Waypoint.fromHolonomicPose(new Pose2d(robotState.getNotePose().getX(), robotState.getNotePose().getY(), Rotation2d.fromDegrees(0)))
+));
                 runShooter = false;
                 timer.reset();  
                 step = Step.ring1;   
-                runIntake = true;   
+                runIntake = false;   
                 armCommand = ArmCommanded.spitOut;           
+        } else if(step == Step.ring1){
 
-        }
-        else if(step == Step.ring1){ 
-            if(robotState.getDrivePose().getX() > 4.2){
-                armCommand = ArmCommanded.spitOut;
-                runShooter = true;
-              }
-
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-            trajectoryConfig = new TrajectoryConfig(speed, accel);
-            trajectoryConfig.setEndVelocity(0);
-            trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(180)),
-                        Waypoint.fromHolonomicPose(lobRing1Ring2),
-                        Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(30))));
-                runShooter = false;
-                timer.reset();  
-                step = Step.ring2;   
-                runIntake = true;     
-            }         
-
-        }
-        else if(step == Step.ring2){ 
-
-            if(robotState.getDrivePose().getX() < 6.3){
-                armCommand = ArmCommanded.spitOut;
-                runShooter = true;
-              }
-
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-            trajectoryConfig = new TrajectoryConfig(speed, accel);
-            trajectoryConfig.setEndVelocity(0);
-            trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(ring2),
-                        Waypoint.fromHolonomicPose(stage),
-                        Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(90))));
-                runShooter = false;
-                timer.reset();  
-                step = Step.beforeShot1;   
-                runIntake = true;   
-                armCommand = ArmCommanded.shotMap;
-            }
-        }
-
-        else if(step == Step.beforeShot1){
-            driving = true;
-            runShooter = false;
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                driving = false;
-                timer.reset();
-                step = Step.shot1;
-              
-            }  
-        }
-        else if (step == Step.shot1){
-            if(timer.get() < 0.2){
-                driving = false;
-                runShooter = true;
-                armCommand = ArmCommanded.shotMap;
-            }
-
-            else {
-            trajectoryConfig = new TrajectoryConfig(speed, accel);
-            trajectoryConfig.setEndVelocity(0);
-            trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(-50)),
-                        Waypoint.fromHolonomicPose(stage),
-                        Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(0))));
-                driving = true;
-                runShooter = false;
-                timer.reset();  
-                step = Step.ring3;   
-                runIntake = true;
-            }
-        }
-        else if(step == Step.ring3){ 
-            armCommand = ArmCommanded.shotMap;
-
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-            trajectoryConfig = new TrajectoryConfig(speed, accel);
-            trajectoryConfig.setEndVelocity(0);
-            trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(ring3),
-                        Waypoint.fromHolonomicPose(stage),
-                        Waypoint.fromHolonomicPose(shoot, Rotation2d.fromDegrees(90))));
-                runShooter = false;
-                timer.reset();  
-                step = Step.beforeShot2;   
-                runIntake = true;              
-            }
-        }
-        else if (step == Step.beforeShot2){
-            armCommand = ArmCommanded.shotMap;
-
-            if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
-                runShooter = false;
-                timer.reset();  
-                step = Step.shot2;   
-                runIntake = true;  
-                driving = false;
-            }
-        }
-        else if (step == Step.shot2){
-            if(timer.get() < 0.2){
-                driving = false;
-                runShooter = true;
-                armCommand = ArmCommanded.shotMap;
-            }
-
-            else {
-            step = Step.end;
-            }
-        }
-
-
-        else if (step == Step.end){
-            driving = false;
-            armCommand = ArmCommanded.shotMap;
-            runShooter = true;
-        }
-        else {
+        } else {
             runShooter = false;
             driving = false;
             runIntake = false;
