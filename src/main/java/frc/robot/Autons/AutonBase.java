@@ -44,6 +44,7 @@ public abstract class AutonBase {
     public boolean autoAim = false;
     public boolean zeroArm = false;
     public boolean driving = false;
+    public boolean unPackage = false;
     
 
 
@@ -65,14 +66,15 @@ public abstract class AutonBase {
     public void visualizePath() {
         Pose2d idealPose;
 
-        if (trajectoryGenerator != null) {
+        if (trajectoryGenerator != null && driving) {
             idealPose = trajectoryGenerator.getDriveTrajectory().sample(timer.get()).poseMeters;
         } else {
             idealPose = startPose;
+
         }
         SmartDashboard.putNumberArray("Trajectory", new Double[] {idealPose.getX(), 
                                                                     idealPose.getY(), 
-                                                                    idealPose.getRotation().getDegrees()});
+                                                                    trajectoryGenerator.getHolonomicRotationSequence().sample(timer.get()).position.getDegrees()});
     }
 
     public void generateTrajectory(double maxV, double maxAccel, double startV, double endV, List<Pose2d> points) {

@@ -63,6 +63,10 @@ public enum ArmCommanded{
   preload,
   spitOut,
   spitOut2,
+  mayaspit,
+  sourceAuto,
+  sourceAuto2,
+  unPackage,
   none;
 }
 
@@ -174,24 +178,29 @@ public Arm(RobotState robotState) {
        else if (commander.armCommanded() == ArmCommanded.zero) {
          commandedPosition = constants.ZERO/360.0;
          armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-         
       } 
         else if(commander.armCommanded() == ArmCommanded.trap){
         commandedPosition = constants.TRAP/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-
       }
       else if (commander.armCommanded() == ArmCommanded.close){
         commandedPosition = constants.CLOSE/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
-
       }
       else if (commander.armCommanded() == ArmCommanded.protect){
         commandedPosition = constants.PROTECT/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
-      else if (commander.armCommanded() == ArmCommanded.spitOut || commander.armCommanded() == ArmCommanded.spitOut2){
+      else if (commander.armCommanded() == ArmCommanded.spitOut || commander.armCommanded() == ArmCommanded.spitOut2 || commander.armCommanded() == ArmCommanded.mayaspit){
         commandedPosition = 95.0/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.sourceAuto){
+        commandedPosition = 120.52/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.sourceAuto2){
+        commandedPosition = 124.0/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.amp || robotState.getArmOnAmpRetract()){
@@ -217,6 +226,10 @@ public Arm(RobotState robotState) {
       }
       else if (commander.armCommanded() == ArmCommanded.auton){
         commandedPosition = (constants.PROTECT + 1.5)/360.0; // commandedPosition = 120.25/360.0
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.unPackage){
+        commandedPosition = 137.0/360.0; // commandedPosition = 120.25/360.0
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.preload){
