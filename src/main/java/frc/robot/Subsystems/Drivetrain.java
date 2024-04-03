@@ -88,8 +88,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Pose2d blueSpeaker = new Pose2d(0.1, 5.55, Rotation2d.fromDegrees(0));
     private Pose2d redSpeaker = new Pose2d(16.579, 5.688, Rotation2d.fromDegrees(180));
 
-    private Pose2d blueLob = new Pose2d(0.1, 6.5, Rotation2d.fromDegrees(0));
-    private Pose2d redLob = new Pose2d(16.579, 6.5, Rotation2d.fromDegrees(180));
+    private Pose2d blueLob = new Pose2d(2.9, 7.3, Rotation2d.fromDegrees(0));
+    private Pose2d redLob = new Pose2d(13, 7.3, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
 
@@ -393,14 +393,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         if (commander.getLockSpeakerCommand()) {
             cachedRotation = currentState.Pose.getRotation();
             if (robotState.getAlliance() == Alliance.Red) {
-                if (robotState.getDrivePose().getX() < 8) {
+                if (robotState.getDrivePose().getX() > 8) {
                     autoTurnControl(commander.getDrivePercentCommand(), pointAt(redSpeaker).plus(Rotation2d.fromDegrees(180)), true);
 
                 } else {
                     autoTurnControl(commander.getDrivePercentCommand(), pointAt(redLob).plus(Rotation2d.fromDegrees(180)), true);
                 }
             } else {
-                if (robotState.getDrivePose().getX() > 8) {
+                if (robotState.getDrivePose().getX() < 8) {
                     autoTurnControl(commander.getDrivePercentCommand(), pointAt(blueSpeaker), true);
 
                 } else {
