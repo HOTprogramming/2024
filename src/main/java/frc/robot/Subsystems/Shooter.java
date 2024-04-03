@@ -135,7 +135,7 @@ public class Shooter implements SubsystemBase {
 
         shooterPosition.refresh();
 
-        if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton || commander.armCommanded() == ArmCommanded.sourceAuto || commander.armCommanded() == ArmCommanded.sourceAuto2) {
+        if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton || commander.armCommanded() == ArmCommanded.sourceAuto || commander.armCommanded() == ArmCommanded.sourceAuto2 || commander.armCommanded() == ArmCommanded.sourceAutoRed) {
              leftFlywheel.setControl(leftVoltageVelocity.withVelocity((constants.LEFT_FLYWHEEL_TARGET_RPM / 60.0)));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_TARGET_RPM / 60.0)).withFeedForward(20.0));
         }

@@ -56,11 +56,15 @@ public class Robot extends TimedRobot {
   private RedOppositeAmp redOppositeAmp;
   private FourRedOppositeAmp fourRedOppositeAmp;
   private FourBlueOppositeAmp fourBlueOppositeAmp;
-  private SourceRed sourceRed;
-  private SourceBlue sourceBlue;
+  private SourceCrazyRed sourceCrazyRed;
+  private SourceCrazyBlue sourceCrazyBlue;
+  private SourceCenterRingBlue sourceCenterRingBlue;
+  private SourceFourthRingBlue sourceFourthRingBlue;
   private AmpRedSpit ampRedSpit;
   private AmpBlueSpit ampBlueSpit;
 
+  private SourceCenterRingRed sourceCenterRingRed;
+  private SourceFourthRingRed sourceFourthRingRed;
 
   // creates autonSelector
   private final SendableChooser<String> autoSelector = new SendableChooser<>();
@@ -102,8 +106,12 @@ public class Robot extends TimedRobot {
     redOppositeAmp = new RedOppositeAmp(robotState);
     fourBlueOppositeAmp = new FourBlueOppositeAmp(robotState);
     fourRedOppositeAmp = new FourRedOppositeAmp(robotState);
-    sourceRed = new SourceRed(robotState);
-    sourceBlue = new SourceBlue(robotState);
+    sourceCrazyRed = new SourceCrazyRed(robotState);
+    sourceCrazyBlue = new SourceCrazyBlue(robotState);
+    sourceCenterRingBlue = new SourceCenterRingBlue(robotState);
+    sourceFourthRingBlue = new SourceFourthRingBlue(robotState);
+    sourceCenterRingRed = new SourceCenterRingRed(robotState);
+    sourceFourthRingRed = new SourceFourthRingRed(robotState);
     ampRedSpit = new AmpRedSpit(robotState);
     ampBlueSpit = new AmpBlueSpit(robotState);
 
@@ -121,8 +129,8 @@ public class Robot extends TimedRobot {
     autoSelector.setDefaultOption("Center", "center");
     autoSelector.addOption("Amp", "amp");
     autoSelector.addOption("6 OBJECT AMP", "amp6");
-    autoSelector.addOption("Source 3", "source");
-    autoSelector.addOption("Source 4", "source4");
+    autoSelector.addOption("Source Center First", "sourceCenter");
+    autoSelector.addOption("Source Center Second", "sourceNotCenter");
 
       Shuffleboard.getTab("Competition")
       .add("Auto Selector", autoSelector)
@@ -167,19 +175,19 @@ public class Robot extends TimedRobot {
       autonCommander.setAuto(ampSideRed);
     } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(center4Note);
-    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(redOppositeAmp);
-    } else if(selectedAuto.equals("source") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(blueOppositeAmp);
-    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Blue){
-      autonCommander.setAuto(fourBlueOppositeAmp);
-    } else if(selectedAuto.equals("source4") && robotState.getAlliance() == Alliance.Red){
-      autonCommander.setAuto(fourRedOppositeAmp);
+    } else if(selectedAuto.equals("sourceCenter") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(sourceCenterRingRed);
+    } else if(selectedAuto.equals("sourceCenter") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(sourceCenterRingBlue);
+    } else if(selectedAuto.equals("sourceNotCenter") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(sourceFourthRingRed);
+    } else if(selectedAuto.equals("sourceNotCenter") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(sourceFourthRingBlue);
     } else if(selectedAuto.equals("amp6") && robotState.getAlliance() == Alliance.Blue){
       autonCommander.setAuto(ampBlueSpit);
     } else if(selectedAuto.equals("amp6") && robotState.getAlliance() == Alliance.Red){
       autonCommander.setAuto(ampRedSpit);
-    } 
+    }
 
 
     drivetrain.init(autonCommander);

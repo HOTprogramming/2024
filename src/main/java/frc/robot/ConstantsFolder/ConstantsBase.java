@@ -292,8 +292,8 @@ public class ConstantsBase {
         public double RIGHT_FLYWHEEL_IDLE_RPM = 2000;
         public double LEFT_FLYWHEEL_IDLE_RPM = 2000;
 
-        public double RIGHT_FLYWHEEL_PRELOAD_RPM = 3500;
-        public double LEFT_FLYWHEEL_PRELOAD_RPM = 4200;
+        public double RIGHT_FLYWHEEL_PRELOAD_RPM = 3000;
+        public double LEFT_FLYWHEEL_PRELOAD_RPM = 3600;
 
 
 

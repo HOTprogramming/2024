@@ -34,16 +34,17 @@ public class BlueOppositeAmp extends AutonBase {
     public BlueOppositeAmp(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(1.45, 4.63, Rotation2d.fromDegrees(-70)); //15.15
+        startPose = new Pose2d(1.45, 4.63, Rotation2d.fromDegrees(-70));
 
         seedPose = true;
     }
     
-    Pose2d ring1 = new Pose2d(8.34, 0.93, Rotation2d.fromDegrees(0));//heading 68 deg
-    Pose2d shoot1 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));//heading 57 deg
-    Pose2d ring2Intermediary = new Pose2d(5.3, 1.9, Rotation2d.fromDegrees(7));//heading 57 deg
-    Pose2d ring2 = new Pose2d(8.28, 2.47, Rotation2d.fromDegrees(30));//heading 85 deg
-    Pose2d shoot2 = new Pose2d(2.4, 3.25, Rotation2d.fromDegrees(-45));
+    Pose2d ring1 = new Pose2d(8.34, 0.93, Rotation2d.fromDegrees(0));
+    Pose2d ring1Intermediary = new Pose2d(4.7, 1.8, Rotation2d.fromDegrees(-35));
+    Pose2d shoot1 = new Pose2d(3.49, 3.12, Rotation2d.fromDegrees(-33));
+    Pose2d ring2Intermediary = new Pose2d(5.3, 1.9, Rotation2d.fromDegrees(0));
+    Pose2d ring2 = new Pose2d(8.28, 2.80, Rotation2d.fromDegrees(0));
+    Pose2d shoot2 = new Pose2d(3.49, 3.12, Rotation2d.fromDegrees(-33));
 
     @Override
     public void runAuto() {
@@ -52,23 +53,27 @@ public class BlueOppositeAmp extends AutonBase {
         if(step == Step.start){
             driving = false;
             swerveBrake = true; 
-            armCommand = ArmCommanded.shotMap;
+            armCommand = ArmCommanded.preload;
+            unPackage = true;
 
-            if(timer.get() > 0.95 && timer.get() < 1.25){
+            if(timer.get() > 0.95 && timer.get() < 1.15){
                 runShooter = true;
             } else {
                 runShooter = false;
             }
-
-            if (timer.get() >= 1.25){
+            
+            if (timer.get() >= 1.15){
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose, Rotation2d.fromDegrees(-70)),
-                        Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
+                List.of(Waypoint.fromHolonomicPose(startPose),
+                        Waypoint.fromHolonomicPose(ring1Intermediary),
+                        Waypoint.fromHolonomicPose(ring1)));
                 runShooter = false;
                 timer.reset();  
+                armCommand = ArmCommanded.shotMap;
                 step = Step.ring1;   
                 runIntake = true;
+                unPackage = false;
             }               
         }
         else if(step == Step.ring1){
@@ -89,6 +94,7 @@ public class BlueOppositeAmp extends AutonBase {
         else if(step == Step.shot1){
             driving = true;
             runShooter = false;
+            robotState.setAutonHintXPos(calculateArmHint(shoot1));
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 driving = false;
                 timer.reset();
@@ -96,18 +102,20 @@ public class BlueOppositeAmp extends AutonBase {
             }  
         }
         else if (step == Step.shootBeforeRing2){
-            if(timer.get() < 0.2){
+            if(timer.get() > 0.1 && timer.get() < 0.3){
                 driving = false;
                 runShooter = true;
                 armCommand = ArmCommanded.shotMap;
             }
+            else if(timer.get() <= 0.1){
 
+            }
             else {
             trajectoryConfig = new TrajectoryConfig(6, 3);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shoot1, Rotation2d.fromDegrees(-40)),
-                        Waypoint.fromHolonomicPose(ring2Intermediary, Rotation2d.fromDegrees(0)),
-                        Waypoint.fromHolonomicPose(ring2,Rotation2d.fromDegrees(0))));
+                List.of(Waypoint.fromHolonomicPose(shoot1),
+                        Waypoint.fromHolonomicPose(ring2Intermediary),
+                        Waypoint.fromHolonomicPose(ring2)));
             timer.reset();    
             runShooter = false;
             step = Step.ring2;
@@ -120,8 +128,9 @@ public class BlueOppositeAmp extends AutonBase {
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 trajectoryConfig = new TrajectoryConfig(5, 2.5);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(ring2, Rotation2d.fromDegrees(230)),
-                            Waypoint.fromHolonomicPose(shoot2,Rotation2d.fromDegrees(150))));
+                    List.of(Waypoint.fromHolonomicPose(ring2),
+                            Waypoint.fromHolonomicPose(ring2Intermediary),
+                            Waypoint.fromHolonomicPose(shoot2)));
                 timer.reset();    
                 step = Step.shot2;
             }
@@ -129,6 +138,7 @@ public class BlueOppositeAmp extends AutonBase {
         else if (step == Step.shot2){
             driving = true;
             runShooter = false;
+            robotState.setAutonHintXPos(calculateArmHint(shoot2));
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 driving = false;
                 timer.reset();    
@@ -137,10 +147,13 @@ public class BlueOppositeAmp extends AutonBase {
         }
         else if (step == Step.shootBeforeRing3){
 
-            if(timer.get() < 0.2){
+            if(timer.get() > 0.1 && timer.get() < 0.3){
                 driving = false;
                 runShooter = true;
                 armCommand = ArmCommanded.shotMap;
+            }
+            else if(timer.get() <= 0.1){
+
             }
 
             else {
