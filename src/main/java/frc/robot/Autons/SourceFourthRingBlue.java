@@ -183,7 +183,11 @@ public class SourceFourthRingBlue extends AutonBase {
         }
         else if (step == Step.beforeShot3){
 
-
+            if(robotState.getDrivePose().getX() < 4.5){
+                armCommand = ArmCommanded.shotMap;
+                robotState.setAutonHintXPos(calculateArmHint(shoot));
+            }
+            
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 runShooter = false;
                 timer.reset();  
@@ -232,7 +236,7 @@ public class SourceFourthRingBlue extends AutonBase {
         else {
             runShooter = false;
             driving = false;
-            runIntake = false;
+            runIntake = true;
             swerveBrake = true;
         }
 

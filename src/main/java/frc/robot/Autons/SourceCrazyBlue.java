@@ -239,8 +239,9 @@ public class SourceCrazyBlue extends AutonBase {
         }  
 
         else if (step == Step.end){
-            
+            if(timer.get() > 0.1){
             runShooter = true; 
+            }
             robotState.setAutonHintXPos(-1);
             driving = false;
             armCommand = ArmCommanded.shotMap;

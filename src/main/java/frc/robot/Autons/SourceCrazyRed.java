@@ -41,21 +41,21 @@ public class SourceCrazyRed extends AutonBase {
     public SourceCrazyRed(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(1.94, 1.319, Rotation2d.fromDegrees(0));
+        startPose = new Pose2d(15.2, 1.460, Rotation2d.fromDegrees(180));
 
         seedPose = true;
     }
 
-    Pose2d lobToRing1 = new Pose2d(5.83, 1.319, Rotation2d.fromDegrees(0));
-    Pose2d ring1 = new Pose2d(8.1, 0.9, Rotation2d.fromDegrees(0));
-    Pose2d lobRing1Ring2 = new Pose2d(5.6, 1.54, Rotation2d.fromDegrees(0));
-    Pose2d ring2 = new Pose2d(9.0, 2.70, Rotation2d.fromDegrees(0));
-    Pose2d stage = new Pose2d(5.7, 3.88, Rotation2d.fromDegrees(0));
-    Pose2d shoot = new Pose2d(3.49, 3.12, Rotation2d.fromDegrees(-33));
-    Pose2d shoot2 = new Pose2d(2.67, 2.93, Rotation2d.fromDegrees(-46.3));
-    Pose2d ring3 = new Pose2d(8.2, 4.20, Rotation2d.fromDegrees(0));
-    Pose2d firstSpit = new Pose2d(3.9, 1.00, Rotation2d.fromDegrees(-49.0));
-    Pose2d secondSpit = new Pose2d(3.90, 1.58, Rotation2d.fromDegrees(-137.5));
+    Pose2d lobToRing1 = new Pose2d(11.31, 1.319, Rotation2d.fromDegrees(180));
+    Pose2d ring1 = new Pose2d(8.5, 0.9, Rotation2d.fromDegrees(180));
+    Pose2d lobRing1Ring2 = new Pose2d(10.6, 1.54, Rotation2d.fromDegrees(180));
+    Pose2d ring2 = new Pose2d(7.4, 2.70, Rotation2d.fromDegrees(180));
+    Pose2d stage = new Pose2d(11.2, 4.15, Rotation2d.fromDegrees(180));
+    Pose2d shoot = new Pose2d(13.65, 3.12, Rotation2d.fromDegrees(-138));
+    Pose2d shoot2 = new Pose2d(14.47, 2.93, Rotation2d.fromDegrees(-133.7));
+    Pose2d ring3 = new Pose2d(8.4, 4.20, Rotation2d.fromDegrees(180));
+    Pose2d firstSpit = new Pose2d(13.42, 1.00, Rotation2d.fromDegrees(-125));
+    Pose2d secondSpit = new Pose2d(3.90, 1.58, Rotation2d.fromDegrees(-42.5));
 
     @Override
     public void runAuto() {
@@ -65,12 +65,12 @@ public class SourceCrazyRed extends AutonBase {
             driving = true;
             swerveBrake = false;
 
-            trajectoryConfig = new TrajectoryConfig(7, 4);
+            trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(1.5);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose),
                         Waypoint.fromHolonomicPose(lobToRing1),
-                        Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(0))));
+                        Waypoint.fromHolonomicPose(ring1,Rotation2d.fromDegrees(180))));
                 runShooter = false;
                 unPackage = true;  
                 armCommand = ArmCommanded.unPackage;
@@ -85,7 +85,7 @@ public class SourceCrazyRed extends AutonBase {
             runIntake = true;
             }
 
-            if(robotState.getDrivePose().getX() > 4.2){
+            if(robotState.getDrivePose().getX() < 12.94){
                 armCommand = ArmCommanded.spitOut;
                 runShooter = true;
             }
@@ -94,7 +94,7 @@ public class SourceCrazyRed extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(180)),
+                List.of(Waypoint.fromHolonomicPose(ring1, Rotation2d.fromDegrees(0)),
                         Waypoint.fromHolonomicPose(lobRing1Ring2),
                         Waypoint.fromHolonomicPose(ring2)));
                 unPackage = false;
@@ -109,7 +109,7 @@ public class SourceCrazyRed extends AutonBase {
         }
         else if(step == Step.ring2){ 
 
-            if(robotState.getDrivePose().getX() < 6.0){
+            if(robotState.getDrivePose().getX() > 10.3){
                 armCommand = ArmCommanded.spitOut2;
                 runShooter = true;
               }
@@ -127,7 +127,7 @@ public class SourceCrazyRed extends AutonBase {
                 runShooter = false;
                 timer.reset();  
                 runIntake = true;   
-                armCommand = ArmCommanded.sourceAuto;
+                armCommand = ArmCommanded.sourceAutoRed;
                 step = Step.beforeShot1;   
             }
         }
@@ -136,7 +136,7 @@ public class SourceCrazyRed extends AutonBase {
             driving = true;
             runShooter = false;
 
-            if(robotState.getDrivePose().getX() < 4.5){
+            if(robotState.getDrivePose().getX() > 12.62){
                 armCommand = ArmCommanded.shotMap;
                 robotState.setAutonHintXPos(calculateArmHint(shoot));
             }
@@ -162,9 +162,9 @@ public class SourceCrazyRed extends AutonBase {
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(shoot),
                         Waypoint.fromHolonomicPose(stage),
-                        Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(0))));
+                        Waypoint.fromHolonomicPose(ring3, Rotation2d.fromDegrees(180))));
                 driving = true;
-                armCommand = ArmCommanded.sourceAuto2;
+                armCommand = ArmCommanded.sourceAutoRed;
                 runShooter = false;
                 timer.reset();  
                 runIntake = true;
@@ -180,7 +180,7 @@ public class SourceCrazyRed extends AutonBase {
                 List.of(Waypoint.fromHolonomicPose(ring3),
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(shoot2)));
-                armCommand = ArmCommanded.sourceAuto2;       
+                armCommand = ArmCommanded.sourceAutoRed;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot2;   
@@ -190,7 +190,7 @@ public class SourceCrazyRed extends AutonBase {
         }
         else if (step == Step.beforeShot2){
 
-            if(robotState.getDrivePose().getX() < 4.5){
+            if(robotState.getDrivePose().getX() > 12.62){
                 armCommand = ArmCommanded.shotMap;
                 robotState.setAutonHintXPos(calculateArmHint(shoot));
             }
@@ -239,7 +239,7 @@ public class SourceCrazyRed extends AutonBase {
         }  
 
         else if (step == Step.end){
-            if(timer.get() > 0.5){
+            if(timer.get() > 0.1){
                 runShooter = true; 
             }
             robotState.setAutonHintXPos(-1);

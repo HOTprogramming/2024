@@ -64,6 +64,7 @@ public enum ArmCommanded{
   spitOut,
   spitOut2,
   sourceAuto,
+  sourceAutoRed,
   sourceAuto2,
   unPackage,
   none;
@@ -196,6 +197,10 @@ public Arm(RobotState robotState) {
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAuto){
         commandedPosition = 120.52/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.sourceAutoRed){
+        commandedPosition = 123.4/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAuto2){
