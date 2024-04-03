@@ -63,6 +63,7 @@ public enum ArmCommanded{
   preload,
   spitOut,
   spitOut2,
+  mayaspit,
   sourceAuto,
   sourceAutoRed,
   sourceAuto2,
@@ -187,7 +188,7 @@ public Arm(RobotState robotState) {
         commandedPosition = constants.PROTECT/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
-      else if (commander.armCommanded() == ArmCommanded.spitOut){
+      else if (commander.armCommanded() == ArmCommanded.spitOut || commander.armCommanded() == ArmCommanded.mayaspit){
         commandedPosition = 95.0/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }

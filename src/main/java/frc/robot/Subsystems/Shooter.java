@@ -165,6 +165,10 @@ public class Shooter implements SubsystemBase {
             leftFlywheel.setControl(leftVoltageVelocity.withVelocity((2000.0 / 60.0)));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((2000.0 / 60.0)).withFeedForward(20.0));
         }
+        else if (commander.armCommanded() == ArmCommanded.mayaspit) {
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((1800.0 / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((1800.0 / 60.0)));
+        } 
         else if (commander.armCommanded() == ArmCommanded.hailMary) {
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((3700.0 / 60.0)));
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((2700.0 / 60.0)));
