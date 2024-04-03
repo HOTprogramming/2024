@@ -305,19 +305,18 @@ public class CompBotConstants extends ConstantsBase {
             // BLUEANGLE6 = 117.8; 
             
             
-            
-            REDDISTANCE1 = 1.26; // 0 in6;
-            REDDISTANCE2 = 2.4; // 43 in;
-            REDDISTANCE3 = 3.64; // 93 in  
-            REDDISTANCE4 = 4.95; // 148 ;
-            REDDISTANCE5 = 6.46; // 17ft;
-            REDDISTANCE6 = 8.2;//23ft 1i;
+            REDDISTANCE1 = 1.21; // 0 in
+            REDDISTANCE2 = 2.3; // 43 in 
+            REDDISTANCE3 = 3.46; // 93 in 
+            REDDISTANCE4 = 4.83; // 148 in 
+            REDDISTANCE5 = 6.46; // 17ft
+            REDDISTANCE6 = 8.2;//23ft 1in
             REDANGLE1 = 148.0;
             REDANGLE2 = 133.4;
             REDANGLE3 = 125.5;
-            REDANGLE4 = 121.63;   
+            REDANGLE4 = 122.0;   
             REDANGLE5 = 119.9;
-            REDANGLE6 = 117.8;
+            REDANGLE6 = 117.8; 
         }
     }
 

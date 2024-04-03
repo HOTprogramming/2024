@@ -207,4 +207,9 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public boolean unPackage() {
+        return auto.unPackage;
+    }
+
 }

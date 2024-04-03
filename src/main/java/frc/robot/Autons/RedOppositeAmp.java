@@ -44,6 +44,7 @@ public class RedOppositeAmp extends AutonBase {
     Pose2d ring2Intermediary = new Pose2d(11.0, 1.8, Rotation2d.fromDegrees(173));//heading 57 deg
     Pose2d ring2 = new Pose2d(8.3, 2.56, Rotation2d.fromDegrees(150));//heading 85 deg
     Pose2d shoot2 = new Pose2d(13.58, 3.25, Rotation2d.fromDegrees(-137.5));
+
     @Override
     public void runAuto() {
         SmartDashboard.putString("RedOppositeAmpEnum", step.toString());
