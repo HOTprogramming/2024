@@ -201,7 +201,7 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAutoRed){
-        commandedPosition = 123.4/360.0;
+        commandedPosition = 122.8/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAuto2){
