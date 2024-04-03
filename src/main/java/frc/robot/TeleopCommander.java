@@ -341,6 +341,11 @@ public class TeleopCommander implements RobotCommander {
         return false;
     }
 
+    @Override
+    public boolean getOverrideBeamBreak() {
+        return operator.getRightBumper();
+    }
+
 
 }
 
