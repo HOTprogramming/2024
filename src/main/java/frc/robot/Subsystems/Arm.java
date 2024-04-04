@@ -209,7 +209,7 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.amp || robotState.getArmOnAmpRetract()){
-        commandedPosition = 135.175/360.0;
+        commandedPosition = 140.175/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.zero) {
