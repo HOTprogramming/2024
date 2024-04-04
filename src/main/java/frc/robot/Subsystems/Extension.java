@@ -248,14 +248,14 @@ public Extension(RobotState robotState) {
                 extendMotor.set(-0.2);
 
             } else if(extendPosition.getValueAsDouble() > 0.30) { 
-                extendMotor.set(-0.30);
+                extendMotor.set(-0.50); //.30
 
             } else if (extendPosition.getValueAsDouble() > 0.1){
                 
-                extendMotor.set(-0.15);
+                extendMotor.set(-0.25);
             
             } else if (extendPosition.getValueAsDouble() > 0.0045){
-                extendMotor.set(-0.15);
+                extendMotor.set(-0.20);
 
             } else {
                 extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
