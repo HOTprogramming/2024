@@ -252,7 +252,7 @@ public Extension(RobotState robotState) {
 
             } else if (extendPosition.getValueAsDouble() > 0.1){
                 
-                extendMotor.set(-0.25);
+                extendMotor.set(-0.15);
             
             } else if (extendPosition.getValueAsDouble() > 0.0045){
                 extendMotor.set(-0.20);

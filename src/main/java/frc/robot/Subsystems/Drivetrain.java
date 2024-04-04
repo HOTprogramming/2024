@@ -88,8 +88,8 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
     private Pose2d blueSpeaker = new Pose2d(0.1, 5.55, Rotation2d.fromDegrees(0));
     private Pose2d redSpeaker = new Pose2d(16.579, 5.688, Rotation2d.fromDegrees(180));
 
-    private Pose2d blueLob = new Pose2d(2.9, 8.5, Rotation2d.fromDegrees(0));
-    private Pose2d redLob = new Pose2d(13, 8.5, Rotation2d.fromDegrees(180));
+    private Pose2d blueLob = new Pose2d(2.0, 6.7, Rotation2d.fromDegrees(0));
+    private Pose2d redLob = new Pose2d(14.54, 6.7, Rotation2d.fromDegrees(180));
 
     public Drivetrain(RobotState robotState) {
 
