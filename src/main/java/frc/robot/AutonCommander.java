@@ -212,4 +212,9 @@ public class AutonCommander implements RobotCommander {
         return auto.unPackage;
     }
 
+    @Override
+    public boolean getOverrideBeamBreak() {
+        return false;
+    }
+
 }
