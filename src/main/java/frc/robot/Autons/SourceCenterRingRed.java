@@ -44,8 +44,9 @@ public class SourceCenterRingRed extends AutonBase {
 
     Pose2d ring2 = new Pose2d(8.0, 2.30, Rotation2d.fromDegrees(-130));
     Pose2d stage = new Pose2d(11.2, 4.05, Rotation2d.fromDegrees(180));
+    Pose2d stageToShoot = new Pose2d(12.3, 3.2, Rotation2d.fromDegrees(180));
     Pose2d shoot = new Pose2d(13.54, 2.90, Rotation2d.fromDegrees(-138));
-    Pose2d shootStage = new Pose2d(13.54, 2.90, Rotation2d.fromDegrees(-141.5));
+    Pose2d shootStage = new Pose2d(13.54, 2.90, Rotation2d.fromDegrees(-140.0));
     Pose2d ring3 = new Pose2d(8.2, 4.20, Rotation2d.fromDegrees(180));
     Pose2d out = new Pose2d(12.14, 1.5, Rotation2d.fromDegrees(180));
     Pose2d ring1 = new Pose2d(8.2, 0.9, Rotation2d.fromDegrees(180)); 
@@ -174,6 +175,7 @@ public class SourceCenterRingRed extends AutonBase {
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(ring2),
                         Waypoint.fromHolonomicPose(stage),
+                        Waypoint.fromHolonomicPose(stageToShoot),
                         Waypoint.fromHolonomicPose(shootStage)));
                 armCommand = ArmCommanded.sourceAutoRed;       
                 runShooter = false;
