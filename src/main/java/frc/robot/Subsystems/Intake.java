@@ -151,6 +151,7 @@ public class Intake implements SubsystemBase {
         SmartDashboard.putNumber("slurperPos", (slurperArm.getSelectedSensorPosition(0) - slurperArmOffset) * 360/4096);
         SmartDashboard.putNumber("Real Slurper Pos", slurperArm.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("slurperPosCancoder", slurperCancoder.getAbsolutePosition());
+        SmartDashboard.putNumber("intakevoltage", intake.getMotorVoltage().getValueAsDouble());
 
 
         if ((intake.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
