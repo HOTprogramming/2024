@@ -42,7 +42,7 @@ public class AmpRedSpit extends AutonBase {
    
     boolean ring1first = true;
 
-    double spitXValue = 12.36;
+    double spitXValue = 12.41;
 
     Pose2d start = new Pose2d(14.96, 6.189, Rotation2d.fromDegrees(180));
     Pose2d betweenRings = new Pose2d(13.61, 6.20, Rotation2d.fromDegrees(180));
@@ -294,7 +294,7 @@ public class AmpRedSpit extends AutonBase {
         } else if (step == Step.tostagering) {
             if (timer.get() > .4) {
                 
-                robotState.setAutonHintXPos(calculateArmHint(stageRing));
+                robotState.setAutonHintXPos(calculateArmHint(stageRing) + .1);
             }
 
             if (timer.get() > .7) {
