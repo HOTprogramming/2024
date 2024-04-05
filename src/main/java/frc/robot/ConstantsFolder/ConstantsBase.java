@@ -341,7 +341,7 @@ public class ConstantsBase {
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
         public double AMP = 139.0;
-        public double HAILMARY = 140.0;
+        public double HAILMARY = 142.5;
         public double ARMOFFSET = 0.4;
         public double HANDOFF = 171.4;
         public double BLUEDISTANCE1 = 1.16;
