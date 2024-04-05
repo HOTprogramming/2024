@@ -343,7 +343,7 @@ public class ConstantsBase {
         public double AMP = 139.0;
         public double HAILMARY = 140.0;
         public double ARMOFFSET = 0.4;
-        public double HANDOFF = 168;
+        public double HANDOFF = 171.4;
         public double BLUEDISTANCE1 = 1.16;
         public double BLUEDISTANCE2 = 2.5;
         public double BLUEDISTANCE3 = 4;
