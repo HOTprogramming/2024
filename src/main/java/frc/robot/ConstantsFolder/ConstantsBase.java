@@ -436,8 +436,8 @@ public class ConstantsBase {
                                     .withPeakForwardTorqueCurrent(70)
                                     .withPeakReverseTorqueCurrent(-70);
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(150)
-                                    .withPeakReverseTorqueCurrent(-150);
+                                    .withPeakForwardTorqueCurrent(140)
+                                    .withPeakReverseTorqueCurrent(-140);
 
         public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 
