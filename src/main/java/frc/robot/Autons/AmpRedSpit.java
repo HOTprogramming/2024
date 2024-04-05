@@ -294,7 +294,7 @@ public class AmpRedSpit extends AutonBase {
         } else if (step == Step.tostagering) {
             if (timer.get() > .4) {
                 
-                robotState.setAutonHintXPos(calculateArmHint(stageRing) + .1);
+                robotState.setAutonHintXPos(calculateArmHint(stageRing));
             }
 
             if (timer.get() > .7) {
