@@ -55,8 +55,8 @@ public class AmpBlueSpit extends AutonBase {
     // Pose2d beforeBetweenOtherRings = new Pose2d(4.6, 5.5, Rotation2d.fromDegrees(0));
     // Pose2d betweenOtherRings = new Pose2d(2.9, 4.45, Rotation2d.fromDegrees(0));
     // Pose2d aroundRings = new Pose2d(3.1, 7.5, Rotation2d.fromDegrees(0));
-    Pose2d beforeBetweenRings = new Pose2d(4, 6.14, Rotation2d.fromDegrees(0));
-    Pose2d betweenRingsBack = new Pose2d(2.93, 6.14, Rotation2d.fromDegrees(0));
+    Pose2d beforeBetweenRings = new Pose2d(4, 6.27, Rotation2d.fromDegrees(0));
+    Pose2d betweenRingsBack = new Pose2d(2.93, 6.27, Rotation2d.fromDegrees(0));
     Pose2d closeShoot = new Pose2d(1.9, 6.4, Rotation2d.fromDegrees(25));
     // Pose2d backAmpRing = new Pose2d(2.1, 6.5, Rotation2d.fromDegrees(25));
     Pose2d ampRing = new Pose2d(2.82, 6.97, Rotation2d.fromDegrees(25));
