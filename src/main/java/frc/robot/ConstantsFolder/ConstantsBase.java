@@ -4,6 +4,7 @@ package frc.robot.ConstantsFolder;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -438,6 +439,14 @@ public class ConstantsBase {
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
                                     .withPeakForwardTorqueCurrent(140)
                                     .withPeakReverseTorqueCurrent(-140);
+
+        public CurrentLimitsConfigs TELE_CURRENT_LIMITS = new CurrentLimitsConfigs()
+        .withStatorCurrentLimit(110)
+        .withStatorCurrentLimitEnable(true);
+
+        public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()
+        .withStatorCurrentLimit(300)
+        .withStatorCurrentLimitEnable(false);
 
         public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 

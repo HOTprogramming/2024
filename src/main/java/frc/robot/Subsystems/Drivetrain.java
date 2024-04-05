@@ -438,7 +438,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_SWERVE_STEER_GAINS);
 
-            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_DRIVE_CURRENT);
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELE_CURRENT_LIMITS);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_STEER_CURRENT);
         }
     }
@@ -448,7 +448,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             Modules[i].getDriveMotor().getConfigurator().apply(constants.SWERVE_DRIVE_GAINS);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.SWERVE_STEER_GAINS);
 
-            Modules[i].getDriveMotor().getConfigurator().apply(constants.AUTON_DRIVE_CURRENT);
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.AUTO_CURRENT_LIMITS);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.AUTON_STEER_CURRENT);
         }
     }
