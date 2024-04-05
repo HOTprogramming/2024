@@ -441,12 +441,16 @@ public class ConstantsBase {
                                     .withPeakReverseTorqueCurrent(-140);
 
         public CurrentLimitsConfigs TELE_CURRENT_LIMITS = new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(110)
-        .withStatorCurrentLimitEnable(true);
+                                    .withStatorCurrentLimit(110)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(50)
+                                    .withSupplyCurrentThreshold(55)
+                                    .withSupplyTimeThreshold(2)
+                                    .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(300)
-        .withStatorCurrentLimitEnable(false);
+                                    .withSupplyCurrentLimitEnable(false)
+                                    .withStatorCurrentLimitEnable(false);
 
         public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 
