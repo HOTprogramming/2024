@@ -46,8 +46,8 @@ public class AmpBlueSpit extends AutonBase {
 
     Pose2d start = new Pose2d(1.58, 6.189, Rotation2d.fromDegrees(0));
     Pose2d betweenRings = new Pose2d(2.93, 6.20, Rotation2d.fromDegrees(0));
-    Pose2d afterBetweenRings = new Pose2d(4, 6.20, Rotation2d.fromDegrees(20)); // 25 ILL
-    Pose2d forkpoint = new Pose2d(6, 6.3, Rotation2d.fromDegrees(20)); // 25 ILL
+    Pose2d afterBetweenRings = new Pose2d(4, 6.20, Rotation2d.fromDegrees(18)); // 25 ILL
+    Pose2d forkpoint = new Pose2d(6, 6.3, Rotation2d.fromDegrees(18)); // 25 ILL
     Pose2d ring1 = new Pose2d(8.15, 7.80, Rotation2d.fromDegrees(15));
     Pose2d farShoot = new Pose2d(4.7, 6.7, Rotation2d.fromDegrees(10));
     Pose2d ring2 = new Pose2d(8.26, 5.81, Rotation2d.fromDegrees(-14));
@@ -230,7 +230,7 @@ public class AmpBlueSpit extends AutonBase {
                     Waypoint.fromHolonomicPose(closeShoot, Rotation2d.fromDegrees(90)),
                     Waypoint.fromHolonomicPose(ampRing)
                     ));
-                robotState.setAutonHintXPos(calculateArmHint(closeShoot) + .5);
+                robotState.setAutonHintXPos(calculateArmHint(closeShoot) + .4); // .5
 
                 step = Step.toampring;
                 timer.reset();
@@ -255,7 +255,7 @@ public class AmpBlueSpit extends AutonBase {
                 timer.reset();
             }
         } else if (step == Step.tomidring) {
-            robotState.setAutonHintXPos(calculateArmHint(midRingActual) + .3);
+            robotState.setAutonHintXPos(calculateArmHint(midRingActual) + .2); // .3
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 trajectoryConfig = new TrajectoryConfig(2.85, 3);
