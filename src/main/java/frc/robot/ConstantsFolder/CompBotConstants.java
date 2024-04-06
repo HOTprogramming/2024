@@ -313,7 +313,7 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE6 = 8.2;//23ft 1in
             REDANGLE1 = 148.5;
             REDANGLE2 = 136.6;  // fine
-            REDANGLE3 = 128.4;
+            REDANGLE3 = 127.4;
             REDANGLE4 = 123.7;   // go down
             REDANGLE5 = 121.2;  
             REDANGLE6 = 117.8;
