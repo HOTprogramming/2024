@@ -311,11 +311,11 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE4 = 4.83; // 148 in 
             REDDISTANCE5 = 6.46; // 17ft
             REDDISTANCE6 = 8.2;//23ft 1in
-            REDANGLE1 = 148.5; 
-            REDANGLE2 = 136.6;
+            REDANGLE1 = 148.5;
+            REDANGLE2 = 136.6;  // fine
             REDANGLE3 = 128.4;
-            REDANGLE4 = 124.5;   
-            REDANGLE5 = 121.2;
+            REDANGLE4 = 123.7;   // go down
+            REDANGLE5 = 121.2;  
             REDANGLE6 = 117.8;
             
             // REDANGLE1 = 148.5; // old rings

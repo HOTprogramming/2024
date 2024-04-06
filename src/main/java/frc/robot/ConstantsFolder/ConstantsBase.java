@@ -445,7 +445,7 @@ public class ConstantsBase {
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(50)
                                     .withSupplyCurrentThreshold(55)
-                                    .withSupplyTimeThreshold(2)
+                                    .withSupplyTimeThreshold(1.5)
                                     .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()
