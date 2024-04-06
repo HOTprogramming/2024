@@ -233,6 +233,16 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         // gets current drive state
         currentState = getState();
 
+         for (int i = 0; i < ModuleCount; i++) {
+            Modules[i].getDriveMotor().getDeviceTemp();
+            Modules[i].getDriveMotor().getMotorVoltage();
+            Modules[i].getDriveMotor().getSupplyVoltage();
+            Modules[i].getDriveMotor().getSupplyCurrent();
+            Modules[i].getDriveMotor().getStatorCurrent();
+            Modules[i].getDriveMotor().getDeviceTemp();
+            Modules[i].getDriveMotor().getTorqueCurrent();
+        }
+
         // updates robotState for auton pathing
         if (driveController.atReference()) {
             robotState.setAtTargetPose(true);

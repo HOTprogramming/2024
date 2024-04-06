@@ -440,12 +440,21 @@ public class ConstantsBase {
                                     .withPeakForwardTorqueCurrent(140)
                                     .withPeakReverseTorqueCurrent(-140);
 
+        public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
+                                    .withStatorCurrentLimit(50)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(15)
+                                    .withSupplyCurrentThreshold(15)
+                                    .withSupplyTimeThreshold(0.0)
+                                    .withSupplyCurrentLimitEnable(true);
+                                    
+
         public CurrentLimitsConfigs TELE_CURRENT_LIMITS = new CurrentLimitsConfigs()
                                     .withStatorCurrentLimit(110)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(50)
                                     .withSupplyCurrentThreshold(55)
-                                    .withSupplyTimeThreshold(1.5)
+                                    .withSupplyTimeThreshold(0.0)
                                     .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()

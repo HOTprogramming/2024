@@ -77,6 +77,14 @@ public class Shooter implements SubsystemBase {
 
         leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = leftCurrentLimit;
         leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -leftCurrentLimit;
+        
+        /* Cory-added */
+        leftConfigs.CurrentLimits.StatorCurrentLimit = leftCurrentLimit;
+        leftConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        rightConfigs.CurrentLimits.StatorCurrentLimit = rightCurrentLimit;
+        rightConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        /* End cory-added */
+
         rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = rightCurrentLimit;
         rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -rightCurrentLimit;
 
