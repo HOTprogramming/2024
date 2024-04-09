@@ -77,6 +77,8 @@ public class Intake implements SubsystemBase {
 
         slurperSpin = new TalonSRX(constants.SLURPER_ROLLER_CAN);
 
+
+
         slurperCancoder = new CANCoder(constants.SLURPER_CANCODER_CAN);
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
@@ -138,6 +140,16 @@ public class Intake implements SubsystemBase {
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
+
+        intake.getConfigurator().apply(constants.INTAKE_CURRENT_LIMIT);
+
+        slurperArm.configPeakCurrentLimit(constants.SLURPER_ARM_PEAK_CURRENT);
+        slurperArm.configPeakCurrentDuration(constants.SLURPER_ARM_PEAK_CURRENT_DURATION);
+        slurperArm.configContinuousCurrentLimit(constants.SLURPER_ARM_CONTINOUS_CURRENT);
+
+        slurperSpin.configPeakCurrentLimit(constants.SLURPER_ROLLER_PEAK_CURRENT);
+        slurperSpin.configPeakCurrentDuration(constants.SLURPER_ROLLER_PEAK_CURRENT_DURATION);
+        slurperSpin.configContinuousCurrentLimit(constants.SLURPER_ROLLER_CONTINOUS_CURRENT);
 
         this.reset();
         slurperArm.setNeutralMode(NeutralMode.Brake);

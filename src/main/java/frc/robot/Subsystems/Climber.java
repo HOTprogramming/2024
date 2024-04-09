@@ -111,6 +111,8 @@ public class Climber implements SubsystemBase {
           System.out.println("Could not configure device. Error: " + status.toString());
         }
 
+        climberMotor.getConfigurator().apply(constants.CLIMBER_CURRENT_LIMITS);
+
         climberMotor.setPosition(0);
     }
 }
