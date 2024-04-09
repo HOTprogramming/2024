@@ -426,27 +426,27 @@ public class ConstantsBase {
         .withKP(3).withKI(0).withKD(0)
         .withKS(0).withKV(0).withKA(0);
 
-        public TorqueCurrentConfigs AUTON_STEER_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(300)
-                                    .withPeakReverseTorqueCurrent(-300);
+
         public TorqueCurrentConfigs AUTON_DRIVE_CURRENT = new TorqueCurrentConfigs()
                                     .withPeakForwardTorqueCurrent(300)
                                     .withPeakReverseTorqueCurrent(-300);
 
-        public TorqueCurrentConfigs TELEOP_STEER_CURRENT = new TorqueCurrentConfigs()
+
+        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
                                     .withPeakForwardTorqueCurrent(70)
                                     .withPeakReverseTorqueCurrent(-70);
-        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
-                                    .withPeakForwardTorqueCurrent(140)
-                                    .withPeakReverseTorqueCurrent(-140);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
-                                    .withStatorCurrentLimit(50)
+                                    .withStatorCurrentLimit(30)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(15)
                                     .withSupplyCurrentThreshold(15)
-                                    .withSupplyTimeThreshold(0.0)
+                                    .withSupplyTimeThreshold(0.1)
                                     .withSupplyCurrentLimitEnable(true);
+
+        public CurrentLimitsConfigs AUTO_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
+                                    .withStatorCurrentLimitEnable(false)
+                                    .withSupplyCurrentLimitEnable(false);
                                     
         // use FOC for any speed setpoint that torque current can reach (non trapizoidal)
         //  tq tune, tune kp very low, then tune ks to get it KS = force to maintain dynamic, KV = changing resistance (drag)
