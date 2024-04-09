@@ -77,6 +77,14 @@ public class Shooter implements SubsystemBase {
 
         leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = leftCurrentLimit;
         leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -leftCurrentLimit;
+        
+        /* Cory-added */
+        leftConfigs.CurrentLimits.StatorCurrentLimit = leftCurrentLimit;
+        leftConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        rightConfigs.CurrentLimits.StatorCurrentLimit = rightCurrentLimit;
+        rightConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        /* End cory-added */
+
         rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = rightCurrentLimit;
         rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -rightCurrentLimit;
 
@@ -170,8 +178,8 @@ public class Shooter implements SubsystemBase {
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((1800.0 / 60.0)));
         } 
         else if (commander.armCommanded() == ArmCommanded.hailMary) {
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((3700.0 / 60.0)));
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((2700.0 / 60.0)));
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((4000.0 / 60.0)));//original: 3900
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((3000.0 / 60.0)));//original: 2900
         } 
         else if (commander.armCommanded() == ArmCommanded.amp) {
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0)));
