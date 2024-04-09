@@ -171,11 +171,23 @@ public class Intake implements SubsystemBase {
         // sensorFeeder.get();
         
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
+       
         if(commander.intakeOut()){
-            intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+            //when the feeder spikes, main kraken motor is half the speed of normal
+            if(robotState.getFeederCurrent()>20 && robotState.getBeamBreak() == false){
+                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED/2.0));
+            }
+            else {
+                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+            }
         } else if (commander.getIntake() && (!robotState.getBeamBreak() || commander.getOverrideBeamBreak())) { // left trigger
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0); 
-            intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));     
+            if(robotState.getFeederCurrent()>20 && robotState.getBeamBreak() == false){
+                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED/2.0));
+            }
+            else {
+                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+            }
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0);     
             slurperSpin.set(ControlMode.PercentOutput, .8);
             SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 160.0 / 360.0 * 4096.0);
 

@@ -50,6 +50,7 @@ public class RobotState {
     private double autonHintXPos;
     private boolean oneFirst;
     private boolean driverRumble = true;
+    private double feederCurrent;
  
     private boolean feederStop = false;
     private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
@@ -76,6 +77,14 @@ public class RobotState {
 
     public boolean getDriverRumble() {
         return this.driverRumble;
+    }
+
+    public void setFeederCurrent(double feederCurrent){
+        this.feederCurrent = feederCurrent;
+    }
+
+    public double getFeederCurrent(){
+        return this.feederCurrent;
     }
 
 
