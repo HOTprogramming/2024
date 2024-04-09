@@ -11,7 +11,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix6.StatusCode;
@@ -45,8 +46,8 @@ public class Intake implements SubsystemBase {
     RobotState robotState;
     private final DutyCycleOut Out = new DutyCycleOut(0);
     TalonFX intake;
-    VictorSPX slurperArm;
-    VictorSPX slurperSpin;
+    TalonSRX slurperArm;
+    TalonSRX slurperSpin;
     CANCoder slurperCancoder;
     private double slurperArmOffset;
     double intakeCurrentLimit = 70;
@@ -61,8 +62,8 @@ public class Intake implements SubsystemBase {
      static DigitalInput sensorFeeder;
 
     TalonFXConfiguration enterConfigs = new TalonFXConfiguration();
-    TalonFXConfiguration slurperArmConfigs = new TalonFXConfiguration();
-    TalonFXConfiguration slurperRollerConfigs = new TalonFXConfiguration();
+    TalonSRXConfiguration slurperArmConfigs = new TalonSRXConfiguration();
+    TalonSRXConfiguration slurperRollerConfigs = new TalonSRXConfiguration();
 
     StatusCode enterStatus = StatusCode.StatusCodeNotInitialized;
     StatusCode slurperArmStatus = StatusCode.StatusCodeNotInitialized;
@@ -71,16 +72,16 @@ public class Intake implements SubsystemBase {
         this.robotState = robotState;
         constants = robotState.getConstants().getIntakeConstants();
         intake = new TalonFX(constants.INTAKE_ENTER_CAN, "drivetrain");
-        slurperArm = new VictorSPX(constants.SLURPER_ARM_CAN);
+        slurperArm = new TalonSRX(constants.SLURPER_ARM_CAN);
         slurperArm.configFactoryDefault();
 
-        slurperSpin = new VictorSPX(constants.SLURPER_ROLLER_CAN);
+        slurperSpin = new TalonSRX(constants.SLURPER_ROLLER_CAN);
 
         slurperCancoder = new CANCoder(constants.SLURPER_CANCODER_CAN);
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        slurperCancoder.configMagnetOffset(443.0);
+        slurperCancoder.configMagnetOffset(442.4);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
