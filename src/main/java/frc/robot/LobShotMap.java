@@ -15,13 +15,13 @@ public class LobShotMap {
     private double distance3 = 8.2;
     //3700 left 2700 right
     private double leftSpeed1 = 3700;
-    private double rightSpeed1 = 3700;
+    private double rightSpeed1 = 2700;
 
-    private double leftSpeed2 = 3600;
-    private double rightSpeed2 = 3600;
+    private double leftSpeed2 = 3200;
+    private double rightSpeed2 = 2200;
 
-    private double leftSpeed3 = 3500;
-    private double rightSpeed3 = 3500;
+    private double leftSpeed3 = 2700;
+    private double rightSpeed3 = 1700;
 
     private double lSpeedY;
     private double lSpeedY2;
