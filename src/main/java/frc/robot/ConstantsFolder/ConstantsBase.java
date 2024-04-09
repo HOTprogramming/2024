@@ -436,7 +436,7 @@ public class ConstantsBase {
         public TorqueCurrentConfigs TELEOP_STEER_CURRENT = new TorqueCurrentConfigs()
                                     .withPeakForwardTorqueCurrent(70)
                                     .withPeakReverseTorqueCurrent(-70);
-        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
+        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
                                     .withPeakForwardTorqueCurrent(140)
                                     .withPeakReverseTorqueCurrent(-140);
 
@@ -448,18 +448,19 @@ public class ConstantsBase {
                                     .withSupplyTimeThreshold(0.0)
                                     .withSupplyCurrentLimitEnable(true);
                                     
+        // use FOC for any speed setpoint that torque current can reach (non trapizoidal)
+        //  tq tune, tune kp very low, then tune ks to get it KS = force to maintain dynamic, KV = changing resistance (drag)
+        // public CurrentLimitsConfigs TELE_CURRENT_LIMITS = new CurrentLimitsConfigs() // voltage and duty cycle -cory
+        //                             .withStatorCurrentLimit(110)
+        //                             .withStatorCurrentLimitEnable(true)
+        //                             .withSupplyCurrentLimit(50)
+        //                             .withSupplyCurrentThreshold(55)
+        //                             .withSupplyTimeThreshold(0.0)
+        //                             .withSupplyCurrentLimitEnable(true);
 
-        public CurrentLimitsConfigs TELE_CURRENT_LIMITS = new CurrentLimitsConfigs()
-                                    .withStatorCurrentLimit(110)
-                                    .withStatorCurrentLimitEnable(true)
-                                    .withSupplyCurrentLimit(50)
-                                    .withSupplyCurrentThreshold(55)
-                                    .withSupplyTimeThreshold(0.0)
-                                    .withSupplyCurrentLimitEnable(true);
-
-        public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()
-                                    .withSupplyCurrentLimitEnable(false)
-                                    .withStatorCurrentLimitEnable(false);
+        // public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()
+        //                             .withSupplyCurrentLimitEnable(false)
+        //                             .withStatorCurrentLimitEnable(false);
 
         public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 
