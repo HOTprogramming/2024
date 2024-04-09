@@ -49,6 +49,7 @@ public class Intake implements SubsystemBase {
     VictorSPX slurperSpin;
     CANCoder slurperCancoder;
     private double slurperArmOffset;
+    double intakeCurrentLimit = 70;
 
     // up = 135.6
     // down = -174
@@ -79,7 +80,7 @@ public class Intake implements SubsystemBase {
         slurperCancoder.configFactoryDefault();
         slurperCancoder.setPositionToAbsolute();
         slurperCancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        slurperCancoder.configMagnetOffset(15.0);
+        slurperCancoder.configMagnetOffset(443.0);
 
         enterConfigs.Slot0.kP = constants.P0IntakeEnter;
         enterConfigs.Slot0.kI = constants.I0IntakeEnter;
@@ -88,6 +89,9 @@ public class Intake implements SubsystemBase {
         enterConfigs.Slot1.kP = constants.P1IntakeEnter;
         enterConfigs.Slot1.kI = constants.I1IntakeEnter;
         enterConfigs.Slot1.kD = constants.D1IntakeEnter;
+
+        enterConfigs.CurrentLimits.StatorCurrentLimit = intakeCurrentLimit;
+        enterConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
 
         enterConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         enterConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -151,7 +155,8 @@ public class Intake implements SubsystemBase {
         SmartDashboard.putNumber("slurperPos", (slurperArm.getSelectedSensorPosition(0) - slurperArmOffset) * 360/4096);
         SmartDashboard.putNumber("Real Slurper Pos", slurperArm.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("slurperPosCancoder", slurperCancoder.getAbsolutePosition());
-
+        SmartDashboard.putNumber("intakevoltage", intake.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("intakeCurrentLimit", intakeCurrentLimit);
 
         if ((intake.getVelocity().getValueAsDouble()) >= (constants.INTAKESPEED - constants.INTAKE_VELOCITY_ERROR) ){
             robotState.setIntakeOn(true);

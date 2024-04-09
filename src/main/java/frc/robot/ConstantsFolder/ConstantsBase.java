@@ -4,6 +4,7 @@ package frc.robot.ConstantsFolder;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -340,9 +341,9 @@ public class ConstantsBase {
         public double CLOSE = 151.0;
         public double PROTECT = 126.0;
         public double AMP = 139.0;
-        public double HAILMARY = 140.0;
+        public double HAILMARY = 142.5;
         public double ARMOFFSET = 0.4;
-        public double HANDOFF = 168;
+        public double HANDOFF = 171.4;
         public double BLUEDISTANCE1 = 1.16;
         public double BLUEDISTANCE2 = 2.5;
         public double BLUEDISTANCE3 = 4;
@@ -435,9 +436,31 @@ public class ConstantsBase {
         public TorqueCurrentConfigs TELEOP_STEER_CURRENT = new TorqueCurrentConfigs()
                                     .withPeakForwardTorqueCurrent(70)
                                     .withPeakReverseTorqueCurrent(-70);
-        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(150)
-                                    .withPeakReverseTorqueCurrent(-150);
+        public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
+                                    .withPeakForwardTorqueCurrent(140)
+                                    .withPeakReverseTorqueCurrent(-140);
+
+        public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
+                                    .withStatorCurrentLimit(50)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(15)
+                                    .withSupplyCurrentThreshold(15)
+                                    .withSupplyTimeThreshold(0.0)
+                                    .withSupplyCurrentLimitEnable(true);
+                                    
+        // use FOC for any speed setpoint that torque current can reach (non trapizoidal)
+        //  tq tune, tune kp very low, then tune ks to get it KS = force to maintain dynamic, KV = changing resistance (drag)
+        // public CurrentLimitsConfigs TELE_CURRENT_LIMITS = new CurrentLimitsConfigs() // voltage and duty cycle -cory
+        //                             .withStatorCurrentLimit(110)
+        //                             .withStatorCurrentLimitEnable(true)
+        //                             .withSupplyCurrentLimit(50)
+        //                             .withSupplyCurrentThreshold(55)
+        //                             .withSupplyTimeThreshold(0.0)
+        //                             .withSupplyCurrentLimitEnable(true);
+
+        // public CurrentLimitsConfigs AUTO_CURRENT_LIMITS = new CurrentLimitsConfigs()
+        //                             .withSupplyCurrentLimitEnable(false)
+        //                             .withStatorCurrentLimitEnable(false);
 
         public double WHEEL_SLIP_CURRENT = 500.0; // *tune later
 
