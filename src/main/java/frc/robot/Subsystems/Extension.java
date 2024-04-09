@@ -2,6 +2,7 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -41,7 +42,7 @@ double extendedCommanded;
 StatusSignal<Double> extendPosition;
 StatusSignal<Double> extendVelocity;
 
-VictorSPX spitter;
+TalonSRX spitter;
 double fullyExtended = 2.16;
 double fullyExtendedAmp = 1.08;
 double middlePoint = 0.6;
@@ -80,7 +81,7 @@ public Extension(RobotState robotState) {
     this.constants = robotState.getConstants().getExtensionConstants();
 
     extendMotor = new TalonFX(constants.EXTENSIONCAN, "drivetrain");
-    spitter = new VictorSPX(robotState.getConstants().getIntakeConstants().SLURPER_ROLLER_CAN);
+    spitter = new TalonSRX(robotState.getConstants().getIntakeConstants().SLURPER_ROLLER_CAN);
 
     extendMagic = new MotionMagicVoltage(0);
 
@@ -248,14 +249,14 @@ public Extension(RobotState robotState) {
                 extendMotor.set(-0.2);
 
             } else if(extendPosition.getValueAsDouble() > 0.30) { 
-                extendMotor.set(-0.30);
+                extendMotor.set(-0.25); //.30
 
             } else if (extendPosition.getValueAsDouble() > 0.1){
                 
                 extendMotor.set(-0.15);
             
             } else if (extendPosition.getValueAsDouble() > 0.0045){
-                extendMotor.set(-0.15);
+                extendMotor.set(-0.20);
 
             } else {
                 extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));

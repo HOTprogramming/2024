@@ -80,6 +80,14 @@ public class Shooter implements SubsystemBase {
 
         leftConfigs.TorqueCurrent.PeakForwardTorqueCurrent = leftCurrentLimit;
         leftConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -leftCurrentLimit;
+        
+        /* Cory-added */
+        leftConfigs.CurrentLimits.StatorCurrentLimit = leftCurrentLimit;
+        leftConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        rightConfigs.CurrentLimits.StatorCurrentLimit = rightCurrentLimit;
+        rightConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+        /* End cory-added */
+
         rightConfigs.TorqueCurrent.PeakForwardTorqueCurrent = rightCurrentLimit;
         rightConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -rightCurrentLimit;
 
@@ -124,8 +132,8 @@ public class Shooter implements SubsystemBase {
         shooterPosition.refresh();
         robotState.setShooterPos(leftFlywheel.getPosition().getValueAsDouble());
 
-        SmartDashboard.putNumber("Shooter_Left target speed", constants.LEFT_FLYWHEEL_TARGET_RPM);
-        SmartDashboard.putNumber("Shooter_right target speed", constants.RIGHT_FLYWHEEL_TARGET_RPM);
+        SmartDashboard.putNumber("Shooter_Left target speed", leftTorqueCurrentFOC.Velocity * 60);
+        SmartDashboard.putNumber("Shooter_right target speed", rightTorqueCurrentFOC.Velocity * 60);
         SmartDashboard.putNumber("Shooter_Left speed RPM", leftFlywheel.getVelocity().getValueAsDouble() * 60);
         SmartDashboard.putNumber("Shooter_Right speed RPM", rightFlywheel.getVelocity().getValueAsDouble() * 60);
         SmartDashboard.putNumber("Shooter_ShootVolt", leftFlywheel.getMotorVoltage().getValue());
@@ -139,7 +147,7 @@ public class Shooter implements SubsystemBase {
         shooterPosition.refresh();
 
         if (commander.armCommanded() == ArmCommanded.shotMap || commander.armCommanded() == ArmCommanded.close || commander.armCommanded() == ArmCommanded.protect || commander.armCommanded() == ArmCommanded.auton || commander.armCommanded() == ArmCommanded.sourceAuto || commander.armCommanded() == ArmCommanded.sourceAuto2 || commander.armCommanded() == ArmCommanded.sourceAutoRed) {
-             leftFlywheel.setControl(leftVoltageVelocity.withVelocity((constants.LEFT_FLYWHEEL_TARGET_RPM / 60.0)));
+             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_TARGET_RPM / 60.0)));
              rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((constants.RIGHT_FLYWHEEL_TARGET_RPM / 60.0)).withFeedForward(20.0));
         }
 

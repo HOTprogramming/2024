@@ -235,18 +235,18 @@ public class CompBotConstants extends ConstantsBase {
             FLYWHEEL_MAX_SPEED = 0.05; // percent of full speed
             FLYWHEEL_MAX_VELOCITY_ERROR = .0005; // percent of full speed
     
-            FLYWHEEL_KP = 50.0; // 22.0
-            FLYWHEEL_KI = 0.15; // 0.0
+            FLYWHEEL_KP = 12.0; // 22.0
+            FLYWHEEL_KI = 0.0; // 0.0
             FLYWHEEL_KD = 0.0; // 2.0
-            LEFT_FLYWHEEL_KV = .60; //.133
-            LEFT_FLYWHEEL_KS = 1.2; // .8 | .384
+            LEFT_FLYWHEEL_KV = 0.14; //.133
+            LEFT_FLYWHEEL_KS = 10.1; // .8 | .384
 
 
-            RFLYWHEEL_KP = 30.0; // 16.0
-            RFLYWHEEL_KI = 0.1; // 0.0
+            RFLYWHEEL_KP = 9.0; // 16.0
+            RFLYWHEEL_KI = 0.0; // 0.0
             RFLYWHEEL_KD = 0.0; // 4.0
-            RIGHT_FLYWHEEL_KV = .138; //.138
-            RIGHT_FLYWHEEL_KS = 0.8; // 0.8 | .38
+            RIGHT_FLYWHEEL_KV = 0.18; //.138
+            RIGHT_FLYWHEEL_KS = 5.7; // 0.8 | .38
 
 
 
@@ -291,9 +291,9 @@ public class CompBotConstants extends ConstantsBase {
             BLUEDISTANCE5 = 6.46; // 17ft
             BLUEDISTANCE6 = 8.2;//23ft 1in
             BLUEANGLE1 = 148.0;
-            BLUEANGLE2 = 133.4;
-            BLUEANGLE3 = 125.5;
-            BLUEANGLE4 = 122.0;   
+            BLUEANGLE2 = 134.4; // 
+            BLUEANGLE3 = 126.5; // 
+            BLUEANGLE4 = 123.35; // 
             BLUEANGLE5 = 119.9;
             BLUEANGLE6 = 117.8; 
 
@@ -311,12 +311,19 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE4 = 4.83; // 148 in 
             REDDISTANCE5 = 6.46; // 17ft
             REDDISTANCE6 = 8.2;//23ft 1in
-            REDANGLE1 = 148.0;
-            REDANGLE2 = 133.4;
-            REDANGLE3 = 125.5;
-            REDANGLE4 = 122.0;   
-            REDANGLE5 = 119.9;
-            REDANGLE6 = 117.8; 
+            REDANGLE1 = 148.5;
+            REDANGLE2 = 136.6;  // fine
+            REDANGLE3 = 127.4;
+            REDANGLE4 = 123.7;   // go down
+            REDANGLE5 = 121.2;  
+            REDANGLE6 = 117.8;
+            
+            // REDANGLE1 = 148.5; // old rings
+            // REDANGLE2 = 134.6;
+            // REDANGLE3 = 126.7;
+            // REDANGLE4 = 123.2;   
+            // REDANGLE5 = 119.9;
+            // REDANGLE6 = 117.8; 
         }
     }
 
