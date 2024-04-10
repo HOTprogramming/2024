@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import frc.robot.LobShotMap;
 import frc.robot.RobotCommander;
 import frc.robot.RobotState;
 
@@ -30,11 +31,13 @@ public class Shooter implements SubsystemBase {
     
     ConstantsBase.Shooter constants;
     StatusSignal<Double> shooterPosition;
+    LobShotMap lobShotMap;
 
 
     public Shooter(RobotState robotState, double leftCurrentLimit, double rightCurrentLimit) {
 
         constants = robotState.getConstants().getShooterConstants();
+        lobShotMap = new LobShotMap(robotState);
 
         this.robotState = robotState;
         leftFlywheel = new TalonFX(constants.LEFT_FLYWHEEL_CAN, "drivetrain");
@@ -178,8 +181,8 @@ public class Shooter implements SubsystemBase {
             rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((1800.0 / 60.0)));
         } 
         else if (commander.armCommanded() == ArmCommanded.hailMary) {
-            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((4000.0 / 60.0)));//original: 3900
-            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((3000.0 / 60.0)));//original: 2900
+            leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((lobShotMap.calcLeftLobShotMap() / 60.0)));
+            rightFlywheel.setControl(rightTorqueCurrentFOC.withVelocity((lobShotMap.calcRightLobShotMap() / 60.0)));
         } 
         else if (commander.armCommanded() == ArmCommanded.amp) {
             leftFlywheel.setControl(leftTorqueCurrentFOC.withVelocity((constants.LEFT_FLYWHEEL_SLOW_RPM / 60.0)));

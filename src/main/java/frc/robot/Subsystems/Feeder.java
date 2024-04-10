@@ -82,6 +82,9 @@ public class Feeder implements SubsystemBase {
             robotState.setFeederOn(false);
         }
 
+        robotState.setFeederCurrent(feeder.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("FeederCurrent", feeder.getSupplyCurrent().getValueAsDouble());
+
         robotState.setBeamBreak(sensorFeeder.get());
         SmartDashboard.putBoolean("beambreak", sensorFeeder.get());
 
