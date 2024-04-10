@@ -180,18 +180,18 @@ public class Intake implements SubsystemBase {
        
         if(commander.intakeOut()){
             //when the feeder spikes, main kraken motor is half the speed of normal
-            if(robotState.getFeederCurrent()>20 && robotState.getBeamBreak() == false){
-                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED/2.0));
+            if(robotState.getFeederCurrent()>15 && robotState.getBeamBreak() == false){
+                intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
             }
             else {
-                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+                intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
             }
         } else if (commander.getIntake() && (!robotState.getBeamBreak() || commander.getOverrideBeamBreak())) { // left trigger
-            if(robotState.getFeederCurrent()>20 && robotState.getBeamBreak() == false){
-                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED/2.0));
+            if(robotState.getFeederCurrent()>15 && robotState.getBeamBreak() == false){
+                intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
             }
             else {
-                intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+                intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
             }
             slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0);     
             slurperSpin.set(ControlMode.PercentOutput, .8);

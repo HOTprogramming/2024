@@ -14,14 +14,14 @@ public class LobShotMap {
     private double distance2 = 4.1;
     private double distance3 = 8.2;
     //3700 left 2700 right
-    private double leftSpeed1 = 3700;
-    private double rightSpeed1 = 2700;
+    private double leftSpeed1 = 4050;
+    private double rightSpeed1 = 3050;
 
-    private double leftSpeed2 = 3200;
-    private double rightSpeed2 = 2200;
+    private double leftSpeed2 = 3600;
+    private double rightSpeed2 = 2600;
 
-    private double leftSpeed3 = 2700;
-    private double rightSpeed3 = 1700;
+    private double leftSpeed3 = 3400;
+    private double rightSpeed3 = 2400;
 
     private double lSpeedY;
     private double lSpeedY2;
@@ -37,7 +37,6 @@ public class LobShotMap {
 
     public LobShotMap(RobotState robotState) {
         this.robotState = robotState;
-        yPos = robotState.getDrivePose().getY();
 
     }
 
@@ -66,11 +65,19 @@ public class LobShotMap {
             else {
                 lSpeedY2 = leftSpeed2;
             }
+            yPos = robotState.getDrivePose().getY();
 
-        return lSpeedY2;
+
+        if(robotState.getAlliance() == Alliance.Red){
+        return lSpeedY2;// * -50 * robotState.getDriveVelocity().getX();
+        }
+        else{
+            return lSpeedY2;// * 50 * robotState.getDriveVelocity().getX();    
+        }
     }
 
     public double calcRightLobShotMap(){ 
+        SmartDashboard.putNumber("RobotVelocityLobShotmap", 50 * robotState.getDriveVelocity().getX());
 
         if(yPos>=distance1 && yPos<distance2){
            rSpeedY2 = this.calculateSlopeRight(rightSpeed2, rightSpeed1, distance2, distance1, yPos);
@@ -81,8 +88,14 @@ public class LobShotMap {
        else {
            rSpeedY2 = rightSpeed2;
        }
+       yPos = robotState.getDrivePose().getY();
 
-   return rSpeedY2;
+       if(robotState.getAlliance() == Alliance.Red){
+        return rSpeedY2; //* -50 * robotState.getDriveVelocity().getX();
+        }
+        else{
+            return rSpeedY2; //* 50 * robotState.getDriveVelocity().getX();    
+        }
 }
 
 }
