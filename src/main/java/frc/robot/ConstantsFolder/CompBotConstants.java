@@ -305,12 +305,12 @@ public class CompBotConstants extends ConstantsBase {
             // BLUEANGLE6 = 117.8; 
             
             
-            REDDISTANCE1 = 1.21; // 0 in
-            REDDISTANCE2 = 2.3; // 43 in 
-            REDDISTANCE3 = 3.46; // 93 in 
-            REDDISTANCE4 = 4.83; // 148 in 
-            REDDISTANCE5 = 6.46; // 17ft
-            REDDISTANCE6 = 8.2;//23ft 1in
+            REDDISTANCE1 = 1.21; // BATTER 0 INCHES
+            REDDISTANCE2 =  2.03; // START LINE 28 INCHES 
+            REDDISTANCE3 = 2.3; // MID RING 62 INCHES 
+            REDDISTANCE4 = 4.875; // AGAINST TRUSS 143 in
+            REDDISTANCE5 = 4.83; // FRONT BUMPER ON WING LINE 194 in 
+            REDDISTANCE6 = 8.2; // WHITE LINE
             REDANGLE1 = 148.5;
             REDANGLE2 = 136.6;  // fine
             REDANGLE3 = 127.4;
