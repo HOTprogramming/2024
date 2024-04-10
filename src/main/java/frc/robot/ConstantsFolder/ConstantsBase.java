@@ -198,7 +198,7 @@ public class ConstantsBase {
         public int SLURPER_ARM_PEAK_CURRENT_DURATION = 100; // milliseconds
         public int SLURPER_ARM_CONTINOUS_CURRENT = 40;
 
-        public int SLURPER_ROLLER_PEAK_CURRENT = 35;
+        public int SLURPER_ROLLER_PEAK_CURRENT = 70;
         public int SLURPER_ROLLER_PEAK_CURRENT_DURATION = 100; // milliseconds
         public int SLURPER_ROLLER_CONTINOUS_CURRENT = 30;
 
@@ -423,11 +423,11 @@ public class ConstantsBase {
         public double SHOOTERENCODER = 5;
 
         public CurrentLimitsConfigs EXTEND_CURRENT_LIMITS = new CurrentLimitsConfigs()
-                                    .withStatorCurrentLimit(30)
+                                    .withStatorCurrentLimit(50)
                                     .withStatorCurrentLimitEnable(true)
-                                    .withSupplyCurrentLimit(15)
-                                    .withSupplyCurrentThreshold(20)
-                                    .withSupplyTimeThreshold(0.1)
+                                    .withSupplyCurrentLimit(25)
+                                    .withSupplyCurrentThreshold(35)
+                                    .withSupplyTimeThreshold(0.5)
                                     .withSupplyCurrentLimitEnable(true);
 
     }
@@ -481,15 +481,15 @@ public class ConstantsBase {
 
 
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
-                                    .withPeakForwardTorqueCurrent(70)
-                                    .withPeakReverseTorqueCurrent(-70);
+                                    .withPeakForwardTorqueCurrent(110)
+                                    .withPeakReverseTorqueCurrent(-110);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
-                                    .withStatorCurrentLimit(30)
+                                    .withStatorCurrentLimit(35)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(15)
-                                    .withSupplyCurrentThreshold(15)
-                                    .withSupplyTimeThreshold(0.1)
+                                    .withSupplyCurrentThreshold(20)
+                                    .withSupplyTimeThreshold(0.4)
                                     .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs AUTO_AZ_LIMIT = new CurrentLimitsConfigs()
