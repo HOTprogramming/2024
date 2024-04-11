@@ -346,7 +346,9 @@ public class TeleopCommander implements RobotCommander {
         return operator.getRightBumper();
     }
 
-
+    public boolean getLockNote() {
+        return driver.getYButton();
+    }
 }
 
 

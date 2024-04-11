@@ -65,4 +65,5 @@ public interface RobotCommander {
     public abstract boolean extensionZero();
     public abstract boolean unPackage();
     public abstract boolean getOverrideBeamBreak();
+    public abstract boolean getLockNote();
 }

@@ -26,7 +26,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
@@ -118,6 +120,15 @@ public class Camera implements SubsystemBase {
 
     boolean tempSimBool = false;
     boolean drawWireframes = false; // resource heavy
+
+    boolean frontDetects;
+    int frontPipeline;
+    PhotonTrackedTarget frontThing;
+    double noteX;
+    double noteY;
+    double noteDistance;
+    Translation2d noteVector;
+    Transform2d noteTransform;
 
     Nat<N3> rows = new Nat<N3>() {
 
@@ -336,6 +347,45 @@ public class Camera implements SubsystemBase {
 
         robotState.setVisionMeasurements(cameraMeasurements);
         robotState.setCameraStdDeviations(cameraStdDeviations);
+
+
+        //Obj Detection starts here
+        frontDetects = frontCamera.getLatestResult().hasTargets();
+        SmartDashboard.putBoolean("CAMERA: Front Camera sees anything", frontDetects);
+
+        frontPipeline = frontCamera.getPipelineIndex();
+        SmartDashboard.putBoolean("CAMERA: Front Camera Object Detection?", frontPipeline == 1);
+        SmartDashboard.putNumber("CAMERA: Pipeline # for front camera", frontPipeline);
+
+        robotState.setNoteDetected(frontPipeline == 1 && frontDetects);
+
+        frontThing = frontCamera.getLatestResult().getBestTarget();
+
+        if(frontDetects && frontPipeline == 1 && frontThing!=null){
+            
+            noteX = -frontThing.getYaw();
+            robotState.setNoteYaw(Rotation2d.fromDegrees(-noteX));
+            noteY = frontThing.getPitch();
+            SmartDashboard.putNumber("CAMERA: Note X angle", noteX);
+            SmartDashboard.putNumber("CAMERA: Note Y angle", noteY);
+
+            noteDistance = PhotonUtils.calculateDistanceToTargetMeters(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ(), 0.0, constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getRotation().getY(), Math.toRadians(noteY));
+            noteVector = new Translation2d(noteDistance, 0);
+            // noteVector = new Translation2d(-(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getZ())/Math.tan(Math.toRadians(noteY)), 0); 
+            SmartDashboard.putNumber("CAMERA: Note distance to camera", noteDistance);
+            robotState.setNoteDistance(noteDistance);
+
+            noteVector = noteVector.rotateBy(new Rotation2d(Math.toRadians(noteX) + robotState.getDrivePose().getRotation().getRadians()));
+            noteVector = noteVector.plus(new Translation2d(constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getX(), constants.cameraConstants.get(CameraPositions.FRONT).getTransform().getY()).rotateBy(new Rotation2d(robotState.getDrivePose().getRotation().getRadians())));
+            noteTransform = new Transform2d(noteVector, new Rotation2d(Math.toRadians(noteX)));
+
+            SmartDashboard.putNumber("CAMERA: Note distance to robot", noteVector.getDistance(new Translation2d(0,0)));
+
+            SmartDashboard.putNumber("CAMERA: Note X to robot", noteVector.getX());
+            SmartDashboard.putNumber("CAMERA: Note Y to robot", noteVector.getY());
+
+            robotState.setNotePose(noteTransform);
+        }
     }
 
     public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, PhotonCamera camera, CameraConstant constant, PhotonPoseEstimator estimator, boolean allowMultiTag) {

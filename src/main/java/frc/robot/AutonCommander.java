@@ -217,4 +217,7 @@ public class AutonCommander implements RobotCommander {
         return false;
     }
 
+    public boolean getLockNote(){
+        return false;
+    }
 }

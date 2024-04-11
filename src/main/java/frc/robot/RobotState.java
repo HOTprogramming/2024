@@ -12,6 +12,8 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -51,6 +53,10 @@ public class RobotState {
     private boolean oneFirst;
     private boolean driverRumble = true;
     private double feederCurrent;
+    private boolean noteDetected;
+    private Pose2d notePose;
+    private double noteDistance;
+    private Rotation2d noteYaw;
  
     private boolean feederStop = false;
     private Map<CameraPositions, List<PhotonTrackedTarget>> targetsSeenByCamera;
@@ -289,6 +295,35 @@ public class RobotState {
 
     public boolean getOneNoteFirst(){
         return oneFirst;
+    }
+
+    public boolean getNoteDetected(){
+        return noteDetected;
+    }
+    public void setNoteDetected(boolean bool){
+        noteDetected = bool;
+    }
+
+    public Pose2d getNotePose(){
+        return notePose;
+    }
+    public void setNotePose(Transform2d transform){
+        notePose = drivePose.transformBy(transform);
+    }
+
+    public double getNoteDistance(){
+        return noteDistance;
+    }
+    public void setNoteDistance(double doub){
+        noteDistance = doub;
+    }
+
+    public Rotation2d getNoteYaw(){
+        return noteYaw;
+    }
+
+    public void setNoteYaw(Rotation2d currentYaw){
+        noteYaw = currentYaw;
     }
 
 }
