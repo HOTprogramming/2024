@@ -277,7 +277,7 @@ public class CompBotConstants extends ConstantsBase {
             SHOOT = 118.0;
             TRAP = 144.0;
             CLOSE = 150.0;
-            PROTECT = 125.25;
+            PROTECT = 130.1;
             AMP = 139.992; //was 140.3;
             HANDOFF = 168;
 
@@ -314,9 +314,9 @@ public class CompBotConstants extends ConstantsBase {
             REDANGLE1 = 148.5;
             REDANGLE2 = 132.4;
             REDANGLE3 = 125.5;
-            REDANGLE4 = 123.8;
-            REDANGLE5 = 123.8;  
-            REDANGLE6 = 123.6;
+            REDANGLE4 = 123.3;
+            REDANGLE5 = 123.3;  
+            REDANGLE6 = 123.1;
             
             // REDANGLE1 = 148.5; // old rings
             // REDANGLE2 = 134.6;
