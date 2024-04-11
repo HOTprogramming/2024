@@ -37,20 +37,20 @@ public class SourceFourthRingRed extends AutonBase {
     public SourceFourthRingRed(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(15.2, 1.460, Rotation2d.fromDegrees(180));
+        startPose = new Pose2d(14.6, 1.319, Rotation2d.fromDegrees(180));
 
         seedPose = true;
     }
 
-    // Pose2d ring2 = new Pose2d(8.0, 2.30, Rotation2d.fromDegrees(-130));
-    Pose2d ring2 = new Pose2d(8.0, 2.55, Rotation2d.fromDegrees(-130));
-    Pose2d stage = new Pose2d(11.2, 4.15, Rotation2d.fromDegrees(180));
-    Pose2d stageToShoot = new Pose2d(12.3, 3.2, Rotation2d.fromDegrees(180));
-    Pose2d shoot = new Pose2d(13.54, 2.90, Rotation2d.fromDegrees(-138));
-    Pose2d shootStage = new Pose2d(13.54, 2.90, Rotation2d.fromDegrees(-140.0));
-    Pose2d ring3 = new Pose2d(8.2, 4.20, Rotation2d.fromDegrees(180));
-    Pose2d out = new Pose2d(12.14, 1.5, Rotation2d.fromDegrees(180));
-    Pose2d ring1 = new Pose2d(8.2, 0.9, Rotation2d.fromDegrees(180)); 
+    //16.54 max red value
+
+    // Pose2d ring2 = new Pose2d(8.6, 2.30, Rotation2d.fromDegrees(-50));
+    Pose2d ring2 = new Pose2d(8.04, 2.57, Rotation2d.fromDegrees(-130));
+    Pose2d stage = new Pose2d(10.84, 3.88, Rotation2d.fromDegrees(180));
+    Pose2d shoot = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-147));
+    Pose2d ring3 = new Pose2d(8.3, 4.20, Rotation2d.fromDegrees(180));
+    Pose2d out = new Pose2d(11.54, 1.0, Rotation2d.fromDegrees(180));
+    Pose2d ring1 = new Pose2d(8.14, 0.9, Rotation2d.fromDegrees(180)); 
 
     @Override
     public void runAuto() {
@@ -106,7 +106,7 @@ public class SourceFourthRingRed extends AutonBase {
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(ring2)));
                 driving = true;
-                armCommand = ArmCommanded.sourceAutoRed;
+                armCommand = ArmCommanded.sourceAuto;
                 runShooter = false;
                 timer.reset();  
                 runIntake = true;
@@ -121,9 +121,8 @@ public class SourceFourthRingRed extends AutonBase {
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(ring2),
                         Waypoint.fromHolonomicPose(stage),
-                        Waypoint.fromHolonomicPose(stageToShoot),
-                        Waypoint.fromHolonomicPose(shootStage)));
-                armCommand = ArmCommanded.sourceAutoRed;       
+                        Waypoint.fromHolonomicPose(shoot)));
+                armCommand = ArmCommanded.sourceAuto;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot2;   
@@ -132,9 +131,9 @@ public class SourceFourthRingRed extends AutonBase {
         }
         else if (step == Step.beforeShot2){
 
-            if(robotState.getDrivePose().getX() > 12.64){
+            if(robotState.getDrivePose().getX() > 12.04){
                 armCommand = ArmCommanded.shotMap;
-                robotState.setAutonHintXPos(calculateArmHint(shootStage));
+                robotState.setAutonHintXPos(calculateArmHint(shoot));
             }
 
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
@@ -159,13 +158,13 @@ public class SourceFourthRingRed extends AutonBase {
                 trajectoryConfig = new TrajectoryConfig(speed, accel);
                 trajectoryConfig.setEndVelocity(0);
                 trajectoryGenerator.generate(trajectoryConfig,
-                    List.of(Waypoint.fromHolonomicPose(shootStage),
+                    List.of(Waypoint.fromHolonomicPose(shoot),
                             Waypoint.fromHolonomicPose(stage),
                             Waypoint.fromHolonomicPose(ring3)));
             timer.reset();
             driving = true;
             runShooter = false;
-            armCommand = ArmCommanded.sourceAutoRed;
+            armCommand = ArmCommanded.sourceAuto;
             step = Step.ring3;
             }
         }
@@ -177,8 +176,8 @@ public class SourceFourthRingRed extends AutonBase {
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(ring3),
                         Waypoint.fromHolonomicPose(stage),
-                        Waypoint.fromHolonomicPose(shootStage)));
-                armCommand = ArmCommanded.sourceAutoRed;       
+                        Waypoint.fromHolonomicPose(shoot)));
+                armCommand = ArmCommanded.sourceAuto;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot3;   
@@ -187,11 +186,11 @@ public class SourceFourthRingRed extends AutonBase {
         }
         else if (step == Step.beforeShot3){
 
-            if(robotState.getDrivePose().getX() > 12.64){
+            if(robotState.getDrivePose().getX() > 12.04){
                 armCommand = ArmCommanded.shotMap;
-                robotState.setAutonHintXPos(calculateArmHint(shootStage));
+                robotState.setAutonHintXPos(calculateArmHint(shoot));
             }
-
+            
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 runShooter = false;
                 timer.reset();  
@@ -214,7 +213,7 @@ public class SourceFourthRingRed extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(2);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(shootStage),
+                List.of(Waypoint.fromHolonomicPose(shoot),
                         Waypoint.fromHolonomicPose(out),
                         Waypoint.fromHolonomicPose(ring1)));
                
@@ -232,8 +231,8 @@ public class SourceFourthRingRed extends AutonBase {
         }
         else if (step == Step.end){
             driving = false;
-            armCommand = ArmCommanded.sourceAutoRed;
-            runIntake = true;
+            armCommand = ArmCommanded.sourceAuto;
+            runIntake = false;
             runShooter = false;
             
         }
