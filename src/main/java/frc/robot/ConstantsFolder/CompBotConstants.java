@@ -219,8 +219,8 @@ public class CompBotConstants extends ConstantsBase {
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
     
-            RIGHT_FLYWHEEL_TARGET_RPM = 4000;
-            LEFT_FLYWHEEL_TARGET_RPM = 6000;
+            RIGHT_FLYWHEEL_TARGET_RPM = 5400;
+            LEFT_FLYWHEEL_TARGET_RPM = 3000;
 
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
