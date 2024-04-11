@@ -237,11 +237,11 @@ public class ConstantsBase {
         public double D1IntakeFeeder = 0.001;
 
         public CurrentLimitsConfigs FEEDER_CURRENT_LIMIT = new CurrentLimitsConfigs()
-                                .withStatorCurrentLimit(50)
+                                .withStatorCurrentLimit(55)
                                 .withStatorCurrentLimitEnable(true)
                                 .withSupplyCurrentLimit(40)
                                 .withSupplyCurrentThreshold(45)
-                                .withSupplyTimeThreshold(0.1)
+                                .withSupplyTimeThreshold(0.5)
                                 .withSupplyCurrentLimitEnable(true);
     }
 

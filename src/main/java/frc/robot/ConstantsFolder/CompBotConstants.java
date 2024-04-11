@@ -308,15 +308,15 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE1 = 1.21; // BATTER 0 INCHES
             REDDISTANCE2 = 2.8; // MID RING 62 INCHES 
             REDDISTANCE3 = 4.0; // FRONT BUMPER FLUSH WITH CLOSE TRUSS 108 in
-            REDDISTANCE4 = 6.28; // AGAINST TRUSS 163 in
-            REDDISTANCE5 = 8.2; // FRONT BUMPER ON WING LINE 194 in 
-            REDDISTANCE6 = 8.2; // WHITE LINE
+            REDDISTANCE4 = 5.26; // INTAKE BUMPER ON WING LINE 163 in
+            REDDISTANCE5 = 8.2; // WHITE LINE
+            REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
-            REDANGLE2 = 127.4;
-            REDANGLE3 = 123.4;
-            REDANGLE4 = 121.1;
-            REDANGLE5 = 117.8;  
-            REDANGLE6 = 117.8;
+            REDANGLE2 = 132.4;
+            REDANGLE3 = 125.5;
+            REDANGLE4 = 123.8;
+            REDANGLE5 = 123.8;  
+            REDANGLE6 = 123.6;
             
             // REDANGLE1 = 148.5; // old rings
             // REDANGLE2 = 134.6;
