@@ -193,7 +193,7 @@ public class AmpRedSpit extends AutonBase {
                 } else {
                    trajectoryGenerator.generate(trajectoryConfig, List.of(
                         Waypoint.fromHolonomicPose(ring1),
-                        Waypoint.fromHolonomicPose(beforeBetweenRings)
+                        Waypoint.fromHolonomicPose(beforeBetweenRings, Rotation2d.fromDegrees(0))
                     )); 
                 }
 
