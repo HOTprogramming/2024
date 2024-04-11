@@ -65,6 +65,8 @@ public class Feeder implements SubsystemBase {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
         rumble.start();
+
+        feeder.getConfigurator().apply(constants.FEEDER_CURRENT_LIMIT);
     }
 
 

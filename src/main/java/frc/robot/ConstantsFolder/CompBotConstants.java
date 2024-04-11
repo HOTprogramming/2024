@@ -219,8 +219,8 @@ public class CompBotConstants extends ConstantsBase {
             FEEDER_KI = 0.5;
             FEEDER_KD = 0.0001;
     
-            RIGHT_FLYWHEEL_TARGET_RPM = 4000;
-            LEFT_FLYWHEEL_TARGET_RPM = 6000;
+            RIGHT_FLYWHEEL_TARGET_RPM = 5400;
+            LEFT_FLYWHEEL_TARGET_RPM = 3000;
 
             RIGHT_FLYWHEEL_CAN = 12;
             LEFT_FLYWHEEL_CAN = 11;
@@ -277,7 +277,7 @@ public class CompBotConstants extends ConstantsBase {
             SHOOT = 118.0;
             TRAP = 144.0;
             CLOSE = 150.0;
-            PROTECT = 125.25;
+            PROTECT = 130.1;
             AMP = 139.992; //was 140.3;
             HANDOFF = 168;
 
@@ -305,18 +305,18 @@ public class CompBotConstants extends ConstantsBase {
             // BLUEANGLE6 = 117.8; 
             
             
-            REDDISTANCE1 = 1.21; // 0 in
-            REDDISTANCE2 = 2.3; // 43 in 
-            REDDISTANCE3 = 3.46; // 93 in 
-            REDDISTANCE4 = 4.83; // 148 in 
-            REDDISTANCE5 = 6.46; // 17ft
-            REDDISTANCE6 = 8.2;//23ft 1in
+            REDDISTANCE1 = 1.21; // BATTER 0 INCHES
+            REDDISTANCE2 = 2.8; // MID RING 62 INCHES 
+            REDDISTANCE3 = 4.0; // FRONT BUMPER FLUSH WITH CLOSE TRUSS 108 in
+            REDDISTANCE4 = 5.26; // INTAKE BUMPER ON WING LINE 163 in
+            REDDISTANCE5 = 8.2; // WHITE LINE
+            REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
-            REDANGLE2 = 136.6;  // fine
-            REDANGLE3 = 127.4;
-            REDANGLE4 = 123.7;   // go down
-            REDANGLE5 = 121.2;  
-            REDANGLE6 = 117.8;
+            REDANGLE2 = 132.4;
+            REDANGLE3 = 125.5;
+            REDANGLE4 = 123.3;
+            REDANGLE5 = 123.3;  
+            REDANGLE6 = 123.1;
             
             // REDANGLE1 = 148.5; // old rings
             // REDANGLE2 = 134.6;
