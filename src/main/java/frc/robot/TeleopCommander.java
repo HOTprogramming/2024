@@ -298,22 +298,16 @@ public class TeleopCommander implements RobotCommander {
 
     @Override
     public boolean climberOverride() {
-     if(operator.getRightBumper()){
-        return true;
-     }
-     else{
-        return false;
-     }
+        if(operator.getRightBumper()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean intakeOut() {
-       if(operator.getBButton() && operator.getRightTriggerAxis() >= .1){
-        return true;
-     }
-     else{
-        return false;
-     }
+       return (operator.getBButton() && operator.getRightTriggerAxis() >= .1);
     }
 
     @Override

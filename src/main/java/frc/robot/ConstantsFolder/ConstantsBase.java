@@ -485,7 +485,7 @@ public class ConstantsBase {
                                     .withPeakReverseTorqueCurrent(-110);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
-                                    .withStatorCurrentLimit(35)
+                                    .withStatorCurrentLimit(50)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(15)
                                     .withSupplyCurrentThreshold(20)
@@ -495,6 +495,7 @@ public class ConstantsBase {
         public CurrentLimitsConfigs AUTO_AZ_LIMIT = new CurrentLimitsConfigs()
                                     .withStatorCurrentLimitEnable(false)
                                     .withSupplyCurrentLimitEnable(false);
+                                    
                                     
         // use FOC for any speed setpoint that torque current can reach (non trapizoidal)
         //  tq tune, tune kp very low, then tune ks to get it KS = force to maintain dynamic, KV = changing resistance (drag)

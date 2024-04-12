@@ -191,23 +191,24 @@ public class Intake implements SubsystemBase {
        // SmartDashboard.putBoolean("Feeder detection", sensorFeeder.get());
        
         if(commander.intakeOut()){
-            //when the feeder spikes, main kraken motor is half the speed of normal
-            if(robotState.getFeederCurrent()>15 && robotState.getBeamBreak() == false){
-                intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
-            }
-            else {
-                intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
-            }
+            intake.setControl(m_voltageVelocity.withVelocity(-constants.INTAKESPEED));
+            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 96 / 360.0 * 4096.0);
+            slurperSpin.set(ControlMode.PercentOutput, 0);
+            
         } else if (commander.getIntake() && (!robotState.getBeamBreak() || commander.getOverrideBeamBreak())) { // left trigger
             if(robotState.getFeederCurrent()>15 && robotState.getBeamBreak() == false){
                 intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
+                slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 96 / 360.0 * 4096.0);
+                slurperSpin.set(ControlMode.PercentOutput, 0);
             }
             else {
                 intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED));
+                SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 160.0 / 360.0 * 4096.0);
+
+                slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0);     
+                slurperSpin.set(ControlMode.PercentOutput, .8);
             }
-            slurperArm.set(ControlMode.MotionMagic, slurperArmOffset -160.0 / 360.0 * 4096.0);     
-            slurperSpin.set(ControlMode.PercentOutput, .8);
-            SmartDashboard.putNumber("SlurpDesiredPos", slurperArmOffset - 160.0 / 360.0 * 4096.0);
+            
 
             SmartDashboard.putString("Test If running", "running");
             

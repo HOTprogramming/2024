@@ -137,6 +137,9 @@ public class Feeder implements SubsystemBase {
             feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
         } else if (commander.setShoot()) {
             feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+        } else if (commander.intakeOut()){
+            feeder.setControl(m_voltageVelocity.withVelocity(-constants.FEEDERSPEED));
+
         } else {
             Out.Output = 0;
             feeder.setControl(Out);
