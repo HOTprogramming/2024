@@ -89,7 +89,6 @@ public class Robot extends TimedRobot {
     intake = new Intake(robotState);
     drivetrain = new Drivetrain(robotState);  
     camera = new Camera(robotState);
-    intake = new Intake(robotState);
     lights = new Lights(robotState);
     climber = new Climber(robotState);
     extension = new Extension(robotState);
@@ -218,7 +217,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    shooter = new Shooter(robotState, 55, 55);
+    shooter = new Shooter(robotState, 40, 40);
     robotState.setAlliance(DriverStation.getAlliance().get());
     robotState.setAutonHintXPos(-1);
     shooter.reset();

@@ -45,6 +45,7 @@ public abstract class AutonBase {
     public boolean zeroArm = false;
     public boolean driving = false;
     public boolean unPackage = false;
+    public boolean overrideIntake = false;
     
 
 

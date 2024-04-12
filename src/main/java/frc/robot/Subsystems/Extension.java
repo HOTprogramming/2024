@@ -92,46 +92,48 @@ public Extension(RobotState robotState) {
 }
 
     public void extensionInit(){
-    TalonFXConfiguration ecfg = new TalonFXConfiguration();
+        TalonFXConfiguration ecfg = new TalonFXConfiguration();
 
-    /* Configure current limits */
-    MotionMagicConfigs emm = ecfg.MotionMagic;
-    emm.MotionMagicCruiseVelocity = 70; // 5 rotations per second cruise
-    emm.MotionMagicAcceleration = 70; // Take approximately 0.5 seconds to reach max vel
-    // Take approximately 0.2 seconds to reach max accel 
-    emm.MotionMagicJerk = 120;
+        /* Configure current limits */
+        MotionMagicConfigs emm = ecfg.MotionMagic;
+        emm.MotionMagicCruiseVelocity = 70; // 5 rotations per second cruise
+        emm.MotionMagicAcceleration = 70; // Take approximately 0.5 seconds to reach max vel
+        // Take approximately 0.2 seconds to reach max accel 
+        emm.MotionMagicJerk = 120;
 
-    Slot0Configs eSlot0 = ecfg.Slot0;
-    eSlot0.kP = constants.EKP;
-    eSlot0.kI = constants.EKI;
-    eSlot0.kD = constants.EKD;
-    eSlot0.kV = constants.EKV;
-    eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
+        Slot0Configs eSlot0 = ecfg.Slot0;
+        eSlot0.kP = constants.EKP;
+        eSlot0.kI = constants.EKI;
+        eSlot0.kD = constants.EKD;
+        eSlot0.kV = constants.EKV;
+        eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
-    Slot1Configs eSlot1 = ecfg.Slot1;
-    eSlot1.kP = 45;
-    eSlot1.kI = 0.0;
-    eSlot1.kD = 0;
-    eSlot1.kV = 0.0;
-    eSlot1.kS = 0.0; // Approximately 0.25V to get the mechanism moving
+        Slot1Configs eSlot1 = ecfg.Slot1;
+        eSlot1.kP = 45;
+        eSlot1.kI = 0.0;
+        eSlot1.kD = 0;
+        eSlot1.kV = 0.0;
+        eSlot1.kS = 0.0; // Approximately 0.25V to get the mechanism moving
 
-    FeedbackConfigs fdb = ecfg.Feedback;
-    fdb.SensorToMechanismRatio = 12.8;
-    ecfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        FeedbackConfigs fdb = ecfg.Feedback;
+        fdb.SensorToMechanismRatio = 12.8;
+        ecfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    StatusCode status = StatusCode.StatusCodeNotInitialized;
-    for(int i = 0; i < 5; ++i) {
-      status = extendMotor.getConfigurator().apply(ecfg);
-      if (status.isOK()) break;
-    }
-    if (!status.isOK()) {
-      System.out.println("Could not configure device. Error: " + status.toString());
-    }
-    extendMotor.setPosition(0);
-    
-    spitter.setNeutralMode(NeutralMode.Brake);
-    returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
-    extensionTimer = 0;
+        StatusCode status = StatusCode.StatusCodeNotInitialized;
+        for(int i = 0; i < 5; ++i) {
+        status = extendMotor.getConfigurator().apply(ecfg);
+        if (status.isOK()) break;
+        }
+        if (!status.isOK()) {
+        System.out.println("Could not configure device. Error: " + status.toString());
+        }
+        extendMotor.setPosition(0);
+        
+        spitter.setNeutralMode(NeutralMode.Brake);
+        returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
+        extensionTimer = 0;
+
+        extendMotor.getConfigurator().apply(constants.EXTEND_CURRENT_LIMITS);
     }
 
 

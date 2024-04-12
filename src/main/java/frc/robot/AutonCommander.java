@@ -214,7 +214,7 @@ public class AutonCommander implements RobotCommander {
 
     @Override
     public boolean getOverrideBeamBreak() {
-        return false;
+        return auto.overrideIntake;
     }
 
 }

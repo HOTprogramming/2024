@@ -147,6 +147,14 @@ public class ConstantsBase {
         public int CLIMBER_CAN = 18;
         public double CLIMBER_SPEED = 0.1;
         public double CLIMBERPOS = 5;
+
+        public CurrentLimitsConfigs CLIMBER_CURRENT_LIMITS = new CurrentLimitsConfigs()
+                                    .withStatorCurrentLimit(30)
+                                    .withStatorCurrentLimitEnable(false)
+                                    .withSupplyCurrentLimit(15)
+                                    .withSupplyCurrentThreshold(20)
+                                    .withSupplyTimeThreshold(0.1)
+                                    .withSupplyCurrentLimitEnable(false);
     }
 
     public abstract class Intake {
@@ -162,6 +170,16 @@ public class ConstantsBase {
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
 
+        public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT = new CurrentLimitsConfigs()
+                                    .withStatorCurrentLimit(60)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(40)
+                                    .withSupplyCurrentThreshold(45)
+                                    .withSupplyTimeThreshold(0.1)
+                                    .withSupplyCurrentLimitEnable(true);
+
+        
+
         // slurper
         public double SLURPER_ARM_CANCODER_OFFSET = -44;
         public int SLURPER_ARM_CAN = 15;
@@ -175,6 +193,14 @@ public class ConstantsBase {
         public double SLURPER_ARM_CRUISE_VELOCITY = 5;
         public double SLURPER_ARM_ACCELERATION = 10;
         public double SLURPER_ARM_JERK = 50;
+
+        public int SLURPER_ARM_PEAK_CURRENT = 45;
+        public int SLURPER_ARM_PEAK_CURRENT_DURATION = 100; // milliseconds
+        public int SLURPER_ARM_CONTINOUS_CURRENT = 40;
+
+        public int SLURPER_ROLLER_PEAK_CURRENT = 70;
+        public int SLURPER_ROLLER_PEAK_CURRENT_DURATION = 100; // milliseconds
+        public int SLURPER_ROLLER_CONTINOUS_CURRENT = 30;
 
         public Slot0Configs SLURPER_ARM_GAINS = new Slot0Configs()
         .withKP(60).withKI(0).withKD(0.1)
@@ -209,7 +235,15 @@ public class ConstantsBase {
         public double P1IntakeFeeder = 5;
         public double I1IntakeFeeder = 1;
         public double D1IntakeFeeder = 0.001;
-        }
+
+        public CurrentLimitsConfigs FEEDER_CURRENT_LIMIT = new CurrentLimitsConfigs()
+                                .withStatorCurrentLimit(55)
+                                .withStatorCurrentLimitEnable(true)
+                                .withSupplyCurrentLimit(40)
+                                .withSupplyCurrentThreshold(45)
+                                .withSupplyTimeThreshold(0.5)
+                                .withSupplyCurrentLimitEnable(true);
+    }
 
     public class CameraConstant{
 
@@ -296,8 +330,6 @@ public class ConstantsBase {
         public double RIGHT_FLYWHEEL_PRELOAD_RPM = 3000;
         public double LEFT_FLYWHEEL_PRELOAD_RPM = 3600;
 
-
-
         public double TARGET_SPEED_INCREMENT = 5;
         public double START_TARGET_SPEED = 70;
 
@@ -368,6 +400,14 @@ public class ConstantsBase {
         public double REDANGLE4 = 119;
         public double REDANGLE5 = 118;
         public double REDANGLE6 = 117;
+
+        public CurrentLimitsConfigs ARM_CURRENT_LIMIT = new CurrentLimitsConfigs()
+                                    .withStatorCurrentLimit(40)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(20)
+                                    .withSupplyCurrentThreshold(25)
+                                    .withSupplyTimeThreshold(0.1)
+                                    .withSupplyCurrentLimitEnable(true);
     }
 
     public abstract class Extension{
@@ -381,6 +421,14 @@ public class ConstantsBase {
         public double EKS = 0.25;
         public int EXTENSIONCAN = 10;
         public double SHOOTERENCODER = 5;
+
+        public CurrentLimitsConfigs EXTEND_CURRENT_LIMITS = new CurrentLimitsConfigs()
+                                    .withStatorCurrentLimit(50)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(25)
+                                    .withSupplyCurrentThreshold(35)
+                                    .withSupplyTimeThreshold(0.5)
+                                    .withSupplyCurrentLimitEnable(true);
 
     }
 
@@ -426,27 +474,28 @@ public class ConstantsBase {
         .withKP(3).withKI(0).withKD(0)
         .withKS(0).withKV(0).withKA(0);
 
-        public TorqueCurrentConfigs AUTON_STEER_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(300)
-                                    .withPeakReverseTorqueCurrent(-300);
+
         public TorqueCurrentConfigs AUTON_DRIVE_CURRENT = new TorqueCurrentConfigs()
                                     .withPeakForwardTorqueCurrent(300)
                                     .withPeakReverseTorqueCurrent(-300);
 
-        public TorqueCurrentConfigs TELEOP_STEER_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(70)
-                                    .withPeakReverseTorqueCurrent(-70);
+
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
-                                    .withPeakForwardTorqueCurrent(140)
-                                    .withPeakReverseTorqueCurrent(-140);
+                                    .withPeakForwardTorqueCurrent(110)
+                                    .withPeakReverseTorqueCurrent(-110);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
                                     .withStatorCurrentLimit(50)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(15)
-                                    .withSupplyCurrentThreshold(15)
-                                    .withSupplyTimeThreshold(0.0)
+                                    .withSupplyCurrentThreshold(20)
+                                    .withSupplyTimeThreshold(0.4)
                                     .withSupplyCurrentLimitEnable(true);
+
+        public CurrentLimitsConfigs AUTO_AZ_LIMIT = new CurrentLimitsConfigs()
+                                    .withStatorCurrentLimitEnable(false)
+                                    .withSupplyCurrentLimitEnable(false);
+                                    
                                     
         // use FOC for any speed setpoint that torque current can reach (non trapizoidal)
         //  tq tune, tune kp very low, then tune ks to get it KS = force to maintain dynamic, KV = changing resistance (drag)

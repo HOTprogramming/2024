@@ -82,6 +82,7 @@ public Arm(RobotState robotState) {
 
     armMagic = new MotionMagicVoltage(0);
 
+
     f_fusedSensorOutOfSync = armMotor.getFault_FusedSensorOutOfSync();
     sf_fusedSensorOutOfSync = armMotor.getStickyFault_FusedSensorOutOfSync();
     f_remoteSensorInvalid = armMotor.getFault_RemoteSensorDataInvalid();
@@ -92,6 +93,8 @@ public Arm(RobotState robotState) {
     cancoderPosition = cancoder.getPosition();
     cancoderVelocity = cancoder.getVelocity();
     armRotorPos = armMotor.getRotorPosition();
+
+    armMotor.getConfigurator().apply(constants.ARM_CURRENT_LIMIT);
 
 
 }

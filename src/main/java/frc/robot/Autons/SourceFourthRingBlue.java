@@ -230,7 +230,7 @@ public class SourceFourthRingBlue extends AutonBase {
         else if (step == Step.end){
             driving = false;
             armCommand = ArmCommanded.sourceAuto;
-            runIntake = false;
+            runIntake = true;
             runShooter = false;
             
         }
