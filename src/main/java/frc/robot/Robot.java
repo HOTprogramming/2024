@@ -200,6 +200,7 @@ public class Robot extends TimedRobot {
 
     drivetrain.autoLimits();
     intake.autoLimits();
+    feeder.autoLimits();
   }
 
   @Override
@@ -232,6 +233,7 @@ public class Robot extends TimedRobot {
     extension.reset();
     drivetrain.teleLimits();
     intake.teleLimits();
+    feeder.teleLimits();
   }
 
   @Override
