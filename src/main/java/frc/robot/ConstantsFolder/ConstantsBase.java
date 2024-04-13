@@ -486,8 +486,8 @@ public class ConstantsBase {
 
 
         public TorqueCurrentConfigs AUTON_DRIVE_CURRENT = new TorqueCurrentConfigs()
-                                    .withPeakForwardTorqueCurrent(800)
-                                    .withPeakReverseTorqueCurrent(-800);
+                                    .withPeakForwardTorqueCurrent(300)
+                                    .withPeakReverseTorqueCurrent(-300);
 
 
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory

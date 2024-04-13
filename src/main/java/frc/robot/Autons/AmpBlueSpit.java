@@ -266,7 +266,7 @@ public class AmpBlueSpit extends AutonBase {
                 runShooter = true;
                 overrideIntake = true;
             }
-            if (robotState.getDrivePose().getX() > .4) {
+            if (robotState.getDrivePose().getX() > 2.4) {
                 if (ring1first) {
 
                     robotState.setAutonHintXPos(calculateArmHint(ampRing));
