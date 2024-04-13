@@ -170,7 +170,7 @@ public class ConstantsBase {
         public double I1IntakeEnter = 1;
         public double D1IntakeEnter = 0.001;
 
-        public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT = new CurrentLimitsConfigs()
+        public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT_TELE = new CurrentLimitsConfigs()
                                     .withStatorCurrentLimit(60)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(40)
@@ -178,7 +178,9 @@ public class ConstantsBase {
                                     .withSupplyTimeThreshold(0.1)
                                     .withSupplyCurrentLimitEnable(true);
 
-        
+        public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT_AUTO = new CurrentLimitsConfigs()
+                                    .withStatorCurrentLimitEnable(false)
+                                    .withSupplyCurrentLimitEnable(false);
 
         // slurper
         public double SLURPER_ARM_CANCODER_OFFSET = -44;
@@ -201,6 +203,10 @@ public class ConstantsBase {
         public int SLURPER_ROLLER_PEAK_CURRENT = 70;
         public int SLURPER_ROLLER_PEAK_CURRENT_DURATION = 100; // milliseconds
         public int SLURPER_ROLLER_CONTINOUS_CURRENT = 30;
+
+        public int SLURPER_ROLLER_PEAK_CURRENT_AUTO = 800;
+        public int SLURPER_ROLLER_PEAK_CURRENT_DURATION_AUTO = 100; // milliseconds
+        public int SLURPER_ROLLER_CONTINOUS_CURRENT_AUTO = 800;
 
         public Slot0Configs SLURPER_ARM_GAINS = new Slot0Configs()
         .withKP(60).withKI(0).withKD(0.1)
