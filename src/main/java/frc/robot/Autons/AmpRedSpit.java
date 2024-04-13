@@ -48,7 +48,13 @@ public class AmpRedSpit extends AutonBase {
     Pose2d betweenRings = new Pose2d(13.61, 6.20, Rotation2d.fromDegrees(180));
     Pose2d afterBetweenRings = new Pose2d(12.54, 6.20, Rotation2d.fromDegrees(163));
     Pose2d forkpoint = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(163));
+
+    Pose2d afterBetweenRingsR2 = new Pose2d(12.54, 6.20, Rotation2d.fromDegrees(158));
+    Pose2d forkpointR2 = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(158));
+
     Pose2d ring1 = new Pose2d(8.11, 7.40, Rotation2d.fromDegrees(165));
+    Pose2d ring1for2first = new Pose2d(8.11, 7.2, Rotation2d.fromDegrees(175));
+
     Pose2d farShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
     Pose2d ring2 = new Pose2d(8.34, 5.41, Rotation2d.fromDegrees(194));
     Pose2d aroundStage = new Pose2d(10.66, 6.4, Rotation2d.fromDegrees(180));
@@ -96,8 +102,8 @@ public class AmpRedSpit extends AutonBase {
             trajectoryGenerator.generate(trajectoryConfig, List.of(
                 Waypoint.fromHolonomicPose(start),
                 Waypoint.fromHolonomicPose(betweenRings),
-                Waypoint.fromHolonomicPose(afterBetweenRings),
-                Waypoint.fromHolonomicPose(forkpoint),
+                Waypoint.fromHolonomicPose(afterBetweenRingsR2),
+                Waypoint.fromHolonomicPose(forkpointR2),
                 Waypoint.fromHolonomicPose(ring2)
             ));
         }
@@ -151,7 +157,13 @@ public class AmpRedSpit extends AutonBase {
                 timer.reset();
             }
         } else if (step == Step.tofirstshoot) {
-            robotState.setAutonHintXPos(calculateArmHint(farShoot) + .08);
+            if (ring1first) {
+                robotState.setAutonHintXPos(calculateArmHint(farShoot) + .08);
+
+            } else {
+                robotState.setAutonHintXPos(calculateArmHint(farShoot) + .12);
+
+            }
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds() - 0.1) {
                 step = Step.firstshot;
                 driving = false;
@@ -175,7 +187,7 @@ public class AmpRedSpit extends AutonBase {
                 } else {
                     trajectoryGenerator.generate(trajectoryConfig, List.of(
                         Waypoint.fromHolonomicPose(farShoot),
-                        Waypoint.fromHolonomicPose(ring1)
+                        Waypoint.fromHolonomicPose(ring1for2first)
                     ));
                 }
 
@@ -207,7 +219,13 @@ public class AmpRedSpit extends AutonBase {
                 trajectoryConfig = new TrajectoryConfig(6, 3);
                 
                 trajectoryConfig.setStartVelocity(6);
-                trajectoryConfig.setEndVelocity(3);
+                if (ring1first) {
+                    trajectoryConfig.setEndVelocity(3.0);
+
+                } else {
+                    trajectoryConfig.setEndVelocity(3.5);
+
+                }
                 trajectoryConfig.addConstraint(new CentripetalAccelerationConstraint(5));
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
                     Waypoint.fromHolonomicPose(beforeBetweenRings, Rotation2d.fromDegrees(0)),
@@ -224,7 +242,13 @@ public class AmpRedSpit extends AutonBase {
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 trajectoryConfig.setEndVelocity(0);
-                trajectoryConfig.setStartVelocity(3);
+                if (ring1first) {
+                    trajectoryConfig.setStartVelocity(3.0);
+
+                } else {
+                    trajectoryConfig.setStartVelocity(3.5);
+
+                }
                 trajectoryConfig.addConstraint(new CentripetalAccelerationConstraint(9));
 
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
@@ -242,7 +266,13 @@ public class AmpRedSpit extends AutonBase {
                 overrideIntake = true;
             }
             if (robotState.getDrivePose().getX() < 14.14) {
-                robotState.setAutonHintXPos(calculateArmHint(ampRing));
+                if (ring1first) {
+
+                    robotState.setAutonHintXPos(calculateArmHint(ampRing));
+                } else {
+                    robotState.setAutonHintXPos(calculateArmHint(ampRing) - .2);
+
+                }
             }
             
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
