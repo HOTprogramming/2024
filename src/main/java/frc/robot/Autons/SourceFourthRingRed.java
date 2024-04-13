@@ -37,7 +37,7 @@ public class SourceFourthRingRed extends AutonBase {
     public SourceFourthRingRed(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(14.6, 1.319, Rotation2d.fromDegrees(180));
+        startPose = new Pose2d(15.0, 4.4, Rotation2d.fromDegrees(180));
 
         seedPose = true;
     }
@@ -48,14 +48,14 @@ public class SourceFourthRingRed extends AutonBase {
     Pose2d ring2 = new Pose2d(8.04, 2.37, Rotation2d.fromDegrees(-130));
     Pose2d stage = new Pose2d(10.84, 3.88, Rotation2d.fromDegrees(180));
     Pose2d shoot = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-147));
-    Pose2d shootPre = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-143));
+    Pose2d shootPre = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-144.5));
     Pose2d ring3 = new Pose2d(8.3, 4.20, Rotation2d.fromDegrees(180));
     Pose2d out = new Pose2d(11.54, 1.0, Rotation2d.fromDegrees(180));
     Pose2d ring1 = new Pose2d(8.14, 0.9, Rotation2d.fromDegrees(180)); 
 
     @Override
     public void runAuto() {
-        SmartDashboard.putString("RedOppositeAmpEnum", step.toString());
+        SmartDashboard.putString("SourceFourthRingRed", step.toString());
         
         if(step == Step.start){
             driving = true;
@@ -64,8 +64,8 @@ public class SourceFourthRingRed extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-100)),
-                        Waypoint.fromHolonomicPose(shootPre,Rotation2d.fromDegrees(150)))); 
+                List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-110)),
+                        Waypoint.fromHolonomicPose(shootPre,Rotation2d.fromDegrees(170)))); 
                 runShooter = false;
                 unPackage = true;  
                 armCommand = ArmCommanded.unPackage;
@@ -92,10 +92,10 @@ public class SourceFourthRingRed extends AutonBase {
             driving = false;
             armCommand = ArmCommanded.shotMap;
             robotState.setAutonHintXPos(-1);
-            if(timer.get() > 0.05 && timer.get() < 0.2){
+            if(timer.get() > 0.1 && timer.get() < 0.3){
                 runShooter = true;
             }
-            else if(timer.get()<=0.05){
+            else if(timer.get()<=0.3){
 
             }
 
@@ -107,7 +107,7 @@ public class SourceFourthRingRed extends AutonBase {
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(ring2)));
                 driving = true;
-                armCommand = ArmCommanded.sourceAuto;
+                armCommand = ArmCommanded.sourceAutoFourthRing;
                 runShooter = false;
                 timer.reset();  
                 runIntake = true;
@@ -123,7 +123,7 @@ public class SourceFourthRingRed extends AutonBase {
                 List.of(Waypoint.fromHolonomicPose(ring2),
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(shoot)));
-                armCommand = ArmCommanded.sourceAuto;       
+                armCommand = ArmCommanded.sourceAutoFourthRing;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot2;   
