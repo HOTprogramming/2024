@@ -166,29 +166,27 @@ public class Robot extends TimedRobot {
 
     robotState.setOneNoteFirst(selectedNote.equals("12"));
 
-    // if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(ampSideBlue);
-    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(center4NoteBlue);
-    // } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(ampSideRed);
-    // } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(center4Note);
-    // } else if(selectedAuto.equals("sourceCenter") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(sourceCenterRingRed);
-    // } else if(selectedAuto.equals("sourceCenter") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(sourceCenterRingBlue);
-    // } else if(selectedAuto.equals("sourceNotCenter") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(sourceFourthRingRed);
-    // } else if(selectedAuto.equals("sourceNotCenter") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(sourceFourthRingBlue);
-    // } else if(selectedAuto.equals("amp6") && robotState.getAlliance() == Alliance.Blue){
-    //   autonCommander.setAuto(ampBlueSpit);
-    // } else if(selectedAuto.equals("amp6") && robotState.getAlliance() == Alliance.Red){
-    //   autonCommander.setAuto(ampRedSpit);
-    // }
-
-    autonCommander.setAuto(sourceCenterRingBlue);
+    if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(ampSideBlue);
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(center4NoteBlue);
+    } else if(selectedAuto.equals("amp") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(ampSideRed);
+    } else if(selectedAuto.equals("center") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(center4Note);
+    } else if(selectedAuto.equals("sourceCenter") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(sourceCenterRingRed);
+    } else if(selectedAuto.equals("sourceCenter") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(sourceCenterRingBlue);
+    } else if(selectedAuto.equals("sourceNotCenter") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(sourceFourthRingRed);
+    } else if(selectedAuto.equals("sourceNotCenter") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(sourceFourthRingBlue);
+    } else if(selectedAuto.equals("amp6") && robotState.getAlliance() == Alliance.Blue){
+      autonCommander.setAuto(ampBlueSpit);
+    } else if(selectedAuto.equals("amp6") && robotState.getAlliance() == Alliance.Red){
+      autonCommander.setAuto(ampRedSpit);
+    }
 
 
     drivetrain.init(autonCommander);
