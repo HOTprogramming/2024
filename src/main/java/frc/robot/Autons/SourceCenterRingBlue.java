@@ -59,7 +59,7 @@ public class SourceCenterRingBlue extends AutonBase {
             swerveBrake = false;
 
             trajectoryConfig = new TrajectoryConfig(speed, accel);
-            trajectoryConfig.setEndVelocity(1.5);
+            trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-70)),
                         Waypoint.fromHolonomicPose(shoot,Rotation2d.fromDegrees(20))));
@@ -162,7 +162,7 @@ public class SourceCenterRingBlue extends AutonBase {
             timer.reset();
             driving = true;
             runShooter = false;
-            armCommand = ArmCommanded.sourceAuto;
+            armCommand = ArmCommanded.sourceAutoFourthRing;
             step = Step.ring2;
             }
         }
@@ -175,7 +175,7 @@ public class SourceCenterRingBlue extends AutonBase {
                 List.of(Waypoint.fromHolonomicPose(ring2),
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(shoot)));
-                armCommand = ArmCommanded.sourceAuto;       
+                armCommand = ArmCommanded.sourceAutoFourthRing;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot3;   

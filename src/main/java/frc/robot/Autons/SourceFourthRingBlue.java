@@ -60,7 +60,7 @@ public class SourceFourthRingBlue extends AutonBase {
             swerveBrake = false;
 
             trajectoryConfig = new TrajectoryConfig(speed, accel);
-            trajectoryConfig.setEndVelocity(1.5);
+            trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
                 List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-70)),
                         Waypoint.fromHolonomicPose(shoot,Rotation2d.fromDegrees(20))));
@@ -105,7 +105,7 @@ public class SourceFourthRingBlue extends AutonBase {
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(ring2)));
                 driving = true;
-                armCommand = ArmCommanded.sourceAuto;
+                armCommand = ArmCommanded.sourceAutoFourthRing;
                 runShooter = false;
                 timer.reset();  
                 runIntake = true;
@@ -121,7 +121,7 @@ public class SourceFourthRingBlue extends AutonBase {
                 List.of(Waypoint.fromHolonomicPose(ring2),
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(shoot)));
-                armCommand = ArmCommanded.sourceAuto;       
+                armCommand = ArmCommanded.sourceAutoFourthRing;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot2;   
@@ -147,10 +147,10 @@ public class SourceFourthRingBlue extends AutonBase {
             driving = false;
             armCommand = ArmCommanded.shotMap;
             robotState.setAutonHintXPos(-1);
-            if(timer.get() > 0.05 && timer.get() < 0.2){
+            if(timer.get() > 0.1 && timer.get() < 0.3){
                 runShooter = true;
             }
-            else if(timer.get()<=0.05){
+            else if(timer.get()<=0.1){
 
             }
             else {
