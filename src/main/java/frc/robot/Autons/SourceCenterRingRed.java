@@ -162,7 +162,7 @@ public class SourceCenterRingRed extends AutonBase {
             timer.reset();
             driving = true;
             runShooter = false;
-            armCommand = ArmCommanded.sourceAuto;
+            armCommand = ArmCommanded.sourceAutoFourthRing;
             step = Step.ring2;
             }
         }
@@ -175,7 +175,7 @@ public class SourceCenterRingRed extends AutonBase {
                 List.of(Waypoint.fromHolonomicPose(ring2),
                         Waypoint.fromHolonomicPose(stage),
                         Waypoint.fromHolonomicPose(shoot)));
-                armCommand = ArmCommanded.sourceAuto;       
+                armCommand = ArmCommanded.sourceAutoFourthRing;       
                 runShooter = false;
                 timer.reset();  
                 step = Step.beforeShot3;   

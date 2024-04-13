@@ -61,8 +61,8 @@ public class SourceCenterRingBlue extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(1.5);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-80)),
-                        Waypoint.fromHolonomicPose(shoot,Rotation2d.fromDegrees(30))));
+                List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-70)),
+                        Waypoint.fromHolonomicPose(shoot,Rotation2d.fromDegrees(20))));
                 runShooter = false;
                 unPackage = true;  
                 armCommand = ArmCommanded.unPackage;

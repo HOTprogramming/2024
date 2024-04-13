@@ -66,6 +66,7 @@ public enum ArmCommanded{
   mayaspit,
   sourceAuto,
   sourceAutoRed,
+  sourceAutoFourthRing,
   sourceAuto2,
   unPackage,
   none;
@@ -200,7 +201,11 @@ public Arm(RobotState robotState) {
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAuto){
-        commandedPosition = 120.52/360.0;
+        commandedPosition = 124.4/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      }
+      else if (commander.armCommanded() == ArmCommanded.sourceAutoFourthRing){
+        commandedPosition = 123.0/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
       }
       else if (commander.armCommanded() == ArmCommanded.sourceAutoRed){
