@@ -37,7 +37,7 @@ public class SourceFourthRingRed extends AutonBase {
     public SourceFourthRingRed(RobotState robotState) {
         super(robotState);
 
-        startPose = new Pose2d(14.6, 1.319, Rotation2d.fromDegrees(180));
+        startPose = new Pose2d(15.0, 4.4, Rotation2d.fromDegrees(180));
 
         seedPose = true;
     }
@@ -64,8 +64,8 @@ public class SourceFourthRingRed extends AutonBase {
             trajectoryConfig = new TrajectoryConfig(speed, accel);
             trajectoryConfig.setEndVelocity(0);
             trajectoryGenerator.generate(trajectoryConfig,
-                List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-100)),
-                        Waypoint.fromHolonomicPose(shootPre,Rotation2d.fromDegrees(150)))); 
+                List.of(Waypoint.fromHolonomicPose(startPose,Rotation2d.fromDegrees(-110)),
+                        Waypoint.fromHolonomicPose(shootPre,Rotation2d.fromDegrees(170)))); 
                 runShooter = false;
                 unPackage = true;  
                 armCommand = ArmCommanded.unPackage;
