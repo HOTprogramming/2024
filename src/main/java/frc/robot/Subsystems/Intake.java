@@ -141,16 +141,11 @@ public class Intake implements SubsystemBase {
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient((1/4096* 360) );
 
-        intake.getConfigurator().apply(constants.INTAKE_CURRENT_LIMIT);
-
         slurperArm.configPeakCurrentLimit(constants.SLURPER_ARM_PEAK_CURRENT);
         slurperArm.configPeakCurrentDuration(constants.SLURPER_ARM_PEAK_CURRENT_DURATION);
         slurperArm.configContinuousCurrentLimit(constants.SLURPER_ARM_CONTINOUS_CURRENT);
 
-        slurperSpin.configPeakCurrentLimit(constants.SLURPER_ROLLER_PEAK_CURRENT);
-        slurperSpin.configPeakCurrentDuration(constants.SLURPER_ROLLER_PEAK_CURRENT_DURATION);
-        slurperSpin.configContinuousCurrentLimit(constants.SLURPER_ROLLER_CONTINOUS_CURRENT);
-
+        
         this.reset();
         slurperArm.setNeutralMode(NeutralMode.Brake);
     }
@@ -196,7 +191,7 @@ public class Intake implements SubsystemBase {
             slurperSpin.set(ControlMode.PercentOutput, 0);
             
         } else if (commander.getIntake() && (!robotState.getBeamBreak() || commander.getOverrideBeamBreak())) { // left trigger
-            if(robotState.getFeederCurrent()>15 && robotState.getBeamBreak() == false){
+            if((robotState.getFeederCurrent() > 15.0 && robotState.getBeamBreak() == false) && !commander.getOverrideBeamBreak()){
                 intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
                 slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 96 / 360.0 * 4096.0);
                 slurperSpin.set(ControlMode.PercentOutput, 0);
@@ -256,6 +251,22 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void init(RobotCommander commander) {
+    }
 
+    public void teleLimits(){
+        intake.getConfigurator().apply(constants.INTAKE_CURRENT_LIMIT_TELE);
+
+        slurperSpin.configPeakCurrentLimit(constants.SLURPER_ROLLER_PEAK_CURRENT);
+        slurperSpin.configPeakCurrentDuration(constants.SLURPER_ROLLER_PEAK_CURRENT_DURATION);
+        slurperSpin.configContinuousCurrentLimit(constants.SLURPER_ROLLER_CONTINOUS_CURRENT);
+
+    }
+
+    public void autoLimits(){
+        intake.getConfigurator().apply(constants.INTAKE_CURRENT_LIMIT_AUTO);
+
+        slurperSpin.configPeakCurrentLimit(constants.SLURPER_ROLLER_PEAK_CURRENT_AUTO);
+        slurperSpin.configPeakCurrentDuration(constants.SLURPER_ROLLER_PEAK_CURRENT_DURATION_AUTO);
+        slurperSpin.configContinuousCurrentLimit(constants.SLURPER_ROLLER_CONTINOUS_CURRENT_AUTO);
     }
 }
