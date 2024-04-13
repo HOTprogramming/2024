@@ -199,6 +199,7 @@ public class Robot extends TimedRobot {
     extension.reset();
 
     drivetrain.autoLimits();
+    intake.autoLimits();
   }
 
   @Override
@@ -230,6 +231,7 @@ public class Robot extends TimedRobot {
     climber.init(teleopCommander);
     extension.reset();
     drivetrain.teleLimits();
+    intake.teleLimits();
   }
 
   @Override
