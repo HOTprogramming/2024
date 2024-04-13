@@ -65,8 +65,6 @@ public class Feeder implements SubsystemBase {
              System.out.println("Could not apply configs, error code: " + feederStatus.toString());
            }
         rumble.start();
-
-        feeder.getConfigurator().apply(constants.FEEDER_CURRENT_LIMIT);
     }
 
 
@@ -162,5 +160,14 @@ public class Feeder implements SubsystemBase {
     public void init(RobotCommander commander) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'init'");
+    }
+
+    public void teleLimits(){
+        feeder.getConfigurator().apply(constants.FEEDER_CURRENT_LIMIT);
+    }
+
+    public void autoLimits(){
+        feeder.getConfigurator().apply(constants.FEEDER_CURRENT_LIMIT_AUTO);
+
     }
 }

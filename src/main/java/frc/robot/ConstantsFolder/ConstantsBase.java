@@ -249,6 +249,10 @@ public class ConstantsBase {
                                 .withSupplyCurrentThreshold(45)
                                 .withSupplyTimeThreshold(0.5)
                                 .withSupplyCurrentLimitEnable(true);
+
+        public CurrentLimitsConfigs FEEDER_CURRENT_LIMIT_AUTO = new CurrentLimitsConfigs()
+                                .withStatorCurrentLimitEnable(false)
+                                .withSupplyCurrentLimitEnable(false);
     }
 
     public class CameraConstant{
