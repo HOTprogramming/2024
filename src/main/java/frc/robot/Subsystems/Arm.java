@@ -69,6 +69,9 @@ public enum ArmCommanded{
   sourceAutoFourthRing,
   sourceAuto2,
   unPackage,
+  shotMapTune1,
+  shotMapTune2,
+  shotMapTune3,
   none;
 }
 
@@ -224,6 +227,18 @@ public Arm(RobotState robotState) {
         commandedPosition = constants.ZERO/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
      } 
+      else if (commander.armCommanded() == ArmCommanded.shotMapTune1) {
+        commandedPosition = constants.REDANGLE2/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      } 
+      else if (commander.armCommanded() == ArmCommanded.shotMapTune2) {
+        commandedPosition = constants.REDANGLE3/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      } 
+      else if (commander.armCommanded() == ArmCommanded.shotMapTune3) {
+        commandedPosition = constants.REDANGLE4/360.0;
+        armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
+      } 
       else if(commander.climberUp()){
         commandedPosition = 171.4/360.0;
         armMotor.setControl(armMagic.withPosition(commandedPosition).withSlot(0));
