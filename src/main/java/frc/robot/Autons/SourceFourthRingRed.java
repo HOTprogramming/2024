@@ -44,7 +44,6 @@ public class SourceFourthRingRed extends AutonBase {
 
     //16.54 max red value
 
-    // Pose2d ring2 = new Pose2d(8.6, 2.30, Rotation2d.fromDegrees(-50));
     Pose2d ring2 = new Pose2d(8.04, 2.37, Rotation2d.fromDegrees(-130));
     Pose2d stage = new Pose2d(10.84, 3.88, Rotation2d.fromDegrees(180));
     Pose2d shoot = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-147));

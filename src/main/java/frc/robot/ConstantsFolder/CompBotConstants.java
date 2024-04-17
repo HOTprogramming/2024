@@ -291,11 +291,11 @@ public class CompBotConstants extends ConstantsBase {
             BLUEDISTANCE5 = 8.2; 
             BLUEDISTANCE6 = 8.3;
             BLUEANGLE1 = 148.5;
-            BLUEANGLE2 = 130.4; 
+            BLUEANGLE2 = 130.1; 
             BLUEANGLE3 = 125.5;  
-            BLUEANGLE4 = 123.3;  
-            BLUEANGLE5 = 123.3;
-            BLUEANGLE6 = 123.1; 
+            BLUEANGLE4 = 122.5;  
+            BLUEANGLE5 = 122.4;
+            BLUEANGLE6 = 122.3; 
 
             // BLUEANGLE1 = 148.0;
             // BLUEANGLE2 = 133.4;
@@ -312,11 +312,11 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE5 = 8.2; // WHITE LINE
             REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
-            REDANGLE2 = 132.4;
+            REDANGLE2 = 130.1;
             REDANGLE3 = 125.5;
-            REDANGLE4 = 123.3;
-            REDANGLE5 = 123.3;  
-            REDANGLE6 = 123.1;
+            REDANGLE4 = 122.5;
+            REDANGLE5 = 122.4;  
+            REDANGLE6 = 122.3;
             
             // REDANGLE1 = 148.5; // old rings
             // REDANGLE2 = 134.6;
