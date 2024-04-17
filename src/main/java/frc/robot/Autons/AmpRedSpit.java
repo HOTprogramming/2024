@@ -52,12 +52,12 @@ public class AmpRedSpit extends AutonBase {
     Pose2d afterBetweenRingsR2 = new Pose2d(12.54, 6.20, Rotation2d.fromDegrees(158));
     Pose2d forkpointR2 = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(158));
 
-    Pose2d ring1 = new Pose2d(8.11, 7.40, Rotation2d.fromDegrees(165));
-    Pose2d ring1for2first = new Pose2d(8.11, 7.2, Rotation2d.fromDegrees(175));
+    Pose2d ring1 = new Pose2d(8.15, 7.3, Rotation2d.fromDegrees(165));
+    Pose2d ring1for2first = new Pose2d(8.15, 7.3, Rotation2d.fromDegrees(175));
 
     Pose2d farShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
-    Pose2d ring2 = new Pose2d(8.34, 5.41, Rotation2d.fromDegrees(194));
-    Pose2d aroundStage = new Pose2d(10.66, 6.4, Rotation2d.fromDegrees(180));
+    Pose2d ring2 = new Pose2d(8.35, 5.77, Rotation2d.fromDegrees(194));
+    Pose2d aroundStage = new Pose2d(10.75, 6.1, Rotation2d.fromDegrees(180));
     // Pose2d beforeBetweenOtherRings = new Pose2d(4.6, 5.5, Rotation2d.fromDegrees(180));
     // Pose2d betweenOtherRings = new Pose2d(2.9, 4.45, Rotation2d.fromDegrees(180));
     // Pose2d aroundRings = new Pose2d(3.1, 7.5, Rotation2d.fromDegrees(180));
@@ -65,12 +65,12 @@ public class AmpRedSpit extends AutonBase {
     Pose2d betweenRingsBack = new Pose2d(13.61, 6.34, Rotation2d.fromDegrees(180));
     Pose2d closeShoot = new Pose2d(14.64, 6.4, Rotation2d.fromDegrees(155));
     // Pose2d backAmpRing = new Pose2d(2.1, 6.5, Rotation2d.fromDegrees(155));
-    Pose2d ampRing = new Pose2d(13.67, 6.80, Rotation2d.fromDegrees(155));
+    Pose2d ampRing = new Pose2d(13.67, 6.86, Rotation2d.fromDegrees(155));
     Pose2d backMidRing = new Pose2d(14.24, 5.5, Rotation2d.fromDegrees(180));
     Pose2d midPreback = new Pose2d(13.04, 5.5, Rotation2d.fromDegrees(180));
     // Pose2d backPreload = new Pose2d(1.9, 5.6, Rotation2d.fromDegrees(170));
-    Pose2d backStageRing = new Pose2d(14.34, 4.61, Rotation2d.fromDegrees(203));
-    Pose2d stageRing = new Pose2d(13.97, 4.31, Rotation2d.fromDegrees(203));
+    Pose2d backStageRing = new Pose2d(14.34, 4.51, Rotation2d.fromDegrees(203));
+    Pose2d stageRing = new Pose2d(14.05, 4.2, Rotation2d.fromDegrees(203));
 
     Pose2d midRingActual = new Pose2d(13.47, 5.56, Rotation2d.fromDegrees(180));
     Pose2d preloadActual = new Pose2d(12.94, 5.56, Rotation2d.fromDegrees(180));
