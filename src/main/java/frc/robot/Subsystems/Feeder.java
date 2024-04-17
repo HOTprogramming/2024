@@ -87,6 +87,8 @@ public class Feeder implements SubsystemBase {
         SmartDashboard.putBoolean("beambreak", sensorFeeder.get());
 
         SmartDashboard.putNumber("Feeder_Speed", feeder.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("Feeder_Target", feeder.getClosedLoopReference().getValueAsDouble());
+
 
     }
     
@@ -125,10 +127,10 @@ public class Feeder implements SubsystemBase {
                     feeder.setControl(Out);
 
                 } else {
-                    feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+                    feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED2));
                 }
             } else { 
-               feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+               feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED2));
             }           
         } else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
             feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));

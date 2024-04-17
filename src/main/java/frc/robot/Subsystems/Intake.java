@@ -191,7 +191,7 @@ public class Intake implements SubsystemBase {
             slurperSpin.set(ControlMode.PercentOutput, 0);
             
         } else if (commander.getIntake() && (!robotState.getBeamBreak() || commander.getOverrideBeamBreak())) { // left trigger
-            if((robotState.getFeederCurrent() > 15.0 && robotState.getBeamBreak() == false) && !commander.getOverrideBeamBreak()){
+            if((robotState.getFeederCurrent() > 10.0 && robotState.getBeamBreak() == false) && !commander.getOverrideBeamBreak()){
                 intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
                 slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 96 / 360.0 * 4096.0);
                 slurperSpin.set(ControlMode.PercentOutput, 0);

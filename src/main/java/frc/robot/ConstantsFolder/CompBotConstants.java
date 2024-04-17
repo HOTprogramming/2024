@@ -57,7 +57,7 @@ public class CompBotConstants extends ConstantsBase {
         public Feeder() {
          FEEDER_CAN = 13;
          FEEDERSPEED = 90;
-         FEEDERSPEED2 = 95;
+         FEEDERSPEED2 = 60;
          DESIREDENCODERED = 0;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
@@ -285,9 +285,9 @@ public class CompBotConstants extends ConstantsBase {
             
 
             BLUEDISTANCE1 = 1.21; 
-            BLUEDISTANCE2 = 2.8; 
-            BLUEDISTANCE3 = 4.0; 
-            BLUEDISTANCE4 = 5.26; 
+            BLUEDISTANCE2 = 2.73; //2.8
+            BLUEDISTANCE3 = 3.72; //4.0
+            BLUEDISTANCE4 = 5.33; //5.26
             BLUEDISTANCE5 = 8.2; 
             BLUEDISTANCE6 = 8.3;
             BLUEANGLE1 = 148.5;
@@ -306,9 +306,9 @@ public class CompBotConstants extends ConstantsBase {
             
             
             REDDISTANCE1 = 1.21; // BATTER 0 INCHES
-            REDDISTANCE2 = 2.8; // MID RING 62 INCHES 
-            REDDISTANCE3 = 4.0; // FRONT BUMPER FLUSH WITH CLOSE TRUSS 108 in
-            REDDISTANCE4 = 5.26; // INTAKE BUMPER ON WING LINE 163 in
+            REDDISTANCE2 = 2.82; //2.8// MID RING 62 INCHES 
+            REDDISTANCE3 = 3.8;//4.0 // FRONT BUMPER FLUSH WITH CLOSE TRUSS 108 in
+            REDDISTANCE4 = 5.43;//26 // INTAKE BUMPER ON WING LINE 163 in
             REDDISTANCE5 = 8.2; // WHITE LINE
             REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
