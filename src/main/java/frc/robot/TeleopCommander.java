@@ -196,15 +196,6 @@ public class TeleopCommander implements RobotCommander {
         else if (operator.getXButton()) {
             return ArmCommanded.amp;
         }
-        else if (operator.getLeftY()>0.2 && operator.getAButton()){
-            return ArmCommanded.shotMapTune1;
-        }
-        else if (operator.getLeftY()>0.2 && operator.getBButton()){
-            return ArmCommanded.shotMapTune2;
-        }
-        else if (operator.getLeftY()>0.2 && operator.getYButton()){
-            return ArmCommanded.shotMapTune3;
-        }
         else{
             return ArmCommanded.none;
         }
