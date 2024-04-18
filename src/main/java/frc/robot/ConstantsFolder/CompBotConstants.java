@@ -315,7 +315,7 @@ public class CompBotConstants extends ConstantsBase {
             REDANGLE1 = 148.5;
             REDANGLE2 = 131.1;
             REDANGLE3 = 126.5;
-            REDANGLE4 = 122.5;
+            REDANGLE4 = 123.1;
             REDANGLE5 = 122.4;  
             REDANGLE6 = 122.3;
             

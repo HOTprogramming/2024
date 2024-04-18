@@ -292,9 +292,9 @@ public Extension(RobotState robotState) {
             extendMotor.setControl(extendMagic.withPosition(0.89).withSlot(0));
             ampCurrentShooterPose = robotState.getShooterPos();
 
-            if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose < 8)) {
+            if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose < 7)) {
                 spitter.set(ControlMode.PercentOutput, 1);
-            } else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 8)) { // could be implied
+            } else if (commander.setShoot() && (ampCurrentShooterPose - ampShooterPose >= 7)) { // could be implied
                 spitter.set(ControlMode.PercentOutput, -1);
                 
             } else if(robotState.getBeamBreak() == true){

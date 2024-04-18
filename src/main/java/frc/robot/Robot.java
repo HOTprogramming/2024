@@ -219,8 +219,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
-    shooter = new Shooter(robotState, 40, 40);
+    shooter = new Shooter(robotState, 35, 35);
     robotState.setAlliance(DriverStation.getAlliance().get());
     robotState.setAutonHintXPos(-1);
     shooter.reset();
