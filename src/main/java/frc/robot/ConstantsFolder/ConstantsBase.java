@@ -484,6 +484,10 @@ public class ConstantsBase {
         .withKP(3).withKI(0).withKD(0)
         .withKS(0).withKV(0).withKA(0);
 
+        public Slot0Configs TELEOP_SWERVE_DRIVE_GAINS_VOLTAGE = new Slot0Configs()
+        .withKP(3).withKI(0).withKD(0)
+        .withKS(0).withKV(0.12).withKA(0);
+
 
         public TorqueCurrentConfigs AUTON_DRIVE_CURRENT = new TorqueCurrentConfigs()
                                     .withPeakForwardTorqueCurrent(300)
@@ -493,6 +497,14 @@ public class ConstantsBase {
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
                                     .withPeakForwardTorqueCurrent(110)
                                     .withPeakReverseTorqueCurrent(-110);
+
+        public CurrentLimitsConfigs TELE_DRIVE_CURRENT_LIMIT_VOLTAGE = new CurrentLimitsConfigs() // made atfter elim
+                                    .withStatorCurrentLimit(100)
+                                    .withStatorCurrentLimitEnable(true)
+                                    .withSupplyCurrentLimit(50)
+                                    .withSupplyCurrentThreshold(50)
+                                    .withSupplyTimeThreshold(0.0)
+                                    .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
                                     .withStatorCurrentLimit(50)
@@ -576,7 +588,7 @@ public class ConstantsBase {
             .withSteerMotorInverted(kSteerMotorReversed);
 
 
-                    
+        
         
             // offsets in radians
 
@@ -638,5 +650,19 @@ public class ConstantsBase {
             public SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
             kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset / Math.PI, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), !SWERVE_BACK_RIGHT_DRIVE_UNINVERT)
             .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT);
+
+
+            public SwerveModuleConstants FRONT_LEFT_MODULE_CONSTANTS_TELE = ConstantCreator.createModuleConstants(
+            kFrontLeftSteerMotorId, kFrontLeftDriveMotorId, kFrontLeftEncoderId, kFrontLeftEncoderOffset / Math.PI, Units.inchesToMeters(kFrontLeftXPosInches), Units.inchesToMeters(kFrontLeftYPosInches), !SWERVE_FRONT_LEFT_DRIVE_UNINVERT)
+            .withSteerMotorInverted(!SWERVE_FRONT_LEFT_STEER_UNINVERT).withDriveMotorClosedLoopOutput(ClosedLoopOutputType.Voltage);
+            public SwerveModuleConstants FRONT_RIGHT_MODULE_CONSTANTS_TELE = ConstantCreator.createModuleConstants(
+            kFrontRightSteerMotorId, kFrontRightDriveMotorId, kFrontRightEncoderId, kFrontRightEncoderOffset / Math.PI, Units.inchesToMeters(kFrontRightXPosInches), Units.inchesToMeters(kFrontRightYPosInches), !SWERVE_FRONT_RIGHT_DRIVE_UNINVERT)
+            .withSteerMotorInverted(!SWERVE_FRONT_RIGHT_STEER_UNINVERT).withDriveMotorClosedLoopOutput(ClosedLoopOutputType.Voltage);
+            public SwerveModuleConstants BACK_LEFT_MODULE_CONSTANTS_TELE = ConstantCreator.createModuleConstants(
+            kBackLeftSteerMotorId, kBackLeftDriveMotorId, kBackLeftEncoderId, kBackLeftEncoderOffset / Math.PI, Units.inchesToMeters(kBackLeftXPosInches), Units.inchesToMeters(kBackLeftYPosInches), !SWERVE_BACK_LEFT_DRIVE_UNINVERT)
+            .withSteerMotorInverted(!SWERVE_BACK_LEFT_STEER_UNINVERT).withDriveMotorClosedLoopOutput(ClosedLoopOutputType.Voltage);
+            public SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS_TELE = ConstantCreator.createModuleConstants(
+            kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset / Math.PI, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), !SWERVE_BACK_RIGHT_DRIVE_UNINVERT)
+            .withSteerMotorInverted(!SWERVE_BACK_RIGHT_STEER_UNINVERT).withDriveMotorClosedLoopOutput(ClosedLoopOutputType.Voltage);
     }
 }
