@@ -90,7 +90,8 @@ public class CompBotConstants extends ConstantsBase {
             } else {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
-                DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+                DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage
+                ;
             }
 
             WHEEL_SLIP_CURRENT = 650.0; // *tune later

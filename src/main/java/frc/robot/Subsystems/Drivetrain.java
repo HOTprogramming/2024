@@ -446,10 +446,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     public void teleLimits(){
         for (int i = 0; i < ModuleCount; i++) {
-            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS);
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS_VOLTAGE);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_SWERVE_STEER_GAINS);
 
-            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_DRIVE_CURRENT);
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELE_DRIVE_CURRENT_LIMIT_VOLTAGE);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.TELE_AZ_LIMIT);
         }
     }
