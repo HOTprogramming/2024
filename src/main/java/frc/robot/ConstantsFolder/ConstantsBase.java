@@ -171,10 +171,10 @@ public class ConstantsBase {
         public double D1IntakeEnter = 0.001;
 
         public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT_TELE = new CurrentLimitsConfigs()
-                                    .withStatorCurrentLimit(60)
+                                    .withStatorCurrentLimit(50)
                                     .withStatorCurrentLimitEnable(true)
-                                    .withSupplyCurrentLimit(40)
-                                    .withSupplyCurrentThreshold(45)
+                                    .withSupplyCurrentLimit(30)
+                                    .withSupplyCurrentThreshold(35)
                                     .withSupplyTimeThreshold(0.1)
                                     .withSupplyCurrentLimitEnable(true);
 
@@ -196,9 +196,9 @@ public class ConstantsBase {
         public double SLURPER_ARM_ACCELERATION = 10;
         public double SLURPER_ARM_JERK = 25;
 
-        public int SLURPER_ARM_PEAK_CURRENT = 45;
+        public int SLURPER_ARM_PEAK_CURRENT = 35;
         public int SLURPER_ARM_PEAK_CURRENT_DURATION = 100; // milliseconds
-        public int SLURPER_ARM_CONTINOUS_CURRENT = 40;
+        public int SLURPER_ARM_CONTINOUS_CURRENT = 30;
 
         public int SLURPER_ROLLER_PEAK_CURRENT = 70;
         public int SLURPER_ROLLER_PEAK_CURRENT_DURATION = 100; // milliseconds
@@ -491,8 +491,8 @@ public class ConstantsBase {
 
 
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
-                                    .withPeakForwardTorqueCurrent(90)
-                                    .withPeakReverseTorqueCurrent(-90);
+                                    .withPeakForwardTorqueCurrent(85)
+                                    .withPeakReverseTorqueCurrent(-85);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
                                     .withStatorCurrentLimit(50)

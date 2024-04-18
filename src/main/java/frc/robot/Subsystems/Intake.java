@@ -159,6 +159,10 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void updateState() {
+        SmartDashboard.putNumber("intake_Current", intake.getStatorCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("SlurperArm_Current", slurperArm.getStatorCurrent());
+
+
         SmartDashboard.putNumber("intake Speed", intake.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("slurperPos", (slurperArm.getSelectedSensorPosition(0) - slurperArmOffset) * 360/4096);
         SmartDashboard.putNumber("slurperArmCommanded", 96.0);
