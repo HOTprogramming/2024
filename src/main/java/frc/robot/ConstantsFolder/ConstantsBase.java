@@ -194,7 +194,7 @@ public class ConstantsBase {
 
         public double SLURPER_ARM_CRUISE_VELOCITY = 5;
         public double SLURPER_ARM_ACCELERATION = 10;
-        public double SLURPER_ARM_JERK = 50;
+        public double SLURPER_ARM_JERK = 25;
 
         public int SLURPER_ARM_PEAK_CURRENT = 45;
         public int SLURPER_ARM_PEAK_CURRENT_DURATION = 100; // milliseconds
