@@ -17,8 +17,8 @@ public class LobShotMap {
     private double leftSpeed1 = 4050;
     private double rightSpeed1 = 3050;
 
-    private double leftSpeed2 = 3600;
-    private double rightSpeed2 = 2600;
+    private double leftSpeed2 = 3700;
+    private double rightSpeed2 = 2700;
 
     private double leftSpeed3 = 3400;
     private double rightSpeed3 = 2400;

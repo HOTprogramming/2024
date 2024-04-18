@@ -491,8 +491,8 @@ public class ConstantsBase {
 
 
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
-                                    .withPeakForwardTorqueCurrent(110)
-                                    .withPeakReverseTorqueCurrent(-110);
+                                    .withPeakForwardTorqueCurrent(90)
+                                    .withPeakReverseTorqueCurrent(-90);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
                                     .withStatorCurrentLimit(50)
