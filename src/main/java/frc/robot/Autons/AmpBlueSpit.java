@@ -271,7 +271,7 @@ public class AmpBlueSpit extends AutonBase {
 
                     robotState.setAutonHintXPos(calculateArmHint(ampRing));
                 } else {
-                    robotState.setAutonHintXPos(calculateArmHint(ampRing) - .2);
+                    robotState.setAutonHintXPos(calculateArmHint(ampRing));
 
                 }
             }
