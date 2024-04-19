@@ -109,11 +109,11 @@ public Extension(RobotState robotState) {
         eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
         Slot1Configs eSlot1 = ecfg.Slot1;
-        eSlot1.kP = 45;
-        eSlot1.kI = 0.0;
+        eSlot1.kP = 120;
+        eSlot1.kI = 1;
         eSlot1.kD = 0;
-        eSlot1.kV = 0.0;
-        eSlot1.kS = 0.0; // Approximately 0.25V to get the mechanism moving
+        eSlot1.kV = 0.12;
+        eSlot1.kS = 0.25; // Approximately 0.25V to get the mechanism moving
 
         FeedbackConfigs fdb = ecfg.Feedback;
         fdb.SensorToMechanismRatio = 12.8;
@@ -146,8 +146,9 @@ public Extension(RobotState robotState) {
         robotState.setExtendPos(extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionPos", extendPosition.getValueAsDouble());
         SmartDashboard.putNumber("extensionzero", 0);
-        SmartDashboard.putNumber("extensiontrap", fullyExtended);
+        SmartDashboard.putNumber("extenbsiontrap", fullyExtended);
         SmartDashboard.putString("extensionenum", getExtensionPhaseTrap().toString());
+        SmartDashboard.putNumber("extensionCurrent", extendMotor.getSupplyCurrent().getValueAsDouble());
     }
 
     @Override
@@ -248,7 +249,7 @@ public Extension(RobotState robotState) {
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
             if (commander.extensionOveride()) {
-                extendMotor.set(-0.2);
+                extendMotor.set(-0.2);    
 
             } else if(extendPosition.getValueAsDouble() > 0.30) { 
                 extendMotor.set(-0.25); //.30
@@ -258,11 +259,12 @@ public Extension(RobotState robotState) {
                 extendMotor.set(-0.15);
             
             } else if (extendPosition.getValueAsDouble() > 0.0045){
-                extendMotor.set(-0.20);
+                extendMotor.set(-0.10);
 
             } else {
-                extendMotor.setControl(extendMagic.withPosition(0).withSlot(0));
+                extendMotor.setControl(extendMagic.withPosition(0).withSlot(1));
             }
+
 
             if(extendPosition.getValueAsDouble() > 0.5){
                 robotState.setArmOnAmpRetract(true);
@@ -285,7 +287,7 @@ public Extension(RobotState robotState) {
         }
 
         if (commander.extensionZero()) {
-            extendMotor.setPosition(-0.06);
+            extendMotor.setPosition(-.04);
         }
 
         if (commander.armCommanded() == ArmCommanded.amp) {
