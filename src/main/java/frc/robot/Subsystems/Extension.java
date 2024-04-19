@@ -13,6 +13,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -37,6 +38,7 @@ RobotState robotState;
 TalonFX extendMotor;
 
 MotionMagicVoltage extendMagic;
+PositionVoltage extendPID;
 double extendedCommanded;
 
 StatusSignal<Double> extendPosition;
@@ -84,6 +86,7 @@ public Extension(RobotState robotState) {
     spitter = new TalonSRX(robotState.getConstants().getIntakeConstants().SLURPER_ROLLER_CAN);
 
     extendMagic = new MotionMagicVoltage(0);
+    extendPID = new PositionVoltage(0);
 
     extendPosition = extendMotor.getPosition();
     extendVelocity = extendMotor.getVelocity();
@@ -109,11 +112,11 @@ public Extension(RobotState robotState) {
         eSlot0.kS = constants.EKS; // Approximately 0.25V to get the mechanism moving
 
         Slot1Configs eSlot1 = ecfg.Slot1;
-        eSlot1.kP = 120;
-        eSlot1.kI = 1;
+        eSlot1.kP = 250;
+        eSlot1.kI = 25;    
         eSlot1.kD = 0;
-        eSlot1.kV = 0.12;
-        eSlot1.kS = 0.25; // Approximately 0.25V to get the mechanism moving
+        eSlot1.kV = 0.5;
+        eSlot1.kS = 0.5; // Approximately 0.25V to get the mechanism moving
 
         FeedbackConfigs fdb = ecfg.Feedback;
         fdb.SensorToMechanismRatio = 12.8;
@@ -238,13 +241,6 @@ public Extension(RobotState robotState) {
             }
         }
 
-        else if(commander.armCommanded() == ArmCommanded.trap){
-            SmartDashboard.putNumber("here", 1);
-            extendedCommandedPosition = fullyExtended;
-            spitter.set(ControlMode.PercentOutput, 0);
-            extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
-            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
-        }
 
         else{
             returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
@@ -257,12 +253,19 @@ public Extension(RobotState robotState) {
             } else if (extendPosition.getValueAsDouble() > 0.1){
                 
                 extendMotor.set(-0.15);
-            
-            } else if (extendPosition.getValueAsDouble() > 0.0045){
-                extendMotor.set(-0.10);
+        
+            } else if (extendPosition.getValueAsDouble() > 0.05){
 
+                extendMotor.set(-0.10);
+            
+            } else if (extendPosition.getValueAsDouble() > 0.002){
+                extendMotor.set(-.25);
+                
+            
             } else {
-                extendMotor.setControl(extendMagic.withPosition(0).withSlot(1));
+                // extendMotor.setControl(extendPID.withPosition(0).withSlot(1));
+                extendMotor.stopMotor();
+                // extendMotor.setControl(extendPID.withPosition(0).withSlot(1));
             }
 
 
@@ -290,7 +293,13 @@ public Extension(RobotState robotState) {
             extendMotor.setPosition(-.04);
         }
 
-        if (commander.armCommanded() == ArmCommanded.amp) {
+        if(commander.armCommanded() == ArmCommanded.trap){
+            SmartDashboard.putNumber("here", 1);
+            extendedCommandedPosition = fullyExtended;
+            spitter.set(ControlMode.PercentOutput, 0);
+            extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
+            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
+        }   else if (commander.armCommanded() == ArmCommanded.amp) {
             extendMotor.setControl(extendMagic.withPosition(0.89).withSlot(0));
             ampCurrentShooterPose = robotState.getShooterPos();
 
