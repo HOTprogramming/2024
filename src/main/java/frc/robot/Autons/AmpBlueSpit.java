@@ -71,7 +71,7 @@ public class AmpBlueSpit extends AutonBase {
     Pose2d midPreback = new Pose2d(3.5, 5.45, Rotation2d.fromDegrees(0));
     // Pose2d backPreload = new Pose2d(1.9, 5.6, Rotation2d.fromDegrees(10));
     Pose2d backStageRing = new Pose2d(2.2, 4.58, Rotation2d.fromDegrees(-26));
-    Pose2d stageRing = new Pose2d(2.42, 4.28, Rotation2d.fromDegrees(-26));
+    Pose2d stageRing = new Pose2d(2.52, 4.28, Rotation2d.fromDegrees(-26));
 
     Pose2d midRingActual = new Pose2d(2.9, 5.56, Rotation2d.fromDegrees(0));
     Pose2d preloadActual = new Pose2d(3.6, 5.56, Rotation2d.fromDegrees(0));
@@ -313,6 +313,7 @@ public class AmpBlueSpit extends AutonBase {
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 trajectoryConfig = new TrajectoryConfig(6, 3);
                 trajectoryConfig.setStartVelocity(0);
+                trajectoryConfig.setEndVelocity(3);
 
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
                     Waypoint.fromHolonomicPose(midPreback),

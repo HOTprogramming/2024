@@ -312,6 +312,8 @@ public class AmpRedSpit extends AutonBase {
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 trajectoryConfig = new TrajectoryConfig(6, 3);
                 trajectoryConfig.setStartVelocity(0);
+                trajectoryConfig.setEndVelocity(3);
+
 
                 trajectoryGenerator.generate(trajectoryConfig, List.of(
                     Waypoint.fromHolonomicPose(midPreback),
