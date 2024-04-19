@@ -429,7 +429,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
             Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
             if (measurment.isPresent()) {
-                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
+                // seedFieldRelative(measurment.get().estimatedPose.toPose2d());
             }
         }
     }

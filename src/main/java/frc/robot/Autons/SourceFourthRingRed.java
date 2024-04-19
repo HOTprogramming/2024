@@ -148,10 +148,10 @@ public class SourceFourthRingRed extends AutonBase {
             driving = false;
             armCommand = ArmCommanded.shotMap;
             robotState.setAutonHintXPos(-1);
-            if(timer.get() > 0.1 && timer.get() < 0.3){
+            if(timer.get() > 0.2 && timer.get() < 0.4){
                 runShooter = true;
             }
-            else if(timer.get()<=0.1){
+            else if(timer.get()<=0.2){
 
             }
             else {
