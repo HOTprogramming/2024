@@ -129,7 +129,7 @@ public class SourceFourthRingBlue extends AutonBase {
         }
         else if (step == Step.beforeShot2){
 
-            if(robotState.getDrivePose().getX() < 4.5){
+            if(robotState.getDrivePose().getX() < 5.0){
                 armCommand = ArmCommanded.shotMap;
                 robotState.setAutonHintXPos(calculateArmHint(shoot));
             }
@@ -146,10 +146,10 @@ public class SourceFourthRingBlue extends AutonBase {
             driving = false;
             armCommand = ArmCommanded.shotMap;
             robotState.setAutonHintXPos(-1);
-            if(timer.get() > 0.1 && timer.get() < 0.3){
+            if(timer.get() > 0.125 && timer.get() < 0.325){
                 runShooter = true;
             }
-            else if(timer.get()<=0.1){
+            else if(timer.get()<=0.125){
 
             }
             else {
