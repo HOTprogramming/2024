@@ -260,7 +260,7 @@ public Extension(RobotState robotState) {
             
             } else if (extendPosition.getValueAsDouble() > 0.002){
                 extendMotor.set(-.25);
-                
+
             
             } else {
                 // extendMotor.setControl(extendPID.withPosition(0).withSlot(1));
@@ -290,7 +290,7 @@ public Extension(RobotState robotState) {
         }
 
         if (commander.extensionZero()) {
-            extendMotor.setPosition(-.04);
+            extendMotor.setPosition(-.05);
         }
 
         if(commander.armCommanded() == ArmCommanded.trap){
