@@ -313,9 +313,9 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE5 = 8.2; // WHITE LINE
             REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
-            REDANGLE2 = 131.1;
-            REDANGLE3 = 126.5;
-            REDANGLE4 = 123.6;
+            REDANGLE2 = 131.2;
+            REDANGLE3 = 126.6;
+            REDANGLE4 = 123.7;
             REDANGLE5 = 122.4;  
             REDANGLE6 = 122.3;
             
