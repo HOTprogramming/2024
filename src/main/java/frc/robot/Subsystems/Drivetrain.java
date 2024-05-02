@@ -234,13 +234,14 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
         currentState = getState();
 
          for (int i = 0; i < ModuleCount; i++) {
-            Modules[i].getDriveMotor().getDeviceTemp();
-            Modules[i].getDriveMotor().getMotorVoltage();
-            Modules[i].getDriveMotor().getSupplyVoltage();
-            Modules[i].getDriveMotor().getSupplyCurrent();
-            Modules[i].getDriveMotor().getStatorCurrent();
-            Modules[i].getDriveMotor().getDeviceTemp();
-            Modules[i].getDriveMotor().getTorqueCurrent();
+            SmartDashboard.putNumber("DriveCurrent_Stator_" + i, Modules[i].getDriveMotor().getStatorCurrent().getValueAsDouble());
+            // Modules[i].getDriveMotor().getDeviceTemp();
+            // Modules[i].getDriveMotor().getMotorVoltage();
+            // Modules[i].getDriveMotor().getSupplyVoltage();
+            SmartDashboard.putNumber("DriveCurrent_Supply_" + i, Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
+            // Modules[i].getDriveMotor().getStatorCurrent();
+            // Modules[i].getDriveMotor().getDeviceTemp();
+            // Modules[i].getDriveMotor().getTorqueCurrent();
         }
 
         // updates robotState for auton pathing
@@ -428,7 +429,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             // seedFieldRelative(new Pose2d(13.47, 4.11, Rotation2d.fromDegrees(0)));
             Optional<EstimatedRobotPose> measurment = robotState.getVisionMeasurements().get(CameraPositions.BACK);
             if (measurment.isPresent()) {
-                seedFieldRelative(measurment.get().estimatedPose.toPose2d());
+                // seedFieldRelative(measurment.get().estimatedPose.toPose2d());
             }
         }
     }
@@ -445,10 +446,10 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
 
     public void teleLimits(){
         for (int i = 0; i < ModuleCount; i++) {
-            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS);
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_SWERVE_DRIVE_GAINS_VOLTAGE);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.TELEOP_SWERVE_STEER_GAINS);
 
-            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELEOP_DRIVE_CURRENT);
+            Modules[i].getDriveMotor().getConfigurator().apply(constants.TELE_DRIVE_CURRENT_LIMIT_VOLTAGE);
             Modules[i].getSteerMotor().getConfigurator().apply(constants.TELE_AZ_LIMIT);
         }
     }

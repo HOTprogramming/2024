@@ -127,15 +127,15 @@ public class Intake implements SubsystemBase {
         
         /* Set Motion Magic gains in slot0 - see documentation */
         slurperArm.selectProfileSlot(0, 0);
-        slurperArm.config_kF(0, 0, 100);
-        slurperArm.config_kP(0, 0.8, 100);
+        slurperArm.config_kF(0, 0.5, 100);
+        slurperArm.config_kP(0, 0.5, 100);
         slurperArm.config_kI(0, 0, 100);
         slurperArm.config_kD(0, 0, 100);
         //slurperArm.config_IntegralZone(0, this.convertToTicks(0.1));
 
         /* Set acceleration and vcruise velocity - see documentation */
         slurperArm.configMotionCruiseVelocity(28000, 100);
-        slurperArm.configMotionAcceleration(12000, 100);
+        slurperArm.configMotionAcceleration(10000, 100);
 
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
         // slurperArm.configSelectedFeedbackCoefficient(0.087890625);
@@ -159,8 +159,13 @@ public class Intake implements SubsystemBase {
 
     @Override
     public void updateState() {
+        SmartDashboard.putNumber("intake_Current", intake.getStatorCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("SlurperArm_Current", slurperArm.getStatorCurrent());
+
+
         SmartDashboard.putNumber("intake Speed", intake.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("slurperPos", (slurperArm.getSelectedSensorPosition(0) - slurperArmOffset) * 360/4096);
+        SmartDashboard.putNumber("slurperArmCommanded", 96.0);
         SmartDashboard.putNumber("Real Slurper Pos", slurperArm.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("slurperPosCancoder", slurperCancoder.getAbsolutePosition());
         SmartDashboard.putNumber("intakevoltage", intake.getMotorVoltage().getValueAsDouble());
@@ -191,7 +196,7 @@ public class Intake implements SubsystemBase {
             slurperSpin.set(ControlMode.PercentOutput, 0);
             
         } else if (commander.getIntake() && (!robotState.getBeamBreak() || commander.getOverrideBeamBreak())) { // left trigger
-            if((robotState.getFeederCurrent() > 15.0 && robotState.getBeamBreak() == false) && !commander.getOverrideBeamBreak()){
+            if((robotState.getFeederCurrent() > 25.0 && robotState.getBeamBreak() == false) && !commander.getOverrideBeamBreak()){//25 amps
                 intake.setControl(m_voltageVelocity.withVelocity(constants.INTAKESPEED/4.0));
                 slurperArm.set(ControlMode.MotionMagic, slurperArmOffset + 96 / 360.0 * 4096.0);
                 slurperSpin.set(ControlMode.PercentOutput, 0);

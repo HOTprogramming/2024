@@ -44,7 +44,6 @@ public class SourceFourthRingRed extends AutonBase {
 
     //16.54 max red value
 
-    // Pose2d ring2 = new Pose2d(8.6, 2.30, Rotation2d.fromDegrees(-50));
     Pose2d ring2 = new Pose2d(8.04, 2.37, Rotation2d.fromDegrees(-130));
     Pose2d stage = new Pose2d(10.84, 3.88, Rotation2d.fromDegrees(180));
     Pose2d shoot = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-147));
@@ -132,7 +131,7 @@ public class SourceFourthRingRed extends AutonBase {
         }
         else if (step == Step.beforeShot2){
 
-            if(robotState.getDrivePose().getX() > 12.04){
+            if(robotState.getDrivePose().getX() > 11.5){
                 armCommand = ArmCommanded.shotMap;
                 robotState.setAutonHintXPos(calculateArmHint(shoot));
             }
@@ -149,10 +148,10 @@ public class SourceFourthRingRed extends AutonBase {
             driving = false;
             armCommand = ArmCommanded.shotMap;
             robotState.setAutonHintXPos(-1);
-            if(timer.get() > 0.1 && timer.get() < 0.3){
+            if(timer.get() > 0.125 && timer.get() < 0.325){
                 runShooter = true;
             }
-            else if(timer.get()<=0.1){
+            else if(timer.get()<=0.125){
 
             }
             else {

@@ -71,20 +71,24 @@ public class Feeder implements SubsystemBase {
     @Override
     public void updateState() {
         SmartDashboard.putNumber("intake Speed", feeder.getVelocity().getValueAsDouble());                                              
-        if ((feeder.getVelocity().getValueAsDouble()) >= (constants.FEEDERSPEED - constants.FEEDER_VELOCITY_ERROR) ){
-            SmartDashboard.putBoolean("Feeder_RSon", true);
-            robotState.setFeederOn(true);
-        } else {
-            SmartDashboard.putBoolean("Feeder_RSon", false);
+        // if ((feeder.getVelocity().getValueAsDouble()) >= (constants.FEEDERSPEED - constants.FEEDER_VELOCITY_ERROR) ){
+        //     SmartDashboard.putBoolean("Feeder_RSon", true);
+        //     robotState.setFeederOn(true);
+        // } else {
+        //     SmartDashboard.putBoolean("Feeder_RSon", false);
 
-            robotState.setFeederOn(false);
-        }
+        //     robotState.setFeederOn(false);
+        // }
 
         robotState.setFeederCurrent(feeder.getSupplyCurrent().getValueAsDouble());
-        SmartDashboard.putNumber("FeederCurrent", feeder.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("Feeder_Current", feeder.getSupplyCurrent().getValueAsDouble());
 
         robotState.setBeamBreak(sensorFeeder.get());
         SmartDashboard.putBoolean("beambreak", sensorFeeder.get());
+
+        SmartDashboard.putNumber("Feeder_Speed", feeder.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("Feeder_Target", feeder.getClosedLoopReference().getValueAsDouble());
+
 
     }
     
@@ -95,10 +99,7 @@ public class Feeder implements SubsystemBase {
         // feeder.setControl(Out);
         SmartDashboard.putBoolean("Feeder getFeeder", commander.getFeeder());
         SmartDashboard.putBoolean("Feeder SetShoot", commander.setShoot());
-        SmartDashboard.putBoolean("Feeder_detection", sensorFeeder.get());
-        SmartDashboard.putNumber("Feeder RPS", feeder.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber(" Feeder set point", constants.FEEDERSPEED);
-        SmartDashboard.putNumber("Feeder error", feeder.getClosedLoopError().getValueAsDouble());
         SmartDashboard.putNumber("Feeder_position", feeder.getPosition().getValueAsDouble());
 
         if (!hasRing && sensorFeeder.get()) {
@@ -126,10 +127,10 @@ public class Feeder implements SubsystemBase {
                     feeder.setControl(Out);
 
                 } else {
-                    feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+                    feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED2));
                 }
             } else { 
-               feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));
+               feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED2));
             }           
         } else if (commander.armCommanded() == ArmCommanded.handoff && robotState.getFeederOnAmpTrap()){
             feeder.setControl(m_voltageVelocity.withVelocity(constants.FEEDERSPEED));

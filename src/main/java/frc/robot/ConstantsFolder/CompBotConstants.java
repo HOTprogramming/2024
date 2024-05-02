@@ -57,7 +57,7 @@ public class CompBotConstants extends ConstantsBase {
         public Feeder() {
          FEEDER_CAN = 13;
          FEEDERSPEED = 90;
-         FEEDERSPEED2 = 95;
+         FEEDERSPEED2 = 60;
          DESIREDENCODERED = 0;
          FEEDER_VELOCITY_ERROR = .01;
          FEEDER_SENSOR_CHANNEL = 0;
@@ -90,7 +90,8 @@ public class CompBotConstants extends ConstantsBase {
             } else {
                 STEER_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage;
 
-                DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.TorqueCurrentFOC;
+                DRIVE_CLOSED_LOOP_OUTPUT_TYPE = ClosedLoopOutputType.Voltage
+                ;
             }
 
             WHEEL_SLIP_CURRENT = 650.0; // *tune later
@@ -276,7 +277,7 @@ public class CompBotConstants extends ConstantsBase {
             ZERO = 95.7;
             SHOOT = 118.0;
             TRAP = 144.0;
-            CLOSE = 150.0;
+            CLOSE = 148.5;
             PROTECT = 130.1;
             AMP = 139.992; //was 140.3;
             HANDOFF = 168;
@@ -284,18 +285,18 @@ public class CompBotConstants extends ConstantsBase {
             ARMOFFSET = -321.684 / 360.0; //-0.4895 rotations, now degrees 
             
 
-            BLUEDISTANCE1 = 1.21; // 0 in
-            BLUEDISTANCE2 = 2.8; // 43 in 
-            BLUEDISTANCE3 = 4.0; // 93 in 
-            BLUEDISTANCE4 = 5.26; // 148 in 
-            BLUEDISTANCE5 = 8.2; // 17ft
-            BLUEDISTANCE6 = 8.3;//23ft 1in
+            BLUEDISTANCE1 = 1.21; 
+            BLUEDISTANCE2 = 2.73; //2.8
+            BLUEDISTANCE3 = 3.72; //4.0
+            BLUEDISTANCE4 = 5.33; //5.26
+            BLUEDISTANCE5 = 8.2; 
+            BLUEDISTANCE6 = 8.3;
             BLUEANGLE1 = 148.5;
-            BLUEANGLE2 = 130.4; // 
-            BLUEANGLE3 = 125.5; // 
-            BLUEANGLE4 = 123.3; // 
-            BLUEANGLE5 = 123.3;
-            BLUEANGLE6 = 123.1; 
+            BLUEANGLE2 = 131.1; 
+            BLUEANGLE3 = 126.5;  
+            BLUEANGLE4 = 122.5;  
+            BLUEANGLE5 = 122.4;
+            BLUEANGLE6 = 122.3; 
 
             // BLUEANGLE1 = 148.0;
             // BLUEANGLE2 = 133.4;
@@ -306,17 +307,17 @@ public class CompBotConstants extends ConstantsBase {
             
             
             REDDISTANCE1 = 1.21; // BATTER 0 INCHES
-            REDDISTANCE2 = 2.8; // MID RING 62 INCHES 
-            REDDISTANCE3 = 4.0; // FRONT BUMPER FLUSH WITH CLOSE TRUSS 108 in
-            REDDISTANCE4 = 5.26; // INTAKE BUMPER ON WING LINE 163 in
+            REDDISTANCE2 = 2.82; //2.8// MID RING 62 INCHES 
+            REDDISTANCE3 = 3.8;//4.0 // FRONT BUMPER FLUSH WITH CLOSE TRUSS 108 in
+            REDDISTANCE4 = 5.43;//26 // INTAKE BUMPER ON WING LINE 163 in
             REDDISTANCE5 = 8.2; // WHITE LINE
             REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
-            REDANGLE2 = 132.4;
-            REDANGLE3 = 125.5;
-            REDANGLE4 = 123.3;
-            REDANGLE5 = 123.3;  
-            REDANGLE6 = 123.1;
+            REDANGLE2 = 131.2;
+            REDANGLE3 = 126.6;
+            REDANGLE4 = 123.7;
+            REDANGLE5 = 122.4;  
+            REDANGLE6 = 122.3;
             
             // REDANGLE1 = 148.5; // old rings
             // REDANGLE2 = 134.6;

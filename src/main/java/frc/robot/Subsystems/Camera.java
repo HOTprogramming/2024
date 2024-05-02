@@ -259,7 +259,7 @@ public class Camera implements SubsystemBase {
             photonPoseEstimators.put(CameraPositions.BACK, estimator);
            if (tempSimBool) {
                 simRearCam = new PhotonCameraSim(rearCamera, globalShutterProperties);
-                simVision.addCamera(simRearCam, cameraConstant.getTransform());
+                simVision.addCamera(simRearCam, cameraConstant.getTransform()); 
 
                 simRearCam.enableRawStream(true);
                 simRearCam.enableProcessedStream(true);
