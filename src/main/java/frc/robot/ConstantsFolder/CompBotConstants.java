@@ -338,7 +338,7 @@ public class CompBotConstants extends ConstantsBase {
             EKD = 0;
             EKV = 0.12;
             EKS = 0.25;
-            SHOOTERENCODER = 2.8;
+            SHOOTERENCODER = 2.3;
         }
     }
 }

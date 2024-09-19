@@ -430,7 +430,7 @@ public class ConstantsBase {
         public double EKV = 0.12;
         public double EKS = 0.25;
         public int EXTENSIONCAN = 10;
-        public double SHOOTERENCODER = 5;
+        public double SHOOTERENCODER = 4.0;
 
         public CurrentLimitsConfigs EXTEND_CURRENT_LIMITS = new CurrentLimitsConfigs()
                                     .withStatorCurrentLimit(50)
@@ -495,11 +495,11 @@ public class ConstantsBase {
 
 
         public TorqueCurrentConfigs TELEOP_DRIVE_CURRENT = new TorqueCurrentConfigs() // torque current -cory
-                                    .withPeakForwardTorqueCurrent(85)
-                                    .withPeakReverseTorqueCurrent(-85);
+                                    .withPeakForwardTorqueCurrent(80)
+                                    .withPeakReverseTorqueCurrent(-80);
 
         public CurrentLimitsConfigs TELE_DRIVE_CURRENT_LIMIT_VOLTAGE = new CurrentLimitsConfigs() // made atfter elim
-                                    .withStatorCurrentLimit(100)
+                                    .withStatorCurrentLimit(80)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(50)
                                     .withSupplyCurrentThreshold(50)
@@ -507,7 +507,7 @@ public class ConstantsBase {
                                     .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs TELE_AZ_LIMIT = new CurrentLimitsConfigs() // made atfter elim
-                                    .withStatorCurrentLimit(50)
+                                    .withStatorCurrentLimit(40)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(15)
                                     .withSupplyCurrentThreshold(20)
