@@ -42,11 +42,11 @@ public class AmpRedSpit extends AutonBase {
    
     boolean ring1first = true;
 
-    double spitXValue = 12.56;
+    double spitXValue = 12.49;
 
     Pose2d start = new Pose2d(14.96, 6.189, Rotation2d.fromDegrees(180));
     Pose2d betweenRings = new Pose2d(13.75, 6.26, Rotation2d.fromDegrees(180));
-    Pose2d afterBetweenRings = new Pose2d(12.54, 6.26, Rotation2d.fromDegrees(163));
+    Pose2d afterBetweenRings = new Pose2d(12.54, 6.26, Rotation2d.fromDegrees(166));
     Pose2d forkpoint = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(163));
 
     Pose2d afterBetweenRingsR2 = new Pose2d(12.54, 6.20, Rotation2d.fromDegrees(158));
