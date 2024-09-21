@@ -75,21 +75,21 @@ stop;
 
 ExtensionPhaseTrap extendTrapPhase;
 
-public Extension(RobotState robotState) {
+    public Extension(RobotState robotState) {
 
-this.robotState = robotState;
-this.constants = robotState.getConstants().getExtensionConstants();
+        this.robotState = robotState;
+        this.constants = robotState.getConstants().getExtensionConstants();
 
-extendMotor = new TalonFX(constants.EXTENSIONCAN, "drivetrain");
-spitter = new TalonSRX(robotState.getConstants().getIntakeConstants().SLURPER_ROLLER_CAN);
+        extendMotor = new TalonFX(constants.EXTENSIONCAN, "drivetrain");
+        spitter = new TalonSRX(robotState.getConstants().getIntakeConstants().SLURPER_ROLLER_CAN);
 
-extendMagic = new MotionMagicVoltage(0);
+        extendMagic = new MotionMagicVoltage(0);
 
-extendPosition = extendMotor.getPosition();
-extendVelocity = extendMotor.getVelocity();
+        extendPosition = extendMotor.getPosition();
+        extendVelocity = extendMotor.getVelocity();
 
 
-}
+    }
 
 public void extensionInit(){
     TalonFXConfiguration ecfg = new TalonFXConfiguration();
@@ -165,87 +165,87 @@ public ExtensionPhaseTrap getExtensionPhaseTrap(){
 }
 
 
-@Override
-public void teleop(RobotCommander commander) {
-    extendPosition.refresh(); 
-    extendVelocity.refresh();
-    
-    if(commander.armCommanded() == ArmCommanded.handoff){
-        SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
-        if(extensionTimer < 87){
-        returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
-        SmartDashboard.putNumber("firststage", 1);
-        }
-        else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one && extendPosition.getValueAsDouble() > (middlePoint - 0.05)){
-        returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
-        SmartDashboard.putNumber("thirdstage", 1);
-        }
-        else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
-        returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
-        SmartDashboard.putNumber("initialshooterpos", initialShooterPos);
-        SmartDashboard.putNumber("fifthstage", 1);
-        } 
-        else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos < constants.SHOOTERENCODER){
-        returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
-        SmartDashboard.putNumber("seventhstage", 1);
-        }
-        else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos > constants.SHOOTERENCODER){
-        returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
-        SmartDashboard.putNumber("andreas", 1);
-        }
-        else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
-        returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
-        SmartDashboard.putNumber("ninthstage", 1);
-        }
-
-        if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
-            //command extension to middle position
-            if(extensionTimer>12){
-            robotState.setShooterOnAmpTrap(true);
-            robotState.setFeederOnAmpTrap(false);
-            extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-            spitter.set(ControlMode.PercentOutput, 0.8);
+    @Override
+    public void teleop(RobotCommander commander) {
+        extendPosition.refresh(); 
+        extendVelocity.refresh();
+        
+        if(commander.armCommanded() == ArmCommanded.handoff){
+            SmartDashboard.putNumber("shooterposextensionclass", robotState.getShooterPos());
+            if(extensionTimer < 87){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.one);
+            SmartDashboard.putNumber("firststage", 1);
             }
-            SmartDashboard.putNumber("secondstage", 1);
-            extensionTimer++;
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one && extendPosition.getValueAsDouble() > (middlePoint - 0.05)){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.two);
+            SmartDashboard.putNumber("thirdstage", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two && robotState.getBeamBreak() == false){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
+            SmartDashboard.putNumber("initialshooterpos", initialShooterPos);
+            SmartDashboard.putNumber("fifthstage", 1);
+            } 
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos < constants.SHOOTERENCODER){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.three);
+            SmartDashboard.putNumber("seventhstage", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three && currentShooterPos > constants.SHOOTERENCODER){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
+            SmartDashboard.putNumber("andreas", 1);
+            }
+            else if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
+            returnExtensionPhaseTrap(ExtensionPhaseTrap.driver);
+            SmartDashboard.putNumber("ninthstage", 1);
+            }
+
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.one){
+                //command extension to middle position
+                if(extensionTimer>12){
+                robotState.setShooterOnAmpTrap(true);
+                robotState.setFeederOnAmpTrap(false);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                }
+                SmartDashboard.putNumber("secondstage", 1);
+                extensionTimer++;
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two){
+                //spin shooter until beambreak is false, hold extension position
+                robotState.setShooterOnAmpTrap(true);
+                robotState.setFeederOnAmpTrap(true);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                initialShooterPos = robotState.getShooterPos();
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("fourthstage", 1);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three){
+                //start encoder counts and keep spinning shooter, spin spitter, hold extension position
+                currentShooterPos = robotState.getShooterPos() - initialShooterPos;
+                robotState.setShooterOnAmpTrap(true);
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                spitter.set(ControlMode.PercentOutput, 0.8);
+                SmartDashboard.putNumber("sixthstage", 1);
+                SmartDashboard.putNumber("currentshooterpos", currentShooterPos);
+            }
+            if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
+                //move extension to fully extended position
+                extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
+                robotState.setShooterOnAmpTrap(false);
+                robotState.setFeederOnAmpTrap(false);
+                spitter.set(ControlMode.PercentOutput, 0);
+                SmartDashboard.putNumber("driverstage", 1);
+            }
         }
-        if(getExtensionPhaseTrap() == ExtensionPhaseTrap.two){
-            //spin shooter until beambreak is false, hold extension position
-            robotState.setShooterOnAmpTrap(true);
-            robotState.setFeederOnAmpTrap(true);
-            extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-            initialShooterPos = robotState.getShooterPos();
-            spitter.set(ControlMode.PercentOutput, 0.8);
-            SmartDashboard.putNumber("fourthstage", 1);
-        }
-        if(getExtensionPhaseTrap() == ExtensionPhaseTrap.three){
-            //start encoder counts and keep spinning shooter, spin spitter, hold extension position
-            currentShooterPos = robotState.getShooterPos() - initialShooterPos;
-            robotState.setShooterOnAmpTrap(true);
-            extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-            spitter.set(ControlMode.PercentOutput, 0.8);
-            SmartDashboard.putNumber("sixthstage", 1);
-            SmartDashboard.putNumber("currentshooterpos", currentShooterPos);
-        }
-        if(getExtensionPhaseTrap() == ExtensionPhaseTrap.driver){
-            //move extension to fully extended position
-            extendMotor.setControl(extendMagic.withPosition(middlePoint).withSlot(0));
-            robotState.setShooterOnAmpTrap(false);
-            robotState.setFeederOnAmpTrap(false);
+
+        else if(commander.armCommanded() == ArmCommanded.trap){
+            SmartDashboard.putNumber("here", 1);
+            extendedCommandedPosition = fullyExtended;
             spitter.set(ControlMode.PercentOutput, 0);
-            SmartDashboard.putNumber("driverstage", 1);
+            extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
+            SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
         }
-    }
 
-    else if(commander.armCommanded() == ArmCommanded.trap){
-        SmartDashboard.putNumber("here", 1);
-        extendedCommandedPosition = fullyExtended;
-        spitter.set(ControlMode.PercentOutput, 0);
-        extendMotor.setControl(extendMagic.withPosition(fullyExtended).withSlot(0));
-        SmartDashboard.putNumber("extendedCommandedPosition", extendedCommandedPosition);
-    }
-
-    else{
+        else{
         returnExtensionPhaseTrap(ExtensionPhaseTrap.none);
         if (commander.extensionOveride()) {
             extendMotor.set(-0.2);    

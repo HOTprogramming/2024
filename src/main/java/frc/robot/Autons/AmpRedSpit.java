@@ -46,13 +46,13 @@ public class AmpRedSpit extends AutonBase {
 
     Pose2d start = new Pose2d(14.96, 6.189, Rotation2d.fromDegrees(180));
     Pose2d betweenRings = new Pose2d(13.75, 6.26, Rotation2d.fromDegrees(180));
-    Pose2d afterBetweenRings = new Pose2d(12.54, 6.26, Rotation2d.fromDegrees(166));
+    Pose2d afterBetweenRings = new Pose2d(12.54, 6.26, Rotation2d.fromDegrees(162));
     Pose2d forkpoint = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(163));
 
     Pose2d afterBetweenRingsR2 = new Pose2d(12.54, 6.20, Rotation2d.fromDegrees(158));
     Pose2d forkpointR2 = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(158));
 
-    Pose2d ring1 = new Pose2d(8.27, 7.7, Rotation2d.fromDegrees(165));
+    Pose2d ring1 = new Pose2d(8.27, 7.5, Rotation2d.fromDegrees(165));
     Pose2d ring1for2first = new Pose2d(8.27, 7.6, Rotation2d.fromDegrees(175));
 
     Pose2d farShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
