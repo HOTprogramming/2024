@@ -124,6 +124,7 @@ public class Drivetrain extends SwerveDrivetrain implements SubsystemBase {
             // cachedRotation = currentState.Pose.getRotation();
 
             if (fieldCentricDrive) {
+                
                 setControl(fieldCentric.withVelocityX(drivePercents[0] * constants.MAX_VELOCITY_METERS)
                         .withVelocityY(drivePercents[1] * constants.MAX_VELOCITY_METERS)
                         .withRotationalRate(drivePercents[2] * constants.MAX_ANGULAR_VELOCITY_RADS));

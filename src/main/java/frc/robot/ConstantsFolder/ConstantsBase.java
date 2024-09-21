@@ -171,11 +171,11 @@ public class ConstantsBase {
         public double D1IntakeEnter = 0.001;
 
         public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT_TELE = new CurrentLimitsConfigs()
-                                    .withStatorCurrentLimit(50)
+                                    .withStatorCurrentLimit(60)
                                     .withStatorCurrentLimitEnable(true)
                                     .withSupplyCurrentLimit(30)
                                     .withSupplyCurrentThreshold(35)
-                                    .withSupplyTimeThreshold(0.1)
+                                    .withSupplyTimeThreshold(0.15)
                                     .withSupplyCurrentLimitEnable(true);
 
         public CurrentLimitsConfigs INTAKE_CURRENT_LIMIT_AUTO = new CurrentLimitsConfigs()
