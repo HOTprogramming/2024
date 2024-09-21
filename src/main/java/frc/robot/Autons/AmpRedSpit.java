@@ -67,9 +67,9 @@ public class AmpRedSpit extends AutonBase {
     // Pose2d backAmpRing = new Pose2d(2.1, 6.5, Rotation2d.fromDegrees(155));
     Pose2d ampRing = new Pose2d(13.73, 6.96, Rotation2d.fromDegrees(155));
     Pose2d backMidRing = new Pose2d(14.24, 5.62, Rotation2d.fromDegrees(180));
-    Pose2d midPreback = new Pose2d(13.4, 5.62, Rotation2d.fromDegrees(180));
+    Pose2d midPreback = new Pose2d(13.0, 5.62, Rotation2d.fromDegrees(180));
     // Pose2d backPreload = new Pose2d(1.9, 5.6, Rotation2d.fromDegrees(170));
-    Pose2d backStageRing = new Pose2d(14.44, 4.61, Rotation2d.fromDegrees(203));
+    Pose2d backStageRing = new Pose2d(14.44, 4.51, Rotation2d.fromDegrees(203));
     Pose2d stageRing = new Pose2d(14.05, 4.26, Rotation2d.fromDegrees(203));
 
     Pose2d midRingActual = new Pose2d(13.57, 5.56, Rotation2d.fromDegrees(180));
