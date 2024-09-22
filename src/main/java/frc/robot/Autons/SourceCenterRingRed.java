@@ -186,7 +186,7 @@ public class SourceCenterRingRed extends AutonBase {
 
             if(robotState.getDrivePose().getX() > 12.04){
                 armCommand = ArmCommanded.shotMap;
-                robotState.setAutonHintXPos(calculateArmHint(shoot));
+                robotState.setAutonHintXPos(calculateArmHint(shoot) + .7);
             }
             
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){

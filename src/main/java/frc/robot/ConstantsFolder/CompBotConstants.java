@@ -293,8 +293,8 @@ public class CompBotConstants extends ConstantsBase {
             BLUEDISTANCE6 = 8.3;
             BLUEANGLE1 = 148.5;
             BLUEANGLE2 = 131.1; 
-            BLUEANGLE3 = 126.5;  
-            BLUEANGLE4 = 121.5;  
+            BLUEANGLE3 = 126.5; //126.5 
+            BLUEANGLE4 = 119.5; //119.5
             BLUEANGLE5 = 122.4;
             BLUEANGLE6 = 122.3; 
 

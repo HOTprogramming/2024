@@ -76,7 +76,7 @@ public class SourceFourthRingBlue extends AutonBase {
 
             if(timer.get() > 0.3){
                 armCommand = ArmCommanded.shotMap; 
-                robotState.setAutonHintXPos(calculateArmHint(shoot)); 
+                robotState.setAutonHintXPos(calculateArmHint(shoot)-0.3); 
             }
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 driving = false;
@@ -131,7 +131,7 @@ public class SourceFourthRingBlue extends AutonBase {
 
             if(robotState.getDrivePose().getX() < 5.0){
                 armCommand = ArmCommanded.shotMap;
-                robotState.setAutonHintXPos(calculateArmHint(shoot));
+                robotState.setAutonHintXPos(calculateArmHint(shoot)-0.3);
             }
 
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
@@ -186,7 +186,7 @@ public class SourceFourthRingBlue extends AutonBase {
 
             if(robotState.getDrivePose().getX() < 4.5){
                 armCommand = ArmCommanded.shotMap;
-                robotState.setAutonHintXPos(calculateArmHint(shoot));
+                robotState.setAutonHintXPos(calculateArmHint(shoot)-0.3);
             }
             
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){

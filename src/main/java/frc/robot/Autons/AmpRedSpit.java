@@ -46,13 +46,13 @@ public class AmpRedSpit extends AutonBase {
 
     Pose2d start = new Pose2d(14.96, 6.189, Rotation2d.fromDegrees(180));
     Pose2d betweenRings = new Pose2d(13.75, 6.26, Rotation2d.fromDegrees(180));
-    Pose2d afterBetweenRings = new Pose2d(12.54, 6.26, Rotation2d.fromDegrees(162));
+    Pose2d afterBetweenRings = new Pose2d(12.54, 6.26, Rotation2d.fromDegrees(158));
     Pose2d forkpoint = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(163));
 
     Pose2d afterBetweenRingsR2 = new Pose2d(12.54, 6.20, Rotation2d.fromDegrees(158));
     Pose2d forkpointR2 = new Pose2d(10.54, 6.3, Rotation2d.fromDegrees(158));
 
-    Pose2d ring1 = new Pose2d(8.27, 7.45, Rotation2d.fromDegrees(165));
+    Pose2d ring1 = new Pose2d(8.17, 7.32, Rotation2d.fromDegrees(165));
     Pose2d ring1for2first = new Pose2d(8.27, 7.4, Rotation2d.fromDegrees(175));
 
     Pose2d farShoot = new Pose2d(11.84, 6.3, Rotation2d.fromDegrees(170));
@@ -61,8 +61,8 @@ public class AmpRedSpit extends AutonBase {
     // Pose2d beforeBetweenOtherRings = new Pose2d(4.6, 5.5, Rotation2d.fromDegrees(180));
     // Pose2d betweenOtherRings = new Pose2d(2.9, 4.45, Rotation2d.fromDegrees(180));
     // Pose2d aroundRings = new Pose2d(3.1, 7.5, Rotation2d.fromDegrees(180));
-    Pose2d beforeBetweenRings = new Pose2d(12.54, 6.28, Rotation2d.fromDegrees(180));
-    Pose2d betweenRingsBack = new Pose2d(13.75, 6.28, Rotation2d.fromDegrees(180));
+    Pose2d beforeBetweenRings = new Pose2d(12.54, 6.35, Rotation2d.fromDegrees(180));
+    Pose2d betweenRingsBack = new Pose2d(13.75, 6.35, Rotation2d.fromDegrees(180));
     Pose2d closeShoot = new Pose2d(14.64, 6.4, Rotation2d.fromDegrees(155));
     // Pose2d backAmpRing = new Pose2d(2.1, 6.5, Rotation2d.fromDegrees(155));
     Pose2d ampRing = new Pose2d(13.73, 6.96, Rotation2d.fromDegrees(155));
@@ -287,7 +287,7 @@ public class AmpRedSpit extends AutonBase {
                 timer.reset();
             }
         } else if (step == Step.tomidring) {
-            robotState.setAutonHintXPos(calculateArmHint(midRingActual) + .3);
+            robotState.setAutonHintXPos(calculateArmHint(midRingActual) + .7);
 
             if (timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()) {
                 trajectoryConfig = new TrajectoryConfig(2.85, 3);
