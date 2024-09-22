@@ -43,7 +43,7 @@ public class CompBotConstants extends ConstantsBase {
     }
     public class Intake extends ConstantsBase.Intake {
         public Intake() {
-            SLURPER_ARM_CANCODER_OFFSET = -44;
+            SLURPER_ARM_CANCODER_OFFSET = 28;
             INTAKE_ENTER_CAN = 14;
             INTAKESPEED = 83;
             INTAKE_VELOCITY_ERROR = .01;
@@ -314,9 +314,9 @@ public class CompBotConstants extends ConstantsBase {
             REDDISTANCE6 = 8.3; // WHITE LINE
             REDANGLE1 = 148.5;
             REDANGLE2 = 131.2;
-            REDANGLE3 = 126.6;
-            REDANGLE4 = 123.7;
-            REDANGLE5 = 122.4;  
+            REDANGLE3 = 126.1;
+            REDANGLE4 = 122.5;
+            REDANGLE5 = 121.4;  
             REDANGLE6 = 122.3;
             
             // REDANGLE1 = 148.5; // old rings

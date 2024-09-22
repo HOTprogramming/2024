@@ -45,8 +45,8 @@ public class SourceCenterRingRed extends AutonBase {
     Pose2d ring2 = new Pose2d(8.04, 2.37, Rotation2d.fromDegrees(-130));
     Pose2d stage = new Pose2d(10.84, 3.88, Rotation2d.fromDegrees(180));
     Pose2d shoot = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-147));
-    Pose2d shootPre = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-144.5));
-    Pose2d ring3 = new Pose2d(8.3, 4.20, Rotation2d.fromDegrees(180));
+    Pose2d shootPre = new Pose2d(12.94, 2.90, Rotation2d.fromDegrees(-146.5));
+    Pose2d ring3 = new Pose2d(8.3, 4.38, Rotation2d.fromDegrees(180));
     Pose2d out = new Pose2d(11.54, 1.0, Rotation2d.fromDegrees(180));
     Pose2d ring1 = new Pose2d(8.14, 0.9, Rotation2d.fromDegrees(180)); 
 
@@ -76,7 +76,7 @@ public class SourceCenterRingRed extends AutonBase {
 
             if(timer.get() > 0.3){
                 armCommand = ArmCommanded.shotMap; 
-                robotState.setAutonHintXPos(calculateArmHint(shootPre)); 
+                robotState.setAutonHintXPos(calculateArmHint(shootPre)-0.3); 
             }
             if(timer.get() > trajectoryGenerator.getDriveTrajectory().getTotalTimeSeconds()){
                 driving = false;
