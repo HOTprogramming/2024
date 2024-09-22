@@ -294,7 +294,7 @@ public class CompBotConstants extends ConstantsBase {
             BLUEANGLE1 = 148.5;
             BLUEANGLE2 = 131.1; 
             BLUEANGLE3 = 126.5;  
-            BLUEANGLE4 = 122.5;  
+            BLUEANGLE4 = 121.5;  
             BLUEANGLE5 = 122.4;
             BLUEANGLE6 = 122.3; 
 
@@ -315,7 +315,7 @@ public class CompBotConstants extends ConstantsBase {
             REDANGLE1 = 148.5;
             REDANGLE2 = 131.2;
             REDANGLE3 = 126.1;
-            REDANGLE4 = 122.5;
+            REDANGLE4 = 121.5;
             REDANGLE5 = 121.4;  
             REDANGLE6 = 122.3;
             
